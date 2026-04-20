@@ -3,6 +3,8 @@
 
 import crypto from "crypto";
 
+const MAX_COMPLIANCE_HISTORY = 10000;
+
 export class ComplianceValidator {
   constructor() {
     this.executionLogs = [];
@@ -46,6 +48,9 @@ export class ComplianceValidator {
     };
 
     this.executionLogs.push(entry);
+    if (this.executionLogs.length > MAX_COMPLIANCE_HISTORY) {
+      this.executionLogs = this.executionLogs.slice(-MAX_COMPLIANCE_HISTORY);
+    }
     this.complianceState.executionLogging = true;
     this.log(`Execution logged: ${JSON.stringify(entry)}`);
 
@@ -66,6 +71,9 @@ export class ComplianceValidator {
       hash,
       dataSize: JSON.stringify(data).length,
     });
+    if (this.auditHashes.length > MAX_COMPLIANCE_HISTORY) {
+      this.auditHashes = this.auditHashes.slice(-MAX_COMPLIANCE_HISTORY);
+    }
 
     this.complianceState.auditability = true;
     this.log(`Audit hash generated: SHA256:${hash.substring(0, 16)}...`);

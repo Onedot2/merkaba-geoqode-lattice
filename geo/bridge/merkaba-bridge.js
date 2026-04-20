@@ -5,6 +5,8 @@
 import { EventEmitter } from "events";
 import { MerkabageoqodeOS } from "../index.js";
 
+const MAX_EXECUTION_HISTORY = 1000;
+
 /**
  * MerkabaBridge — event-driven adapter between GeoQode runtime and Storm AI.
  *
@@ -54,6 +56,11 @@ export class MerkabaBridge extends EventEmitter {
       };
 
       this.executionHistory.push(record);
+      if (this.executionHistory.length > MAX_EXECUTION_HISTORY) {
+        this.executionHistory = this.executionHistory.slice(
+          -MAX_EXECUTION_HISTORY,
+        );
+      }
 
       if (result.success) {
         this.emit("execution:complete", record);
@@ -162,7 +169,8 @@ export class MerkabaBridge extends EventEmitter {
         },
         body: JSON.stringify(record),
       });
-    } catch {
+    } catch (error) {
+      console.error("[MerkabaBridge] Storm forward failed:", error.message);
       // non-fatal: Storm forwarding is best-effort
     }
   }

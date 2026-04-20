@@ -1,6 +1,8 @@
 // geo/runtime/octahedron.js
 // Inner Octahedron Field of Light — Execution chamber for GeoQode programs
 
+const MAX_OCTAHEDRON_HISTORY = 10000;
+
 export class InnerOctahedron {
   constructor() {
     this.active = false;
@@ -48,6 +50,14 @@ export class InnerOctahedron {
 
     this.emissionLogs.push(emission);
     this.spectralSpectrum.push(color);
+    if (this.emissionLogs.length > MAX_OCTAHEDRON_HISTORY) {
+      this.emissionLogs = this.emissionLogs.slice(-MAX_OCTAHEDRON_HISTORY);
+    }
+    if (this.spectralSpectrum.length > MAX_OCTAHEDRON_HISTORY) {
+      this.spectralSpectrum = this.spectralSpectrum.slice(
+        -MAX_OCTAHEDRON_HISTORY,
+      );
+    }
     this.resonanceLevel = Math.min(2.0, this.resonanceLevel + harmonic * 0.1);
 
     this.log(`Emitted ${color} spectrum at harmonic Φ[${harmonic}]`);
@@ -73,6 +83,9 @@ export class InnerOctahedron {
     };
 
     this.detectionLogs.push(detection);
+    if (this.detectionLogs.length > MAX_OCTAHEDRON_HISTORY) {
+      this.detectionLogs = this.detectionLogs.slice(-MAX_OCTAHEDRON_HISTORY);
+    }
     this.log(`Detected duality=${duality}, octahedron=${octahedronPattern}`);
 
     return detection;

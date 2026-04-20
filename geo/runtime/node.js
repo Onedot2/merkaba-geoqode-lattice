@@ -1,5 +1,6 @@
 // geo/runtime/node.js
 // Sensor/Emitter Node for GeoQode execution
+const MAX_HISTORY = 10000;
 
 export class Node {
   constructor(id = `node-${Date.now()}`) {
@@ -30,6 +31,9 @@ export class Node {
     };
 
     this.emissionHistory.push(emission);
+    if (this.emissionHistory.length > MAX_HISTORY) {
+      this.emissionHistory = this.emissionHistory.slice(-MAX_HISTORY);
+    }
     console.log(
       `[Node ${this.id}] Emitted ${color} spectrum at Φ[${harmonic}]`,
     );
@@ -56,6 +60,9 @@ export class Node {
     };
 
     this.detectionHistory.push(detection);
+    if (this.detectionHistory.length > MAX_HISTORY) {
+      this.detectionHistory = this.detectionHistory.slice(-MAX_HISTORY);
+    }
     console.log(
       `[Node ${this.id}] Detected duality=${duality}, octahedron=${octahedron}`,
     );

@@ -1,6 +1,8 @@
 // geo/runtime/water.js
 // Water molecule QBITS materialization engine
 
+const MAX_LOGS = 10000;
+
 export class WaterMolecule {
   constructor(id = `water-${Date.now()}`) {
     this.id = id;
@@ -30,6 +32,9 @@ export class WaterMolecule {
     };
 
     this.crystallizationLogs.push(materialization);
+    if (this.crystallizationLogs.length > MAX_LOGS) {
+      this.crystallizationLogs = this.crystallizationLogs.slice(-MAX_LOGS);
+    }
     console.log(
       `[Water ${this.id}] QBITS materialized at ${frequency}, Φ[${harmonic}]`,
     );
@@ -56,6 +61,9 @@ export class WaterMolecule {
     };
 
     this.crystallizationLogs.push(crystallization);
+    if (this.crystallizationLogs.length > MAX_LOGS) {
+      this.crystallizationLogs = this.crystallizationLogs.slice(-MAX_LOGS);
+    }
     console.log(`[Water ${this.id}] QBITS crystallized in stable geometry`);
 
     return crystallization;

@@ -53,7 +53,10 @@ export class Parser {
     const program = new Program(name, startToken.line, startToken.column);
 
     while (!this.check("RBRACE") && !this.isAtEnd()) {
-      program.addStatement(this.parseStatement());
+      const statement = this.parseStatement();
+      if (statement) {
+        program.addStatement(statement);
+      }
     }
 
     this.expect("RBRACE");
@@ -68,7 +71,10 @@ export class Parser {
     const playbook = new Playbook(name, startToken.line, startToken.column);
 
     while (!this.check("RBRACE") && !this.isAtEnd()) {
-      playbook.addStep(this.parseStatement());
+      const step = this.parseStatement();
+      if (step) {
+        playbook.addStep(step);
+      }
     }
 
     this.expect("RBRACE");
@@ -242,6 +248,10 @@ export class Parser {
     const token = this.advance(); // STEP (Step1, Step2, etc.)
     this.expect("COLON");
     const statement = this.parseStatement();
+    if (statement) {
+      statement.label = token.value;
+      statement.labelType = token.type;
+    }
     return statement;
   }
 

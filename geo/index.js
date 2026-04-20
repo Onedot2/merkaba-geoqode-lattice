@@ -26,6 +26,12 @@ export {
   MERKABA_LATTICE,
 } from "./certification/enterprise-certifier.js";
 export { AuditTrail } from "./certification/audit-trail.js";
+export {
+  GEOQODE_STDLIB,
+  SACRED_COLOR_SPECTRUM,
+  STDLIB_FREQUENCIES,
+  getStdlibConstant,
+} from "./stdlib/index.js";
 
 /**
  * MERKABA_geoqode Operating System

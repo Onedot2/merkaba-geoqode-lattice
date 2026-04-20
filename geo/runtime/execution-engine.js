@@ -155,6 +155,16 @@ export class ExecutionEngine {
     } else if (stmt.type === "LOG_STMT") {
       result.logs.push(stmt.message);
       console.log(stmt.message);
+    } else if (stmt.type === "TRIGGER_STMT") {
+      // Execute trigger: evaluate condition and run associated actions
+      result.logs.push(`Trigger evaluated: ${stmt.condition || "(compound)"}`);
+      for (const action of stmt.actions || []) {
+        await this.executeStatement(action, result);
+      }
+    } else if (stmt.type === "ACTION_STMT") {
+      // Execute action: record dispatched action name
+      result.logs.push(`Action dispatched: ${stmt.action || "unknown"}`);
+      result.actions = (result.actions || 0) + 1;
     }
   }
 
