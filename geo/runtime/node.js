@@ -4,7 +4,7 @@
 export class Node {
   constructor(id = `node-${Date.now()}`) {
     this.id = id;
-    this.state = 'IDLE'; // IDLE, EMITTING, DETECTING, DORMANT
+    this.state = "IDLE"; // IDLE, EMITTING, DETECTING, DORMANT
     this.chromodynamicShading = null;
     this.harmonic = null;
     this.emissionHistory = [];
@@ -17,7 +17,7 @@ export class Node {
    * @param {number} harmonic - Harmonic frequency (φ^n)
    */
   emit(color, harmonic) {
-    this.state = 'EMITTING';
+    this.state = "EMITTING";
     this.chromodynamicShading = color;
     this.harmonic = harmonic;
 
@@ -30,7 +30,9 @@ export class Node {
     };
 
     this.emissionHistory.push(emission);
-    console.log(`[Node ${this.id}] Emitted ${color} spectrum at Φ[${harmonic}]`);
+    console.log(
+      `[Node ${this.id}] Emitted ${color} spectrum at Φ[${harmonic}]`,
+    );
 
     return emission;
   }
@@ -41,7 +43,7 @@ export class Node {
    * @param {boolean} octahedron - Detect octahedron field (⧉)
    */
   detect(duality, octahedron) {
-    this.state = 'DETECTING';
+    this.state = "DETECTING";
 
     const detection = {
       timestamp: Date.now(),
@@ -54,7 +56,9 @@ export class Node {
     };
 
     this.detectionHistory.push(detection);
-    console.log(`[Node ${this.id}] Detected duality=${duality}, octahedron=${octahedron}`);
+    console.log(
+      `[Node ${this.id}] Detected duality=${duality}, octahedron=${octahedron}`,
+    );
 
     return detection;
   }
@@ -77,7 +81,7 @@ export class Node {
    * Reset node
    */
   reset() {
-    this.state = 'IDLE';
+    this.state = "IDLE";
     this.chromodynamicShading = null;
     this.harmonic = null;
   }
@@ -119,10 +123,10 @@ export class NodePool {
   }
 
   getStates() {
-    return this.nodes.map(node => node.getState());
+    return this.nodes.map((node) => node.getState());
   }
 
   resetAll() {
-    this.nodes.forEach(node => node.reset());
+    this.nodes.forEach((node) => node.reset());
   }
 }

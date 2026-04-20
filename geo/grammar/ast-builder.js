@@ -18,7 +18,7 @@ export class ASTNode {
 
 export class Program extends ASTNode {
   constructor(name, line, column) {
-    super('PROGRAM', name, line, column);
+    super("PROGRAM", name, line, column);
     this.statements = [];
   }
 
@@ -30,7 +30,7 @@ export class Program extends ASTNode {
 
 export class Playbook extends ASTNode {
   constructor(name, line, column) {
-    super('PLAYBOOK', name, line, column);
+    super("PLAYBOOK", name, line, column);
     this.steps = [];
   }
 
@@ -48,7 +48,7 @@ export class Statement extends ASTNode {
 
 export class EmitStatement extends Statement {
   constructor(chromodynamic, harmonic, line, column) {
-    super('EMIT_STMT', line, column);
+    super("EMIT_STMT", line, column);
     this.chromodynamic = chromodynamic; // Δ[color]
     this.harmonic = harmonic; // Φ[n]
   }
@@ -56,7 +56,7 @@ export class EmitStatement extends Statement {
 
 export class DetectStatement extends Statement {
   constructor(duality, octahedron, line, column) {
-    super('DETECT_STMT', line, column);
+    super("DETECT_STMT", line, column);
     this.duality = duality; // ⊗
     this.octahedron = octahedron; // ⧉
   }
@@ -64,7 +64,7 @@ export class DetectStatement extends Statement {
 
 export class QBITStatement extends Statement {
   constructor(medium, frequency, harmonic, line, column) {
-    super('QBIT_STMT', line, column);
+    super("QBIT_STMT", line, column);
     this.medium = medium; // Water, etc.
     this.frequency = frequency; // ~wave(f)
     this.harmonic = harmonic; // Φ[n]
@@ -73,14 +73,14 @@ export class QBITStatement extends Statement {
 
 export class LogStatement extends Statement {
   constructor(message, line, column) {
-    super('LOG_STMT', line, column);
+    super("LOG_STMT", line, column);
     this.message = message;
   }
 }
 
 export class TriggerStatement extends Statement {
   constructor(condition, line, column) {
-    super('TRIGGER_STMT', line, column);
+    super("TRIGGER_STMT", line, column);
     this.condition = condition;
     this.actions = [];
   }
@@ -93,7 +93,7 @@ export class TriggerStatement extends Statement {
 
 export class ActionStatement extends Statement {
   constructor(action, line, column) {
-    super('ACTION_STMT', line, column);
+    super("ACTION_STMT", line, column);
     this.action = action;
   }
 }
@@ -107,14 +107,14 @@ export class Literal {
 
 export class Identifier {
   constructor(name) {
-    this.type = 'IDENTIFIER';
+    this.type = "IDENTIFIER";
     this.name = name;
   }
 }
 
 export class Operator {
   constructor(symbol, value) {
-    this.type = 'OPERATOR';
+    this.type = "OPERATOR";
     this.symbol = symbol; // Φ, ⊗, Δ, ~wave, ⧉
     this.value = value;
   }

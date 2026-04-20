@@ -1,7 +1,7 @@
 # 🔗 Integration with s4ai-core
 
-**Version**: 1.0.0  
-**Purpose**: Bridge GeoQode OS with s4ai-core systems  
+**Version**: 1.0.0
+**Purpose**: Bridge GeoQode OS with s4ai-core systems
 **Status**: Ready for deployment
 
 ---
@@ -29,7 +29,7 @@ This document defines the integration contract.
 ### In Brain.js
 
 ```javascript
-import MerkabageoqodeOS from '@s4ai/merkaba-geoqode-os';
+import MerkabageoqodeOS from "@s4ai/merkaba-geoqode-os";
 
 class Brain {
   constructor() {
@@ -71,11 +71,13 @@ console.log(result.statusReport);
 ## Directory Structure
 
 **In s4ai-core repo**:
+
 - No GeoQode code
 - Only imports: `import MerkabageoqodeOS from '@s4ai/merkaba-geoqode-os'`
 - Stores GeoQode programs in database
 
 **In merkaba-geoqode-os repo**:
+
 - Complete OS implementation
 - All grammar, runtime, playbooks, docs
 - Independent versioning and releases

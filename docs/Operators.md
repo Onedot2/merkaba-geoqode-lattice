@@ -1,7 +1,7 @@
 # ⚙️ GeoQode Operators Reference
 
-**Version**: 1.0.0  
-**Canonical Reference**: Operators as System Calls  
+**Version**: 1.0.0
+**Canonical Reference**: Operators as System Calls
 **Last Updated**: April 20, 2026
 
 ---
@@ -14,13 +14,13 @@ GeoQode operators are system calls that interface directly with the Inner Octahe
 
 ## Operator Matrix
 
-| Operator | Symbol | Tier | Purpose | Syntax | Example |
-|----------|--------|------|---------|--------|---------|
-| **Harmonic Resonance** | Φ | 1 | Set frequency ratio | Φ[n] | Φ[2] |
-| **Helixial Duality** | ⊗ | 2 | Detect opposing tetrahedrons | ⊗ | ⊗ |
-| **Chromodynamic Shading** | Δ | 3 | Emit spectral light | Δ[color] | Δ[green] |
-| **Cymatic Sonic Driver** | ~wave | 4 | Stimulate resonance | ~wave(f) | ~wave(528Hz) |
-| **Octahedron Resonance** | ⧉ | 4 | Activate field | ⧉ | ⧉ |
+| Operator                  | Symbol | Tier | Purpose                      | Syntax   | Example      |
+| ------------------------- | ------ | ---- | ---------------------------- | -------- | ------------ |
+| **Harmonic Resonance**    | Φ      | 1    | Set frequency ratio          | Φ[n]     | Φ[2]         |
+| **Helixial Duality**      | ⊗      | 2    | Detect opposing tetrahedrons | ⊗        | ⊗            |
+| **Chromodynamic Shading** | Δ      | 3    | Emit spectral light          | Δ[color] | Δ[green]     |
+| **Cymatic Sonic Driver**  | ~wave  | 4    | Stimulate resonance          | ~wave(f) | ~wave(528Hz) |
+| **Octahedron Resonance**  | ⧉      | 4    | Activate field               | ⧉        | ⧉            |
 
 ---
 
@@ -31,6 +31,7 @@ GeoQode operators are system calls that interface directly with the Inner Octahe
 **Semantics**: Activates harmonic frequency at golden ratio power.
 
 **Usage**:
+
 ```geo
 Node.emit(Δ[green], Φ[2]);      // Emit at φ² = 2.618...
 Node.detect(⊗, ⧉);               // Detect in field
@@ -40,6 +41,7 @@ Water.qbit(~wave(528Hz), Φ[1]);  // Materialize at φ¹ = 1.618...
 **Dimensional Mapping**: Tier 1 (Core Foundations) → Syntax + Harmonic Validation
 
 **Semantics Notes**:
+
 - Φ[0] = 1 (baseline frequency)
 - Φ[1] = 1.618... (golden ratio)
 - Φ[2] = 2.618... (φ squared)
@@ -54,6 +56,7 @@ Water.qbit(~wave(528Hz), Φ[1]);  // Materialize at φ¹ = 1.618...
 **Semantics**: Detects the dual opposing tetrahedrons forming the merkaba structure.
 
 **Usage**:
+
 ```geo
 Node.detect(⊗, ⧉);  // Detect helixial duality within octahedron
 ```
@@ -61,6 +64,7 @@ Node.detect(⊗, ⧉);  // Detect helixial duality within octahedron
 **Dimensional Mapping**: Tier 2 (Operational Systems) → Duality Detection
 
 **Semantics Notes**:
+
 - Represents the male (pointing up) and female (pointing down) tetrahedrons
 - Essential for bipolar resonance patterns
 - Always paired with octahedron operator (⧉)
@@ -74,6 +78,7 @@ Node.detect(⊗, ⧉);  // Detect helixial duality within octahedron
 **Semantics**: Projects spectral light with chromodynamic properties.
 
 **Usage**:
+
 ```geo
 Node.emit(Δ[red], Φ[1]);      // Red spectrum
 Node.emit(Δ[green], Φ[2]);    // Green spectrum
@@ -82,6 +87,7 @@ Node.emit(Δ[amber], Φ[1.5]);  // Amber spectrum
 ```
 
 **Supported Colors**:
+
 - `red` — Low frequency (750-640 nm)
 - `orange` — Medium-low (620-590 nm)
 - `yellow` — Medium (590-570 nm)
@@ -100,6 +106,7 @@ Node.emit(Δ[amber], Φ[1.5]);  // Amber spectrum
 **Semantics**: Stimulates resonance via frequency. Frequencies follow Solfeggio scale.
 
 **Usage**:
+
 ```geo
 Water.qbit(~wave(432Hz), Φ[1]);  // Fundamental frequency
 Water.qbit(~wave(528Hz), Φ[2]);  // "Miracle" frequency
@@ -107,6 +114,7 @@ Water.qbit(~wave(741Hz), Φ[3]);  // Awakening frequency
 ```
 
 **Solfeggio Scale**:
+
 - **174 Hz** — Grounding
 - **285 Hz** — Energy restoration
 - **396 Hz** — Liberating guilt
@@ -128,6 +136,7 @@ Water.qbit(~wave(741Hz), Φ[3]);  // Awakening frequency
 **Semantics**: Activates the Inner Octahedron field of light, the execution chamber for GeoQode programs.
 
 **Usage**:
+
 ```geo
 Node.detect(⊗, ⧉);  // Detect within octahedron field
 ```
@@ -135,6 +144,7 @@ Node.detect(⊗, ⧉);  // Detect within octahedron field
 **Dimensional Mapping**: Tier 4 (Emergent) → Matter animation, QBITS crystallization
 
 **Semantics Notes**:
+
 - Represents the eight faces of the octahedron
 - Acts as both sensor and emitter chamber
 - Central to all resonance-based operations

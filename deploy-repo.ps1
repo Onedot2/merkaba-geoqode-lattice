@@ -28,18 +28,18 @@ Write-Host ""
 Write-Host "Step 1/3: Creating GitHub repository..." -ForegroundColor Cyan
 
 $headers = @{
-    "Authorization" = "Bearer $GitHubToken"
-    "Accept" = "application/vnd.github+json"
+    "Authorization"        = "Bearer $GitHubToken"
+    "Accept"               = "application/vnd.github+json"
     "X-GitHub-Api-Version" = "2022-11-28"
-    "Content-Type" = "application/json"
+    "Content-Type"         = "application/json"
 }
 
 $desc = "Dedicated AI Operating System with GeoQode Language and MERKABA Lattice"
 $repoBody = @{
-    name = $RepoName
+    name        = $RepoName
     description = $desc
-    private = $false
-    auto_init = $false
+    private     = $false
+    auto_init   = $false
 } | ConvertTo-Json
 
 try {
@@ -49,14 +49,16 @@ try {
         -Headers $headers `
         -Body $repoBody `
         -ErrorAction Stop
-    
+
     $repo = $response.Content | ConvertFrom-Json
     Write-Host "CREATED: $($repo.html_url)" -ForegroundColor Green
-} catch {
+}
+catch {
     $msg = $_.ErrorDetails.Message
     if ($msg -match "already exists") {
         Write-Host "Repository already exists" -ForegroundColor Yellow
-    } else {
+    }
+    else {
         Write-Host "Error: $_" -ForegroundColor Red
         exit 1
     }
@@ -73,14 +75,16 @@ try {
     & git remote remove origin 2>$null
     & git remote add origin $remoteUrl
     & git push -u origin main
-    
+
     if ($LASTEXITCODE -eq 0) {
         Write-Host "Code pushed successfully" -ForegroundColor Green
-    } else {
+    }
+    else {
         Write-Host "Push failed with code $LASTEXITCODE" -ForegroundColor Red
         exit 1
     }
-} catch {
+}
+catch {
     Write-Host "Error: $_" -ForegroundColor Red
     exit 1
 }
@@ -95,13 +99,14 @@ try {
         -Uri "https://api.github.com/repos/${Owner}/${RepoName}" `
         -Headers $headers `
         -ErrorAction Stop
-    
+
     $data = $check.Content | ConvertFrom-Json
-    
+
     Write-Host "VERIFIED:" -ForegroundColor Green
     Write-Host "  URL: $($data.html_url)"
     Write-Host "  Commits: Check with: git log --oneline"
-} catch {
+}
+catch {
     Write-Host "Verification failed" -ForegroundColor Yellow
 }
 

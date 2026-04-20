@@ -1,8 +1,31 @@
 // geo/index.js
 // MERKABA_geoqode OS — Main Entry Point
 
-import { Parser } from './grammar/parser.js';
-import { ExecutionEngine } from './runtime/execution-engine.js';
+import { Parser } from "./grammar/parser.js";
+import { ExecutionEngine } from "./runtime/execution-engine.js";
+
+// Phase 4
+export { MerkabaBridge } from "./bridge/merkaba-bridge.js";
+export { StormAdapter } from "./bridge/storm-adapter.js";
+
+// Phase 5
+export { ExecutionCluster } from "./distributed/cluster.js";
+export { DistributedCoordinator } from "./distributed/coordinator.js";
+
+// Phase 6
+export {
+  QBITSValidator,
+  SACRED_FREQUENCIES,
+  VALID_HARMONICS,
+  VALID_TRANSITIONS,
+} from "./validation/qbits-validator.js";
+
+// Phase 7
+export {
+  EnterpriseCertifier,
+  MERKABA_LATTICE,
+} from "./certification/enterprise-certifier.js";
+export { AuditTrail } from "./certification/audit-trail.js";
 
 /**
  * MERKABA_geoqode Operating System
@@ -11,8 +34,8 @@ import { ExecutionEngine } from './runtime/execution-engine.js';
 export class MerkabageoqodeOS {
   constructor() {
     this.engine = new ExecutionEngine();
-    this.version = '1.0.0';
-    this.name = 'MERKABA_geoqode OS';
+    this.version = "1.0.0";
+    this.name = "MERKABA_geoqode OS";
   }
 
   /**

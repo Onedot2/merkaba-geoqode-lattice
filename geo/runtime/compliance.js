@@ -1,7 +1,7 @@
 // geo/runtime/compliance.js
 // Compliance and governance engine for GeoQode
 
-import crypto from 'crypto';
+import crypto from "crypto";
 
 export class ComplianceValidator {
   constructor() {
@@ -23,11 +23,11 @@ export class ComplianceValidator {
   validateSyntax(ast) {
     try {
       if (!ast || !ast.type) {
-        throw new Error('Invalid AST structure');
+        throw new Error("Invalid AST structure");
       }
 
       this.complianceState.syntaxValidation = true;
-      this.log('Syntax validation: PASS');
+      this.log("Syntax validation: PASS");
       return true;
     } catch (error) {
       this.complianceState.syntaxValidation = false;
@@ -57,9 +57,9 @@ export class ComplianceValidator {
    */
   generateAuditHash(data) {
     const hash = crypto
-      .createHash('sha256')
+      .createHash("sha256")
       .update(JSON.stringify(data))
-      .digest('hex');
+      .digest("hex");
 
     this.auditHashes.push({
       timestamp: Date.now(),
@@ -79,16 +79,23 @@ export class ComplianceValidator {
    */
   validateRepeatability(executionRuns) {
     if (executionRuns.length < 2) {
-      return { repeatable: false, reason: 'Requires at least 2 execution runs' };
+      return {
+        repeatable: false,
+        reason: "Requires at least 2 execution runs",
+      };
     }
 
     const firstRun = JSON.stringify(executionRuns[0]);
-    const allSame = executionRuns.every(run => JSON.stringify(run) === firstRun);
+    const allSame = executionRuns.every(
+      (run) => JSON.stringify(run) === firstRun,
+    );
 
     return {
       repeatable: allSame,
       runCount: executionRuns.length,
-      consistent: allSame ? `${executionRuns.length}/${executionRuns.length}` : '0/' + executionRuns.length,
+      consistent: allSame
+        ? `${executionRuns.length}/${executionRuns.length}`
+        : "0/" + executionRuns.length,
     };
   }
 
@@ -119,7 +126,7 @@ export class ComplianceValidator {
     }
 
     this.merkabaDimensions = dimensions;
-    this.log(`Mapped to MERKABA dimensions: [${dimensions.join(', ')}]`);
+    this.log(`Mapped to MERKABA dimensions: [${dimensions.join(", ")}]`);
 
     return dimensions;
   }
@@ -136,9 +143,9 @@ export class ComplianceValidator {
 
     if (isCertified) {
       this.complianceState.certifiability = true;
-      this.log('Program certified against MERKABA lattice');
+      this.log("Program certified against MERKABA lattice");
     } else {
-      this.log('Program certification failed');
+      this.log("Program certification failed");
     }
 
     return {
@@ -158,21 +165,21 @@ export class ComplianceValidator {
 
     // Check for null/undefined states
     if (!executionData || !executionData.program) {
-      anomalies.push('Invalid execution data structure');
+      anomalies.push("Invalid execution data structure");
     }
 
     // Check for unexpected values
     if (executionData.resonanceLevel > 2.0) {
-      anomalies.push('Resonance level exceeded maximum threshold');
+      anomalies.push("Resonance level exceeded maximum threshold");
     }
 
     if (anomalies.length > 0) {
       this.complianceState.incidentResponse = true;
-      this.log(`Anomalies detected: ${anomalies.join(', ')}`);
+      this.log(`Anomalies detected: ${anomalies.join(", ")}`);
       return {
         anomaliesDetected: true,
         anomalies,
-        escalationLevel: anomalies.length >= 3 ? 'CRITICAL' : 'HIGH',
+        escalationLevel: anomalies.length >= 3 ? "CRITICAL" : "HIGH",
       };
     }
 

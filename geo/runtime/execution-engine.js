@@ -1,11 +1,11 @@
 // geo/runtime/execution-engine.js
 // GeoQode Execution Engine — orchestrates parser, runtime, and compliance
 
-import { Parser } from '../grammar/parser.js';
-import { InnerOctahedron } from './octahedron.js';
-import { NodePool } from './node.js';
-import { WaterPool } from './water.js';
-import { ComplianceValidator } from './compliance.js';
+import { Parser } from "../grammar/parser.js";
+import { InnerOctahedron } from "./octahedron.js";
+import { NodePool } from "./node.js";
+import { WaterPool } from "./water.js";
+import { ComplianceValidator } from "./compliance.js";
 
 export class ExecutionEngine {
   constructor() {
@@ -28,7 +28,7 @@ export class ExecutionEngine {
 
       // 2. Validate syntax
       if (!this.compliance.validateSyntax(ast)) {
-        throw new Error('Syntax validation failed');
+        throw new Error("Syntax validation failed");
       }
 
       // 3. Activate octahedron field
@@ -36,6 +36,16 @@ export class ExecutionEngine {
 
       // 4. Execute program
       const result = await this.executeAST(ast);
+
+      // 4b. Log execution (required for executionLogging compliance flag)
+      this.compliance.logExecution({
+        programName: ast.statements?.[0]?.value ?? "unknown",
+        emissions: result.emissions,
+        detections: result.detections,
+        qbits: result.qbits,
+        playbooks: result.playbooks,
+        logCount: result.logs.length,
+      });
 
       // 5. Validate compliance
       const auditHash = this.compliance.generateAuditHash(result);
@@ -47,7 +57,11 @@ export class ExecutionEngine {
       });
 
       // 6. Certify program
-      const certification = this.compliance.certifyProgram(ast, auditHash, dimensions);
+      const certification = this.compliance.certifyProgram(
+        ast,
+        auditHash,
+        dimensions,
+      );
 
       // 7. Generate status report
       this.generateStatusReport(result, certification);
@@ -85,13 +99,13 @@ export class ExecutionEngine {
     };
 
     for (const statement of ast.statements || []) {
-      if (statement.type === 'PROGRAM') {
+      if (statement.type === "PROGRAM") {
         result.logs.push(`Executing program: ${statement.value}`);
 
         for (const stmt of statement.statements) {
           await this.executeStatement(stmt, result);
         }
-      } else if (statement.type === 'PLAYBOOK') {
+      } else if (statement.type === "PLAYBOOK") {
         result.playbooks++;
         result.logs.push(`Executing playbook: ${statement.value}`);
 
@@ -110,16 +124,16 @@ export class ExecutionEngine {
   async executeStatement(stmt, result) {
     if (!stmt) return;
 
-    if (stmt.type === 'EMIT_STMT') {
+    if (stmt.type === "EMIT_STMT") {
       const node = this.nodePool.getActiveNode();
-      const color = stmt.chromodynamic?.value || 'unknown';
-      const harmonic = parseFloat(stmt.harmonic?.value || '1');
+      const color = stmt.chromodynamic?.value || "unknown";
+      const harmonic = parseFloat(stmt.harmonic?.value || "1");
 
       node.emit(color, harmonic);
       this.octahedron.emit(color, harmonic);
       result.emissions++;
       result.logs.push(`Emitted ${color} spectrum at Φ[${harmonic}]`);
-    } else if (stmt.type === 'DETECT_STMT') {
+    } else if (stmt.type === "DETECT_STMT") {
       const node = this.nodePool.getActiveNode();
       const hasDuality = stmt.duality !== null;
       const hasOctahedron = stmt.octahedron !== null;
@@ -127,16 +141,18 @@ export class ExecutionEngine {
       node.detect(hasDuality, hasOctahedron);
       this.octahedron.detect(hasDuality, hasOctahedron);
       result.detections++;
-      result.logs.push(`Detected duality=${hasDuality}, octahedron=${hasOctahedron}`);
-    } else if (stmt.type === 'QBIT_STMT') {
-      const frequency = stmt.frequency?.value || '528Hz';
-      const harmonic = parseFloat(stmt.harmonic?.value || '1');
+      result.logs.push(
+        `Detected duality=${hasDuality}, octahedron=${hasOctahedron}`,
+      );
+    } else if (stmt.type === "QBIT_STMT") {
+      const frequency = stmt.frequency?.value || "528Hz";
+      const harmonic = parseFloat(stmt.harmonic?.value || "1");
 
       const water = this.waterPool.materializeQBIT(frequency, harmonic);
       water.crystallize();
       result.qbits++;
       result.logs.push(`Materialized QBITS at ${frequency}, Φ[${harmonic}]`);
-    } else if (stmt.type === 'LOG_STMT') {
+    } else if (stmt.type === "LOG_STMT") {
       result.logs.push(stmt.message);
       console.log(stmt.message);
     }
@@ -152,9 +168,9 @@ export class ExecutionEngine {
 
     this.statusReport = {
       timestamp: Date.now(),
-      date: new Date().toISOString().split('T')[0],
+      date: new Date().toISOString().split("T")[0],
       cycleId: `CYCLE-${Date.now()}`,
-      generatedBy: 'MERKABA System',
+      generatedBy: "MERKABA System",
       programExecution: {
         success: true,
         emissions: result.emissions,

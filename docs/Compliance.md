@@ -1,7 +1,7 @@
 # 📑 GeoQode Compliance Framework
 
-**Version**: 1.0.0  
-**Canonical Reference**: Governance + Auditability  
+**Version**: 1.0.0
+**Canonical Reference**: Governance + Auditability
 **Last Updated**: April 20, 2026
 
 ---
@@ -31,6 +31,7 @@ Nodes must demonstrate reproducible sensor/emitter states.
 Execution logs stored in `STATUSREPORT/geostatus.md`.
 
 Logs include:
+
 - Program ID
 - Operator invocations
 - Frequency + spectrum values
@@ -67,9 +68,9 @@ Certification requires reproducibility across environments (lab, enterprise, fie
 {
   "ProgramID": "AnimateWater",
   "Operators": [
-    {"Emit": {"Color": "Green", "Harmonic": "Φ[2]"}},
-    {"Detect": {"Duality": "⊗", "Octahedron": "⧉"}},
-    {"QBIT": {"Medium": "Water", "Frequency": "528Hz", "Harmonic": "Φ[1]"}}
+    { "Emit": { "Color": "Green", "Harmonic": "Φ[2]" } },
+    { "Detect": { "Duality": "⊗", "Octahedron": "⧉" } },
+    { "QBIT": { "Medium": "Water", "Frequency": "528Hz", "Harmonic": "Φ[1]" } }
   ],
   "ExecutionResult": "QBIT materialized",
   "Repeatability": "Verified",

@@ -4,7 +4,7 @@
 export class WaterMolecule {
   constructor(id = `water-${Date.now()}`) {
     this.id = id;
-    this.qbitState = 'DORMANT'; // DORMANT, MATERIALIZED, RESONATING, CRYSTALLIZED
+    this.qbitState = "DORMANT"; // DORMANT, MATERIALIZED, RESONATING, CRYSTALLIZED
     this.frequency = null;
     this.harmonic = null;
     this.crystallizationLogs = [];
@@ -16,7 +16,7 @@ export class WaterMolecule {
    * @param {number} harmonic - Harmonic multiplier (φ^n)
    */
   materializeQBIT(frequency, harmonic) {
-    this.qbitState = 'MATERIALIZED';
+    this.qbitState = "MATERIALIZED";
     this.frequency = frequency;
     this.harmonic = harmonic;
 
@@ -30,7 +30,9 @@ export class WaterMolecule {
     };
 
     this.crystallizationLogs.push(materialization);
-    console.log(`[Water ${this.id}] QBITS materialized at ${frequency}, Φ[${harmonic}]`);
+    console.log(
+      `[Water ${this.id}] QBITS materialized at ${frequency}, Φ[${harmonic}]`,
+    );
 
     return materialization;
   }
@@ -39,11 +41,11 @@ export class WaterMolecule {
    * Crystallize QBITS into stable geometric pattern
    */
   crystallize() {
-    if (this.qbitState !== 'MATERIALIZED') {
-      throw new Error('QBITS must be materialized before crystallization');
+    if (this.qbitState !== "MATERIALIZED") {
+      throw new Error("QBITS must be materialized before crystallization");
     }
 
-    this.qbitState = 'CRYSTALLIZED';
+    this.qbitState = "CRYSTALLIZED";
 
     const crystallization = {
       timestamp: Date.now(),
@@ -87,14 +89,15 @@ export class WaterPool {
   constructor(size = 1000) {
     this.molecules = Array.from(
       { length: size },
-      (_, i) => new WaterMolecule(`water-${i}`)
+      (_, i) => new WaterMolecule(`water-${i}`),
     );
     this.materializedCount = 0;
     this.crystallizedCount = 0;
   }
 
   materializeQBIT(frequency, harmonic) {
-    const molecule = this.molecules[this.materializedCount % this.molecules.length];
+    const molecule =
+      this.molecules[this.materializedCount % this.molecules.length];
     molecule.materializeQBIT(frequency, harmonic);
     this.materializedCount++;
     return molecule;
@@ -103,7 +106,7 @@ export class WaterPool {
   crystallizeAll() {
     let crystallized = 0;
     for (const molecule of this.molecules) {
-      if (molecule.qbitState === 'MATERIALIZED') {
+      if (molecule.qbitState === "MATERIALIZED") {
         molecule.crystallize();
         crystallized++;
       }
@@ -118,18 +121,19 @@ export class WaterPool {
       totalMolecules: this.molecules.length,
       materializedCount: this.materializedCount,
       crystallizedCount: this.crystallizedCount,
-      activeMolecules: this.molecules.filter(m => m.qbitState !== 'DORMANT').length,
+      activeMolecules: this.molecules.filter((m) => m.qbitState !== "DORMANT")
+        .length,
     };
   }
 
   getMoleculeStates() {
-    return this.molecules.map(m => m.getState());
+    return this.molecules.map((m) => m.getState());
   }
 
   reset() {
     this.molecules = Array.from(
       { length: this.molecules.length },
-      (_, i) => new WaterMolecule(`water-${i}`)
+      (_, i) => new WaterMolecule(`water-${i}`),
     );
     this.materializedCount = 0;
     this.crystallizedCount = 0;

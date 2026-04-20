@@ -34,6 +34,7 @@ npm test
 ## GeoQode Language Changes
 
 Language changes require updates to:
+
 1. `geo/grammar/lexer.js`
 2. `geo/grammar/parser.js`
 3. `geo/grammar/ast-builder.js`
@@ -43,6 +44,7 @@ Language changes require updates to:
 ## Compliance
 
 All code must:
+
 - Pass syntax validation
 - Be fully logged
 - Support auditability

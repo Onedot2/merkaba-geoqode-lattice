@@ -73,6 +73,7 @@ Program HelloGeoQode {
 ```
 
 Run:
+
 ```bash
 node scripts/run.js examples/hello-geoqode.geo
 ```
@@ -83,13 +84,13 @@ node scripts/run.js examples/hello-geoqode.geo
 
 ### Operators (System Calls)
 
-| Operator | Symbol | Tier | Purpose |
-|----------|--------|------|---------|
-| **Harmonic Resonance** | Φ[n] | 1 | Set frequency ratio (φ^n) |
-| **Helixial Duality** | ⊗ | 2 | Detect/project dual opposing tetrahedrons |
-| **Chromodynamic Shading** | Δ[color] | 3 | Emit spectral light |
-| **Cymatic Sonic Driver** | ~wave(f) | 4 | Stimulate resonance via frequency |
-| **Octahedron Resonance** | ⧉ | 4 | Activate Inner Octahedron field of light |
+| Operator                  | Symbol   | Tier | Purpose                                   |
+| ------------------------- | -------- | ---- | ----------------------------------------- |
+| **Harmonic Resonance**    | Φ[n]     | 1    | Set frequency ratio (φ^n)                 |
+| **Helixial Duality**      | ⊗        | 2    | Detect/project dual opposing tetrahedrons |
+| **Chromodynamic Shading** | Δ[color] | 3    | Emit spectral light                       |
+| **Cymatic Sonic Driver**  | ~wave(f) | 4    | Stimulate resonance via frequency         |
+| **Octahedron Resonance**  | ⧉        | 4    | Activate Inner Octahedron field of light  |
 
 ### MERKABA Lattice (44 Dimensions)
 
@@ -114,6 +115,7 @@ Program AnimateWater {
 ```
 
 **Execution Trace**:
+
 - Green spectrum emitted at φ² harmonic
 - Octahedron resonance activated
 - QBITS materialized in water via 528Hz cymatic driver
@@ -139,7 +141,7 @@ Every program is:
 GeoQode programs are executable by Storm agents:
 
 ```javascript
-import GeoQodeOS from '@s4ai/merkaba-geoqode-os';
+import GeoQodeOS from "@s4ai/merkaba-geoqode-os";
 
 const os = new GeoQodeOS();
 const program = os.parse(geoQodeScript);
@@ -187,6 +189,7 @@ npm run status-report
 ```
 
 Generates `STATUSREPORT/reports/[YYYY-MM-DD]-cycle-[N].md` with:
+
 - Program execution logs
 - Adoption metrics
 - Compliance states
@@ -213,4 +216,4 @@ MIT — Open source. Governed by MERKABA lattice. Used by Storm AI agents exclus
 
 ---
 
-**MERKABA_geoqode OS** — *Resonance as Code* ⧉
+**MERKABA_geoqode OS** — _Resonance as Code_ ⧉

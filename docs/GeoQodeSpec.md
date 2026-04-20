@@ -1,7 +1,7 @@
 # 🌌 GeoQode Language Specification
 
-**Version**: 1.0.0  
-**Status**: Canonical Language Reference  
+**Version**: 1.0.0
+**Status**: Canonical Language Reference
 **Last Updated**: April 20, 2026
 
 ---
@@ -11,6 +11,7 @@
 **GeoQode** is the kernel language of MERKABA_geoqode OS. It is a resonance-based programming language designed for AI agents to execute geometrically-informed programs within the Inner Octahedron field of light.
 
 GeoQode programs:
+
 - Execute in a resonant medium (the Inner Octahedron)
 - Use dimensional operators (Φ, ⊗, Δ, ~wave, ⧉) as system calls
 - Map to MERKABA's 44-dimension governance lattice
@@ -51,13 +52,13 @@ Playbook PlaybookName {
 
 ## Data Types
 
-| Type | Example | Purpose |
-|------|---------|---------|
-| **String** | `"hello"` | Text literals |
-| **Number** | `528`, `3.14` | Frequencies, harmonic values |
-| **Color** | `green`, `blue`, `amber` | Chromodynamic spectrum |
-| **Frequency** | `~wave(528Hz)` | Cymatic sonic driver |
-| **Harmonic** | `Φ[1]`, `Φ[2.5]` | Golden ratio frequency ratio |
+| Type          | Example                  | Purpose                      |
+| ------------- | ------------------------ | ---------------------------- |
+| **String**    | `"hello"`                | Text literals                |
+| **Number**    | `528`, `3.14`            | Frequencies, harmonic values |
+| **Color**     | `green`, `blue`, `amber` | Chromodynamic spectrum       |
+| **Frequency** | `~wave(528Hz)`           | Cymatic sonic driver         |
+| **Harmonic**  | `Φ[1]`, `Φ[2.5]`         | Golden ratio frequency ratio |
 
 ---
 
@@ -162,7 +163,7 @@ Every GeoQode program executes through a 6-step lifecycle:
 GeoQode programs are executable by MERKABA_geoqode OS:
 
 ```javascript
-import MerkabageoqodeOS from '@s4ai/merkaba-geoqode-os';
+import MerkabageoqodeOS from "@s4ai/merkaba-geoqode-os";
 
 const os = new MerkabageoqodeOS();
 const result = await os.run(geoQodeProgram);

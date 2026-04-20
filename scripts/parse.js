@@ -1,15 +1,15 @@
 // scripts/parse.js
 // Parse a GeoQode program and show AST
 
-import fs from 'fs';
-import path from 'path';
-import { Parser } from '../geo/grammar/parser.js';
+import fs from "fs";
+import path from "path";
+import { Parser } from "../geo/grammar/parser.js";
 
 async function main() {
   const args = process.argv.slice(2);
 
   if (args.length === 0) {
-    console.log('Usage: node scripts/parse.js <program.geo>');
+    console.log("Usage: node scripts/parse.js <program.geo>");
     process.exit(1);
   }
 
@@ -20,7 +20,7 @@ async function main() {
     process.exit(1);
   }
 
-  const source = fs.readFileSync(programFile, 'utf-8');
+  const source = fs.readFileSync(programFile, "utf-8");
 
   console.log(`\n🌌 GeoQode Parser`);
   console.log(`📝 Parsing: ${path.basename(programFile)}`);
@@ -30,8 +30,8 @@ async function main() {
     const parser = new Parser(source);
     const ast = parser.parse();
 
-    console.log('✅ Parse Successful\n');
-    console.log('📋 AST:');
+    console.log("✅ Parse Successful\n");
+    console.log("📋 AST:");
     console.log(JSON.stringify(ast, null, 2));
   } catch (error) {
     console.error(`\n❌ Parse Error: ${error.message}`);

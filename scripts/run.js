@@ -1,15 +1,15 @@
 // scripts/run.js
 // Run a GeoQode program
 
-import fs from 'fs';
-import path from 'path';
-import MerkabageoqodeOS from '../geo/index.js';
+import fs from "fs";
+import path from "path";
+import MerkabageoqodeOS from "../geo/index.js";
 
 async function main() {
   const args = process.argv.slice(2);
 
   if (args.length === 0) {
-    console.log('Usage: node scripts/run.js <program.geo>');
+    console.log("Usage: node scripts/run.js <program.geo>");
     process.exit(1);
   }
 
@@ -20,7 +20,7 @@ async function main() {
     process.exit(1);
   }
 
-  const source = fs.readFileSync(programFile, 'utf-8');
+  const source = fs.readFileSync(programFile, "utf-8");
 
   console.log(`\n🌌 MERKABA_geoqode OS`);
   console.log(`📝 Executing: ${path.basename(programFile)}`);
@@ -36,7 +36,7 @@ async function main() {
       console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`);
 
       if (result.statusReport) {
-        console.log('📊 STATUS_REPORT:');
+        console.log("📊 STATUS_REPORT:");
         console.log(JSON.stringify(result.statusReport, null, 2));
       }
     } else {

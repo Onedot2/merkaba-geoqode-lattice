@@ -17,7 +17,7 @@ export class InnerOctahedron {
   activate() {
     this.active = true;
     this.resonanceLevel = 1.0;
-    this.log('Inner Octahedron field activated');
+    this.log("Inner Octahedron field activated");
   }
 
   /**
@@ -26,7 +26,7 @@ export class InnerOctahedron {
   deactivate() {
     this.active = false;
     this.resonanceLevel = 0;
-    this.log('Inner Octahedron field deactivated');
+    this.log("Inner Octahedron field deactivated");
   }
 
   /**
@@ -36,7 +36,7 @@ export class InnerOctahedron {
    */
   emit(color, harmonic) {
     if (!this.active) {
-      throw new Error('Octahedron field not active. Call activate() first.');
+      throw new Error("Octahedron field not active. Call activate() first.");
     }
 
     const emission = {
@@ -61,7 +61,7 @@ export class InnerOctahedron {
    */
   detect(duality, octahedronPattern) {
     if (!this.active) {
-      throw new Error('Octahedron field not active.');
+      throw new Error("Octahedron field not active.");
     }
 
     const detection = {
