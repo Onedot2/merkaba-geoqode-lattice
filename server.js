@@ -53,7 +53,7 @@ function json(res, status, data) {
   res.writeHead(status, {
     "Content-Type": "application/json",
     "X-Service": "geoqode-os",
-    "X-MERKABA-Dimensions": "44",
+    "X-MERKABA-Dimensions": "48",
   });
   res.end(body);
 }
@@ -84,7 +84,7 @@ const server = createServer(async (req, res) => {
         ok: true,
         service: "geoqode-os",
         version: "1.0.0",
-        lattice: "44-dimension MERKABA",
+        lattice: "48-dimension MERKABA",
         timestamp: new Date().toISOString(),
       });
     }
@@ -99,7 +99,7 @@ const server = createServer(async (req, res) => {
         service: "geoqode-os",
         version: os.version,
         lattice: {
-          dimensions: 44,
+          dimensions: 48,
           tiers: 4,
           tierLabels: [
             "Core Foundations",
