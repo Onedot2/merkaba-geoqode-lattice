@@ -155,9 +155,8 @@ export class MerkabaBridge extends EventEmitter {
   }
 
   async _forwardToStorm(record) {
-    const controller = typeof AbortController !== "undefined"
-      ? new AbortController()
-      : null;
+    const controller =
+      typeof AbortController !== "undefined" ? new AbortController() : null;
     const timeoutMs = Number(this.options.timeout) || 30_000;
     const timeoutId = controller
       ? setTimeout(() => controller.abort(), timeoutMs)
@@ -166,7 +165,9 @@ export class MerkabaBridge extends EventEmitter {
     try {
       const fetchImpl =
         globalThis.fetch ||
-        (await import("node-fetch").then((mod) => mod.default).catch(() => null));
+        (await import("node-fetch")
+          .then((mod) => mod.default)
+          .catch(() => null));
       const fetch = fetchImpl;
       if (!fetch) return;
 
