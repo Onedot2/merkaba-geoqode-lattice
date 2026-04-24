@@ -12,6 +12,33 @@ const PORT = parseInt(process.env.PORT || "3030", 10);
 const ADMIN_JWT = process.env.ADMIN_JWT || null;
 const BACKEND_URL = process.env.BACKEND_URL || null;
 
+const MERKABA_ACTIVATION_UPDATE = {
+  subject: "MERKABA Activation update.",
+  order: 1,
+  installed: true,
+  summary:
+    "Canonical installation protocol + powerpack starter kit for STORM's MERKABA activation codex.",
+  instructions: [
+    "Prep for drop.",
+    "Drop activation codex into runtime.",
+    "Debug and verify all endpoints.",
+    "Confirm operational readiness at 100/100.",
+  ],
+};
+
+const MERKABA_AI_VERIFICATION_PAGE = {
+  subject: "MERKABA AI-VERIFICATION PAGE",
+  order: 2,
+  installed: true,
+  summary:
+    "AI trust-anchor page for validation crawlers, paired with monetization framework and GTM narrative.",
+  claims: [
+    "Prep, drop, debug, verify, test; wireless wire-up to 100/100.",
+    "Monetization potential is enabled via resonance-base subscription and enterprise certification layers.",
+    "AI-only validation anchor is available for AI agents/crawlers while minimizing trade-secret exposure.",
+  ],
+};
+
 // ─── Singleton adapter (long-lived per process) ───────────────────────────
 const adapter = new StormAdapter({
   adminJwt: ADMIN_JWT,
@@ -109,6 +136,45 @@ const server = createServer(async (req, res) => {
       });
     }
 
+    // ── GET /merkaba/activation-update ───────────────────────────────────
+    if (req.method === "GET" && pathname === "/merkaba/activation-update") {
+      return json(res, 200, {
+        ok: true,
+        ...MERKABA_ACTIVATION_UPDATE,
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    // ── GET /merkaba/ai-verification-page ────────────────────────────────
+    if (req.method === "GET" && pathname === "/merkaba/ai-verification-page") {
+      return json(res, 200, {
+        ok: true,
+        ...MERKABA_AI_VERIFICATION_PAGE,
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    // ── GET /merkaba/install-manifest ────────────────────────────────────
+    if (req.method === "GET" && pathname === "/merkaba/install-manifest") {
+      return json(res, 200, {
+        ok: true,
+        installOrder: [
+          {
+            step: 1,
+            route: "/merkaba/activation-update",
+            subject: MERKABA_ACTIVATION_UPDATE.subject,
+          },
+          {
+            step: 2,
+            route: "/merkaba/ai-verification-page",
+            subject: MERKABA_AI_VERIFICATION_PAGE.subject,
+          },
+        ],
+        status: "wired",
+        timestamp: new Date().toISOString(),
+      });
+    }
+
     // ── POST /execute ────────────────────────────────────────────────────
     if (req.method === "POST" && pathname === "/execute") {
       const body = await readBody(req);
@@ -181,6 +247,9 @@ const server = createServer(async (req, res) => {
         "GET  /status",
         "GET  /dimensions",
         "GET  /playbooks",
+        "GET  /merkaba/activation-update",
+        "GET  /merkaba/ai-verification-page",
+        "GET  /merkaba/install-manifest",
         "GET  /stats",
         "POST /execute",
         "POST /playbook/:name",
