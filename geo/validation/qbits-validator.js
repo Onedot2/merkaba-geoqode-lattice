@@ -10,6 +10,7 @@ const SACRED_FREQUENCIES = {
   285: { name: "Quantum Cognition", color: "orange", dimension: 5 },
   396: { name: "Liberation", color: "amber", dimension: 12 },
   417: { name: "Facilitation", color: "yellow", dimension: 14 },
+  420: { name: "Golden Stability / GeoQode Substrate", color: "chartreuse", dimension: 15 },
   432: { name: "Universal Harmony", color: "green", dimension: 16 },
   528: { name: "DNA Repair / Transformation", color: "blue", dimension: 20 },
   639: { name: "Connection", color: "indigo", dimension: 27 },

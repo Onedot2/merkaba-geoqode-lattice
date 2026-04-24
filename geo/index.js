@@ -25,6 +25,20 @@ export {
   EnterpriseCertifier,
   MERKABA_LATTICE,
 } from "./certification/enterprise-certifier.js";
+
+// Phase 8 — 480→420 Dual-Layer Resonance Architecture
+export {
+  MerkabaTransform420,
+  DiagnosticOverlay,
+  AnchorHierarchy,
+  PHI,
+  PSI,
+  BASE_FREQUENCY_HZ,
+  VISUAL_LATTICE_NODES,
+  OPERATIONAL_LATTICE_NODES,
+  MAPPING_RATIO,
+  COHERENCE_TOLERANCE,
+} from "./lattice/transform-420.js";
 export { AuditTrail } from "./certification/audit-trail.js";
 export {
   GEOQODE_STDLIB,
