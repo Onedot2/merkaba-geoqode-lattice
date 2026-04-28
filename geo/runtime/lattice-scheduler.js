@@ -46,6 +46,14 @@ function parsePositiveInt(value, fallback) {
   return parsed;
 }
 
+function parsePositiveFloat(value, fallback) {
+  const parsed = Number.parseFloat(String(value));
+  if (Number.isNaN(parsed) || parsed <= 0) {
+    return fallback;
+  }
+  return parsed;
+}
+
 export class LatticeScheduler {
   constructor(options = {}) {
     this.mode = normalizeMode(options.mode);
@@ -65,8 +73,66 @@ export class LatticeScheduler {
         "32",
       32,
     );
+    this.enableAdaptiveLowOverhead =
+      options.enableAdaptiveLowOverhead !== undefined
+        ? options.enableAdaptiveLowOverhead === true
+        : String(
+            process.env.MERKABA_ADAPTER_ADAPTIVE_LOW_OVERHEAD || "true",
+          ).toLowerCase() !== "false";
+    this.sampleMinN = parsePositiveInt(
+      options.adapterSampleMinN ||
+        process.env.MERKABA_ADAPTER_SAMPLE_MIN_N ||
+        "4",
+      4,
+    );
+    this.sampleMaxN = parsePositiveInt(
+      options.adapterSampleMaxN ||
+        process.env.MERKABA_ADAPTER_SAMPLE_MAX_N ||
+        "64",
+      64,
+    );
+    this.shadowMinN = parsePositiveInt(
+      options.adapterShadowMinN ||
+        process.env.MERKABA_ADAPTER_SHADOW_MIN_N ||
+        "8",
+      8,
+    );
+    this.shadowMaxN = parsePositiveInt(
+      options.adapterShadowMaxN ||
+        process.env.MERKABA_ADAPTER_SHADOW_MAX_N ||
+        "128",
+      128,
+    );
+    this.maxCachedDecisionAge = parsePositiveInt(
+      options.adapterCacheDecisionTTL ||
+        process.env.MERKABA_ADAPTER_CACHE_DECISION_TTL ||
+        "96",
+      96,
+    );
+    this.targetSampleLatencyMs = parsePositiveFloat(
+      options.adapterTargetSampleLatencyMs ||
+        process.env.MERKABA_ADAPTER_TARGET_SAMPLE_LATENCY_MS ||
+        "0.2",
+      0.2,
+    );
+    this.shadowMaxBusyRate = clamp(
+      parsePositiveFloat(
+        options.adapterShadowMaxBusyRate ||
+          process.env.MERKABA_ADAPTER_SHADOW_MAX_BUSY_RATE ||
+          "0.2",
+        0.2,
+      ),
+      0.01,
+      0.95,
+    );
+    this.adaptiveState = {
+      effectiveSampleEveryN: this.sampleEveryN,
+      effectiveShadowEveryN: this.shadowEveryN,
+      lastAdjustmentAtDecision: 0,
+    };
     this.shadowInFlight = false;
     this.lastAdapterSnapshot = null;
+    this.adapterSnapshotCache = new Map();
     this.typeToDimension = {
       ...DEFAULT_TYPE_TO_DIMENSION,
       ...(options.typeToDimension || {}),
@@ -81,6 +147,8 @@ export class LatticeScheduler {
   setIntegrationMode(mode) {
     this.integrationMode = normalizeIntegrationMode(mode);
     this.metrics.integrationMode = this.integrationMode;
+    this.lastAdapterSnapshot = null;
+    this.adapterSnapshotCache.clear();
   }
 
   setSamplingConfig({ sampleEveryN, shadowEveryN } = {}) {
@@ -91,6 +159,11 @@ export class LatticeScheduler {
     if (shadowEveryN !== undefined) {
       this.shadowEveryN = parsePositiveInt(shadowEveryN, this.shadowEveryN);
     }
+
+    this.adaptiveState.effectiveSampleEveryN = this.sampleEveryN;
+    this.adaptiveState.effectiveShadowEveryN = this.shadowEveryN;
+    this.metrics.sampling.sampleEveryN = this.sampleEveryN;
+    this.metrics.sampling.shadowEveryN = this.shadowEveryN;
   }
 
   resetMetrics() {
@@ -100,6 +173,9 @@ export class LatticeScheduler {
       sampling: {
         sampleEveryN: this.sampleEveryN,
         shadowEveryN: this.shadowEveryN,
+        effectiveSampleEveryN: this.adaptiveState.effectiveSampleEveryN,
+        effectiveShadowEveryN: this.adaptiveState.effectiveShadowEveryN,
+        adaptiveEnabled: this.enableAdaptiveLowOverhead,
       },
       decisions: 0,
       decisionsByType: {},
@@ -123,7 +199,10 @@ export class LatticeScheduler {
         shadowCompleted: 0,
         shadowFailed: 0,
         shadowSkippedBusy: 0,
+        shadowSuppressedByAdaptive: 0,
         shadowLatencyMsTotal: 0,
+        sampledSyncLatencyMsTotal: 0,
+        adaptiveAdjustments: 0,
       },
     };
   }
@@ -135,6 +214,11 @@ export class LatticeScheduler {
       this.metrics.decisionLatencyMsTotal,
       this.metrics.decisions,
     );
+    snapshot.sampling.effectiveSampleEveryN =
+      this.adaptiveState.effectiveSampleEveryN;
+    snapshot.sampling.effectiveShadowEveryN =
+      this.adaptiveState.effectiveShadowEveryN;
+    snapshot.adapterCacheSize = this.adapterSnapshotCache.size;
     snapshot.shadowInFlight = this.shadowInFlight;
     snapshot.lastAdapterSnapshotAvailable = Boolean(this.lastAdapterSnapshot);
     snapshot.adapter.qddAvgLatencyMs = safeAverage(
@@ -153,7 +237,129 @@ export class LatticeScheduler {
       this.metrics.adapter.shadowLatencyMsTotal,
       this.metrics.adapter.shadowCompleted,
     );
+    snapshot.adapter.sampledSyncAvgLatencyMs = safeAverage(
+      this.metrics.adapter.sampledSyncLatencyMsTotal,
+      this.metrics.adapter.sampledSyncCalls,
+    );
     return snapshot;
+  }
+
+  buildCacheKey(statementType, dimension) {
+    return `${statementType}:${dimension}`;
+  }
+
+  getCachedSnapshot(cacheKey, decisionOrdinal) {
+    const cached = this.adapterSnapshotCache.get(cacheKey);
+    if (!cached) {
+      return null;
+    }
+
+    if (decisionOrdinal > cached.expiresAtDecision) {
+      this.adapterSnapshotCache.delete(cacheKey);
+      return null;
+    }
+
+    return cached.snapshot;
+  }
+
+  cacheSnapshot(cacheKey, snapshot, decisionOrdinal) {
+    this.adapterSnapshotCache.set(cacheKey, {
+      snapshot,
+      expiresAtDecision: decisionOrdinal + this.maxCachedDecisionAge,
+    });
+  }
+
+  getShadowBusyRate() {
+    const busyEvents =
+      this.metrics.adapter.shadowSkippedBusy +
+      this.metrics.adapter.shadowCompleted;
+    if (busyEvents <= 0) {
+      return 0;
+    }
+
+    return this.metrics.adapter.shadowSkippedBusy / busyEvents;
+  }
+
+  maybeAdjustAdaptiveCadence(decisionOrdinal) {
+    if (
+      !this.enableAdaptiveLowOverhead ||
+      !isLowOverheadMode(this.integrationMode)
+    ) {
+      return;
+    }
+
+    if (decisionOrdinal - this.adaptiveState.lastAdjustmentAtDecision < 64) {
+      return;
+    }
+
+    const sampledAvgLatencyMs = safeAverage(
+      this.metrics.adapter.sampledSyncLatencyMsTotal,
+      this.metrics.adapter.sampledSyncCalls,
+    );
+    const busyRate = this.getShadowBusyRate();
+
+    let nextSampleEveryN = this.adaptiveState.effectiveSampleEveryN;
+    let nextShadowEveryN = this.adaptiveState.effectiveShadowEveryN;
+
+    if (
+      sampledAvgLatencyMs > this.targetSampleLatencyMs ||
+      busyRate > this.shadowMaxBusyRate
+    ) {
+      nextSampleEveryN = clamp(
+        nextSampleEveryN * 2,
+        this.sampleMinN,
+        this.sampleMaxN,
+      );
+      nextShadowEveryN = clamp(
+        nextShadowEveryN * 2,
+        this.shadowMinN,
+        this.shadowMaxN,
+      );
+    } else if (
+      sampledAvgLatencyMs < this.targetSampleLatencyMs * 0.5 &&
+      busyRate < this.shadowMaxBusyRate * 0.5
+    ) {
+      nextSampleEveryN = clamp(
+        Math.max(this.sampleMinN, Math.floor(nextSampleEveryN / 2)),
+        this.sampleMinN,
+        this.sampleMaxN,
+      );
+      nextShadowEveryN = clamp(
+        Math.max(this.shadowMinN, Math.floor(nextShadowEveryN / 2)),
+        this.shadowMinN,
+        this.shadowMaxN,
+      );
+    }
+
+    if (
+      nextSampleEveryN !== this.adaptiveState.effectiveSampleEveryN ||
+      nextShadowEveryN !== this.adaptiveState.effectiveShadowEveryN
+    ) {
+      this.adaptiveState.effectiveSampleEveryN = nextSampleEveryN;
+      this.adaptiveState.effectiveShadowEveryN = nextShadowEveryN;
+      this.metrics.adapter.adaptiveAdjustments += 1;
+      this.metrics.sampling.effectiveSampleEveryN = nextSampleEveryN;
+      this.metrics.sampling.effectiveShadowEveryN = nextShadowEveryN;
+    }
+
+    this.adaptiveState.lastAdjustmentAtDecision = decisionOrdinal;
+  }
+
+  shouldRunShadow() {
+    if (!this.enableAdaptiveLowOverhead) {
+      return true;
+    }
+
+    const sampledAvgLatencyMs = safeAverage(
+      this.metrics.adapter.sampledSyncLatencyMsTotal,
+      this.metrics.adapter.sampledSyncCalls,
+    );
+
+    if (sampledAvgLatencyMs > this.targetSampleLatencyMs * 1.5) {
+      return false;
+    }
+
+    return this.getShadowBusyRate() <= this.shadowMaxBusyRate;
   }
 
   getLaneForDimension(dimension) {
@@ -297,6 +503,14 @@ export class LatticeScheduler {
       };
 
       const nextDecisionOrdinal = this.metrics.decisions + 1;
+      this.maybeAdjustAdaptiveCadence(nextDecisionOrdinal);
+
+      const effectiveSampleEveryN = this.enableAdaptiveLowOverhead
+        ? this.adaptiveState.effectiveSampleEveryN
+        : this.sampleEveryN;
+      const effectiveShadowEveryN = this.enableAdaptiveLowOverhead
+        ? this.adaptiveState.effectiveShadowEveryN
+        : this.shadowEveryN;
       let adapterResults = {
         qdd: null,
         governance: null,
@@ -304,24 +518,41 @@ export class LatticeScheduler {
       };
 
       if (isLowOverheadMode(this.integrationMode)) {
-        const shouldSample = nextDecisionOrdinal % this.sampleEveryN === 0;
-        const shouldShadow = nextDecisionOrdinal % this.shadowEveryN === 0;
+        const shouldSample = nextDecisionOrdinal % effectiveSampleEveryN === 0;
+        const shouldShadow = nextDecisionOrdinal % effectiveShadowEveryN === 0;
+        const cacheKey = this.buildCacheKey(statementType, dimension);
 
         if (shouldSample) {
+          const sampleStart = performance.now();
           adapterResults = await this.maybeRunUnifiedAdapters(
             decision,
             safeContext,
             { callPath: "sampled-sync" },
           );
+          this.metrics.adapter.sampledSyncLatencyMsTotal +=
+            performance.now() - sampleStart;
           this.lastAdapterSnapshot = adapterResults;
+          this.cacheSnapshot(cacheKey, adapterResults, nextDecisionOrdinal);
         } else {
-          if (this.lastAdapterSnapshot) {
+          const cachedSnapshot = this.getCachedSnapshot(
+            cacheKey,
+            nextDecisionOrdinal,
+          );
+
+          if (cachedSnapshot) {
+            adapterResults = cachedSnapshot;
+            this.metrics.adapter.cachedDecisions += 1;
+          } else if (this.lastAdapterSnapshot) {
             adapterResults = this.lastAdapterSnapshot;
             this.metrics.adapter.cachedDecisions += 1;
           }
 
           if (shouldShadow) {
-            this.maybeScheduleShadowAdapters(decision, safeContext);
+            if (this.shouldRunShadow()) {
+              this.maybeScheduleShadowAdapters(decision, safeContext);
+            } else {
+              this.metrics.adapter.shadowSuppressedByAdaptive += 1;
+            }
           }
         }
       } else {

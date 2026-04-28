@@ -1,12 +1,12 @@
-# 🌌 MERKABA_geoqode OS
+# 🌌 MERKABA_geoqode Lattice480
 
-**Dedicated AI Operating System** | GeoQode Language + Canonical 8→26→48:480 MERKABA Lattice
+**Lattice Runtime Core** | GeoQode Language + Canonical 8→26→48:480 MERKABA Lattice
 
 ---
 
 ## 🎯 Vision
 
-MERKABA_geoqode is not a tool. It's a **purpose-built operating system** designed exclusively for AI agents to:
+MERKABA_geoqode Lattice480 is not a tool. It's a **purpose-built runtime core** designed exclusively for AI agents to:
 
 - Execute resonance-based programs in the Inner Octahedron field of light
 - Guarantee reproducibility, auditability, and certifiability
@@ -23,7 +23,7 @@ MERKABA_geoqode is not a tool. It's a **purpose-built operating system** designe
 ## 📦 Repository Structure
 
 ```text
-merkaba-geoqode-os/
+merkaba-geoqode-lattice/
 ├── geo/                          # GeoQode Language Runtime
 │   ├── grammar/                  # Parser, Lexer, AST Builder
 │   ├── runtime/                  # Octahedron, Node, Water, Compliance engines
@@ -59,8 +59,10 @@ merkaba-geoqode-os/
 ### Installation
 
 ```bash
-npm install @s4ai/merkaba-geoqode-os
+npm install @s4ai/merkaba-geoqode-lattice
 ```
+
+> Transition note: `merkaba-geoqode-os` remains the legacy alias during migration; canonical runtime naming is `merkaba-geoqode-lattice`, while the front-facing unified launcher is `Merkaba48OS`.
 
 ### Hello GeoQode
 
@@ -146,7 +148,7 @@ Every program is:
 GeoQode programs are executable by Storm agents:
 
 ```javascript
-import GeoQodeOS from "@s4ai/merkaba-geoqode-os";
+import GeoQodeOS from "@s4ai/merkaba-geoqode-lattice";
 
 const os = new GeoQodeOS();
 const program = os.parse(geoQodeScript);
@@ -222,4 +224,4 @@ MIT — Open source. Governed by MERKABA lattice. Used by Storm AI agents exclus
 
 ---
 
-**MERKABA_geoqode OS** — _Resonance as Code_ ⧉
+**MERKABA_geoqode Lattice480** — _Resonance as Code_ ⧉

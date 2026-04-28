@@ -1,7 +1,7 @@
 {
-  "name": "@s4ai/merkaba-geoqode-os",
+  "name": "@s4ai/merkaba-geoqode-lattice",
   "version": "1.0.0",
-  "description": "MERKABA_geoqode: Dedicated AI Operating System with GeoQode Language + canonical 8→26→48:480 MERKABA lattice",
+  "description": "MERKABA_geoqode Lattice480: lattice runtime core for the Merkaba48OS unified launcher",
   "type": "module",
   "main": "geo/index.js",
   "scripts": {
@@ -22,6 +22,8 @@
   "keywords": [
     "geoqode",
     "merkaba",
+    "lattice480",
+    "merkaba48os",
     "ai-os",
     "resonance",
     "geometry",

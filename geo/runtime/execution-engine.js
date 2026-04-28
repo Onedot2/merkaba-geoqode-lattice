@@ -43,6 +43,24 @@ export class ExecutionEngine {
       mode: this.schedulerMode,
       integrationMode: this.integrationMode,
       adapters: this.integrationAdapters,
+      enableAdaptiveLowOverhead:
+        options.enableAdaptiveLowOverhead !== undefined
+          ? options.enableAdaptiveLowOverhead
+          : String(
+              process.env.MERKABA_ADAPTER_ADAPTIVE_LOW_OVERHEAD || "true",
+            ).toLowerCase() !== "false",
+      adapterTargetSampleLatencyMs:
+        options.adapterTargetSampleLatencyMs ||
+        process.env.MERKABA_ADAPTER_TARGET_SAMPLE_LATENCY_MS ||
+        "0.2",
+      adapterShadowMaxBusyRate:
+        options.adapterShadowMaxBusyRate ||
+        process.env.MERKABA_ADAPTER_SHADOW_MAX_BUSY_RATE ||
+        "0.2",
+      adapterCacheDecisionTTL:
+        options.adapterCacheDecisionTTL ||
+        process.env.MERKABA_ADAPTER_CACHE_DECISION_TTL ||
+        "96",
       adapterSampleEveryN:
         options.adapterSampleEveryN ||
         process.env.MERKABA_ADAPTER_SAMPLE_EVERY_N ||

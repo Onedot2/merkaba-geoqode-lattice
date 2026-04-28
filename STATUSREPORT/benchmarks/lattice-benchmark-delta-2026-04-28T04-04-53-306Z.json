@@ -1,0 +1,189 @@
+{
+  "generatedAt": "2026-04-28T04:04:53.301Z",
+  "beforeReport": "C:\\Users\\bradl\\source\\storm-ai\\merkaba-geoqode-os\\STATUSREPORT\\benchmarks\\lattice-benchmark-2026-04-28T04-02-25-120Z.json",
+  "afterReport": "C:\\Users\\bradl\\source\\storm-ai\\merkaba-geoqode-os\\STATUSREPORT\\benchmarks\\lattice-benchmark-2026-04-28T04-04-16-572Z.json",
+  "host": {
+    "platform": "win32",
+    "node": "v24.14.1"
+  },
+  "config": {
+    "before": {
+      "iterations": 8,
+      "statementCount": 120,
+      "sampleEveryN": 16,
+      "shadowEveryN": 32,
+      "includeReal": true
+    },
+    "after": {
+      "iterations": 8,
+      "statementCount": 120,
+      "sampleEveryN": 16,
+      "shadowEveryN": 32,
+      "includeReal": true
+    }
+  },
+  "caseDeltas": [
+    {
+      "key": "legacy/off",
+      "avgRunMs": {
+        "before": 12.308,
+        "after": 15.171,
+        "delta": 2.863,
+        "deltaPct": 23.261
+      },
+      "throughputStatementsPerSec": {
+        "before": 31767.794,
+        "after": 25772.58,
+        "delta": -5995.214,
+        "deltaPct": -18.872
+      },
+      "adapterCalls": {
+        "qddDelta": 0,
+        "governanceDelta": 0,
+        "swarmDelta": 0,
+        "sampledSyncDelta": 0,
+        "cachedDecisionsDelta": 0,
+        "shadowScheduledDelta": 0,
+        "shadowSkippedBusyDelta": 0,
+        "shadowSuppressedByAdaptiveDelta": 0
+      }
+    },
+    {
+      "key": "lattice/off",
+      "avgRunMs": {
+        "before": 8.247,
+        "after": 12.782,
+        "delta": 4.535,
+        "deltaPct": 54.99
+      },
+      "throughputStatementsPerSec": {
+        "before": 47408.306,
+        "after": 30590.46,
+        "delta": -16817.846,
+        "deltaPct": -35.474
+      },
+      "adapterCalls": {
+        "qddDelta": 0,
+        "governanceDelta": 0,
+        "swarmDelta": 0,
+        "sampledSyncDelta": 0,
+        "cachedDecisionsDelta": 0,
+        "shadowScheduledDelta": 0,
+        "shadowSkippedBusyDelta": 0,
+        "shadowSuppressedByAdaptiveDelta": 0
+      }
+    },
+    {
+      "key": "lattice/simulated",
+      "avgRunMs": {
+        "before": 8.571,
+        "after": 14.094,
+        "delta": 5.523,
+        "deltaPct": 64.438
+      },
+      "throughputStatementsPerSec": {
+        "before": 45620.611,
+        "after": 27741.711,
+        "delta": -17878.9,
+        "deltaPct": -39.19
+      },
+      "adapterCalls": {
+        "qddDelta": 0,
+        "governanceDelta": 0,
+        "swarmDelta": 0,
+        "sampledSyncDelta": 0,
+        "cachedDecisionsDelta": 0,
+        "shadowScheduledDelta": 0,
+        "shadowSkippedBusyDelta": 0,
+        "shadowSuppressedByAdaptiveDelta": 0
+      }
+    },
+    {
+      "key": "lattice/low-overhead-simulated",
+      "avgRunMs": {
+        "before": 5.066,
+        "after": 10.744,
+        "delta": 5.678,
+        "deltaPct": 112.081
+      },
+      "throughputStatementsPerSec": {
+        "before": 77187.874,
+        "after": 36393.421,
+        "delta": -40794.453,
+        "deltaPct": -52.851
+      },
+      "adapterCalls": {
+        "qddDelta": -14,
+        "governanceDelta": -14,
+        "swarmDelta": -14,
+        "sampledSyncDelta": -14,
+        "cachedDecisionsDelta": -91,
+        "shadowScheduledDelta": 0,
+        "shadowSkippedBusyDelta": 0,
+        "shadowSuppressedByAdaptiveDelta": 0
+      }
+    },
+    {
+      "key": "lattice/low-overhead",
+      "avgRunMs": {
+        "before": 15.04,
+        "after": 17.119,
+        "delta": 2.079,
+        "deltaPct": 13.823
+      },
+      "throughputStatementsPerSec": {
+        "before": 25997.276,
+        "after": 22839.652,
+        "delta": -3157.624,
+        "deltaPct": -12.146
+      },
+      "adapterCalls": {
+        "qddDelta": -14,
+        "governanceDelta": -14,
+        "swarmDelta": -14,
+        "sampledSyncDelta": -14,
+        "cachedDecisionsDelta": -91,
+        "shadowScheduledDelta": 0,
+        "shadowSkippedBusyDelta": 0,
+        "shadowSuppressedByAdaptiveDelta": 0
+      }
+    },
+    {
+      "key": "lattice/real",
+      "avgRunMs": {
+        "before": 13.123,
+        "after": 14.934,
+        "delta": 1.811,
+        "deltaPct": 13.8
+      },
+      "throughputStatementsPerSec": {
+        "before": 29795.868,
+        "after": 26182.108,
+        "delta": -3613.76,
+        "deltaPct": -12.128
+      },
+      "adapterCalls": {
+        "qddDelta": 0,
+        "governanceDelta": 0,
+        "swarmDelta": 0,
+        "sampledSyncDelta": 0,
+        "cachedDecisionsDelta": 0,
+        "shadowScheduledDelta": 0,
+        "shadowSkippedBusyDelta": 0,
+        "shadowSuppressedByAdaptiveDelta": 0
+      }
+    }
+  ],
+  "focusSummary": {
+    "lowOverheadVsRealGapMs": {
+      "before": 1.917,
+      "after": 2.185,
+      "improvementMs": -0.268
+    },
+    "lowOverheadVsRealThroughputGap": {
+      "before": -3798.592,
+      "after": -3342.456,
+      "improvement": 456.136
+    }
+  }
+}

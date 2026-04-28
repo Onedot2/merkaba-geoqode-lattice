@@ -62,7 +62,13 @@ export class MerkabageoqodeOS {
   constructor(options = {}) {
     this.engine = new ExecutionEngine(options.engine || {});
     this.version = "1.0.0";
-    this.name = "MERKABA_geoqode OS";
+    this.name = "MERKABA_geoqode Lattice480";
+    this.identity = {
+      canonicalEngineRepo: "merkaba-geoqode-lattice",
+      legacyEngineRepoAlias: "merkaba-geoqode-os",
+      launcherUiRepo: "Merkaba48OS",
+      architectureSignature: "8→26→48:480",
+    };
   }
 
   /**
@@ -108,6 +114,7 @@ export class MerkabageoqodeOS {
     return {
       name: this.name,
       version: this.version,
+      identity: this.identity,
       engineReady: !!this.engine,
       schedulerMode: this.engine.schedulerMode,
       integrationMode: this.engine.integrationMode,
