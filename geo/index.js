@@ -54,6 +54,31 @@ export {
   getStdlibConstant,
 } from "./stdlib/index.js";
 
+// Phase 9 — Cinema Virtualization (MerkabaTheatre Hollywood update, April 29 2026)
+export {
+  CinemaVirtualizer,
+  CINEMA_PLAYBOOK_REGISTRY,
+  PROJECTION_MODES,
+} from "./cinema/cinema-virtualizer.js";
+export { ScriptParser } from "./cinema/script-parser.js";
+export {
+  NarrativeEmbedder,
+  GENRE_FREQUENCY_MODIFIERS,
+} from "./cinema/narrative-embedder.js";
+export { CinemaProjector } from "./cinema/cinema-projector.js";
+
+// Phase 9 — Intelligence Layer (Merkaba-LLM + MerkabAware)
+export {
+  MerkabaLLM,
+  MERKABA_SEMANTIC_TYPES,
+  SEMANTIC_FREQUENCY_MAP,
+} from "./intelligence/merkaba-llm.js";
+export {
+  MerkabAware,
+  AWARENESS_LEVELS,
+  COHERENCE_THRESHOLDS,
+} from "./intelligence/merkaba-aware.js";
+
 /**
  * MERKABA_geoqode Operating System
  * Dedicated AI OS for GeoQode program execution
