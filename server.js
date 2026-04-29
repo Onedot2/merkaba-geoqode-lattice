@@ -6,6 +6,7 @@ import { createServer } from "http";
 import { StormAdapter } from "./geo/bridge/storm-adapter.js";
 import { MerkabaBridge } from "./geo/bridge/merkaba-bridge.js";
 import { MERKABA_LATTICE } from "./geo/certification/enterprise-certifier.js";
+import { CinemaVirtualizer } from "./geo/cinema/cinema-virtualizer.js";
 import {
   MerkabageoqodeOS,
   StormMerkabaTransformCodex,
@@ -56,6 +57,47 @@ const adapter = new StormAdapter({
 const codex = new StormMerkabaTransformCodex();
 
 const BUILT_IN_PLAYBOOKS = ["migration", "adoption", "resonance", "incident"];
+
+/** Cinema playbooks shipped with the lattice runtime */
+const CINEMA_PLAYBOOKS = ["matrix", "inception", "starwars", "apollo11"];
+
+const CINEMA_PLAYBOOK_META = {
+  matrix: {
+    title: "The Matrix",
+    genre: "sci-fi",
+    mode: "immersive",
+    description:
+      "The Construct room as holography. Neo's awakening as a living resonance environment.",
+  },
+  inception: {
+    title: "Inception",
+    genre: "mind-bending",
+    mode: "interactive",
+    description:
+      "Layered dream immersion with adaptive narrative flow. Each dream layer a distinct resonance state.",
+  },
+  starwars: {
+    title: "Star Wars",
+    genre: "space opera",
+    mode: "immersive",
+    description:
+      "Holographic starships, planet environments, and mythic battles as full resonance fields.",
+  },
+  apollo11: {
+    title: "Apollo 11",
+    genre: "documentary",
+    mode: "adaptive",
+    description:
+      "Historical holography — immersive education projection on the lunar surface.",
+  },
+};
+
+// Singleton cinema virtualizer (long-lived)
+let _cinemaVirtualizer = null;
+function getCinemaVirtualizer() {
+  if (!_cinemaVirtualizer) _cinemaVirtualizer = new CinemaVirtualizer();
+  return _cinemaVirtualizer;
+}
 
 // ─── Minimal HTTP server — no external framework dependency needed ────────
 function json(res, status, data) {
@@ -119,6 +161,11 @@ const server = createServer(async (req, res) => {
           "/stats",
           "/execute",
           "/playbook/:name",
+          "/cinema/status",
+          "/cinema/playbooks",
+          "/cinema/playbooks/:name",
+          "/cinema/virtualize",
+          "/cinema/playbook/:name",
         ],
       });
     }
@@ -314,6 +361,148 @@ const server = createServer(async (req, res) => {
       });
     }
 
+    // ── GET /cinema/status ───────────────────────────────────────────────
+    if (req.method === "GET" && pathname === "/cinema/status") {
+      const cv = getCinemaVirtualizer();
+      return json(res, 200, {
+        ok: true,
+        cinema: {
+          system: "MERKABA48OS Cinema Virtualization",
+          architecture: "8→26→48:480",
+          pipeline: [
+            "ScriptParser",
+            "NarrativeEmbedder",
+            "MerkabAware",
+            "CinemaProjector",
+          ],
+          playbooks: CINEMA_PLAYBOOKS,
+          playbookMeta: CINEMA_PLAYBOOK_META,
+          projectionModes: ["immersive", "interactive", "adaptive", "passive"],
+          coherenceLevels: {
+            critical: { threshold: 0.4, action: "abort" },
+            warning: { threshold: 0.65, action: "warn" },
+            nominal: { threshold: 0.8, action: "project" },
+            optimal: { threshold: 0.95, action: "full_immersion" },
+            singularity: { threshold: 0.99, action: "singularity" },
+          },
+          status: "operational",
+        },
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    // ── GET /cinema/playbooks ────────────────────────────────────────────
+    if (req.method === "GET" && pathname === "/cinema/playbooks") {
+      return json(res, 200, {
+        ok: true,
+        playbooks: CINEMA_PLAYBOOKS.map((name) => ({
+          name,
+          file: `${name}.geo`,
+          ...CINEMA_PLAYBOOK_META[name],
+        })),
+        count: CINEMA_PLAYBOOKS.length,
+      });
+    }
+
+    // ── GET /cinema/playbooks/:name ──────────────────────────────────────
+    const cinemaPlaybookGetMatch = pathname.match(
+      /^\/cinema\/playbooks\/([a-z0-9-]+)$/,
+    );
+    if (req.method === "GET" && cinemaPlaybookGetMatch) {
+      const name = cinemaPlaybookGetMatch[1];
+      if (!CINEMA_PLAYBOOKS.includes(name)) {
+        return json(res, 404, {
+          ok: false,
+          error: `Unknown cinema playbook: ${name}. Available: ${CINEMA_PLAYBOOKS.join(", ")}`,
+        });
+      }
+      return json(res, 200, {
+        ok: true,
+        playbook: { name, file: `${name}.geo`, ...CINEMA_PLAYBOOK_META[name] },
+      });
+    }
+
+    // ── POST /cinema/virtualize ──────────────────────────────────────────
+    if (req.method === "POST" && pathname === "/cinema/virtualize") {
+      const body = await readBody(req);
+      const { script, genre = "sci-fi", mode = "immersive" } = body;
+
+      if (!script || typeof script !== "string") {
+        return json(res, 400, {
+          ok: false,
+          error: "script (text or .geo format) is required",
+        });
+      }
+
+      try {
+        const cv = getCinemaVirtualizer();
+        const result = await cv.virtualize(script, { genre, mode });
+        return json(res, 200, {
+          ok: true,
+          cinema: { genre, mode, ...result },
+        });
+      } catch (err) {
+        return json(res, 422, {
+          ok: false,
+          error: "Cinema virtualization failed",
+          message: err.message,
+        });
+      }
+    }
+
+    // ── POST /cinema/playbook/:name ──────────────────────────────────────
+    const cinemaPlaybookRunMatch = pathname.match(
+      /^\/cinema\/playbook\/([a-z0-9-]+)$/,
+    );
+    if (req.method === "POST" && cinemaPlaybookRunMatch) {
+      const name = cinemaPlaybookRunMatch[1];
+
+      if (!CINEMA_PLAYBOOKS.includes(name)) {
+        return json(res, 404, {
+          ok: false,
+          error: `Unknown cinema playbook: ${name}. Available: ${CINEMA_PLAYBOOKS.join(", ")}`,
+        });
+      }
+
+      const body = await readBody(req);
+      const meta = CINEMA_PLAYBOOK_META[name];
+
+      try {
+        const cv = getCinemaVirtualizer();
+        // Load the .geo playbook from the playbooks/cinema directory
+        const fs = await import("fs/promises");
+        const path = await import("path");
+        const { fileURLToPath } = await import("url");
+        const __dirname = path.dirname(fileURLToPath(import.meta.url));
+        const playbookPath = path.join(
+          __dirname,
+          "geo",
+          "playbooks",
+          "cinema",
+          `${name}.geo`,
+        );
+        const script = await fs.readFile(playbookPath, "utf-8");
+
+        const result = await cv.virtualize(script, {
+          genre: body.genre || meta.genre,
+          mode: body.mode || meta.mode,
+        });
+
+        return json(res, 200, {
+          ok: true,
+          playbook: name,
+          ...meta,
+          cinema: result,
+        });
+      } catch (err) {
+        return json(res, 422, {
+          ok: false,
+          error: `Cinema playbook '${name}' execution failed`,
+          message: err.message,
+        });
+      }
+    }
+
     // ── 404 ───────────────────────────────────────────────────────────────
     return json(res, 404, {
       ok: false,
@@ -332,6 +521,11 @@ const server = createServer(async (req, res) => {
         "GET  /stats",
         "POST /execute",
         "POST /playbook/:name",
+        "GET  /cinema/status",
+        "GET  /cinema/playbooks",
+        "GET  /cinema/playbooks/:name",
+        "POST /cinema/virtualize",
+        "POST /cinema/playbook/:name",
       ],
     });
   } catch (err) {
