@@ -195,7 +195,9 @@ export class NarrativeEmbedder {
     const resonanceFrequency = Math.round(baseFreq * freqMod * 10) / 10;
 
     const latticeNode = nodeIndex % this.latticeNodes; // 0–47
-    const harmonicNode = nodeIndex % this.harmonicSpectrum; // 0–479
+    // D48×10 canonical band expansion: each D48 node owns 10 harmonic slots.
+    // Node 0→harmonic 0, node 47→harmonic 470. Full D480 spectrum reachable.
+    const harmonicNode = Math.min(this.harmonicSpectrum - 1, latticeNode * 10);
     const phiCoefficient = this.phiBase;
     const architectureLayer = this._getLayer(latticeNode);
 

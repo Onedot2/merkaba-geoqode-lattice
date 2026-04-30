@@ -108,6 +108,12 @@ export {
   _codexInstance,
 } from "./intelligence/merkaba-activation-codex.js";
 
+// Phase 10 — MerkabaBeEyeSwarm: 8-drone lattice-native diagnostic intelligence
+export {
+  MerkabaBeEyeSwarm,
+  merkabaEye,
+} from "./intelligence/MerkabaBeEyeSwarm.js";
+
 /**
  * MERKABA_geoqode Operating System
  * Dedicated AI OS for GeoQode program execution
