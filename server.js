@@ -239,7 +239,7 @@ const server = createServer(async (req, res) => {
     // ── GET /health ──────────────────────────────────────────────────────
     if (req.method === "GET" && pathname === "/health") {
       const aware = getAware();
-      const awState = aware.getState();
+      const awState = aware.getStatus();
       return json(res, 200, {
         ok: true,
         service: "geoqode-os",
@@ -611,7 +611,7 @@ const server = createServer(async (req, res) => {
       const aware = getAware();
       return json(res, 200, {
         ok: true,
-        awareness: aware.getState(),
+        awareness: aware.getStatus(),
         thresholds: COHERENCE_THRESHOLDS,
         levels: AWARENESS_LEVELS,
       });
