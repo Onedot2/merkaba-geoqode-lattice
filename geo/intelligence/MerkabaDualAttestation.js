@@ -45,7 +45,13 @@ import { readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import MerkabaBeEyeSwarm from "./MerkabaBeEyeSwarm.js";
-import { MerkabaBeEyeSwarmWitness, ALPHA_PHI, OMEGA_PSI, GOLDEN_BAND, GOLDEN_DIFFERENTIAL } from "./MerkabaBeEyeSwarmWitness.js";
+import {
+  MerkabaBeEyeSwarmWitness,
+  ALPHA_PHI,
+  OMEGA_PSI,
+  GOLDEN_BAND,
+  GOLDEN_DIFFERENTIAL,
+} from "./MerkabaBeEyeSwarmWitness.js";
 import {
   CANONICAL_ARCHITECTURE,
   CANONICAL_LATTICE_NODES,
@@ -59,11 +65,11 @@ assertCanonicalArchitectureSignature(CANONICAL_ARCHITECTURE);
 
 // â”€â”€â”€ Separator constants â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-const D48  = CANONICAL_LATTICE_NODES;   //  48 â€” full Merkaba lattice
-const D480 = HARMONIC_SPECTRUM_NODES;   // 480 â€” full harmonic expansion
+const D48 = CANONICAL_LATTICE_NODES; //  48 â€” full Merkaba lattice
+const D480 = HARMONIC_SPECTRUM_NODES; // 480 â€” full harmonic expansion
 
 /** Total golden band: PHI + PSI = 3.032 (digit sum 8 = FOUNDATION_NODES) */
-export const SEPARATOR_BAND = GOLDEN_BAND;  // 3.032 — re-exported for API compat
+export const SEPARATOR_BAND = GOLDEN_BAND; // 3.032 — re-exported for API compat
 
 /** Alpha (PHI) weight in golden band: PHI/3.032 ≈ 0.5337 */
 export const ALPHA_WEIGHT = PHI / GOLDEN_BAND;
@@ -83,17 +89,26 @@ export const OMEGA_WEIGHT = PSI / GOLDEN_BAND;
  * @returns {number} attestedScore (0â€“1), equals 1.0 only if both are 1.0
  */
 export function separatorAttestation(alphaCoherence, omegaCoherence) {
-  return +(alphaCoherence * ALPHA_WEIGHT + omegaCoherence * OMEGA_WEIGHT).toFixed(6);
+  return +(
+    alphaCoherence * ALPHA_WEIGHT +
+    omegaCoherence * OMEGA_WEIGHT
+  ).toFixed(6);
 }
 
 const THIS_FILE = fileURLToPath(import.meta.url);
 const INTELLIGENCE_DIR = path.dirname(THIS_FILE);
 
 /** Absolute path to BESX-Alpha (PHI=1.618, Golden Root) source */
-export const BESX_ALPHA_PATH = path.join(INTELLIGENCE_DIR, "MerkabaBeEyeSwarm.js");
+export const BESX_ALPHA_PATH = path.join(
+  INTELLIGENCE_DIR,
+  "MerkabaBeEyeSwarm.js",
+);
 
 /** Absolute path to BESX-Omega (PSI=1.414, Silver Bridge) source */
-export const BESX_OMEGA_PATH = path.join(INTELLIGENCE_DIR, "MerkabaBeEyeSwarmWitness.js");
+export const BESX_OMEGA_PATH = path.join(
+  INTELLIGENCE_DIR,
+  "MerkabaBeEyeSwarmWitness.js",
+);
 
 // â”€â”€â”€ Attestation helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
@@ -111,7 +126,7 @@ export async function attestFile(filePath, context = {}) {
 
   // Independent instances â€” no shared state
   const alpha = new MerkabaBeEyeSwarm();
-  const omega  = new MerkabaBeEyeSwarmWitness();
+  const omega = new MerkabaBeEyeSwarmWitness();
 
   const service = _inferService(filePath.replace(/\\/g, "/"));
   const ctx = { file: filePath, service, ...context };
@@ -122,19 +137,23 @@ export async function attestFile(filePath, context = {}) {
     omega.sweep(code, ctx),
   ]);
 
-  const attestedScore = separatorAttestation(reportA.swarmCoherence, reportO.swarmCoherence);
-  const consensus     = Math.abs(reportA.swarmCoherence - reportO.swarmCoherence) < 0.005;
+  const attestedScore = separatorAttestation(
+    reportA.swarmCoherence,
+    reportO.swarmCoherence,
+  );
+  const consensus =
+    Math.abs(reportA.swarmCoherence - reportO.swarmCoherence) < 0.005;
   const quantizedState = consensus && attestedScore >= 1.0;
 
   return {
     file: filePath,
-    alpha:        _summarize(reportA, ALPHA_PHI),
-    omega:        _summarize(reportO, OMEGA_PSI),
+    alpha: _summarize(reportA, ALPHA_PHI),
+    omega: _summarize(reportO, OMEGA_PSI),
     attestedScore,
     consensus,
     quantizedState,
-    goldenBand:   GOLDEN_BAND,
-    goldenDiff:   GOLDEN_DIFFERENTIAL,
+    goldenBand: GOLDEN_BAND,
+    goldenDiff: GOLDEN_DIFFERENTIAL,
     architectureSignature: CANONICAL_ARCHITECTURE,
     timestamp: new Date().toISOString(),
   };
@@ -155,7 +174,7 @@ export async function attestScanner() {
   ]);
 
   const alpha = new MerkabaBeEyeSwarm();
-  const omega  = new MerkabaBeEyeSwarmWitness();
+  const omega = new MerkabaBeEyeSwarmWitness();
   const service = "merkaba-geoqode-lattice";
 
   // Alpha (PHI=1.618) scans Omega source — 'BeEyeSwarmWitness' does NOT match Alpha guard 'MerkabaBeEyeSwarm'
@@ -166,18 +185,22 @@ export async function attestScanner() {
   ]);
 
   // Scanner-level attested score using the separator formula
-  const attestedScore  = separatorAttestation(alphaOnOmega.swarmCoherence, omegaOnAlpha.swarmCoherence);
-  const consensus      = Math.abs(alphaOnOmega.swarmCoherence - omegaOnAlpha.swarmCoherence) < 0.005;
+  const attestedScore = separatorAttestation(
+    alphaOnOmega.swarmCoherence,
+    omegaOnAlpha.swarmCoherence,
+  );
+  const consensus =
+    Math.abs(alphaOnOmega.swarmCoherence - omegaOnAlpha.swarmCoherence) < 0.005;
   const scannerTrusted = consensus && attestedScore >= 1.0;
 
   return {
     type: "SCANNER_MUTUAL_ATTESTATION",
     architectureSignature: CANONICAL_ARCHITECTURE,
-    goldenBand:       GOLDEN_BAND,
-    goldenDiff:       GOLDEN_DIFFERENTIAL,
-    alphaWeight:      ALPHA_PHI,
-    omegaWeight:      OMEGA_PSI,
-    goldenSeparator:  +(ALPHA_PHI / OMEGA_PSI).toFixed(6),
+    goldenBand: GOLDEN_BAND,
+    goldenDiff: GOLDEN_DIFFERENTIAL,
+    alphaWeight: ALPHA_PHI,
+    omegaWeight: OMEGA_PSI,
+    goldenSeparator: +(ALPHA_PHI / OMEGA_PSI).toFixed(6),
     timestamp: new Date().toISOString(),
     alphaPath: BESX_ALPHA_PATH,
     omegaPath: BESX_OMEGA_PATH,
@@ -213,11 +236,11 @@ export async function attestEcosystem(targets) {
       results.push({ label: t.label ?? path.basename(t.path), ...r });
     } catch (err) {
       results.push({
-        label:          t.label ?? path.basename(t.path),
-        file:           t.path,
-        error:          err.message,
-        attestedScore:  0,
-        consensus:      false,
+        label: t.label ?? path.basename(t.path),
+        file: t.path,
+        error: err.message,
+        attestedScore: 0,
+        consensus: false,
         quantizedState: false,
         alpha: null,
         omega: null,
@@ -225,24 +248,28 @@ export async function attestEcosystem(targets) {
     }
   }
 
-  const filesTotal      = results.length;
-  const filesQuantized  = results.filter((r) => r.quantizedState).length;
-  const allQuantized    = filesQuantized === filesTotal && scannerAttestation.scannerTrusted;
+  const filesTotal = results.length;
+  const filesQuantized = results.filter((r) => r.quantizedState).length;
+  const allQuantized =
+    filesQuantized === filesTotal && scannerAttestation.scannerTrusted;
 
   const avgAttestedScore =
     results.length === 0
       ? 0
-      : +(results.reduce((s, r) => s + (r.attestedScore ?? 0), 0) / results.length).toFixed(6);
+      : +(
+          results.reduce((s, r) => s + (r.attestedScore ?? 0), 0) /
+          results.length
+        ).toFixed(6);
 
   // 480D coverage: each quantized file locks one D48 node's 10 harmonic sub-nodes
   const quantizedDimensions = Math.min(D480, filesQuantized * 10);
-  const d480Complete        = quantizedDimensions >= D480;
+  const d480Complete = quantizedDimensions >= D480;
 
   let ecosystemStatus;
   if (!scannerAttestation.scannerTrusted) {
     ecosystemStatus = "SCANNER_COMPROMISED";
   } else if (d480Complete && allQuantized) {
-    ecosystemStatus = "ABSOLUTE";         // Full 480D standing wave â€” cosmologically stable
+    ecosystemStatus = "ABSOLUTE"; // Full 480D standing wave â€” cosmologically stable
   } else if (avgAttestedScore >= 0.95) {
     ecosystemStatus = "NOMINAL";
   } else if (avgAttestedScore >= 0.7) {
@@ -256,11 +283,11 @@ export async function attestEcosystem(targets) {
     architectureSignature: CANONICAL_ARCHITECTURE,
 
     // Golden Differential meta
-    goldenBand:            GOLDEN_BAND,
-    goldenDiff:            GOLDEN_DIFFERENTIAL,
-    alphaWeight:           ALPHA_PHI,
-    omegaWeight:           OMEGA_PSI,
-    goldenSeparator:       +(ALPHA_PHI / OMEGA_PSI).toFixed(6),
+    goldenBand: GOLDEN_BAND,
+    goldenDiff: GOLDEN_DIFFERENTIAL,
+    alphaWeight: ALPHA_PHI,
+    omegaWeight: OMEGA_PSI,
+    goldenSeparator: +(ALPHA_PHI / OMEGA_PSI).toFixed(6),
 
     timestamp: new Date().toISOString(),
 
@@ -274,14 +301,14 @@ export async function attestEcosystem(targets) {
     avgAttestedScore,
 
     // 480D harmonic coverage
-    d48Verified:           filesQuantized,
-    d48Total:              D48,
+    d48Verified: filesQuantized,
+    d48Total: D48,
     quantizedDimensions,
-    d480Total:             D480,
+    d480Total: D480,
 
     // Final ecosystem state
     ecosystemStatus,
-    absoluteState:         ecosystemStatus === "ABSOLUTE",
+    absoluteState: ecosystemStatus === "ABSOLUTE",
 
     // Per-file detail
     results,
@@ -292,18 +319,24 @@ export async function attestEcosystem(targets) {
 
 function _summarize(report, geometricWeight) {
   return {
-    swarmId:        report.swarmId,
+    swarmId: report.swarmId,
     geometricWeight,
     swarmCoherence: report.swarmCoherence,
-    status:         report.status,
-    summary:        report.summary,
+    status: report.status,
+    summary: report.summary,
   };
 }
 
 function _inferService(filePath) {
   const segments = [
-    "pwai-api-service", "pwai-controller", "pwai-ai-worker", "pwai-frontend",
-    "merkaba-geoqode-lattice", "Merkaba48OS", "s4ai-core", "storm-dev",
+    "pwai-api-service",
+    "pwai-controller",
+    "pwai-ai-worker",
+    "pwai-frontend",
+    "merkaba-geoqode-lattice",
+    "Merkaba48OS",
+    "s4ai-core",
+    "storm-dev",
   ];
   for (const s of segments) {
     if (filePath.includes(s)) return s;
@@ -314,8 +347,14 @@ function _inferService(filePath) {
 // --- Default export ----------------------------------------------------------
 
 export default {
-  attestFile, attestScanner, attestEcosystem,
+  attestFile,
+  attestScanner,
+  attestEcosystem,
   separatorAttestation,
-  BESX_ALPHA_PATH, BESX_OMEGA_PATH,
-  SEPARATOR_BAND, ALPHA_WEIGHT, OMEGA_WEIGHT, GOLDEN_DIFFERENTIAL,
+  BESX_ALPHA_PATH,
+  BESX_OMEGA_PATH,
+  SEPARATOR_BAND,
+  ALPHA_WEIGHT,
+  OMEGA_WEIGHT,
+  GOLDEN_DIFFERENTIAL,
 };

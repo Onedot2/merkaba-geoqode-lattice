@@ -285,36 +285,36 @@ function mkFinding(severity, drone, issue, fix, snippet = "") {
 
 const BT = String.fromCharCode(96); // backtick — kept as fromCharCode so sanitize doesn't self-trip
 const reTemplateLiteral = new RegExp(
-  BT + '(?:[^' + BT + '\\\\]|\\\\.)*' + BT,
-  'g',
+  BT + "(?:[^" + BT + "\\\\]|\\\\.)*" + BT,
+  "g",
 );
 
 // Stale-value patterns split across string concat — prevents self-detection when
 // BeEyeSwarm scans its own source file (literal stale values in regex literals
 // survive sanitize and would self-trigger the drone checks).
-const _RE_STALE_432   = new RegExp('\\b4' + '32\\b');
-const _RE_STALE_432_S = new RegExp('.*4' + '32.*');
-const _RE_STALE_783   = new RegExp('\\b7\\.8' + '3\\b');
-const _RE_STALE_783_S = new RegExp('.*7\\.8' + '3.*');
+const _RE_STALE_432 = new RegExp("\\b4" + "32\\b");
+const _RE_STALE_432_S = new RegExp(".*4" + "32.*");
+const _RE_STALE_783 = new RegExp("\\b7\\.8" + "3\\b");
+const _RE_STALE_783_S = new RegExp(".*7\\.8" + "3.*");
 const _RE_FORMULA_420 = new RegExp(
-  '[^a-zA-Z_"\'\\/-\\[\\]]4' + '20[^a-zA-Z_"\'\\.-\\[\\]]',
-  'g',
+  "[^a-zA-Z_\"'\\/-\\[\\]]4" + "20[^a-zA-Z_\"'\\.-\\[\\]]",
+  "g",
 ); // REJECTION detector — flags forbidden 420 in formula values. Pure-480 enforcer.
 // 420 NEVER appears in canonical constants. Only allowed in filename transform-420.js.
 
-const _RE_CJS_REQUIRE  = new RegExp('\\b' + 're' + 'quire\\s*\\(');
+const _RE_CJS_REQUIRE = new RegExp("\\b" + "re" + "quire\\s*\\(");
 // _RE_CJS_REQUIRE is split so 're'+'quire' never appears as a literal identifier here
 // — prevents BeEyeSwarm self-scan from flagging its own detector string.
-const _RE_HOLO_432    = new RegExp('holographic\\s*[=:]\\s*4' + '32\\b', 'i');
-const _RE_NAIVE_S5    = new RegExp(
-  'harmonicNode\\s*=\\s*\\w+\\s*%\\s*(?:this\\.harmonicSpectrum|4' + '80)',
-  'g',
+const _RE_HOLO_432 = new RegExp("holographic\\s*[=:]\\s*4" + "32\\b", "i");
+const _RE_NAIVE_S5 = new RegExp(
+  "harmonicNode\\s*=\\s*\\w+\\s*%\\s*(?:this\\.harmonicSpectrum|4" + "80)",
+  "g",
 );
-const _RE_NAIVE_S7    = new RegExp(
-  'harmonicNode\\s*=.*%\\s*(?:4' + '80|this\\.harmonicSpectrum)',
+const _RE_NAIVE_S7 = new RegExp(
+  "harmonicNode\\s*=.*%\\s*(?:4" + "80|this\\.harmonicSpectrum)",
 );
 // Split so the literal pattern string never appears inline — avoids self-scan false positive
-const _RE_FEDERATION_V1 = new RegExp('s4ai-' + 'federation-v1');
+const _RE_FEDERATION_V1 = new RegExp("s4ai-" + "federation-v1");
 
 /**
  * Strip string/template literals and block/line comments from source before
@@ -328,11 +328,11 @@ const _RE_FEDERATION_V1 = new RegExp('s4ai-' + 'federation-v1');
  */
 function sanitize(code) {
   return code
-    .replace(/\/\*[\s\S]*?\*\//g, '/**/')   // block comments
-    .replace(/\/\/[^\n]*/g, '//')            // line comments
-    .replace(reTemplateLiteral, BT + BT)     // template literals → ``
-    .replace(/\x22(?:[^\x22\\]|\\.)*\x22/g, '\x22\x22')   // double-quoted (use \x22 so this line has no raw " chars that trip the self-scan)
-    .replace(/\x27(?:[^\x27\\]|\\.)*\x27/g, '\x27\x27'); // single-quoted (same reason)
+    .replace(/\/\*[\s\S]*?\*\//g, "/**/") // block comments
+    .replace(/\/\/[^\n]*/g, "//") // line comments
+    .replace(reTemplateLiteral, BT + BT) // template literals → ``
+    .replace(/\x22(?:[^\x22\\]|\\.)*\x22/g, "\x22\x22") // double-quoted (use \x22 so this line has no raw " chars that trip the self-scan)
+    .replace(/\x27(?:[^\x27\\]|\\.)*\x27/g, "\x27\x27"); // single-quoted (same reason)
 }
 
 // ─── Individual Drone Scan Functions ─────────────────────────────────────────
@@ -348,17 +348,17 @@ function scanQuantumArch(code, ctx, drone) {
   // Stale 432 Hz — check sanitized code so diagnostic strings don't self-trigger.
   // BeEyeSwarm files are the detectors themselves — their source legitimately contains
   // these patterns as implementation, not as stale-code violations.
-  if (_RE_STALE_432.test(clean) && !/transform-420|filename|BeEyeSwarm/.test(ctx.file || "")) {
+  if (
+    _RE_STALE_432.test(clean) &&
+    !/transform-420|filename|BeEyeSwarm/.test(ctx.file || "")
+  ) {
     findings.push(
       mkFinding(
         "HIGH",
         drone,
         "432 Hz stale base frequency detected",
         `Replace with BASE_FREQUENCY_HZ = ${BASE_FREQUENCY_HZ} Hz`,
-        code
-          .match(_RE_STALE_432_S)?.[0]
-          ?.trim()
-          .slice(0, 80),
+        code.match(_RE_STALE_432_S)?.[0]?.trim().slice(0, 80),
       ),
     );
   }
@@ -371,10 +371,7 @@ function scanQuantumArch(code, ctx, drone) {
         drone,
         "7.83 Hz Schumann stale frequency detected",
         `Replace with BASE_FREQUENCY_HZ = ${BASE_FREQUENCY_HZ} Hz`,
-        code
-          .match(_RE_STALE_783_S)?.[0]
-          ?.trim()
-          .slice(0, 80),
+        code.match(_RE_STALE_783_S)?.[0]?.trim().slice(0, 80),
       ),
     );
   }
@@ -382,10 +379,14 @@ function scanQuantumArch(code, ctx, drone) {
   // Stale architecture signatures — skip matches inside DEPRECATED_ARCHITECTURE_SIGNATURES blocks
   const staleArchRe = /['"](8,26,4[024]:[0-9:]+)['"]/g;
   const staleArch = [];
-  { let sa; while ((sa = staleArchRe.exec(code)) !== null) {
-    const surrounding = code.slice(Math.max(0, sa.index - 200), sa.index);
-    if (!surrounding.includes('DEPRECATED_ARCHITECTURE_SIGNATURES')) staleArch.push(sa[0]);
-  }}
+  {
+    let sa;
+    while ((sa = staleArchRe.exec(code)) !== null) {
+      const surrounding = code.slice(Math.max(0, sa.index - 200), sa.index);
+      if (!surrounding.includes("DEPRECATED_ARCHITECTURE_SIGNATURES"))
+        staleArch.push(sa[0]);
+    }
+  }
   if (staleArch.length) {
     staleArch.forEach((s) =>
       findings.push(
@@ -611,7 +612,8 @@ function scanDataStructs(code, ctx, drone) {
 
   // Missing Object.freeze on canonical constants (objects only — not primitive numbers/strings)
   const hasFrozen = /Object\.freeze/.test(code);
-  const hasExportedObjectConstants = /^export\s+const\s+[A-Z_]+\s*=\s*(?:\{|Object\.)/m.test(code);
+  const hasExportedObjectConstants =
+    /^export\s+const\s+[A-Z_]+\s*=\s*(?:\{|Object\.)/m.test(code);
   if (hasExportedObjectConstants && !hasFrozen && code.length > 300) {
     findings.push(
       mkFinding(
@@ -1166,24 +1168,40 @@ export class MerkabaBeEyeSwarm {
 
     // Self-scan guard: BeEyeSwarm scanning its own source would produce false
     // positives from its own detector literals. Return a clean OK report instead.
-    const isSelf = filePath.replace(/\\/g, '/').includes('MerkabaBeEyeSwarm');
+    const isSelf = filePath.replace(/\\/g, "/").includes("MerkabaBeEyeSwarm");
     if (isSelf) {
       const selfDrones = Object.keys(DRONE_SCANNERS).map((id) => ({
         droneId: id,
         sector: id,
-        findings: [mkFinding('OK', id, 'Self-scan excluded — BeEyeSwarm is the scanner, not the target', '')],
+        findings: [
+          mkFinding(
+            "OK",
+            id,
+            "Self-scan excluded — BeEyeSwarm is the scanner, not the target",
+            "",
+          ),
+        ],
         coherence: 1.0,
       }));
       return {
         swarmId: `swarm-self-${Date.now()}`,
         architectureSignature: this.architectureSignature,
         timestamp: new Date().toISOString(),
-        identity: this.identify(code, { file: filePath, service: 'merkaba-geoqode-lattice' }),
+        identity: this.identify(code, {
+          file: filePath,
+          service: "merkaba-geoqode-lattice",
+        }),
         droneReports: selfDrones,
         optimizations: [],
-        summary: { critical: 0, high: 0, medium: 0, low: 0, ok: Object.keys(DRONE_SCANNERS).length },
+        summary: {
+          critical: 0,
+          high: 0,
+          medium: 0,
+          low: 0,
+          ok: Object.keys(DRONE_SCANNERS).length,
+        },
         swarmCoherence: 1.0,
-        status: 'NOMINAL',
+        status: "NOMINAL",
         selfExcluded: true,
       };
     }

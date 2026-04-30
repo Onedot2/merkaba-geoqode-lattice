@@ -182,15 +182,42 @@ const ECOSYSTEM_TARGETS = [
   },
 
   // merkaba-geoqode-lattice — bridge, certification, runtime, distributed
-  { path: join(REPO_ROOT, "geo", "bridge", "merkaba-bridge.js"),             label: "merkaba-bridge" },
-  { path: join(REPO_ROOT, "geo", "bridge", "storm-adapter.js"),              label: "storm-adapter" },
-  { path: join(REPO_ROOT, "geo", "certification", "audit-trail.js"),         label: "audit-trail" },
-  { path: join(REPO_ROOT, "geo", "certification", "enterprise-certifier.js"),label: "enterprise-certifier" },
-  { path: join(REPO_ROOT, "geo", "runtime", "compliance.js"),                label: "runtime-compliance" },
-  { path: join(REPO_ROOT, "geo", "runtime", "execution-engine.js"),          label: "execution-engine" },
-  { path: join(REPO_ROOT, "geo", "runtime", "lattice-scheduler.js"),         label: "lattice-scheduler" },
-  { path: join(REPO_ROOT, "geo", "distributed", "cluster.js"),               label: "distributed-cluster" },
-  { path: join(REPO_ROOT, "geo", "distributed", "coordinator.js"),           label: "distributed-coordinator" },
+  {
+    path: join(REPO_ROOT, "geo", "bridge", "merkaba-bridge.js"),
+    label: "merkaba-bridge",
+  },
+  {
+    path: join(REPO_ROOT, "geo", "bridge", "storm-adapter.js"),
+    label: "storm-adapter",
+  },
+  {
+    path: join(REPO_ROOT, "geo", "certification", "audit-trail.js"),
+    label: "audit-trail",
+  },
+  {
+    path: join(REPO_ROOT, "geo", "certification", "enterprise-certifier.js"),
+    label: "enterprise-certifier",
+  },
+  {
+    path: join(REPO_ROOT, "geo", "runtime", "compliance.js"),
+    label: "runtime-compliance",
+  },
+  {
+    path: join(REPO_ROOT, "geo", "runtime", "execution-engine.js"),
+    label: "execution-engine",
+  },
+  {
+    path: join(REPO_ROOT, "geo", "runtime", "lattice-scheduler.js"),
+    label: "lattice-scheduler",
+  },
+  {
+    path: join(REPO_ROOT, "geo", "distributed", "cluster.js"),
+    label: "distributed-cluster",
+  },
+  {
+    path: join(REPO_ROOT, "geo", "distributed", "coordinator.js"),
+    label: "distributed-coordinator",
+  },
 ];
 
 // ─── Args ─────────────────────────────────────────────────────────────────

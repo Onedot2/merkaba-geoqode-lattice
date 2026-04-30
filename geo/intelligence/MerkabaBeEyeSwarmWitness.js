@@ -62,7 +62,7 @@ assertCanonicalArchitectureSignature(CANONICAL_ARCHITECTURE);
 export const ALPHA_PHI = PHI;
 
 /** Omega geometric weight — PSI = 1.414 = √2, the Silver Bridge (witness) */
-export const OMEGA_PSI = PSI;        // 1.414
+export const OMEGA_PSI = PSI; // 1.414
 
 /**
  * Golden Band — sum of both poles.
@@ -71,10 +71,10 @@ export const OMEGA_PSI = PSI;        // 1.414
  * When alpha.coherence = omega.coherence = 1.0:
  *   attestedScore = PHI/3.032 + PSI/3.032 = 3.032/3.032 = 1.0 → ABSOLUTE
  */
-export const GOLDEN_BAND = PHI + PSI;             // 3.032
+export const GOLDEN_BAND = PHI + PSI; // 3.032
 
 /** Golden Differential — the geometric gap between poles. PHI − PSI = 0.204 */
-export const GOLDEN_DIFFERENTIAL = PHI - PSI;     // 0.204
+export const GOLDEN_DIFFERENTIAL = PHI - PSI; // 0.204
 
 /** PHI/PSI natural spectral ratio — Alpha is geometrically ≈ 1.144× Omega */
 export const GOLDEN_RATIO_SEPARATOR = +(PHI / PSI).toFixed(6);
@@ -91,17 +91,20 @@ export const GOLDEN_RATIO_SEPARATOR = +(PHI / PSI).toFixed(6);
  *   When both agree at 1.0 → ABSOLUTE.
  */
 const OMEGA_DRONE_WEIGHTS = {
-  "S1-QuantumArch":    1.0,  // canonical constants — same importance
-  "S2-CodeEng":        0.8,  // code patterns — slightly lenient
-  "S3-SystemsDesign":  0.8,  // narrative/architecture — lenient (not Omega's primary lens)
-  "S4-DataStructs":    1.5,  // ENTITY — Omega's primary lens: what IS this data?
-  "S5-SelfEvolve":     1.0,  // self-reference — same
-  "S6-PainRemoval":    1.0,  // bug/drift — same
-  "S7-PerfForge":      0.8,  // performance — slightly lenient
-  "S8-SecurityForge":  1.5,  // SECURITY — Omega's secondary lens: are boundaries holding?
+  "S1-QuantumArch": 1.0, // canonical constants — same importance
+  "S2-CodeEng": 0.8, // code patterns — slightly lenient
+  "S3-SystemsDesign": 0.8, // narrative/architecture — lenient (not Omega's primary lens)
+  "S4-DataStructs": 1.5, // ENTITY — Omega's primary lens: what IS this data?
+  "S5-SelfEvolve": 1.0, // self-reference — same
+  "S6-PainRemoval": 1.0, // bug/drift — same
+  "S7-PerfForge": 0.8, // performance — slightly lenient
+  "S8-SecurityForge": 1.5, // SECURITY — Omega's secondary lens: are boundaries holding?
 };
 
-const OMEGA_WEIGHT_SUM = Object.values(OMEGA_DRONE_WEIGHTS).reduce((a, b) => a + b, 0);
+const OMEGA_WEIGHT_SUM = Object.values(OMEGA_DRONE_WEIGHTS).reduce(
+  (a, b) => a + b,
+  0,
+);
 
 // ─── Witness class ────────────────────────────────────────────────────────────
 
@@ -133,9 +136,16 @@ export class MerkabaBeEyeSwarmWitness extends MerkabaBeEyeSwarm {
     return rawReports.map((r) => {
       const weight = OMEGA_DRONE_WEIGHTS[r.droneId] ?? 1.0;
       // Recompute weighted coherence: penalize critical/issues by weight factor
-      const criticals = r.findings.filter((f) => f.severity === "CRITICAL").length;
-      const issues    = r.findings.filter((f) => f.severity !== "OK" && f.severity !== "INFO").length;
-      const rawCoherence = Math.max(0, 1 - criticals * 0.3 * weight - (issues - criticals) * 0.1 * weight);
+      const criticals = r.findings.filter(
+        (f) => f.severity === "CRITICAL",
+      ).length;
+      const issues = r.findings.filter(
+        (f) => f.severity !== "OK" && f.severity !== "INFO",
+      ).length;
+      const rawCoherence = Math.max(
+        0,
+        1 - criticals * 0.3 * weight - (issues - criticals) * 0.1 * weight,
+      );
       return { ...r, coherence: +rawCoherence.toFixed(3) };
     });
   }
@@ -164,9 +174,9 @@ export class MerkabaBeEyeSwarmWitness extends MerkabaBeEyeSwarm {
             : swarmCoherence369 >= 0.8
               ? "NOMINAL"
               : "WARNING",
-      witnessRatio:        OMEGA_PSI,
-      goldenBand:          GOLDEN_BAND,
-      goldenDifferential:  GOLDEN_DIFFERENTIAL,
+      witnessRatio: OMEGA_PSI,
+      goldenBand: GOLDEN_BAND,
+      goldenDifferential: GOLDEN_DIFFERENTIAL,
     };
   }
 
@@ -191,25 +201,37 @@ export class MerkabaBeEyeSwarmWitness extends MerkabaBeEyeSwarm {
         semanticType: d.semanticType,
         frequency: d.frequency,
         ring: d.ring,
-        findings: [{
-          severity: "OK",
-          droneId: d.id,
-          domain: d.domain,
-          issue: "Omega (369Hz) self-scan excluded — Witness is the scanner, not the target",
-          fix: "",
-          snippet: "",
-        }],
+        findings: [
+          {
+            severity: "OK",
+            droneId: d.id,
+            domain: d.domain,
+            issue:
+              "Omega (369Hz) self-scan excluded — Witness is the scanner, not the target",
+            fix: "",
+            snippet: "",
+          },
+        ],
         coherence: 1.0,
       }));
       return {
-        swarmId:          `swarm-omega-self-${Date.now()}`,
+        swarmId: `swarm-omega-self-${Date.now()}`,
         architectureSignature: this.architectureSignature,
-        witnessRatio:     OMEGA_PSI,
-        timestamp:        new Date().toISOString(),
-        identity: this.identify(code, { file: filePath, service: "merkaba-geoqode-lattice" }),
+        witnessRatio: OMEGA_PSI,
+        timestamp: new Date().toISOString(),
+        identity: this.identify(code, {
+          file: filePath,
+          service: "merkaba-geoqode-lattice",
+        }),
         droneReports: selfDrones,
         optimizations: [],
-        summary: { critical: 0, high: 0, medium: 0, low: 0, ok: this.drones.length },
+        summary: {
+          critical: 0,
+          high: 0,
+          medium: 0,
+          low: 0,
+          ok: this.drones.length,
+        },
         swarmCoherence: 1.0,
         status: "NOMINAL",
         selfExcluded: true,
@@ -225,4 +247,3 @@ export class MerkabaBeEyeSwarmWitness extends MerkabaBeEyeSwarm {
 
 export const merkabaWitness = new MerkabaBeEyeSwarmWitness();
 export default MerkabaBeEyeSwarmWitness;
-
