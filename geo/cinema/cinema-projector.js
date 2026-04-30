@@ -13,6 +13,7 @@
  * Projection Modes:
  *   immersive  — Full holographic environment, viewer inside the scene
  *   interactive — Viewer can influence narrative flow
+ * @alignment 8→26→48:480
  *   adaptive   — AI adjusts plotlines based on user interaction
  *   passive    — Linear playback (closest to traditional cinema)
  *

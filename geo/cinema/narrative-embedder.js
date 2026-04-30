@@ -7,6 +7,7 @@
  * to the lattice runtime execution layer.
  *
  * Source: MerkabaTheatre Hollywood update (April 29, 2026)
+ * @alignment 8→26→48:480
  */
 
 import {

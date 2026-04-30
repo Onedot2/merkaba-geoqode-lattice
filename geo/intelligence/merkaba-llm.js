@@ -17,6 +17,7 @@
  *
  * Source: MerkabaTheatre Hollywood update (April 29, 2026)
  * Part of: Resonance OS unified Merkaba-mlm-theatre-geoqode-scrypt singularity
+ * @alignment 8→26→48:480
  */
 
 import {

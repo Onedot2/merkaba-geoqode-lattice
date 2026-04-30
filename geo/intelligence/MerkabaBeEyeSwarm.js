@@ -41,10 +41,9 @@ import {
   BOSONIC_ANCHOR_NODES,
   CANONICAL_LATTICE_NODES,
   HARMONIC_SPECTRUM_NODES,
-  SEMANTIC_FREQUENCY_MAP,
   assertCanonicalArchitectureSignature,
 } from "../lattice/transform-420.js";
-import { MERKABA_SEMANTIC_TYPES } from "./merkaba-llm.js";
+import { MERKABA_SEMANTIC_TYPES, SEMANTIC_FREQUENCY_MAP } from "./merkaba-llm.js";
 
 assertCanonicalArchitectureSignature(CANONICAL_ARCHITECTURE);
 
