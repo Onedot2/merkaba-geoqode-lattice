@@ -60,12 +60,12 @@ export const THEATRE_ENGINE_VERSION = "1.0.0";
  * These are the "reality modes" the Resonance OS can project.
  */
 export const REALITY_MODES = Object.freeze({
-  HOLOGRAPHIC:   "immersive",    // Full 48D environment — viewer is inside
-  INTERACTIVE:   "interactive",  // Viewer can alter narrative flow
-  ADAPTIVE:      "adaptive",     // MerkabAware adjusts plotlines in real-time
-  DOCUMENTARY:   "passive",      // Linear output — governance + audit records
-  GOVERNANCE:    "passive",      // Maps business decisions onto resonance cycles
-  INVESTOR:      "adaptive",     // DreamProjector sync + investor storytelling
+  HOLOGRAPHIC: "immersive", // Full 48D environment — viewer is inside
+  INTERACTIVE: "interactive", // Viewer can alter narrative flow
+  ADAPTIVE: "adaptive", // MerkabAware adjusts plotlines in real-time
+  DOCUMENTARY: "passive", // Linear output — governance + audit records
+  GOVERNANCE: "passive", // Maps business decisions onto resonance cycles
+  INVESTOR: "adaptive", // DreamProjector sync + investor storytelling
 });
 
 /**
@@ -73,12 +73,36 @@ export const REALITY_MODES = Object.freeze({
  * Each programme is a lattice-native GeoQode projection narrative.
  */
 export const PROGRAMME_CATALOGUE = Object.freeze({
-  matrix:       { title: "The Matrix",             genre: "sci-fi action",        mode: REALITY_MODES.HOLOGRAPHIC },
-  inception:    { title: "Inception",              genre: "mind-bending thriller", mode: REALITY_MODES.INTERACTIVE },
-  starwars:     { title: "Star Wars",              genre: "epic space opera",      mode: REALITY_MODES.HOLOGRAPHIC },
-  apollo11:     { title: "Apollo 11",              genre: "documentary mode",      mode: REALITY_MODES.DOCUMENTARY },
-  governance:   { title: "Storm Governance",       genre: "narrative",             mode: REALITY_MODES.GOVERNANCE },
-  investordeck: { title: "Storm Investor Deck",    genre: "narrative",             mode: REALITY_MODES.INVESTOR },
+  matrix: {
+    title: "The Matrix",
+    genre: "sci-fi action",
+    mode: REALITY_MODES.HOLOGRAPHIC,
+  },
+  inception: {
+    title: "Inception",
+    genre: "mind-bending thriller",
+    mode: REALITY_MODES.INTERACTIVE,
+  },
+  starwars: {
+    title: "Star Wars",
+    genre: "epic space opera",
+    mode: REALITY_MODES.HOLOGRAPHIC,
+  },
+  apollo11: {
+    title: "Apollo 11",
+    genre: "documentary mode",
+    mode: REALITY_MODES.DOCUMENTARY,
+  },
+  governance: {
+    title: "Storm Governance",
+    genre: "narrative",
+    mode: REALITY_MODES.GOVERNANCE,
+  },
+  investordeck: {
+    title: "Storm Investor Deck",
+    genre: "narrative",
+    mode: REALITY_MODES.INVESTOR,
+  },
 });
 
 // ─── MerkabaTheatreEngine ─────────────────────────────────────────────────────
@@ -106,19 +130,19 @@ export class MerkabaTheatreEngine extends EventEmitter {
   constructor(options = {}) {
     super();
 
-    this.version             = THEATRE_ENGINE_VERSION;
+    this.version = THEATRE_ENGINE_VERSION;
     this.architectureSignature = CANONICAL_ARCHITECTURE;
-    this.architectureDisplay   = "8→26→48:480";
-    this.phi                 = PHI;
-    this.latticeNodes        = CANONICAL_LATTICE_NODES;  // 48
-    this.harmonicSpectrum    = HARMONIC_SPECTRUM_NODES;  // 480
-    this.baseFrequencyHz     = BASE_FREQUENCY_HZ;        // 72
+    this.architectureDisplay = "8→26→48:480";
+    this.phi = PHI;
+    this.latticeNodes = CANONICAL_LATTICE_NODES; // 48
+    this.harmonicSpectrum = HARMONIC_SPECTRUM_NODES; // 480
+    this.baseFrequencyHz = BASE_FREQUENCY_HZ; // 72
 
     // Pipeline components
     this.#virtualizer = new CinemaVirtualizer({
       projectionMode: options.defaultMode || "immersive",
-      aware:   { autoHeal: true, ...(options.aware || {}) },
-      parser:  options.parser  || {},
+      aware: { autoHeal: true, ...(options.aware || {}) },
+      parser: options.parser || {},
       embedder: options.embedder || {},
     });
     this.#aware = new MerkabAware({
@@ -129,12 +153,13 @@ export class MerkabaTheatreEngine extends EventEmitter {
       mode: options.llmMode || "theatre",
       realLLM: options.realLLM || null,
     });
-    this.#adapter = options.stormAdapter instanceof StormAdapter
-      ? options.stormAdapter
-      : null;
+    this.#adapter =
+      options.stormAdapter instanceof StormAdapter
+        ? options.stormAdapter
+        : null;
 
     this.#sessions = [];
-    this.#booted   = false;
+    this.#booted = false;
   }
 
   // ─── Boot Protocol ──────────────────────────────────────────────────────────
@@ -150,18 +175,18 @@ export class MerkabaTheatreEngine extends EventEmitter {
     this.#booted = true;
 
     const bootState = {
-      status:                "booted",
+      status: "booted",
       architectureSignature: this.architectureSignature,
-      architectureDisplay:   this.architectureDisplay,
-      phi:                   this.phi,
-      latticeNodes:          this.latticeNodes,
-      harmonicSpectrum:      this.harmonicSpectrum,
-      baseFrequencyHz:       this.baseFrequencyHz,
-      awarenessLevel:        this.#aware.getState().awarenessLevel,
-      coherenceIndex:        this.#aware.getState().coherenceIndex,
-      programmeCatalogue:    Object.keys(PROGRAMME_CATALOGUE),
-      realityModes:          Object.keys(REALITY_MODES),
-      timestamp:             new Date().toISOString(),
+      architectureDisplay: this.architectureDisplay,
+      phi: this.phi,
+      latticeNodes: this.latticeNodes,
+      harmonicSpectrum: this.harmonicSpectrum,
+      baseFrequencyHz: this.baseFrequencyHz,
+      awarenessLevel: this.#aware.getState().awarenessLevel,
+      coherenceIndex: this.#aware.getState().coherenceIndex,
+      programmeCatalogue: Object.keys(PROGRAMME_CATALOGUE),
+      realityModes: Object.keys(REALITY_MODES),
+      timestamp: new Date().toISOString(),
     };
 
     console.log(
@@ -189,12 +214,21 @@ export class MerkabaTheatreEngine extends EventEmitter {
   async project(scriptText, options = {}) {
     this._assertBooted();
 
-    const sessionId  = `THEATRE-${Date.now()}-${Math.floor(Math.random() * 0xffff).toString(16).toUpperCase()}`;
-    const realityMode = REALITY_MODES[(options.mode || "HOLOGRAPHIC").toUpperCase()]
-      ?? REALITY_MODES.HOLOGRAPHIC;
-    const startedAt  = Date.now();
+    const sessionId = `THEATRE-${Date.now()}-${Math.floor(
+      Math.random() * 0xffff,
+    )
+      .toString(16)
+      .toUpperCase()}`;
+    const realityMode =
+      REALITY_MODES[(options.mode || "HOLOGRAPHIC").toUpperCase()] ??
+      REALITY_MODES.HOLOGRAPHIC;
+    const startedAt = Date.now();
 
-    this.emit("theatre:projection:start", { sessionId, mode: realityMode, title: options.title });
+    this.emit("theatre:projection:start", {
+      sessionId,
+      mode: realityMode,
+      title: options.title,
+    });
 
     try {
       // Step 1: LLM semantic enrichment — extract semantic units before pipeline
@@ -205,8 +239,8 @@ export class MerkabaTheatreEngine extends EventEmitter {
       // Step 2: Full CinemaVirtualizer pipeline
       //   (ScriptParser → NarrativeEmbedder → MerkabAware governance → CinemaProjector)
       const projection = await this.#virtualizer.virtualize(scriptText, {
-        genre:          options.genre,
-        title:          options.title,
+        genre: options.genre,
+        title: options.title,
         projectionMode: realityMode,
       });
 
@@ -234,12 +268,11 @@ export class MerkabaTheatreEngine extends EventEmitter {
 
       this.emit("theatre:projection", session);
       return session;
-
     } catch (err) {
       const errorSession = {
         sessionId,
-        status:  "error",
-        error:   err.message,
+        status: "error",
+        error: err.message,
         options,
         elapsedMs: Date.now() - startedAt,
         geoqode: this._buildGeoCoordinate("systems-design", 3, 0.3),
@@ -264,7 +297,7 @@ export class MerkabaTheatreEngine extends EventEmitter {
     if (!prog) {
       throw new Error(
         `[MerkabaTheatreEngine] Unknown programme "${programmeName}". ` +
-        `Available: ${Object.keys(PROGRAMME_CATALOGUE).join(", ")}`,
+          `Available: ${Object.keys(PROGRAMME_CATALOGUE).join(", ")}`,
       );
     }
 
@@ -274,7 +307,7 @@ export class MerkabaTheatreEngine extends EventEmitter {
     return this.project(scriptText, {
       title: prog.title,
       genre: prog.genre,
-      mode:  prog.mode.toUpperCase(),
+      mode: prog.mode.toUpperCase(),
       ...extraOptions,
     });
   }
@@ -289,17 +322,21 @@ export class MerkabaTheatreEngine extends EventEmitter {
   getOSHealth() {
     const state = this.#aware.getState();
     return {
-      status:                state.awarenessLevel === AWARENESS_LEVELS.SINGULARITY ? "singularity" : "active",
-      awarenessLevel:        state.awarenessLevel,
-      coherenceIndex:        state.coherenceIndex,
-      coherenceThresholds:   COHERENCE_THRESHOLDS,
+      status:
+        state.awarenessLevel === AWARENESS_LEVELS.SINGULARITY
+          ? "singularity"
+          : "active",
+      awarenessLevel: state.awarenessLevel,
+      coherenceIndex: state.coherenceIndex,
+      coherenceThresholds: COHERENCE_THRESHOLDS,
       architectureSignature: this.architectureSignature,
-      architectureDisplay:   this.architectureDisplay,
-      phi:                   this.phi,
-      activeSessions:        this.#sessions.length,
-      lastSessionId:         this.#sessions[this.#sessions.length - 1]?.sessionId ?? null,
-      booted:                this.#booted,
-      timestamp:             new Date().toISOString(),
+      architectureDisplay: this.architectureDisplay,
+      phi: this.phi,
+      activeSessions: this.#sessions.length,
+      lastSessionId:
+        this.#sessions[this.#sessions.length - 1]?.sessionId ?? null,
+      booted: this.#booted,
+      timestamp: new Date().toISOString(),
     };
   }
 
@@ -320,30 +357,39 @@ export class MerkabaTheatreEngine extends EventEmitter {
     }
   }
 
-  _buildSession({ sessionId, scriptText, options, semanticProfile, projection, awarenessState, startedAt, realityMode }) {
+  _buildSession({
+    sessionId,
+    scriptText,
+    options,
+    semanticProfile,
+    projection,
+    awarenessState,
+    startedAt,
+    realityMode,
+  }) {
     const elapsedMs = Date.now() - startedAt;
     return {
       sessionId,
-      status:      projection?.success ? "projected" : "partial",
-      title:       options.title || projection?.meta?.title || "Untitled Projection",
-      mode:        realityMode,
+      status: projection?.success ? "projected" : "partial",
+      title: options.title || projection?.meta?.title || "Untitled Projection",
+      mode: realityMode,
       elapsedMs,
       // Cinema output
       projection: {
-        success:        projection?.success ?? false,
-        sceneCount:     projection?.sceneCount ?? 0,
+        success: projection?.success ?? false,
+        sceneCount: projection?.sceneCount ?? 0,
         embeddingCount: projection?.embeddingCount ?? 0,
-        environment:    projection?.environment ?? null,
-        narrative:      projection?.narrative ?? null,
-        frames:         projection?.dreamFrames ?? [],
+        environment: projection?.environment ?? null,
+        narrative: projection?.narrative ?? null,
+        frames: projection?.dreamFrames ?? [],
       },
       // Resonance OS state
       resonance: {
         architectureSignature: this.architectureSignature,
-        phi:             this.phi,
-        coherenceIndex:  awarenessState.coherenceIndex,
-        awarenessLevel:  awarenessState.awarenessLevel,
-        healed:          awarenessState.healCount > 0,
+        phi: this.phi,
+        coherenceIndex: awarenessState.coherenceIndex,
+        awarenessLevel: awarenessState.awarenessLevel,
+        healed: awarenessState.healCount > 0,
       },
       // Semantic profile from Merkaba-LLM
       semanticProfile: semanticProfile ?? null,
@@ -359,30 +405,44 @@ export class MerkabaTheatreEngine extends EventEmitter {
 
   _buildGeoCoordinate(domain, sector, confidence) {
     const DOMAIN_SEMANTIC = {
-      "quantum-arch": "PHYSICS", "code-eng": "ACTION", "systems-design": "NARRATIVE",
-      "data-structs": "ENTITY", "self-evolve": "HOLOGRAPHIC", "pain-removal": "EMOTION",
-      "perf-forge": "ACTION", "security-forge": "PHYSICS",
+      "quantum-arch": "PHYSICS",
+      "code-eng": "ACTION",
+      "systems-design": "NARRATIVE",
+      "data-structs": "ENTITY",
+      "self-evolve": "HOLOGRAPHIC",
+      "pain-removal": "EMOTION",
+      "perf-forge": "ACTION",
+      "security-forge": "PHYSICS",
     };
     const semanticType = DOMAIN_SEMANTIC[domain] ?? "NARRATIVE";
-    const frequency    = SEMANTIC_FREQUENCY_MAP[semanticType] ?? 963;
-    const SECTOR_BASE  = { 1:0, 2:6, 3:12, 4:18, 5:26, 6:32, 7:38, 8:44 };
-    const base         = SECTOR_BASE[sector] ?? 12;
-    const offset       = Math.floor(confidence * PHI * 2) % 6;
-    const latticeNode  = Math.min(47, base + offset);
+    const frequency = SEMANTIC_FREQUENCY_MAP[semanticType] ?? 963;
+    const SECTOR_BASE = {
+      1: 0,
+      2: 6,
+      3: 12,
+      4: 18,
+      5: 26,
+      6: 32,
+      7: 38,
+      8: 44,
+    };
+    const base = SECTOR_BASE[sector] ?? 12;
+    const offset = Math.floor(confidence * PHI * 2) % 6;
+    const latticeNode = Math.min(47, base + offset);
     const harmonicNode = Math.min(479, Math.floor(latticeNode * PHI * 2.96));
     return {
       architectureSignature: this.architectureSignature,
-      architectureDisplay:   this.architectureDisplay,
+      architectureDisplay: this.architectureDisplay,
       semanticType,
       frequency,
       latticeNode,
       harmonicNode,
       phiCoefficient: this.phi,
-      coherence:      Math.min(1, Math.max(0, confidence)),
+      coherence: Math.min(1, Math.max(0, confidence)),
       domain,
-      source:         "merkaba-theatre-engine",
-      d48Expansion:   "CANONICAL",
-      d480Expansion:  "FULL_HARMONIC",
+      source: "merkaba-theatre-engine",
+      d48Expansion: "CANONICAL",
+      d480Expansion: "FULL_HARMONIC",
     };
   }
 
@@ -398,7 +458,10 @@ export class MerkabaTheatreEngine extends EventEmitter {
       governance: `TITLE: ${prog.title}\nGENRE: ${prog.genre}\nSCENE 1: INT. STORM GOVERNANCE LATTICE — D48 NODE\nAll 48 Storm service nodes are visible as living resonance cells. Decisions flow as coherence pulses.\nSEMANTIC: entity=Storm architecture=8→26→48:480, action=governance decision-flow, physics=coherence-index\n`,
       investordeck: `TITLE: ${prog.title}\nGENRE: ${prog.genre}\nSCENE 1: EXT. STORM UNIVERSE — INVESTOR HOLODECK\nThe entire Storm ecosystem is projected as a living organism. Revenue streams pulse at 528Hz.\nSEMANTIC: entity=Storm Brains4Ai, narrative=autonomous-business-engine growth, action=revenue-generation\n`,
     };
-    return seeds[name] || `TITLE: ${prog.title}\nGENRE: ${prog.genre}\nSCENE 1: UNDEFINED\n`;
+    return (
+      seeds[name] ||
+      `TITLE: ${prog.title}\nGENRE: ${prog.genre}\nSCENE 1: UNDEFINED\n`
+    );
   }
 }
 

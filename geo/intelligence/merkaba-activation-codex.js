@@ -233,7 +233,11 @@ export function innerOctahedronSurfaceArea(a = 1) {
 export function amplificationFactor(a = 1) {
   const baseArea = innerOctahedronSurfaceArea(a);
   const amplifiedArea = +(baseArea * HARMONIC_SPECTRUM_NODES).toFixed(6);
-  return { baseArea, amplificationFactor: HARMONIC_SPECTRUM_NODES, amplifiedArea };
+  return {
+    baseArea,
+    amplificationFactor: HARMONIC_SPECTRUM_NODES,
+    amplifiedArea,
+  };
 }
 
 /**
@@ -251,7 +255,8 @@ export function amplificationFactor(a = 1) {
  */
 export function fractalInferenceLines(depth = 0) {
   const d = Math.max(0, Math.floor(depth));
-  const total = PRIMARY_EDGES * DUAL_CHANNEL_FACTOR * Math.pow(HARMONIC_SPECTRUM_NODES, d);
+  const total =
+    PRIMARY_EDGES * DUAL_CHANNEL_FACTOR * Math.pow(HARMONIC_SPECTRUM_NODES, d);
   const resonanceLines = total / 2;
   const complianceLines = total / 2;
   return {
@@ -303,7 +308,8 @@ export function buildFractalSubLattice(edgeLength = 1, maxDepth = 2) {
           inferenceLines: fractalInferenceLines(1).inferenceLines,
           channel: "resonance",
           // recurse only 1 level into children for snapshot sanity
-          children: depth + 1 < depth0 ? buildNode(subEdge, depth + 1).children : [],
+          children:
+            depth + 1 < depth0 ? buildNode(subEdge, depth + 1).children : [],
         },
       ];
     }
@@ -318,8 +324,8 @@ export function buildFractalSubLattice(edgeLength = 1, maxDepth = 2) {
 // This makes every harmonic node addressable by its parent D48 dimension index.
 // Canonical base frequency: BASE_FREQUENCY_HZ = 72 Hz (not 7.83 — that's stale).
 
-const D48_CLUSTER_COUNT = 48;         // one cluster per D48 lattice node
-const SUB_MERKABAS_PER_CLUSTER = 10;  // 48 × 10 = 480
+const D48_CLUSTER_COUNT = 48; // one cluster per D48 lattice node
+const SUB_MERKABAS_PER_CLUSTER = 10; // 48 × 10 = 480
 
 export const CLUSTER_DISTRIBUTION = Object.freeze({
   clustersPerLattice: D48_CLUSTER_COUNT,

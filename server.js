@@ -8,8 +8,16 @@ import { MerkabaBridge } from "./geo/bridge/merkaba-bridge.js";
 import { MERKABA_LATTICE } from "./geo/certification/enterprise-certifier.js";
 import { CinemaVirtualizer } from "./geo/cinema/cinema-virtualizer.js";
 import { MerkabaLLM } from "./geo/intelligence/merkaba-llm.js";
-import { MerkabAware, AWARENESS_LEVELS, COHERENCE_THRESHOLDS } from "./geo/intelligence/merkaba-aware.js";
-import { createMerkabaTheatreEngine, PROGRAMME_CATALOGUE, REALITY_MODES } from "./MerkabaTheatreEngine.js";
+import {
+  MerkabAware,
+  AWARENESS_LEVELS,
+  COHERENCE_THRESHOLDS,
+} from "./geo/intelligence/merkaba-aware.js";
+import {
+  createMerkabaTheatreEngine,
+  PROGRAMME_CATALOGUE,
+  REALITY_MODES,
+} from "./MerkabaTheatreEngine.js";
 import {
   MerkabageoqodeOS,
   StormMerkabaTransformCodex,
@@ -112,7 +120,10 @@ function getCinemaVirtualizer() {
 // Singleton MerkabAware (Resonance OS supervisory layer)
 let _aware = null;
 function getAware() {
-  if (!_aware) { _aware = new MerkabAware({ autoHeal: true }); _aware.activate(); }
+  if (!_aware) {
+    _aware = new MerkabAware({ autoHeal: true });
+    _aware.activate();
+  }
   return _aware;
 }
 
@@ -222,7 +233,7 @@ const server = createServer(async (req, res) => {
         architectureDisplay: "8→26→48:480",
         phi: 1.618,
         awarenessLevel: awState.awarenessLevel,
-        coherenceIndex:  awState.coherenceIndex,
+        coherenceIndex: awState.coherenceIndex,
         timestamp: new Date().toISOString(),
       });
     }
@@ -514,7 +525,7 @@ const server = createServer(async (req, res) => {
           name,
           title: prog.title,
           genre: prog.genre,
-          mode:  prog.mode,
+          mode: prog.mode,
         })),
       });
     }
@@ -524,19 +535,32 @@ const server = createServer(async (req, res) => {
       const body = await readBody(req);
       const { narrative, genre, mode, title } = body;
       if (!narrative || typeof narrative !== "string") {
-        return json(res, 400, { ok: false, error: "narrative (string) is required" });
+        return json(res, 400, {
+          ok: false,
+          error: "narrative (string) is required",
+        });
       }
       try {
         const theatre = await getTheatre();
-        const session = await theatre.project(narrative, { genre, mode, title });
+        const session = await theatre.project(narrative, {
+          genre,
+          mode,
+          title,
+        });
         return json(res, 200, { ok: true, session });
       } catch (err) {
-        return json(res, 422, { ok: false, error: "Theatre projection failed", message: err.message });
+        return json(res, 422, {
+          ok: false,
+          error: "Theatre projection failed",
+          message: err.message,
+        });
       }
     }
 
     // ── POST /theatre/programme/:name ────────────────────────────────────
-    const theatreProgrammeMatch = pathname.match(/^\/theatre\/programme\/([a-z0-9-]+)$/);
+    const theatreProgrammeMatch = pathname.match(
+      /^\/theatre\/programme\/([a-z0-9-]+)$/,
+    );
     if (req.method === "POST" && theatreProgrammeMatch) {
       const name = theatreProgrammeMatch[1];
       const body = await readBody(req);
@@ -555,7 +579,10 @@ const server = createServer(async (req, res) => {
       const body = await readBody(req);
       const { text, genre } = body;
       if (!text || typeof text !== "string") {
-        return json(res, 400, { ok: false, error: "text (string) is required" });
+        return json(res, 400, {
+          ok: false,
+          error: "text (string) is required",
+        });
       }
       const llm = getLLM();
       const embedding = llm.embedText(text, { genre: genre || "narrative" });

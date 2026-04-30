@@ -169,7 +169,9 @@ export class StormMerkabaTransformCodex {
     );
     this._push(` → ${FOUNDATION_NODES} foundation retained`);
     this._push(` → ${BOSONIC_ANCHOR_NODES} bosonic anchor retained`);
-    this._push(` → ${CANONICAL_LATTICE_NODES} maximalist canonical build enforced`);
+    this._push(
+      ` → ${CANONICAL_LATTICE_NODES} maximalist canonical build enforced`,
+    );
     this._push(` → ${HARMONIC_SPECTRUM_NODES} harmonic spectrum locked`);
 
     return {

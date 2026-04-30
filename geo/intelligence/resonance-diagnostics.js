@@ -276,7 +276,10 @@ export default ResonanceDiagnostics;
  * @param {number}   [threshold=0.05] — max acceptable drift in radians
  * @returns {{ phases: number[], drifts: number[], stable: boolean[], overallStable: boolean, maxDrift: number }}
  */
-export function measurePhaseDrift(phases = new Array(8).fill(0), threshold = 0.05) {
+export function measurePhaseDrift(
+  phases = new Array(8).fill(0),
+  threshold = 0.05,
+) {
   const drifts = phases.map((p) => +Math.abs(p).toFixed(8));
   const stable = drifts.map((d) => d <= threshold);
   const maxDrift = +Math.max(...drifts).toFixed(8);
