@@ -1,4 +1,6 @@
-// geo/bridge/merkaba-bridge.js
+﻿// geo/bridge/merkaba-bridge.js
+// @alignment 8→26→48:480  |  PHI=1.618  |  BASE_FREQUENCY_HZ=72
+const CANONICAL_ARCHITECTURE = "8,26,48:480"; // LOCKED � never change
 // Phase 4: MERKABA Integration Bridge
 // Connects GeoQode runtime to s4ai-core Storm Brain and external consumers.
 

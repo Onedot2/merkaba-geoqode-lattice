@@ -1,4 +1,6 @@
-// geo/certification/audit-trail.js
+﻿// geo/certification/audit-trail.js
+// @alignment 8→26→48:480  |  PHI=1.618  |  BASE_FREQUENCY_HZ=72
+const CANONICAL_ARCHITECTURE = "8,26,48:480"; // LOCKED � never change
 // Phase 7: Immutable Append-Only Audit Trail
 // Each entry is chained to the previous via SHA256 hash — tamper-evident log.
 

@@ -1,4 +1,6 @@
-// geo/bridge/storm-adapter.js
+﻿// geo/bridge/storm-adapter.js
+// @alignment 8→26→48:480  |  PHI=1.618  |  BASE_FREQUENCY_HZ=72
+const CANONICAL_ARCHITECTURE = "8,26,48:480"; // LOCKED � never change
 // Phase 4: Storm Brain adapter — wraps MerkabaBridge for direct s4ai-core integration.
 //
 // From pwai-ai-worker or pwai-api-service:

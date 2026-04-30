@@ -1,4 +1,6 @@
-// geo/distributed/coordinator.js
+﻿// geo/distributed/coordinator.js
+// @alignment 8→26→48:480  |  PHI=1.618  |  BASE_FREQUENCY_HZ=72
+const CANONICAL_ARCHITECTURE = "8,26,48:480"; // LOCKED � never change
 // Phase 5: Distributed Coordinator
 // Orchestrates job queuing, node selection, and result aggregation across a cluster.
 

@@ -1,4 +1,6 @@
-// geo/runtime/lattice-scheduler.js
+﻿// geo/runtime/lattice-scheduler.js
+// @alignment 8→26→48:480  |  PHI=1.618  |  BASE_FREQUENCY_HZ=72
+const CANONICAL_ARCHITECTURE = "8,26,48:480"; // LOCKED � never change
 // Lattice-driven scheduler for GeoQode runtime decisions.
 
 import { performance } from "node:perf_hooks";

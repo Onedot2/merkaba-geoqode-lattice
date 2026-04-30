@@ -1,4 +1,6 @@
-// geo/certification/enterprise-certifier.js
+﻿// geo/certification/enterprise-certifier.js
+// @alignment 8→26→48:480  |  PHI=1.618  |  BASE_FREQUENCY_HZ=72
+const CANONICAL_ARCHITECTURE = "8,26,48:480"; // LOCKED � never change
 // Phase 7: Enterprise Certification Framework
 // Full 48-dimension canonical MERKABA lattice certification with audit trail and compliance reports.
 
@@ -6,7 +8,7 @@ import crypto from "crypto";
 import { QBITSValidator } from "../validation/qbits-validator.js";
 
 // Complete 48-dimension canonical MERKABA lattice definition
-export const MERKABA_LATTICE = {
+export const MERKABA_LATTICE = Object.freeze({
   // Tier 1: Core Foundations (1-12)
   1: { tier: 1, name: "Syntax Compliance", required: true },
   2: { tier: 1, name: "Token Integrity", required: true },
@@ -62,7 +64,7 @@ export const MERKABA_LATTICE = {
   46: { tier: 4, name: "Interference Mitigation", required: true },
   47: { tier: 4, name: "Business Overlay Integration", required: false },
   48: { tier: 4, name: "Resonance Certificate v3", required: true },
-};
+});
 
 const REQUIRED_DIMENSIONS = Object.entries(MERKABA_LATTICE)
   .filter(([, v]) => v.required)

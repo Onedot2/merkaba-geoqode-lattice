@@ -1,4 +1,6 @@
-// geo/runtime/execution-engine.js
+﻿// geo/runtime/execution-engine.js
+// @alignment 8→26→48:480  |  PHI=1.618  |  BASE_FREQUENCY_HZ=72
+const CANONICAL_ARCHITECTURE = "8,26,48:480"; // LOCKED � never change
 // GeoQode Execution Engine — orchestrates parser, runtime, and compliance
 
 import { Parser } from "../grammar/parser.js";
