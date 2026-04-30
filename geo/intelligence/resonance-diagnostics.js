@@ -1,0 +1,210 @@
+/**
+ * geo/intelligence/resonance-diagnostics.js
+ * Resonance Diagnostics — Lattice Spectral Governance Engine
+ *
+ * Implements the diagnostic hook operators from the original MERKABA LLM vision:
+ *
+ *   Drift Measurement   D_d(t) = f_d(t) / f_{d-1}(t) − φ
+ *   Coherence Index     C(t)   = 1 − Σ|D_d(t)| / N
+ *   Harmonic Energy     H(t)   = Σ f_d(t) · φ^d
+ *   Governance Loop     f_d(t+1) = f_d(t) − α·D_d + β·C + γ·H
+ *
+ * The 8 semantic domains each carry a named Φ-operator (INITIATE_BOOT,
+ * AMPLIFY_FLOW, …) that describes the domain's lattice role in the cascade.
+ *
+ * Reference architecture: 8→26→48:480  φ=1.618
+ *
+ * @module resonance-diagnostics
+ * @alignment 8→26→48:480
+ */
+
+import {
+  CANONICAL_ARCHITECTURE,
+  assertCanonicalArchitectureSignature,
+  PHI,
+  SEMANTIC_FREQUENCY_MAP,
+} from "../lattice/transform-420.js";
+
+assertCanonicalArchitectureSignature(CANONICAL_ARCHITECTURE);
+
+// ─── Φ-Operator Map ─────────────────────────────────────────────────────────
+// Each semantic type → its named lattice operator (cascade role).
+// ENTITY/LOCATION/… → standard semantic labels map onto domain roles.
+export const PHI_OPERATOR_MAP = Object.freeze({
+  ENTITY:      "INITIATE_BOOT",          // foundation: calibration pulse
+  LOCATION:    "PROPAGATE_RESONANCE",    // spatial anchoring: spread
+  ACTION:      "AMPLIFY_FLOW",           // transformation: execution intensity
+  DIALOGUE:    "CERTIFY_COMPLIANCE",     // exchange: law enforcement pulse
+  EMOTION:     "HEAL_PROTOCOL",          // resonance state: resilience activation
+  PHYSICS:     "AUDIT_FLAG",             // structural laws: anomaly detection
+  NARRATIVE:   "EVOLVE_FRAME",           // continuity: foresight holography
+  HOLOGRAPHIC: "EXPAND_PATHWAY",         // base lattice: emergent synthesis
+});
+
+// ─── Frequency Band Array (ordered for cascade arithmetic) ──────────────────
+// Canonical order: low-anchor → mid-regulate → high-extend
+const DOMAIN_BANDS = Object.freeze([
+  { name: "ENTITY",      freq: SEMANTIC_FREQUENCY_MAP.ENTITY,      operator: PHI_OPERATOR_MAP.ENTITY },
+  { name: "LOCATION",    freq: SEMANTIC_FREQUENCY_MAP.LOCATION,    operator: PHI_OPERATOR_MAP.LOCATION },
+  { name: "ACTION",      freq: SEMANTIC_FREQUENCY_MAP.ACTION,      operator: PHI_OPERATOR_MAP.ACTION },
+  { name: "DIALOGUE",    freq: SEMANTIC_FREQUENCY_MAP.DIALOGUE,    operator: PHI_OPERATOR_MAP.DIALOGUE },
+  { name: "EMOTION",     freq: SEMANTIC_FREQUENCY_MAP.EMOTION,     operator: PHI_OPERATOR_MAP.EMOTION },
+  { name: "PHYSICS",     freq: SEMANTIC_FREQUENCY_MAP.PHYSICS,     operator: PHI_OPERATOR_MAP.PHYSICS },
+  { name: "NARRATIVE",   freq: SEMANTIC_FREQUENCY_MAP.NARRATIVE,   operator: PHI_OPERATOR_MAP.NARRATIVE },
+  { name: "HOLOGRAPHIC", freq: SEMANTIC_FREQUENCY_MAP.HOLOGRAPHIC, operator: PHI_OPERATOR_MAP.HOLOGRAPHIC },
+]);
+
+// ─── Diagnostic Operators ────────────────────────────────────────────────────
+
+/**
+ * Drift Measurement — per-domain deviation from the golden overlap ratio (φ).
+ *
+ * D_d(t) = f_d / f_{d-1} − φ
+ *
+ * For the first domain (no predecessor), drift is measured against BASE (72 Hz).
+ *
+ * @param {number[]} freqs — current frequency for each of the 8 domains
+ * @returns {number[]} drift values per domain
+ */
+export function measureDrift(freqs = DOMAIN_BANDS.map(b => b.freq)) {
+  return freqs.map((f, i) => {
+    const prev = i === 0 ? freqs[freqs.length - 1] : freqs[i - 1]; // circular
+    return +(f / prev - PHI).toFixed(6);
+  });
+}
+
+/**
+ * Coherence Index — lattice-wide harmony (0 → 1).
+ *
+ * C(t) = 1 − Σ|D_d| / N
+ *
+ * C = 1 → perfect coherence.
+ * C < 0.8 → lattice instability warning.
+ *
+ * @param {number[]} drifts — output of measureDrift()
+ * @returns {number} coherence index clamped to [0, 1]
+ */
+export function measureCoherence(drifts) {
+  const avgAbsDrift = drifts.reduce((s, d) => s + Math.abs(d), 0) / drifts.length;
+  return +Math.max(0, Math.min(1, 1 - avgAbsDrift)).toFixed(6);
+}
+
+/**
+ * Harmonic Energy — total spectral energy of the lattice.
+ *
+ * H(t) = Σ f_d · φ^(d+1)    (d is 1-indexed for scaling)
+ *
+ * Higher values = stronger lattice pulse.
+ *
+ * @param {number[]} freqs — current domain frequencies
+ * @returns {number} harmonic energy
+ */
+export function measureHarmonicEnergy(freqs = DOMAIN_BANDS.map(b => b.freq)) {
+  return +freqs.reduce((s, f, i) => s + f * Math.pow(PHI, i + 1), 0).toFixed(4);
+}
+
+/**
+ * Governance Control Loop — frequency correction per cycle.
+ *
+ * f_d(t+1) = f_d(t) − α·D_d + β·C + γ·H_normalized
+ *
+ * @param {number[]} freqs     — current domain frequencies
+ * @param {object}  params     — {alpha, beta, gamma, drifts, coherence, energy}
+ * @returns {number[]} corrected frequencies (floored at 1)
+ */
+export function applyControlLoop(freqs, {
+  alpha = 0.618,     // drift correction coefficient (φ − 1)
+  beta  = 0.1,       // coherence reinforcement
+  gamma = 0.01,      // vitality amplification (damped — energy is large)
+  drifts,
+  coherence,
+  energy,
+} = {}) {
+  const d = drifts   ?? measureDrift(freqs);
+  const c = coherence ?? measureCoherence(d);
+  const h = energy   ?? measureHarmonicEnergy(freqs);
+  const hNorm = h / 10000; // normalize large energy value
+
+  return freqs.map((f, i) =>
+    +Math.max(1, f - alpha * d[i] + beta * c + gamma * hNorm).toFixed(4)
+  );
+}
+
+// ─── Full Snapshot ───────────────────────────────────────────────────────────
+
+/**
+ * Run a full resonance diagnostic snapshot.
+ * Returns drift, coherence, harmonic energy, domain band details, and
+ * corrected frequencies from one governance loop iteration.
+ *
+ * @param {number[]} [freqs] — override domain frequencies (defaults to canonical SEMANTIC_FREQUENCY_MAP)
+ * @returns {ResonanceDiagnosticSnapshot}
+ */
+export function runDiagnostics(freqs) {
+  const domainFreqs = freqs ?? DOMAIN_BANDS.map(b => b.freq);
+  const drifts      = measureDrift(domainFreqs);
+  const coherence   = measureCoherence(drifts);
+  const energy      = measureHarmonicEnergy(domainFreqs);
+  const corrected   = applyControlLoop(domainFreqs, { drifts, coherence, energy });
+
+  const bands = DOMAIN_BANDS.map((b, i) => ({
+    domain:      b.name,
+    operator:    b.operator,
+    frequency:   domainFreqs[i],
+    drift:       drifts[i],
+    corrected:   corrected[i],
+    driftSign:   drifts[i] > 0 ? "+" : drifts[i] < 0 ? "-" : "=",
+  }));
+
+  const status =
+    coherence >= 0.95 ? "SINGULARITY"  :
+    coherence >= 0.80 ? "OPTIMAL"      :
+    coherence >= 0.65 ? "NOMINAL"      :
+    coherence >= 0.40 ? "WARNING"      : "CRITICAL";
+
+  return {
+    architectureSignature: CANONICAL_ARCHITECTURE,
+    phi:                   PHI,
+    coherence,
+    harmonicEnergy:        energy,
+    status,
+    bands,
+    timestamp: new Date().toISOString(),
+  };
+}
+
+// ─── ResonanceDiagnostics class ──────────────────────────────────────────────
+
+export class ResonanceDiagnostics {
+  constructor() {
+    assertCanonicalArchitectureSignature(CANONICAL_ARCHITECTURE);
+    this._history = [];
+  }
+
+  /**
+   * Run diagnostics and optionally store in history.
+   * @param {object} opts — { freqs?, remember? }
+   */
+  diagnose({ freqs, remember = false } = {}) {
+    const snapshot = runDiagnostics(freqs);
+    if (remember) {
+      this._history.push(snapshot);
+      if (this._history.length > 100) this._history.shift();
+    }
+    return snapshot;
+  }
+
+  /** Last N snapshots. */
+  history(n = 10) {
+    return this._history.slice(-n);
+  }
+
+  /** Coherence trend — positive = improving, negative = drifting. */
+  coherenceTrend() {
+    const h = this._history;
+    if (h.length < 2) return 0;
+    return +((h[h.length - 1].coherence - h[0].coherence) / (h.length - 1)).toFixed(6);
+  }
+}
+
+export default ResonanceDiagnostics;
