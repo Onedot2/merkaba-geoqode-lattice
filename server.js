@@ -730,19 +730,39 @@ const server = createServer(async (req, res) => {
             label: "storm-adapter",
           },
           {
-            path: join(WORKSPACE_ROOT, "Merkaba48OS", "core", "MerkabaHandshake.js"),
+            path: join(
+              WORKSPACE_ROOT,
+              "Merkaba48OS",
+              "core",
+              "MerkabaHandshake.js",
+            ),
             label: "handshake",
           },
           {
-            path: join(WORKSPACE_ROOT, "Merkaba48OS", "core", "MerkabaPacket.js"),
+            path: join(
+              WORKSPACE_ROOT,
+              "Merkaba48OS",
+              "core",
+              "MerkabaPacket.js",
+            ),
             label: "packet",
           },
           {
-            path: join(WORKSPACE_ROOT, "Merkaba48OS", "core", "MerkabaSCRYPT.js"),
+            path: join(
+              WORKSPACE_ROOT,
+              "Merkaba48OS",
+              "core",
+              "MerkabaSCRYPT.js",
+            ),
             label: "scrypt",
           },
           {
-            path: join(WORKSPACE_ROOT, "Merkaba48OS", "core", "MerkabaTransforms.js"),
+            path: join(
+              WORKSPACE_ROOT,
+              "Merkaba48OS",
+              "core",
+              "MerkabaTransforms.js",
+            ),
             label: "transforms",
           },
         ];
@@ -792,7 +812,12 @@ const server = createServer(async (req, res) => {
         if (wantAttest) {
           const { default: DualAttestation } = await import(
             pathToFileURL(
-              join(__rootDir, "geo", "intelligence", "MerkabaDualAttestation.js"),
+              join(
+                __rootDir,
+                "geo",
+                "intelligence",
+                "MerkabaDualAttestation.js",
+              ),
             ).href
           );
           dualAttestation = await DualAttestation.attestScanner();

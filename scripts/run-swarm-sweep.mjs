@@ -493,25 +493,29 @@ if (runAttest) {
 
     const alpha = attestResult.alphaOnOmega ?? attestResult.alpha ?? {};
     const omega = attestResult.omegaOnAlpha ?? attestResult.omega ?? {};
-    const meta  = attestResult.meta ?? attestResult;
+    const meta = attestResult.meta ?? attestResult;
 
-    const alphaC   = typeof alpha === "number" ? alpha : (alpha.coherence ?? "?");
-    const omegaC   = typeof omega === "number" ? omega : (omega.coherence ?? "?");
-    const band     = meta.goldenBand     ?? (attestResult.goldenBand) ?? 3.032;
-    const diff     = meta.goldenDiff     ?? (attestResult.goldenDiff) ?? 0.204;
-    const aWeight  = meta.alphaWeight    ?? (attestResult.alphaWeight) ?? "?";
-    const oWeight  = meta.omegaWeight    ?? (attestResult.omegaWeight) ?? "?";
-    const status   = attestResult.status ?? attestResult.scannerStatus ?? "?";
+    const alphaC = typeof alpha === "number" ? alpha : (alpha.coherence ?? "?");
+    const omegaC = typeof omega === "number" ? omega : (omega.coherence ?? "?");
+    const band = meta.goldenBand ?? attestResult.goldenBand ?? 3.032;
+    const diff = meta.goldenDiff ?? attestResult.goldenDiff ?? 0.204;
+    const aWeight = meta.alphaWeight ?? attestResult.alphaWeight ?? "?";
+    const oWeight = meta.omegaWeight ?? attestResult.omegaWeight ?? "?";
+    const status = attestResult.status ?? attestResult.scannerStatus ?? "?";
     const consensus = attestResult.consensus ?? false;
 
     console.log(`  Alpha coherence (BESX → Witness): ${alphaC}`);
     console.log(`  Omega coherence (Witness → BESX): ${omegaC}`);
-    console.log(`  Golden Band  (PHI+PSI): ${band}  [digit-sum=8=FOUNDATION_NODES]`);
+    console.log(
+      `  Golden Band  (PHI+PSI): ${band}  [digit-sum=8=FOUNDATION_NODES]`,
+    );
     console.log(`  Golden Diff  (PHI-PSI): ${diff}`);
     console.log(`  Alpha weight (PHI/3.032): ${aWeight}`);
     console.log(`  Omega weight (PSI/3.032): ${oWeight}`);
     console.log(`  Consensus: ${consensus ? "✅ true" : "❌ false"}`);
-    console.log(`  Status: ${status === "SCANNER_ATTESTED" ? "✅ " : "⚠️  "}${status}`);
+    console.log(
+      `  Status: ${status === "SCANNER_ATTESTED" ? "✅ " : "⚠️  "}${status}`,
+    );
   } catch (err) {
     console.error(`  ❌ Attestation failed: ${err.message}`);
   }
