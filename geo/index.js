@@ -85,6 +85,8 @@ export {
   measureCoherence,
   measureHarmonicEnergy,
   applyControlLoop,
+  measurePhaseDrift,
+  propagateResonance,
   PHI_OPERATOR_MAP,
 } from "./intelligence/resonance-diagnostics.js";
 export {
@@ -100,6 +102,9 @@ export {
   amplificationFactor,
   fractalInferenceLines,
   buildFractalSubLattice,
+  CLUSTER_DISTRIBUTION,
+  dimensionClusterFrequency,
+  buildClusteredSubLattice,
   _codexInstance,
 } from "./intelligence/merkaba-activation-codex.js";
 

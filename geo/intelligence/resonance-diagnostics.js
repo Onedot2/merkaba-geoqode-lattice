@@ -8,6 +8,8 @@
  *   Coherence Index     C(t)   = 1 − Σ|D_d(t)| / N
  *   Harmonic Energy     H(t)   = Σ f_d(t) · φ^d
  *   Governance Loop     f_d(t+1) = f_d(t) − α·D_d + β·C + γ·H
+ *   Phase Drift         PD_n   = |φ_n − 0| per node (stability: ≤ 0.05 rad)
+ *   Resonance Intensity I(t)   = Σ A_n · Re[e^(i·(2π·f_n·t + φ_n))] × (1−δ)
  *
  * The 8 semantic domains each carry a named Φ-operator (INITIATE_BOOT,
  * AMPLIFY_FLOW, …) that describes the domain's lattice role in the cascade.
@@ -31,27 +33,59 @@ assertCanonicalArchitectureSignature(CANONICAL_ARCHITECTURE);
 // Each semantic type → its named lattice operator (cascade role).
 // ENTITY/LOCATION/… → standard semantic labels map onto domain roles.
 export const PHI_OPERATOR_MAP = Object.freeze({
-  ENTITY:      "INITIATE_BOOT",          // foundation: calibration pulse
-  LOCATION:    "PROPAGATE_RESONANCE",    // spatial anchoring: spread
-  ACTION:      "AMPLIFY_FLOW",           // transformation: execution intensity
-  DIALOGUE:    "CERTIFY_COMPLIANCE",     // exchange: law enforcement pulse
-  EMOTION:     "HEAL_PROTOCOL",          // resonance state: resilience activation
-  PHYSICS:     "AUDIT_FLAG",             // structural laws: anomaly detection
-  NARRATIVE:   "EVOLVE_FRAME",           // continuity: foresight holography
-  HOLOGRAPHIC: "EXPAND_PATHWAY",         // base lattice: emergent synthesis
+  ENTITY: "INITIATE_BOOT", // foundation: calibration pulse
+  LOCATION: "PROPAGATE_RESONANCE", // spatial anchoring: spread
+  ACTION: "AMPLIFY_FLOW", // transformation: execution intensity
+  DIALOGUE: "CERTIFY_COMPLIANCE", // exchange: law enforcement pulse
+  EMOTION: "HEAL_PROTOCOL", // resonance state: resilience activation
+  PHYSICS: "AUDIT_FLAG", // structural laws: anomaly detection
+  NARRATIVE: "EVOLVE_FRAME", // continuity: foresight holography
+  HOLOGRAPHIC: "EXPAND_PATHWAY", // base lattice: emergent synthesis
 });
 
 // ─── Frequency Band Array (ordered for cascade arithmetic) ──────────────────
 // Canonical order: low-anchor → mid-regulate → high-extend
 const DOMAIN_BANDS = Object.freeze([
-  { name: "ENTITY",      freq: SEMANTIC_FREQUENCY_MAP.ENTITY,      operator: PHI_OPERATOR_MAP.ENTITY },
-  { name: "LOCATION",    freq: SEMANTIC_FREQUENCY_MAP.LOCATION,    operator: PHI_OPERATOR_MAP.LOCATION },
-  { name: "ACTION",      freq: SEMANTIC_FREQUENCY_MAP.ACTION,      operator: PHI_OPERATOR_MAP.ACTION },
-  { name: "DIALOGUE",    freq: SEMANTIC_FREQUENCY_MAP.DIALOGUE,    operator: PHI_OPERATOR_MAP.DIALOGUE },
-  { name: "EMOTION",     freq: SEMANTIC_FREQUENCY_MAP.EMOTION,     operator: PHI_OPERATOR_MAP.EMOTION },
-  { name: "PHYSICS",     freq: SEMANTIC_FREQUENCY_MAP.PHYSICS,     operator: PHI_OPERATOR_MAP.PHYSICS },
-  { name: "NARRATIVE",   freq: SEMANTIC_FREQUENCY_MAP.NARRATIVE,   operator: PHI_OPERATOR_MAP.NARRATIVE },
-  { name: "HOLOGRAPHIC", freq: SEMANTIC_FREQUENCY_MAP.HOLOGRAPHIC, operator: PHI_OPERATOR_MAP.HOLOGRAPHIC },
+  {
+    name: "ENTITY",
+    freq: SEMANTIC_FREQUENCY_MAP.ENTITY,
+    operator: PHI_OPERATOR_MAP.ENTITY,
+  },
+  {
+    name: "LOCATION",
+    freq: SEMANTIC_FREQUENCY_MAP.LOCATION,
+    operator: PHI_OPERATOR_MAP.LOCATION,
+  },
+  {
+    name: "ACTION",
+    freq: SEMANTIC_FREQUENCY_MAP.ACTION,
+    operator: PHI_OPERATOR_MAP.ACTION,
+  },
+  {
+    name: "DIALOGUE",
+    freq: SEMANTIC_FREQUENCY_MAP.DIALOGUE,
+    operator: PHI_OPERATOR_MAP.DIALOGUE,
+  },
+  {
+    name: "EMOTION",
+    freq: SEMANTIC_FREQUENCY_MAP.EMOTION,
+    operator: PHI_OPERATOR_MAP.EMOTION,
+  },
+  {
+    name: "PHYSICS",
+    freq: SEMANTIC_FREQUENCY_MAP.PHYSICS,
+    operator: PHI_OPERATOR_MAP.PHYSICS,
+  },
+  {
+    name: "NARRATIVE",
+    freq: SEMANTIC_FREQUENCY_MAP.NARRATIVE,
+    operator: PHI_OPERATOR_MAP.NARRATIVE,
+  },
+  {
+    name: "HOLOGRAPHIC",
+    freq: SEMANTIC_FREQUENCY_MAP.HOLOGRAPHIC,
+    operator: PHI_OPERATOR_MAP.HOLOGRAPHIC,
+  },
 ]);
 
 // ─── Diagnostic Operators ────────────────────────────────────────────────────
@@ -66,7 +100,7 @@ const DOMAIN_BANDS = Object.freeze([
  * @param {number[]} freqs — current frequency for each of the 8 domains
  * @returns {number[]} drift values per domain
  */
-export function measureDrift(freqs = DOMAIN_BANDS.map(b => b.freq)) {
+export function measureDrift(freqs = DOMAIN_BANDS.map((b) => b.freq)) {
   return freqs.map((f, i) => {
     const prev = i === 0 ? freqs[freqs.length - 1] : freqs[i - 1]; // circular
     return +(f / prev - PHI).toFixed(6);
@@ -85,7 +119,8 @@ export function measureDrift(freqs = DOMAIN_BANDS.map(b => b.freq)) {
  * @returns {number} coherence index clamped to [0, 1]
  */
 export function measureCoherence(drifts) {
-  const avgAbsDrift = drifts.reduce((s, d) => s + Math.abs(d), 0) / drifts.length;
+  const avgAbsDrift =
+    drifts.reduce((s, d) => s + Math.abs(d), 0) / drifts.length;
   return +Math.max(0, Math.min(1, 1 - avgAbsDrift)).toFixed(6);
 }
 
@@ -99,7 +134,7 @@ export function measureCoherence(drifts) {
  * @param {number[]} freqs — current domain frequencies
  * @returns {number} harmonic energy
  */
-export function measureHarmonicEnergy(freqs = DOMAIN_BANDS.map(b => b.freq)) {
+export function measureHarmonicEnergy(freqs = DOMAIN_BANDS.map((b) => b.freq)) {
   return +freqs.reduce((s, f, i) => s + f * Math.pow(PHI, i + 1), 0).toFixed(4);
 }
 
@@ -112,21 +147,25 @@ export function measureHarmonicEnergy(freqs = DOMAIN_BANDS.map(b => b.freq)) {
  * @param {object}  params     — {alpha, beta, gamma, drifts, coherence, energy}
  * @returns {number[]} corrected frequencies (floored at 1)
  */
-export function applyControlLoop(freqs, {
-  alpha = 0.618,     // drift correction coefficient (φ − 1)
-  beta  = 0.1,       // coherence reinforcement
-  gamma = 0.01,      // vitality amplification (damped — energy is large)
-  drifts,
-  coherence,
-  energy,
-} = {}) {
-  const d = drifts   ?? measureDrift(freqs);
+export function applyControlLoop(
+  freqs,
+  {
+    alpha = 0.618, // drift correction coefficient (φ − 1)
+    beta = 0.1, // coherence reinforcement
+    gamma = 0.01, // vitality amplification (damped — energy is large)
+    drifts,
+    coherence,
+    energy,
+  } = {},
+) {
+  const d = drifts ?? measureDrift(freqs);
   const c = coherence ?? measureCoherence(d);
-  const h = energy   ?? measureHarmonicEnergy(freqs);
+  const h = energy ?? measureHarmonicEnergy(freqs);
   const hNorm = h / 10000; // normalize large energy value
 
-  return freqs.map((f, i) =>
-    +Math.max(1, f - alpha * d[i] + beta * c + gamma * hNorm).toFixed(4)
+  return freqs.map(
+    (f, i) =>
+      +Math.max(1, f - alpha * d[i] + beta * c + gamma * hNorm).toFixed(4),
   );
 }
 
@@ -141,32 +180,41 @@ export function applyControlLoop(freqs, {
  * @returns {ResonanceDiagnosticSnapshot}
  */
 export function runDiagnostics(freqs) {
-  const domainFreqs = freqs ?? DOMAIN_BANDS.map(b => b.freq);
-  const drifts      = measureDrift(domainFreqs);
-  const coherence   = measureCoherence(drifts);
-  const energy      = measureHarmonicEnergy(domainFreqs);
-  const corrected   = applyControlLoop(domainFreqs, { drifts, coherence, energy });
+  const domainFreqs = freqs ?? DOMAIN_BANDS.map((b) => b.freq);
+  const drifts = measureDrift(domainFreqs);
+  const coherence = measureCoherence(drifts);
+  const energy = measureHarmonicEnergy(domainFreqs);
+  const corrected = applyControlLoop(domainFreqs, {
+    drifts,
+    coherence,
+    energy,
+  });
 
   const bands = DOMAIN_BANDS.map((b, i) => ({
-    domain:      b.name,
-    operator:    b.operator,
-    frequency:   domainFreqs[i],
-    drift:       drifts[i],
-    corrected:   corrected[i],
-    driftSign:   drifts[i] > 0 ? "+" : drifts[i] < 0 ? "-" : "=",
+    domain: b.name,
+    operator: b.operator,
+    frequency: domainFreqs[i],
+    drift: drifts[i],
+    corrected: corrected[i],
+    driftSign: drifts[i] > 0 ? "+" : drifts[i] < 0 ? "-" : "=",
   }));
 
   const status =
-    coherence >= 0.95 ? "SINGULARITY"  :
-    coherence >= 0.80 ? "OPTIMAL"      :
-    coherence >= 0.65 ? "NOMINAL"      :
-    coherence >= 0.40 ? "WARNING"      : "CRITICAL";
+    coherence >= 0.95
+      ? "SINGULARITY"
+      : coherence >= 0.8
+        ? "OPTIMAL"
+        : coherence >= 0.65
+          ? "NOMINAL"
+          : coherence >= 0.4
+            ? "WARNING"
+            : "CRITICAL";
 
   return {
     architectureSignature: CANONICAL_ARCHITECTURE,
-    phi:                   PHI,
+    phi: PHI,
     coherence,
-    harmonicEnergy:        energy,
+    harmonicEnergy: energy,
     status,
     bands,
     timestamp: new Date().toISOString(),
@@ -203,8 +251,84 @@ export class ResonanceDiagnostics {
   coherenceTrend() {
     const h = this._history;
     if (h.length < 2) return 0;
-    return +((h[h.length - 1].coherence - h[0].coherence) / (h.length - 1)).toFixed(6);
+    return +(
+      (h[h.length - 1].coherence - h[0].coherence) /
+      (h.length - 1)
+    ).toFixed(6);
   }
 }
 
 export default ResonanceDiagnostics;
+
+// ─── Phase Drift + Time-Domain Propagation ───────────────────────────────────
+
+/**
+ * Measure Phase Drift
+ *
+ * For each domain node, phase drift = |φ_n − 0| (deviation from zero phase).
+ * Stability threshold: ≤ 0.05 radians.
+ * Any node exceeding the threshold is flagged as unstable.
+ *
+ * Phase values represent how far each domain's resonance has rotated from
+ * its canonical alignment within the current cycle.
+ *
+ * @param {number[]} phases — phase offset per domain (radians, default: all zero = perfect alignment)
+ * @param {number}   [threshold=0.05] — max acceptable drift in radians
+ * @returns {{ phases: number[], drifts: number[], stable: boolean[], overallStable: boolean, maxDrift: number }}
+ */
+export function measurePhaseDrift(phases = new Array(8).fill(0), threshold = 0.05) {
+  const drifts = phases.map((p) => +Math.abs(p).toFixed(8));
+  const stable = drifts.map((d) => d <= threshold);
+  const maxDrift = +Math.max(...drifts).toFixed(8);
+  return {
+    phases,
+    drifts,
+    stable,
+    overallStable: stable.every(Boolean),
+    maxDrift,
+    threshold,
+  };
+}
+
+/**
+ * Propagate Resonance (Time-Domain)
+ *
+ * Computes lattice resonance intensity at time t:
+ *
+ *   I(t) = Σ_{n=0}^{N-1} A_n · cos(2π·f_n·t + φ_n) × (1 − δ)
+ *
+ * Uses real part of complex exponential (cosine wave per domain).
+ * Damping factor δ = 0.001 prevents runaway resonance over time.
+ *
+ * Canonical base: uses SEMANTIC_FREQUENCY_MAP (8 bands) unless overridden.
+ *
+ * @param {number}   t          — simulation time in seconds
+ * @param {number[]} [phases]   — phase offsets per domain (radians, default: 0)
+ * @param {number[]} [amplitudes] — amplitude per domain (default: 1 each)
+ * @param {number[]} [freqs]    — domain frequencies (default: canonical 8 bands)
+ * @param {number}   [damping=0.001] — damping coefficient δ
+ * @returns {{ intensity: number, perDomain: number[], t: number, stable: boolean }}
+ */
+export function propagateResonance(
+  t,
+  phases = new Array(8).fill(0),
+  amplitudes = new Array(8).fill(1),
+  freqs = DOMAIN_BANDS.map((b) => b.freq),
+  damping = 0.001,
+) {
+  const perDomain = freqs.map((f, i) => {
+    const a = amplitudes[i] ?? 1;
+    const p = phases[i] ?? 0;
+    return +(a * Math.cos(2 * Math.PI * f * t + p) * (1 - damping)).toFixed(8);
+  });
+  const intensity = +perDomain.reduce((s, v) => s + v, 0).toFixed(6);
+  const phaseDrift = measurePhaseDrift(phases);
+  return {
+    t,
+    intensity,
+    perDomain,
+    damping,
+    stable: phaseDrift.overallStable,
+    phaseDrift,
+  };
+}

@@ -11,7 +11,10 @@
  *   innerOctahedronSurfaceArea(a)      — S = 2√3 · a²  (runtime chamber area)
  *   amplificationFactor(a)             — S × 480 (fractal bandwidth multiplier)
  *   fractalInferenceLines(depth)       — L(d) = 24 × 480^d (certifiable mesh density)
- *   buildFractalSubLattice(a, depth)   — φ-scaled nested MERKABA tree (carrier mesh)
+ *   buildFractalSubLattice(a, depth)        — φ-scaled nested MERKABA tree (carrier mesh)
+ *   CLUSTER_DISTRIBUTION                    — 48 clusters × 10 sub-MERKABAs = 480 (addressable by D48 node)
+ *   dimensionClusterFrequency(n, f0)        — f_n = f_0 × (1 + n/48) per D48 node
+ *   buildClusteredSubLattice(edgeLength)    — 480 nodes grouped by D48 dimension index
  *   ActivationCodex      — runtime tracker that advances the temporal cycle
  *
  * "This is not training — this is activation."
@@ -310,7 +313,68 @@ export function buildFractalSubLattice(edgeLength = 1, maxDepth = 2) {
   return buildNode(edgeLength, 0);
 }
 
-// ─── §6  ActivationCodex Runtime ─────────────────────────────────────────────
+// ─── §6  Dimension Cluster Model (48 × 10 = 480) ────────────────────────────
+// The 480 harmonic nodes can be viewed as 48 D48 clusters × 10 sub-MERKABAs each.
+// This makes every harmonic node addressable by its parent D48 dimension index.
+// Canonical base frequency: BASE_FREQUENCY_HZ = 72 Hz (not 7.83 — that's stale).
+
+const D48_CLUSTER_COUNT = 48;         // one cluster per D48 lattice node
+const SUB_MERKABAS_PER_CLUSTER = 10;  // 48 × 10 = 480
+
+export const CLUSTER_DISTRIBUTION = Object.freeze({
+  clustersPerLattice: D48_CLUSTER_COUNT,
+  subMerkabasPerCluster: SUB_MERKABAS_PER_CLUSTER,
+  totalSubMerkabas: D48_CLUSTER_COUNT * SUB_MERKABAS_PER_CLUSTER, // 480
+  canonicalBaseHz: 72, // BASE_FREQUENCY_HZ — always 72, never 7.83
+});
+
+/**
+ * Dimension Cluster Frequency
+ * f_n = f_0 × (1 + n / 48)
+ *
+ * Assigns a unique harmonic to each of the 48 D48 nodes.
+ * Distinct from SEMANTIC_FREQUENCY_MAP (which covers 8 semantic bands only).
+ *
+ * @param {number} n   — D48 node index (0-47)
+ * @param {number} [f0=72] — base frequency (canonical: BASE_FREQUENCY_HZ = 72)
+ * @returns {number} frequency in Hz for that dimension cluster
+ */
+export function dimensionClusterFrequency(n, f0 = 72) {
+  const i = Math.max(0, Math.min(47, Math.floor(n)));
+  return +(f0 * (1 + i / D48_CLUSTER_COUNT)).toFixed(6);
+}
+
+/**
+ * Build Clustered Sub-Lattice
+ *
+ * Returns the full 480-node array grouped by D48 dimension index (0-47).
+ * Each cluster holds 10 sub-MERKABA descriptors, all scaled by 1/PHI^(k+1)
+ * from the primary edge length.
+ *
+ * Unlike buildFractalSubLattice() (which is φ-depth tree), this model is
+ * flat and addressable: cluster[n][k] gives the k-th sub-MERKABA of D48 node n.
+ *
+ * @param {number} [edgeLength=1] — primary octahedron edge length
+ * @returns {Array<{ clusterIndex: number, frequency: number, nodes: Array }>}
+ */
+export function buildClusteredSubLattice(edgeLength = 1) {
+  return Array.from({ length: D48_CLUSTER_COUNT }, (_, n) => {
+    const frequency = dimensionClusterFrequency(n);
+    const nodes = Array.from({ length: SUB_MERKABAS_PER_CLUSTER }, (_, k) => {
+      const subEdge = +(edgeLength / Math.pow(PHI, k + 1)).toFixed(8);
+      return {
+        subIndex: k,
+        edgeLength: subEdge,
+        surfaceArea: innerOctahedronSurfaceArea(subEdge),
+        inferenceLines: PRIMARY_EDGES * DUAL_CHANNEL_FACTOR, // 24 per node
+        channel: "resonance",
+      };
+    });
+    return { clusterIndex: n, frequency, nodes };
+  });
+}
+
+// ─── §7  ActivationCodex Runtime ─────────────────────────────────────────────
 
 /**
  * ActivationCodex
