@@ -186,7 +186,10 @@ const server = createServer(async (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", CORS_ORIGIN);
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  res.setHeader("Access-Control-Expose-Headers", "X-MERKABA-Architecture, X-MERKABA-Dimensions, X-MERKABA-Spectrum-Nodes, X-Service");
+  res.setHeader(
+    "Access-Control-Expose-Headers",
+    "X-MERKABA-Architecture, X-MERKABA-Dimensions, X-MERKABA-Spectrum-Nodes, X-Service",
+  );
 
   if (req.method === "OPTIONS") {
     res.writeHead(204);
