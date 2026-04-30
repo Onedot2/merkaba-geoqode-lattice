@@ -463,6 +463,12 @@ export class ActivationCodex {
         inferenceLinesByDepth: [0, 1, 2].map(fractalInferenceLines),
         subLattice: buildFractalSubLattice(1, 1),
       },
+      // §6 — Dimension Cluster Model (48 × 10 = 480)
+      clusterDistribution: CLUSTER_DISTRIBUTION,
+      clusterFrequencySample: [0, 12, 24, 36, 47].map((n) => ({
+        clusterIndex: n,
+        frequencyHz: dimensionClusterFrequency(n),
+      })),
       timestamp: new Date().toISOString(),
     };
   }

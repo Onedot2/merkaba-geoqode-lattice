@@ -217,6 +217,8 @@ export function runDiagnostics(freqs) {
     harmonicEnergy: energy,
     status,
     bands,
+    // Phase drift snapshot (default: all-zero phases = perfect canonical alignment)
+    phaseDrift: measurePhaseDrift(new Array(DOMAIN_BANDS.length).fill(0)),
     timestamp: new Date().toISOString(),
   };
 }
