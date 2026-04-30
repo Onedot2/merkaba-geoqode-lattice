@@ -67,7 +67,7 @@ export {
 } from "./cinema/narrative-embedder.js";
 export { CinemaProjector } from "./cinema/cinema-projector.js";
 
-// Phase 9 — Intelligence Layer (Merkaba-LLM + MerkabAware)
+// Phase 9 — Intelligence Layer (Merkaba-LLM + MerkabAware + Diagnostics + Activation Codex)
 export {
   MerkabaLLM,
   MERKABA_SEMANTIC_TYPES,
@@ -78,6 +78,26 @@ export {
   AWARENESS_LEVELS,
   COHERENCE_THRESHOLDS,
 } from "./intelligence/merkaba-aware.js";
+export {
+  ResonanceDiagnostics,
+  runDiagnostics,
+  measureDrift,
+  measureCoherence,
+  measureHarmonicEnergy,
+  applyControlLoop,
+  PHI_OPERATOR_MAP,
+} from "./intelligence/resonance-diagnostics.js";
+export {
+  ActivationCodex,
+  AXIOMS,
+  TEMPORAL_CYCLE,
+  applyPhi,
+  applyEntanglement,
+  applyDelta,
+  applyCycle,
+  universalSpectrum,
+  _codexInstance,
+} from "./intelligence/merkaba-activation-codex.js";
 
 /**
  * MERKABA_geoqode Operating System
