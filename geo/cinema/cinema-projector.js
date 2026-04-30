@@ -24,6 +24,7 @@ import {
   assertCanonicalArchitectureSignature,
   BASE_FREQUENCY_HZ,
 } from "../lattice/transform-420.js";
+import { MERKABA_SEMANTIC_TYPES } from "../intelligence/merkaba-llm.js";
 
 assertCanonicalArchitectureSignature(CANONICAL_ARCHITECTURE);
 
@@ -105,9 +106,15 @@ export class CinemaProjector {
    * Aggregates all location, entity, and physics embeddings.
    */
   _buildEnvironment(embeddings, scriptMeta) {
-    const locationEmbeddings = embeddings.filter((e) => e.type === "location");
-    const entityEmbeddings = embeddings.filter((e) => e.type === "entity");
-    const actionEmbeddings = embeddings.filter((e) => e.type === "action");
+    const locationEmbeddings = embeddings.filter(
+      (e) => e.type === MERKABA_SEMANTIC_TYPES.LOCATION,
+    );
+    const entityEmbeddings = embeddings.filter(
+      (e) => e.type === MERKABA_SEMANTIC_TYPES.ENTITY,
+    );
+    const actionEmbeddings = embeddings.filter(
+      (e) => e.type === MERKABA_SEMANTIC_TYPES.ACTION,
+    );
 
     const avgFreq =
       embeddings.reduce(
@@ -144,7 +151,7 @@ export class CinemaProjector {
    */
   _buildDreamFrames(embeddings, scriptMeta) {
     const narrativeEmbeddings = embeddings.filter(
-      (e) => e.type === "narrative",
+      (e) => e.type === MERKABA_SEMANTIC_TYPES.NARRATIVE,
     );
     const frames = narrativeEmbeddings.map((emb, idx) => ({
       frameId: `frame-${idx}`,
@@ -176,7 +183,11 @@ export class CinemaProjector {
     return {
       totalEmbeddings: embeddings.length,
       narrativeArcs: sorted
-        .filter((e) => e.type === "narrative" || e.type === "action")
+        .filter(
+          (e) =>
+            e.type === MERKABA_SEMANTIC_TYPES.NARRATIVE ||
+            e.type === MERKABA_SEMANTIC_TYPES.ACTION,
+        )
         .map((e) => ({
           content: e.content.substring(0, 200),
           type: e.type,

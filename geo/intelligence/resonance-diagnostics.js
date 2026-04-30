@@ -307,19 +307,22 @@ export function measurePhaseDrift(
  *
  * Canonical base: uses SEMANTIC_FREQUENCY_MAP (8 bands) unless overridden.
  *
- * @param {number}   t          — simulation time in seconds
- * @param {number[]} [phases]   — phase offsets per domain (radians, default: 0)
- * @param {number[]} [amplitudes] — amplitude per domain (default: 1 each)
- * @param {number[]} [freqs]    — domain frequencies (default: canonical 8 bands)
- * @param {number}   [damping=0.001] — damping coefficient δ
- * @returns {{ intensity: number, perDomain: number[], t: number, stable: boolean }}
+ * @param {number} t          — simulation time in seconds
+ * @param {object} [opts]     — options object (all optional)
+ * @param {number[]} [opts.phases]     — phase offsets per domain (radians, default: 0 per domain)
+ * @param {number[]} [opts.amplitudes] — amplitude per domain (default: 1 per domain)
+ * @param {number[]} [opts.freqs]      — domain frequencies (default: canonical 8 bands)
+ * @param {number}   [opts.damping]    — damping coefficient δ (default: 0.001)
+ * @returns {{ intensity: number, perDomain: number[], t: number, stable: boolean, phaseDrift: object }}
  */
 export function propagateResonance(
   t,
-  phases = new Array(8).fill(0),
-  amplitudes = new Array(8).fill(1),
-  freqs = DOMAIN_BANDS.map((b) => b.freq),
-  damping = 0.001,
+  {
+    phases = new Array(8).fill(0),
+    amplitudes = new Array(8).fill(1),
+    freqs = DOMAIN_BANDS.map((b) => b.freq),
+    damping = 0.001,
+  } = {},
 ) {
   const perDomain = freqs.map((f, i) => {
     const a = amplitudes[i] ?? 1;
