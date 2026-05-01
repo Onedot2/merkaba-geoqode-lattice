@@ -72,6 +72,25 @@ export {
   Merkaba480Monitor,
 } from "./merkaba480-monitoring.js";
 
+export {
+  // Swarm
+  SwarmBridge,
+} from "./merkaba480-swarm-bridge.js";
+
+export {
+  // MAXswarm intelligence
+  MerkabaBeEyeMAXswarm,
+  MAX_DRONE_DEFS,
+  ALPHA_WEIGHT_3,
+  OMEGA_WEIGHT_3,
+  DELTA_WEIGHT_3,
+  DELTA,
+} from "../intelligence/MerkabaBeEyeMAXswarm.js";
+
+export {
+  MerkabaMAXSwarmCoordinator,
+} from "../intelligence/MerkabaMAXSwarmCoordinator.js";
+
 // ── Merkaba480OS — unified facade ─────────────────────────────────────────────
 
 import {
@@ -88,6 +107,7 @@ import { GovernanceBoard } from "./merkaba480-governance.js";
 import { AcceleratedLatticeRuntime } from "./merkaba480-accelerated.js";
 import { LatticeCluster } from "./merkaba480-cluster.js";
 import { Merkaba480Monitor } from "./merkaba480-monitoring.js";
+import { SwarmBridge } from "./merkaba480-swarm-bridge.js"; // optional — lazy attach
 
 // Startup assertion — fails fast if constants drift
 if (CANONICAL_ARCHITECTURE !== "8,26,48:480") {
@@ -128,6 +148,8 @@ export class Merkaba480OS {
    * @param {string}  [opts.osId="storm"]      — System identifier
    * @param {number}  [opts.monitorIntervalMs=5000]
    * @param {boolean} [opts.autoMonitor=false] — Auto-start monitor on init
+   * @param {boolean} [opts.autoSwarm=false]   — Auto-attach + start SwarmBridge on init
+   * @param {object}  [opts.swarmOpts={}]       — Options forwarded to SwarmBridge
    */
   constructor({
     clusterCount = 1,
@@ -136,6 +158,8 @@ export class Merkaba480OS {
     osId = "storm",
     monitorIntervalMs = 5_000,
     autoMonitor = false,
+    autoSwarm   = false,
+    swarmOpts   = {},
   } = {}) {
     // Boot assertion
     if (CANONICAL_ARCHITECTURE !== "8,26,48:480") {
@@ -162,6 +186,17 @@ export class Merkaba480OS {
     });
 
     if (autoMonitor) this.monitor.start();
+
+    // SwarmBridge (optional — lazy attach, never throws if not requested)
+    this.swarm = null;
+    if (autoSwarm) {
+      try {
+        this.swarm = new SwarmBridge(this, { bridgeId: `${osId}-swarm`, ...swarmOpts });
+        this.swarm.start({ source: `merkaba480-os:${osId}` });
+      } catch (e) {
+        console.warn("[Merkaba480OS] SwarmBridge init failed (non-fatal):", e.message);
+      }
+    }
 
     // GeoQode boot coordinate
     this._bootCoord = buildGeoCoordinate({
@@ -248,10 +283,25 @@ export class Merkaba480OS {
       bootedAt: new Date(this._bootedAt).toISOString(),
       uptimeMs: Date.now() - this._bootedAt,
       monitorActive: this.monitor._timer != null,
+      swarmActive: this.swarm?.isRunning ?? false,
       cluster: this.cluster.statusSnapshot(),
       liveMonitor: this.monitor.snapshot(),
+      swarm: this.swarm?.statusSnapshot() ?? null,
       bootGeoqode: this._bootCoord,
     };
+  }
+
+  /**
+   * Attach a SwarmBridge to this OS after construction.
+   * Idempotent — does nothing if a bridge is already running.
+   * @param {object} [opts] — SwarmBridge options
+   * @returns {SwarmBridge}
+   */
+  attachSwarm(opts = {}) {
+    if (this.swarm?.isRunning) return this.swarm;
+    this.swarm = new SwarmBridge(this, { bridgeId: `${this.osId}-swarm`, ...opts });
+    this.swarm.start({ source: `merkaba480-os:${this.osId}` });
+    return this.swarm;
   }
 }
 
