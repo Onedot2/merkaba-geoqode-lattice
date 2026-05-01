@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -1115,12 +1115,12 @@
         <span class="nav-logo">AIOS</span>
         <span class="nav-badge">Early Access</span>
       </a>
-      <a href="#waitlist" class="nav-cta">Get Early Access</a>
+      <a href="#founding-partner" class="nav-cta">Get Access Now</a>
     </nav>
 
     <!-- ── HERO ── -->
     <section class="hero">
-      <div class="hero-eyebrow">Now accepting early access applications</div>
+      <div class="hero-eyebrow">Founding Partner access is open &mdash; skip the waitlist</div>
       <h1 class="hero-title">AIOS</h1>
       <p class="hero-subtitle">
         The <strong>AI-Native Operating System</strong>.<br />
@@ -1128,44 +1128,65 @@
       </p>
       <p class="hero-tagline">The OS that thinks before it acts.</p>
 
-      <div class="waitlist-form" id="hero-form">
-        <div class="form-row">
+      <!-- PRIMARY CTA: pay to skip the line -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:0.75rem;margin:2rem 0 1rem">
+        <a href="#founding-partner"
+           style="display:inline-block;background:#00d4ff;color:#000;font-weight:800;font-size:1.05rem;padding:1rem 2.5rem;border-radius:10px;text-decoration:none;letter-spacing:0.02em;transition:opacity .2s,transform .2s"
+           onmouseover="this.style.opacity='.88';this.style.transform='translateY(-2px)'"
+           onmouseout="this.style.opacity='1';this.style.transform=''"
+           onclick="window.B4AAnalytics?.track('hero_cta_click',{type:'founding_partner'})">
+          Get Founding Access &mdash; from $12/mo &rarr;
+        </a>
+        <p style="font-size:0.78rem;color:#6b7280;margin:0">Immediate access &middot; Stripe-secured &middot; Cancel anytime</p>
+        <button
+          type="button"
+          style="background:none;border:none;color:#6b7280;font-size:0.85rem;cursor:pointer;text-decoration:underline;padding:0.25rem 0"
+          onclick="document.getElementById('hero-waitlist-wrap').style.display='block';this.style.display='none';window.B4AAnalytics?.track('hero_cta_click',{type:'free_waitlist'})">
+          No budget right now? Join the free waitlist &darr;
+        </button>
+      </div>
+
+      <!-- SECONDARY CTA: free waitlist (shown on request) -->
+      <div id="hero-waitlist-wrap" style="display:none">
+        <div class="waitlist-form" id="hero-form">
+          <div class="form-row">
+            <input
+              class="form-input"
+              type="text"
+              id="w-name"
+              name="name"
+              placeholder="Your name"
+              autocomplete="name"
+            />
+            <input
+              class="form-input"
+              type="email"
+              id="w-email"
+              name="email"
+              placeholder="Email address"
+              required
+              autocomplete="email"
+            />
+          </div>
           <input
             class="form-input"
             type="text"
-            id="w-name"
-            name="name"
-            placeholder="Your name"
-            autocomplete="name"
+            id="w-msg"
+            name="message"
+            placeholder="What do you want to build? (optional)"
           />
-          <input
-            class="form-input"
-            type="email"
-            id="w-email"
-            name="email"
-            placeholder="Email address"
-            required
-            autocomplete="email"
-          />
+          <button class="form-submit" id="w-submit" type="button">
+            Join the Free Waitlist &rarr;
+          </button>
+          <p class="form-note">
+            No spam. No noise. Early access notifications only.
+          </p>
         </div>
-        <input
-          class="form-input"
-          type="text"
-          id="w-msg"
-          name="message"
-          placeholder="What do you want to build? (optional)"
-        />
-        <button class="form-submit" id="w-submit" type="button">
-          Join the AIOS Waitlist →
-        </button>
-        <p class="form-note">
-          No spam. No noise. Just early access when we're ready.
-        </p>
       </div>
 
       <div class="form-success" id="hero-success">
         <div class="success-icon">✦</div>
-        <h3>You're in.</h3>
+        <h3>You're on the list.</h3>
         <p>
           We'll reach out when early access opens. <br />Thank you for believing
           in a smarter OS.
@@ -1227,10 +1248,10 @@
               <span class="tier-badge enterprise">Studio — $149/mo</span>
             </div>
             <a
-              href="#waitlist"
+              href="#founding-partner"
               class="product-cta"
               data-product="AIOS App Factory"
-              >Join Waitlist →</a
+              >Get Access Now →</a
             >
           </div>
 
@@ -1249,8 +1270,8 @@
               <span class="tier-badge paid">Team — $199/mo</span>
               <span class="tier-badge enterprise">Enterprise — $699/mo</span>
             </div>
-            <a href="#waitlist" class="product-cta" data-product="AttestedAI"
-              >Join Waitlist →</a
+            <a href="#founding-partner" class="product-cta" data-product="AttestedAI"
+              >Get Access Now →</a
             >
           </div>
 
@@ -1269,8 +1290,8 @@
               <span class="tier-badge paid">Growth — $149/mo</span>
               <span class="tier-badge enterprise">Scale — $449/mo</span>
             </div>
-            <a href="#waitlist" class="product-cta" data-product="NeverDown"
-              >Join Waitlist →</a
+            <a href="#founding-partner" class="product-cta" data-product="NeverDown"
+              >Get Access Now →</a
             >
           </div>
 
@@ -1289,8 +1310,8 @@
               <span class="tier-badge paid">Professional — $299/mo</span>
               <span class="tier-badge enterprise">Enterprise — $1,499/mo</span>
             </div>
-            <a href="#waitlist" class="product-cta" data-product="TruthAgent"
-              >Join Waitlist →</a
+            <a href="#founding-partner" class="product-cta" data-product="TruthAgent"
+              >Get Access Now →</a
             >
           </div>
 
@@ -1310,8 +1331,8 @@
               <span class="tier-badge paid">Publisher Pro — $79/mo</span>
               <span class="tier-badge paid">Consumer Pro — $29/mo</span>
             </div>
-            <a href="#waitlist" class="product-cta" data-product="FreqHub"
-              >Join Waitlist →</a
+            <a href="#founding-partner" class="product-cta" data-product="FreqHub"
+              >Get Access Now →</a
             >
           </div>
 
@@ -1330,8 +1351,8 @@
               <span class="tier-badge paid">Company — $199/mo</span>
               <span class="tier-badge enterprise">Studio — $599/mo</span>
             </div>
-            <a href="#waitlist" class="product-cta" data-product="FreqMatch"
-              >Join Waitlist →</a
+            <a href="#founding-partner" class="product-cta" data-product="FreqMatch"
+              >Get Access Now →</a
             >
           </div>
         </div>
