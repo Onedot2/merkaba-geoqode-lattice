@@ -221,6 +221,47 @@ const server = createServer(async (req, res) => {
   }
 
   try {
+    // ── GET /robots.txt ───────────────────────────────────────────────────
+    if (req.method === "GET" && pathname === "/robots.txt") {
+      res.writeHead(200, { "Content-Type": "text/plain; charset=utf-8" });
+      res.end(
+        [
+          "User-agent: *",
+          "Allow: /",
+          "Disallow: /api/",
+          "Disallow: /waitlist/",
+          "",
+          "Sitemap: https://realaios.com/sitemap.xml",
+        ].join("\n"),
+      );
+      return;
+    }
+
+    // ── GET /sitemap.xml ──────────────────────────────────────────────────
+    if (req.method === "GET" && pathname === "/sitemap.xml") {
+      const now = new Date().toISOString().split("T")[0];
+      const slugs = [
+        "app-factory",
+        "aios-theatre",
+        "intelligence-hub",
+        "autonomy-engine",
+        "storm-market",
+        "code-forge",
+      ];
+      const urlTags = [
+        `  <url><loc>https://realaios.com/</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>`,
+        `  <url><loc>https://realaios.com/products</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>`,
+        ...slugs.map(
+          (s) =>
+            `  <url><loc>https://realaios.com/products/${s}</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>`,
+        ),
+      ].join("\n");
+      const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urlTags}\n</urlset>`;
+      res.writeHead(200, { "Content-Type": "application/xml; charset=utf-8" });
+      res.end(xml);
+      return;
+    }
+
     // ── GET / — serve AIOS landing page (HTML) or JSON for API consumers ──
     if (req.method === "GET" && pathname === "/") {
       const accept = req.headers["accept"] || "";
