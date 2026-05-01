@@ -826,6 +826,127 @@
           padding: 70px 20px;
         }
       }
+
+      /* ── DEV SECTION ── */
+      .dev-section {
+        background: linear-gradient(180deg, #040c1e 0%, #06101f 100%);
+        border-top: 1px solid rgba(0, 212, 255, 0.12);
+      }
+      .dev-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 48px;
+        margin-top: 56px;
+      }
+      .dev-card {
+        background: rgba(0, 212, 255, 0.04);
+        border: 1px solid rgba(0, 212, 255, 0.14);
+        border-radius: 16px;
+        padding: 32px;
+      }
+      .dev-card-label {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        color: #00d4ff;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+      }
+      .dev-card h3 {
+        font-size: 20px;
+        font-weight: 700;
+        color: #e8f0fe;
+        margin: 0 0 12px;
+      }
+      .dev-card p {
+        font-size: 14px;
+        line-height: 1.7;
+        color: #8b9dc3;
+        margin: 0 0 20px;
+      }
+      .dev-steps {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .dev-steps li {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(0, 212, 255, 0.07);
+        font-size: 13px;
+        color: #8b9dc3;
+        line-height: 1.5;
+      }
+      .dev-steps li:last-child { border-bottom: none; }
+      .dev-step-num {
+        flex-shrink: 0;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: rgba(0, 212, 255, 0.12);
+        border: 1px solid rgba(0, 212, 255, 0.3);
+        color: #00d4ff;
+        font-size: 11px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .dev-code {
+        background: #020810;
+        border: 1px solid rgba(0, 212, 255, 0.15);
+        border-radius: 10px;
+        padding: 16px 20px;
+        font-family: 'Fira Code', 'Courier New', monospace;
+        font-size: 13px;
+        color: #00d4ff;
+        overflow-x: auto;
+        margin-top: 16px;
+      }
+      .dev-native-apps {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin-top: 48px;
+      }
+      .dev-app {
+        background: rgba(124, 58, 237, 0.07);
+        border: 1px solid rgba(124, 58, 237, 0.2);
+        border-radius: 12px;
+        padding: 20px;
+      }
+      .dev-app-name {
+        font-size: 14px;
+        font-weight: 700;
+        color: #e8f0fe;
+        margin-bottom: 6px;
+      }
+      .dev-app-why {
+        font-size: 12px;
+        color: #8b9dc3;
+        line-height: 1.6;
+      }
+      .dev-app-tag {
+        display: inline-block;
+        margin-top: 10px;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: #7c3aed;
+        background: rgba(124, 58, 237, 0.12);
+        border-radius: 4px;
+        padding: 3px 8px;
+      }
+      @media (max-width: 768px) {
+        .dev-grid { grid-template-columns: 1fr; }
+        .dev-native-apps { grid-template-columns: 1fr 1fr; }
+      }
+      @media (max-width: 480px) {
+        .dev-native-apps { grid-template-columns: 1fr; }
+      }
     </style>
   </head>
   <body>
@@ -1379,6 +1500,81 @@
           <div class="success-icon">✦</div>
           <h3>You're on the list.</h3>
           <p>We'll be in touch when your access window opens.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── BUILD FOR AIOS ── -->
+    <section class="dev-section">
+      <div class="section-label">For Developers</div>
+      <h2 class="section-title">Build apps that were impossible before.</h2>
+      <p class="section-sub">
+        AIOS gives every app you build self-healing, dual-verified AI decisions, and mesh connectivity — for free, at the OS layer. No libraries. No config. It is just how AIOS works.
+      </p>
+
+      <div class="dev-grid">
+        <div class="dev-card">
+          <div class="dev-card-label">Get started in 6 steps</div>
+          <h3>Wire your app into AIOS</h3>
+          <p>Every AIOS app gets the same foundation: semantic routing, self-healing, and dual-attested decisions — built in, not bolted on.</p>
+          <ul class="dev-steps">
+            <li><span class="dev-step-num">1</span>Create your app with the AIOS scaffold</li>
+            <li><span class="dev-step-num">2</span>Import <code style="color:#00d4ff">geoqode-native.js</code> — canonical constants + coordinate builder</li>
+            <li><span class="dev-step-num">3</span>Assert <code style="color:#00d4ff">CANONICAL_ARCHITECTURE === &ldquo;8,26,48:480&rdquo;</code> at startup</li>
+            <li><span class="dev-step-num">4</span>Tag every event with a GeoQode coordinate envelope</li>
+            <li><span class="dev-step-num">5</span>Join the D48 mesh — your service auto-discovers all peers</li>
+            <li><span class="dev-step-num">6</span>Push to GitHub — AIOS CI/CD deploys it. You are done.</li>
+          </ul>
+          <div class="dev-code">npx create-aios-app my-app<br/>cd my-app &amp;&amp; npm start</div>
+        </div>
+
+        <div class="dev-card">
+          <div class="dev-card-label">What your app gets for free</div>
+          <h3>The AIOS runtime layer</h3>
+          <p>These are not features you add. They are part of the OS. Every app running on AIOS inherits all of them.</p>
+          <ul class="dev-steps">
+            <li><span class="dev-step-num">✦</span><strong style="color:#e8f0fe">Self-healing</strong> — your app detects and fixes its own failures. No PagerDuty. No 3am calls.</li>
+            <li><span class="dev-step-num">✦</span><strong style="color:#e8f0fe">Dual-attested decisions</strong> — every critical action is verified by two opposing AI poles before it runs.</li>
+            <li><span class="dev-step-num">✦</span><strong style="color:#e8f0fe">Semantic routing</strong> — events carry meaning (not just data) and route themselves to the right handler.</li>
+            <li><span class="dev-step-num">✦</span><strong style="color:#e8f0fe">Mesh connectivity</strong> — your service auto-discovers every other AIOS service on the network.</li>
+            <li><span class="dev-step-num">✦</span><strong style="color:#e8f0fe">End-to-end CI/CD</strong> — push to git, AIOS builds, tests, and deploys. Fully automated.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="margin-top: 64px">
+        <div class="section-label" style="margin-bottom: 24px">AIOS-native apps — only possible here</div>
+        <div class="dev-native-apps">
+          <div class="dev-app">
+            <div class="dev-app-name">AIOS App Factory</div>
+            <div class="dev-app-why">One command gives you a fully GeoQode-native app scaffold — self-healing, mesh-connected, and dual-attested from line one.</div>
+            <span class="dev-app-tag">Dev Tooling</span>
+          </div>
+          <div class="dev-app">
+            <div class="dev-app-name">AttestedAI</div>
+            <div class="dev-app-why">The only AI assistant that cannot hallucinate by design. Every answer verified by two opposing AI poles before delivery.</div>
+            <span class="dev-app-tag">Enterprise AI</span>
+          </div>
+          <div class="dev-app">
+            <div class="dev-app-name">NeverDown</div>
+            <div class="dev-app-why">SaaS that fixes its own production bugs at runtime. No engineer required. Powered by AIOS SelfHealer at the OS layer.</div>
+            <span class="dev-app-tag">Infrastructure</span>
+          </div>
+          <div class="dev-app">
+            <div class="dev-app-name">TruthAgent</div>
+            <div class="dev-app-why">AI for healthcare, legal, and finance where wrong answers have consequences. PHI/PSI dual-attested before every response.</div>
+            <span class="dev-app-tag">High-Stakes AI</span>
+          </div>
+          <div class="dev-app">
+            <div class="dev-app-name">FreqHub</div>
+            <div class="dev-app-why">Find APIs by what they do semantically — not by guessing their name. GeoQode-routed marketplace for AIOS-native integrations.</div>
+            <span class="dev-app-tag">Marketplace</span>
+          </div>
+          <div class="dev-app">
+            <div class="dev-app-name">Your app here</div>
+            <div class="dev-app-why">The best AIOS-native apps have not been built yet. Join early access and build something that was genuinely impossible before.</div>
+            <span class="dev-app-tag">You</span>
+          </div>
         </div>
       </div>
     </section>
