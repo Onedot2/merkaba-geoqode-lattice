@@ -877,12 +877,24 @@
         flex-shrink: 0;
       }
 
-      .product-icon.cyan  { background: rgba(0, 212, 255, 0.1); }
-      .product-icon.purple { background: rgba(124, 58, 237, 0.1); }
-      .product-icon.pink  { background: rgba(217, 70, 239, 0.1); }
-      .product-icon.gold  { background: rgba(251, 191, 36, 0.1); }
-      .product-icon.teal  { background: rgba(20, 184, 166, 0.1); }
-      .product-icon.blue  { background: rgba(59, 130, 246, 0.1); }
+      .product-icon.cyan {
+        background: rgba(0, 212, 255, 0.1);
+      }
+      .product-icon.purple {
+        background: rgba(124, 58, 237, 0.1);
+      }
+      .product-icon.pink {
+        background: rgba(217, 70, 239, 0.1);
+      }
+      .product-icon.gold {
+        background: rgba(251, 191, 36, 0.1);
+      }
+      .product-icon.teal {
+        background: rgba(20, 184, 166, 0.1);
+      }
+      .product-icon.blue {
+        background: rgba(59, 130, 246, 0.1);
+      }
 
       .product-card h3 {
         font-size: 17px;
@@ -943,7 +955,9 @@
         font-weight: 600;
         text-decoration: none;
         text-align: center;
-        transition: background 0.2s, border-color 0.2s;
+        transition:
+          background 0.2s,
+          border-color 0.2s;
         letter-spacing: 0.2px;
       }
 
@@ -953,11 +967,15 @@
       }
 
       @media (max-width: 960px) {
-        .product-grid { grid-template-columns: repeat(2, 1fr); }
+        .product-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
       }
 
       @media (max-width: 580px) {
-        .product-grid { grid-template-columns: 1fr; }
+        .product-grid {
+          grid-template-columns: 1fr;
+        }
       }
 
       /* ── DEV SECTION ── */
@@ -1012,7 +1030,9 @@
         color: #8b9dc3;
         line-height: 1.5;
       }
-      .dev-steps li:last-child { border-bottom: none; }
+      .dev-steps li:last-child {
+        border-bottom: none;
+      }
       .dev-step-num {
         flex-shrink: 0;
         width: 22px;
@@ -1032,7 +1052,7 @@
         border: 1px solid rgba(0, 212, 255, 0.15);
         border-radius: 10px;
         padding: 16px 20px;
-        font-family: 'Fira Code', 'Courier New', monospace;
+        font-family: "Fira Code", "Courier New", monospace;
         font-size: 13px;
         color: #00d4ff;
         overflow-x: auto;
@@ -1074,11 +1094,17 @@
         padding: 3px 8px;
       }
       @media (max-width: 768px) {
-        .dev-grid { grid-template-columns: 1fr; }
-        .dev-native-apps { grid-template-columns: 1fr 1fr; }
+        .dev-grid {
+          grid-template-columns: 1fr;
+        }
+        .dev-native-apps {
+          grid-template-columns: 1fr 1fr;
+        }
       }
       @media (max-width: 480px) {
-        .dev-native-apps { grid-template-columns: 1fr; }
+        .dev-native-apps {
+          grid-template-columns: 1fr;
+        }
       }
     </style>
   </head>
@@ -1179,11 +1205,11 @@
         <p class="section-label">The AIOS Product Suite</p>
         <h2 class="section-title">Products Built on AIOS</h2>
         <p class="section-body">
-          Six products — each one impossible without AIOS underneath. Built for teams that need AI they can trust.
+          Six products — each one impossible without AIOS underneath. Built for
+          teams that need AI they can trust.
         </p>
 
         <div class="product-grid">
-
           <!-- AIOS App Factory -->
           <div class="product-card">
             <div class="product-card-header">
@@ -1191,7 +1217,9 @@
               <h3>AIOS App Factory</h3>
             </div>
             <p class="product-tagline">
-              Build fully self-healing, AI-native apps with a single command. Self-repair, dual-verified decisions, and mesh connectivity — baked in from line one.
+              Build fully self-healing, AI-native apps with a single command.
+              Self-repair, dual-verified decisions, and mesh connectivity —
+              baked in from line one.
             </p>
             <div class="product-tiers">
               <span class="tier-badge free">Open — Free</span>
@@ -1208,7 +1236,9 @@
               <h3>AttestedAI</h3>
             </div>
             <p class="product-tagline">
-              AI audit &amp; compliance attestation. Every answer verified by two independent AI poles before delivery. Built for teams where wrong answers have real consequences.
+              AI audit &amp; compliance attestation. Every answer verified by
+              two independent AI poles before delivery. Built for teams where
+              wrong answers have real consequences.
             </p>
             <div class="product-tiers">
               <span class="tier-badge paid">Team — $199/mo</span>
@@ -1224,7 +1254,9 @@
               <h3>NeverDown</h3>
             </div>
             <p class="product-tagline">
-              AI-powered uptime intelligence. AIOS monitors, detects, and heals production incidents at the OS layer — before your users notice anything is wrong.
+              AI-powered uptime intelligence. AIOS monitors, detects, and heals
+              production incidents at the OS layer — before your users notice
+              anything is wrong.
             </p>
             <div class="product-tiers">
               <span class="tier-badge paid">Growth — $149/mo</span>
@@ -1240,7 +1272,9 @@
               <h3>TruthAgent</h3>
             </div>
             <p class="product-tagline">
-              AI hallucination detection &amp; grounding. Real-time output verification for healthcare, legal, and finance — where accuracy is non-negotiable.
+              AI hallucination detection &amp; grounding. Real-time output
+              verification for healthcare, legal, and finance — where accuracy
+              is non-negotiable.
             </p>
             <div class="product-tiers">
               <span class="tier-badge paid">Professional — $299/mo</span>
@@ -1256,7 +1290,9 @@
               <h3>FreqHub</h3>
             </div>
             <p class="product-tagline">
-              AI signal marketplace for publishers. Publish, discover, and monetize AI signals semantically — find APIs by what they <em>do</em>, not what they're named.
+              AI signal marketplace for publishers. Publish, discover, and
+              monetize AI signals semantically — find APIs by what they
+              <em>do</em>, not what they're named.
             </p>
             <div class="product-tiers">
               <span class="tier-badge free">Publisher — Free</span>
@@ -1273,7 +1309,9 @@
               <h3>FreqMatch</h3>
             </div>
             <p class="product-tagline">
-              AI-native talent &amp; collaboration matching. Find the right people for your project instantly — AI-matched connections that fit your work, not just your keywords.
+              AI-native talent &amp; collaboration matching. Find the right
+              people for your project instantly — AI-matched connections that
+              fit your work, not just your keywords.
             </p>
             <div class="product-tiers">
               <span class="tier-badge paid">Company — $199/mo</span>
@@ -1281,7 +1319,6 @@
             </div>
             <a href="#waitlist" class="product-cta">Join Waitlist →</a>
           </div>
-
         </div>
       </div>
     </section>
@@ -1755,70 +1792,144 @@
       <div class="section-label">For Developers</div>
       <h2 class="section-title">Build apps that were impossible before.</h2>
       <p class="section-sub">
-        AIOS gives every app you build self-healing, dual-verified AI decisions, and mesh connectivity — for free, at the OS layer. No libraries. No config. It is just how AIOS works.
+        AIOS gives every app you build self-healing, dual-verified AI decisions,
+        and mesh connectivity — for free, at the OS layer. No libraries. No
+        config. It is just how AIOS works.
       </p>
 
       <div class="dev-grid">
         <div class="dev-card">
           <div class="dev-card-label">Get started in 6 steps</div>
           <h3>Wire your app into AIOS</h3>
-          <p>Every AIOS app gets the same foundation: semantic routing, self-healing, and dual-attested decisions — built in, not bolted on.</p>
+          <p>
+            Every AIOS app gets the same foundation: semantic routing,
+            self-healing, and dual-attested decisions — built in, not bolted on.
+          </p>
           <ul class="dev-steps">
-            <li><span class="dev-step-num">1</span>Create your app with the AIOS scaffold</li>
-            <li><span class="dev-step-num">2</span>Import <code style="color:#00d4ff">geoqode-native.js</code> — canonical constants + coordinate builder</li>
-            <li><span class="dev-step-num">3</span>Assert <code style="color:#00d4ff">CANONICAL_ARCHITECTURE === &ldquo;8,26,48:480&rdquo;</code> at startup</li>
-            <li><span class="dev-step-num">4</span>Tag every event with a GeoQode coordinate envelope</li>
-            <li><span class="dev-step-num">5</span>Join the D48 mesh — your service auto-discovers all peers</li>
-            <li><span class="dev-step-num">6</span>Push to GitHub — AIOS CI/CD deploys it. You are done.</li>
+            <li>
+              <span class="dev-step-num">1</span>Create your app with the AIOS
+              scaffold
+            </li>
+            <li>
+              <span class="dev-step-num">2</span>Import
+              <code style="color: #00d4ff">geoqode-native.js</code> — canonical
+              constants + coordinate builder
+            </li>
+            <li>
+              <span class="dev-step-num">3</span>Assert
+              <code style="color: #00d4ff"
+                >CANONICAL_ARCHITECTURE === &ldquo;8,26,48:480&rdquo;</code
+              >
+              at startup
+            </li>
+            <li>
+              <span class="dev-step-num">4</span>Tag every event with a GeoQode
+              coordinate envelope
+            </li>
+            <li>
+              <span class="dev-step-num">5</span>Join the D48 mesh — your
+              service auto-discovers all peers
+            </li>
+            <li>
+              <span class="dev-step-num">6</span>Push to GitHub — AIOS CI/CD
+              deploys it. You are done.
+            </li>
           </ul>
-          <div class="dev-code">npx create-aios-app my-app<br/>cd my-app &amp;&amp; npm start</div>
+          <div class="dev-code">
+            npx create-aios-app my-app<br />cd my-app &amp;&amp; npm start
+          </div>
         </div>
 
         <div class="dev-card">
           <div class="dev-card-label">What your app gets for free</div>
           <h3>The AIOS runtime layer</h3>
-          <p>These are not features you add. They are part of the OS. Every app running on AIOS inherits all of them.</p>
+          <p>
+            These are not features you add. They are part of the OS. Every app
+            running on AIOS inherits all of them.
+          </p>
           <ul class="dev-steps">
-            <li><span class="dev-step-num">✦</span><strong style="color:#e8f0fe">Self-healing</strong> — your app detects and fixes its own failures. No PagerDuty. No 3am calls.</li>
-            <li><span class="dev-step-num">✦</span><strong style="color:#e8f0fe">Dual-attested decisions</strong> — every critical action is verified by two opposing AI poles before it runs.</li>
-            <li><span class="dev-step-num">✦</span><strong style="color:#e8f0fe">Semantic routing</strong> — events carry meaning (not just data) and route themselves to the right handler.</li>
-            <li><span class="dev-step-num">✦</span><strong style="color:#e8f0fe">Mesh connectivity</strong> — your service auto-discovers every other AIOS service on the network.</li>
-            <li><span class="dev-step-num">✦</span><strong style="color:#e8f0fe">End-to-end CI/CD</strong> — push to git, AIOS builds, tests, and deploys. Fully automated.</li>
+            <li>
+              <span class="dev-step-num">✦</span
+              ><strong style="color: #e8f0fe">Self-healing</strong> — your app
+              detects and fixes its own failures. No PagerDuty. No 3am calls.
+            </li>
+            <li>
+              <span class="dev-step-num">✦</span
+              ><strong style="color: #e8f0fe">Dual-attested decisions</strong> —
+              every critical action is verified by two opposing AI poles before
+              it runs.
+            </li>
+            <li>
+              <span class="dev-step-num">✦</span
+              ><strong style="color: #e8f0fe">Semantic routing</strong> — events
+              carry meaning (not just data) and route themselves to the right
+              handler.
+            </li>
+            <li>
+              <span class="dev-step-num">✦</span
+              ><strong style="color: #e8f0fe">Mesh connectivity</strong> — your
+              service auto-discovers every other AIOS service on the network.
+            </li>
+            <li>
+              <span class="dev-step-num">✦</span
+              ><strong style="color: #e8f0fe">End-to-end CI/CD</strong> — push
+              to git, AIOS builds, tests, and deploys. Fully automated.
+            </li>
           </ul>
         </div>
       </div>
 
       <div style="margin-top: 64px">
-        <div class="section-label" style="margin-bottom: 24px">AIOS-native apps — only possible here</div>
+        <div class="section-label" style="margin-bottom: 24px">
+          AIOS-native apps — only possible here
+        </div>
         <div class="dev-native-apps">
           <div class="dev-app">
             <div class="dev-app-name">AIOS App Factory</div>
-            <div class="dev-app-why">One command gives you a fully GeoQode-native app scaffold — self-healing, mesh-connected, and dual-attested from line one.</div>
+            <div class="dev-app-why">
+              One command gives you a fully GeoQode-native app scaffold —
+              self-healing, mesh-connected, and dual-attested from line one.
+            </div>
             <span class="dev-app-tag">Dev Tooling</span>
           </div>
           <div class="dev-app">
             <div class="dev-app-name">AttestedAI</div>
-            <div class="dev-app-why">The only AI assistant that cannot hallucinate by design. Every answer verified by two opposing AI poles before delivery.</div>
+            <div class="dev-app-why">
+              The only AI assistant that cannot hallucinate by design. Every
+              answer verified by two opposing AI poles before delivery.
+            </div>
             <span class="dev-app-tag">Enterprise AI</span>
           </div>
           <div class="dev-app">
             <div class="dev-app-name">NeverDown</div>
-            <div class="dev-app-why">SaaS that fixes its own production bugs at runtime. No engineer required. Powered by AIOS SelfHealer at the OS layer.</div>
+            <div class="dev-app-why">
+              SaaS that fixes its own production bugs at runtime. No engineer
+              required. Powered by AIOS SelfHealer at the OS layer.
+            </div>
             <span class="dev-app-tag">Infrastructure</span>
           </div>
           <div class="dev-app">
             <div class="dev-app-name">TruthAgent</div>
-            <div class="dev-app-why">AI for healthcare, legal, and finance where wrong answers have consequences. PHI/PSI dual-attested before every response.</div>
+            <div class="dev-app-why">
+              AI for healthcare, legal, and finance where wrong answers have
+              consequences. PHI/PSI dual-attested before every response.
+            </div>
             <span class="dev-app-tag">High-Stakes AI</span>
           </div>
           <div class="dev-app">
             <div class="dev-app-name">FreqHub</div>
-            <div class="dev-app-why">Find APIs by what they do semantically — not by guessing their name. GeoQode-routed marketplace for AIOS-native integrations.</div>
+            <div class="dev-app-why">
+              Find APIs by what they do semantically — not by guessing their
+              name. GeoQode-routed marketplace for AIOS-native integrations.
+            </div>
             <span class="dev-app-tag">Marketplace</span>
           </div>
           <div class="dev-app">
             <div class="dev-app-name">Your app here</div>
-            <div class="dev-app-why">The best AIOS-native apps have not been built yet. Join early access and build something that was genuinely impossible before.</div>
+            <div class="dev-app-why">
+              The best AIOS-native apps have not been built yet. Join early
+              access and build something that was genuinely impossible before.
+            </div>
             <span class="dev-app-tag">You</span>
           </div>
         </div>
