@@ -1,0 +1,48 @@
+MIT License — Interface Layer
+MERKABA_geoqode Lattice480
+
+Copyright (c) 2026 Bradley Levitan
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of the interface components of this software (GeoQode language specification,
+developer API surface, documentation, runtime scheduler interface, cinema
+pipeline tooling, visualization utilities, and all files NOT covered by the
+Closed Kernel License in LICENSE-KERNEL), to deal in the Software without
+restriction, including without limitation the rights to use, copy, modify,
+merge, publish, distribute, sublicense, and/or sell copies of the Software,
+and to permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+ATTRIBUTION REQUIREMENT:
+All copies or substantial portions of the Software, and all derivative works,
+must include the following attribution in documentation and any user-facing
+interface, footer, or about page:
+
+    "Powered by AIOS / MERKABA480 — Founder: Bradley Levitan"
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+SCOPE OF THIS LICENSE:
+This MIT license applies exclusively to the interface layer, including:
+
+  - docs/               (public documentation and specs)
+  - geo/cinema/         (cinema pipeline tooling)
+  - geo/runtime/        (scheduler and execution surface)
+  - examples/           (usage examples)
+  - scripts/            (build and utility scripts)
+  - server.js           (public API server)
+
+EXCLUDED FROM THIS LICENSE:
+The MERKABA kernel runtime formula, lattice geometry constants, adaptive
+coupling engine, and dual-pole attestation logic are proprietary intellectual
+property governed exclusively by LICENSE-KERNEL.
+
+See NOTICE for full attribution and founder recognition.

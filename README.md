@@ -1,6 +1,6 @@
 # 🌌 MERKABA_geoqode Lattice480
 
-**Lattice Runtime Core** | GeoQode Language + Canonical 8→26→48:480 MERKABA Lattice
+**Lattice Runtime Core** | GeoQode Language + Proprietary MERKABA Kernel Lattice
 
 ---
 
@@ -94,14 +94,14 @@ node scripts/run.js examples/hello-geoqode.geo
 | **Cymatic Sonic Driver**  | ~wave(f) | 4    | Stimulate resonance via frequency         |
 | **Octahedron Resonance**  | ⧉        | 4    | Activate Inner Octahedron field of light  |
 
-### MERKABA Lattice (Canonical 8→26→48:480)
+### MERKABA Lattice (Proprietary Kernel — see `LICENSE-KERNEL`)
 
-Every GeoQode program maps to MERKABA's final canonical architecture:
+Every GeoQode program maps to MERKABA's canonical multi-dimensional governance lattice:
 
-- **8 Foundation Nodes**: syntax, coherence, and base governance anchors
-- **26 Bosonic Anchor Nodes**: bridge, orchestration, and knowledge routing spine
-- **48 Canonical Dimensions**: complete operational governance lattice
-- **480 Harmonic Spectrum Nodes**: full DreamProjector / resonance shell
+- **Foundation Nodes**: syntax, coherence, and base governance anchors
+- **Bosonic Anchor Nodes**: bridge, orchestration, and knowledge routing spine
+- **Canonical Dimensions**: complete operational governance lattice
+- **Harmonic Spectrum Nodes**: full DreamProjector / resonance shell
 
 - **Tier 1**: Core Foundations (Syntax + Compliance Integrity)
 - **Tier 2**: Operational Systems (Node Resonance + Emission/Detection)

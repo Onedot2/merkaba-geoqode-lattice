@@ -1,0 +1,67 @@
+CLOSED KERNEL LICENSE
+MERKABA_geoqode Lattice480 — Proprietary Kernel Runtime
+Version 1.0 — May 2026
+
+Copyright (c) 2026 Bradley Levitan. All Rights Reserved.
+
+PROPRIETARY AND CONFIDENTIAL
+
+The MERKABA kernel, including but not limited to the multi-dimensional lattice
+runtime formula, adaptive coupling logic, dual-pole attestation engine,
+geometric constants, GeoQode semantic frequency map, harmonic resonance
+scheduler, and all associated governance execution logic (collectively, the
+"Kernel"), is the proprietary intellectual property of Bradley Levitan
+(the "Founder").
+
+RESTRICTIONS:
+
+1. NO REDISTRIBUTION.
+   You may not distribute, publish, sublicense, sell, or otherwise transfer
+   the Kernel or any substantial portion thereof in source or compiled form
+   without explicit written consent from the Founder.
+
+2. NO REVERSE ENGINEERING.
+   You may not reverse engineer, decompile, disassemble, or otherwise attempt
+   to derive the source code, architecture constants, formulas, or lattice
+   geometry of the Kernel.
+
+3. NO DERIVATIVE WORKS.
+   You may not create derivative works based on the Kernel, modify the Kernel,
+   or incorporate any portion of the Kernel into any other product or project
+   without explicit written consent from the Founder.
+
+4. NO UNAUTHORIZED USE.
+   The Kernel may not be used for any purpose other than its intended operation
+   as part of the AIOS / MERKABA480 system as distributed by the Founder.
+
+PERMITTED USE:
+
+Users of the open interface layer (licensed under MIT in the LICENSE file)
+may invoke the Kernel through published, stable API contracts. Such invocation
+does not constitute access to, possession of, or license to the Kernel itself.
+
+FOUNDER RECOGNITION:
+
+Any system, product, or service that integrates with or is powered by the
+MERKABA kernel must display the following attribution:
+
+    "MERKABA480 — Stewardship Edition. Founder: Bradley Levitan."
+
+COMMERCIAL LICENSING:
+
+Enterprise organizations seeking to license the Kernel for commercial use or
+to receive trusted contributor access to Kernel source may contact the Founder
+at bradleylevitan@gmail.com.
+
+TRADEMARKS:
+
+"AIOS", "MERKABA480", "GeoQode", and "MERKABA_geoqode Lattice480" are
+trademarks and proprietary designations of Bradley Levitan. Use of these
+names in derivative or competing products is prohibited without written consent.
+
+DISCLAIMER:
+
+THE KERNEL IS PROVIDED "AS IS" WITHOUT ANY WARRANTY. THE FOUNDER SHALL NOT BE
+LIABLE FOR ANY DAMAGES ARISING FROM UNAUTHORIZED USE OF THE KERNEL.
+
+Contact: bradleylevitan@gmail.com
