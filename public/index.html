@@ -827,6 +827,139 @@
         }
       }
 
+      /* ── PRODUCT SUITE ── */
+      .product-suite {
+        background: var(--bg2);
+      }
+
+      .product-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        margin-top: 60px;
+      }
+
+      .product-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 28px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s,
+          transform 0.2s;
+        backdrop-filter: blur(8px);
+      }
+
+      .product-card:hover {
+        border-color: rgba(0, 212, 255, 0.3);
+        box-shadow: var(--glow);
+        transform: translateY(-3px);
+      }
+
+      .product-card-header {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .product-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        flex-shrink: 0;
+      }
+
+      .product-icon.cyan  { background: rgba(0, 212, 255, 0.1); }
+      .product-icon.purple { background: rgba(124, 58, 237, 0.1); }
+      .product-icon.pink  { background: rgba(217, 70, 239, 0.1); }
+      .product-icon.gold  { background: rgba(251, 191, 36, 0.1); }
+      .product-icon.teal  { background: rgba(20, 184, 166, 0.1); }
+      .product-icon.blue  { background: rgba(59, 130, 246, 0.1); }
+
+      .product-card h3 {
+        font-size: 17px;
+        font-weight: 700;
+        letter-spacing: -0.3px;
+        color: var(--text);
+        margin: 0;
+      }
+
+      .product-tagline {
+        font-size: 14px;
+        color: var(--muted);
+        line-height: 1.65;
+        flex: 1;
+      }
+
+      .product-tiers {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+      }
+
+      .tier-badge {
+        font-size: 11px;
+        font-weight: 600;
+        padding: 4px 10px;
+        border-radius: 6px;
+        letter-spacing: 0.2px;
+        white-space: nowrap;
+      }
+
+      .tier-badge.free {
+        background: rgba(0, 212, 255, 0.08);
+        border: 1px solid rgba(0, 212, 255, 0.22);
+        color: var(--cyan);
+      }
+
+      .tier-badge.paid {
+        background: rgba(124, 58, 237, 0.08);
+        border: 1px solid rgba(124, 58, 237, 0.22);
+        color: #a78bfa;
+      }
+
+      .tier-badge.enterprise {
+        background: rgba(217, 70, 239, 0.08);
+        border: 1px solid rgba(217, 70, 239, 0.22);
+        color: #e879f9;
+      }
+
+      .product-cta {
+        display: block;
+        padding: 11px 18px;
+        background: transparent;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        color: var(--cyan);
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+        text-align: center;
+        transition: background 0.2s, border-color 0.2s;
+        letter-spacing: 0.2px;
+      }
+
+      .product-cta:hover {
+        background: rgba(0, 212, 255, 0.07);
+        border-color: rgba(0, 212, 255, 0.35);
+      }
+
+      @media (max-width: 960px) {
+        .product-grid { grid-template-columns: repeat(2, 1fr); }
+      }
+
+      @media (max-width: 580px) {
+        .product-grid { grid-template-columns: 1fr; }
+      }
+
       /* ── DEV SECTION ── */
       .dev-section {
         background: linear-gradient(180deg, #040c1e 0%, #06101f 100%);
@@ -1039,6 +1172,119 @@
         <div class="stat-label">Manual maintenance required from you</div>
       </div>
     </div>
+
+    <!-- ── PRODUCT SUITE ── -->
+    <section class="product-suite" id="products">
+      <div class="container">
+        <p class="section-label">The AIOS Product Suite</p>
+        <h2 class="section-title">Products Built on AIOS</h2>
+        <p class="section-body">
+          Six products — each one impossible without AIOS underneath. Built for teams that need AI they can trust.
+        </p>
+
+        <div class="product-grid">
+
+          <!-- AIOS App Factory -->
+          <div class="product-card">
+            <div class="product-card-header">
+              <div class="product-icon cyan">⚡</div>
+              <h3>AIOS App Factory</h3>
+            </div>
+            <p class="product-tagline">
+              Build fully self-healing, AI-native apps with a single command. Self-repair, dual-verified decisions, and mesh connectivity — baked in from line one.
+            </p>
+            <div class="product-tiers">
+              <span class="tier-badge free">Open — Free</span>
+              <span class="tier-badge paid">Pro — $49/mo</span>
+              <span class="tier-badge enterprise">Studio — $149/mo</span>
+            </div>
+            <a href="#waitlist" class="product-cta">Join Waitlist →</a>
+          </div>
+
+          <!-- AttestedAI -->
+          <div class="product-card">
+            <div class="product-card-header">
+              <div class="product-icon purple">✓</div>
+              <h3>AttestedAI</h3>
+            </div>
+            <p class="product-tagline">
+              AI audit &amp; compliance attestation. Every answer verified by two independent AI poles before delivery. Built for teams where wrong answers have real consequences.
+            </p>
+            <div class="product-tiers">
+              <span class="tier-badge paid">Team — $199/mo</span>
+              <span class="tier-badge enterprise">Enterprise — $699/mo</span>
+            </div>
+            <a href="#waitlist" class="product-cta">Join Waitlist →</a>
+          </div>
+
+          <!-- NeverDown -->
+          <div class="product-card">
+            <div class="product-card-header">
+              <div class="product-icon teal">↺</div>
+              <h3>NeverDown</h3>
+            </div>
+            <p class="product-tagline">
+              AI-powered uptime intelligence. AIOS monitors, detects, and heals production incidents at the OS layer — before your users notice anything is wrong.
+            </p>
+            <div class="product-tiers">
+              <span class="tier-badge paid">Growth — $149/mo</span>
+              <span class="tier-badge enterprise">Scale — $449/mo</span>
+            </div>
+            <a href="#waitlist" class="product-cta">Join Waitlist →</a>
+          </div>
+
+          <!-- TruthAgent -->
+          <div class="product-card">
+            <div class="product-card-header">
+              <div class="product-icon pink">◈</div>
+              <h3>TruthAgent</h3>
+            </div>
+            <p class="product-tagline">
+              AI hallucination detection &amp; grounding. Real-time output verification for healthcare, legal, and finance — where accuracy is non-negotiable.
+            </p>
+            <div class="product-tiers">
+              <span class="tier-badge paid">Professional — $299/mo</span>
+              <span class="tier-badge enterprise">Enterprise — $1,499/mo</span>
+            </div>
+            <a href="#waitlist" class="product-cta">Join Waitlist →</a>
+          </div>
+
+          <!-- FreqHub -->
+          <div class="product-card">
+            <div class="product-card-header">
+              <div class="product-icon gold">◎</div>
+              <h3>FreqHub</h3>
+            </div>
+            <p class="product-tagline">
+              AI signal marketplace for publishers. Publish, discover, and monetize AI signals semantically — find APIs by what they <em>do</em>, not what they're named.
+            </p>
+            <div class="product-tiers">
+              <span class="tier-badge free">Publisher — Free</span>
+              <span class="tier-badge paid">Publisher Pro — $79/mo</span>
+              <span class="tier-badge paid">Consumer Pro — $29/mo</span>
+            </div>
+            <a href="#waitlist" class="product-cta">Join Waitlist →</a>
+          </div>
+
+          <!-- FreqMatch -->
+          <div class="product-card">
+            <div class="product-card-header">
+              <div class="product-icon blue">⟷</div>
+              <h3>FreqMatch</h3>
+            </div>
+            <p class="product-tagline">
+              AI-native talent &amp; collaboration matching. Find the right people for your project instantly — AI-matched connections that fit your work, not just your keywords.
+            </p>
+            <div class="product-tiers">
+              <span class="tier-badge paid">Company — $199/mo</span>
+              <span class="tier-badge enterprise">Studio — $599/mo</span>
+            </div>
+            <a href="#waitlist" class="product-cta">Join Waitlist →</a>
+          </div>
+
+        </div>
+      </div>
+    </section>
 
     <!-- ── FEATURES ── -->
     <section>
