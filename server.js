@@ -3,6 +3,9 @@
 // Exposes the GeoQode interpreter as a REST API for the Storm ecosystem.
 
 import { createServer } from "http";
+import { readFileSync, existsSync } from "fs";
+import { extname, join, dirname } from "path";
+import { fileURLToPath } from "url";
 import { StormAdapter } from "./geo/bridge/storm-adapter.js";
 import { MerkabaBridge } from "./geo/bridge/merkaba-bridge.js";
 import { MERKABA_LATTICE } from "./geo/certification/enterprise-certifier.js";
@@ -35,6 +38,26 @@ assertCanonicalArchitectureSignature(CANONICAL_ARCHITECTURE);
 console.log(
   `[MerkabaDimensionalOS] ✅ Boot assertion passed — architecture ${CANONICAL_ARCHITECTURE}, φ=1.618`,
 );
+
+// ─── Static assets ───────────────────────────────────────────────────────────
+const __dirname_static = dirname(fileURLToPath(import.meta.url));
+const PUBLIC_DIR = join(__dirname_static, "public");
+const AIOS_HTML_PATH = join(PUBLIC_DIR, "index.html");
+const AIOS_HTML = existsSync(AIOS_HTML_PATH)
+  ? readFileSync(AIOS_HTML_PATH, "utf-8")
+  : null;
+
+const MIME_TYPES = {
+  ".html": "text/html; charset=utf-8",
+  ".css":  "text/css; charset=utf-8",
+  ".js":   "text/javascript; charset=utf-8",
+  ".svg":  "image/svg+xml",
+  ".ico":  "image/x-icon",
+  ".png":  "image/png",
+  ".jpg":  "image/jpeg",
+  ".webp": "image/webp",
+  ".json": "application/json; charset=utf-8",
+};
 
 const PORT = parseInt(process.env.PORT || "3030", 10);
 const ADMIN_JWT = process.env.ADMIN_JWT || null;
@@ -198,26 +221,32 @@ const server = createServer(async (req, res) => {
   }
 
   try {
-    // ── GET / ───────────────────────────────────────────────────────────
+    // ── GET / — serve AIOS landing page (HTML) or JSON for API consumers ──
     if (req.method === "GET" && pathname === "/") {
+      const accept = req.headers["accept"] || "";
+      if (AIOS_HTML && (accept.includes("text/html") || accept.includes("*/*"))) {
+        res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+        res.end(AIOS_HTML);
+        return;
+      }
+      // Fallback JSON for programmatic consumers
+      return json(res, 200, { ok: true, service: "aios", brand: "AIOS", url: "https://67aios.com" });
+    }
+
+    // ── GET /api — GeoQode OS API info (JSON) ──────────────────────────────
+    if (req.method === "GET" && pathname === "/api") {
       return json(res, 200, {
         ok: true,
         service: "geoqode-os",
-        description:
-          "MERKABA_geoqode OS canonical codex surface for the 8→26→48:480 architecture.",
-        architecture: CANONICAL_ARCHITECTURE,
-        os: "MerkabaDimensionalOS",
+        description: "AIOS GeoQode OS — AI-native runtime API.",
         endpoints: [
-          "GET  /",
+          "GET  /api",
           "GET  /health",
           "GET  /status",
           "GET  /dimensions",
           "GET  /playbooks",
           "GET  /codex/status",
           "POST /codex/execute",
-          "GET  /merkaba/activation-update",
-          "GET  /merkaba/ai-verification-page",
-          "GET  /merkaba/install-manifest",
           "GET  /stats",
           "POST /execute",
           "POST /playbook/:name",
@@ -237,6 +266,56 @@ const server = createServer(async (req, res) => {
           "GET  /swarm/attest",
         ],
       });
+    }
+
+    // ── GET /public/* — static files ──────────────────────────────────────
+    if (req.method === "GET" && pathname.startsWith("/public/")) {
+      const safeSuffix = pathname.slice("/public/".length).replace(/\.\./g, "");
+      const filePath = join(PUBLIC_DIR, safeSuffix);
+      if (existsSync(filePath)) {
+        const ext = extname(filePath);
+        const mime = MIME_TYPES[ext] || "application/octet-stream";
+        res.writeHead(200, { "Content-Type": mime });
+        res.end(readFileSync(filePath));
+        return;
+      }
+      return json(res, 404, { ok: false, error: "Static file not found" });
+    }
+
+    // ── POST /waitlist — proxy to Storm API waitlist ──────────────────────
+    if (req.method === "POST" && pathname === "/waitlist") {
+      const body = await readBody(req);
+      const { name, email, message } = body;
+
+      // Basic validation
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email).trim())) {
+        return json(res, 400, { ok: false, error: "Valid email address required" });
+      }
+
+      const STORM_API = process.env.STORM_API_URL || "https://api.getbrains4ai.com";
+      try {
+        const payload = {
+          name: String(name || "AIOS Subscriber").trim().slice(0, 120),
+          email: String(email).trim().slice(0, 254),
+          organization: "AIOS Early Access",
+          role: "Early Adopter",
+          interests: `Products: AIOS\nNotes: ${String(message || "").trim().slice(0, 500)}\nSource: 67aios.com`,
+        };
+        const upstream = await fetch(`${STORM_API}/api/waitlist`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+          signal: AbortSignal.timeout(8000),
+        });
+        const data = await upstream.json().catch(() => ({}));
+        if (upstream.ok) {
+          return json(res, 200, { ok: true, message: "You're on the AIOS waitlist!" });
+        }
+        return json(res, 400, { ok: false, error: data.error || "Waitlist registration failed" });
+      } catch (err) {
+        console.error("[AIOS] Waitlist proxy error:", err.message);
+        return json(res, 500, { ok: false, error: "Could not reach registration service. Please try again." });
+      }
     }
 
     // ── GET /health ──────────────────────────────────────────────────────
