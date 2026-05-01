@@ -237,7 +237,7 @@ const server = createServer(async (req, res) => {
         ok: true,
         service: "aios",
         brand: "AIOS",
-        url: "https://67aios.com",
+        url: "https://realaios.com",
       });
     }
 
@@ -315,7 +315,7 @@ const server = createServer(async (req, res) => {
           role: "Early Adopter",
           interests: `Products: AIOS\nNotes: ${String(message || "")
             .trim()
-            .slice(0, 500)}\nSource: 67aios.com`,
+            .slice(0, 500)}\nSource: realaios.com`,
         };
         const upstream = await fetch(`${STORM_API}/api/waitlist`, {
           method: "POST",
