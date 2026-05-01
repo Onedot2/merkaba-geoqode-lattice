@@ -23,54 +23,78 @@
 import { EventEmitter } from "node:events";
 
 // ── Canonical constants (mirrored from transform-420.js) ─────────────────────
-export const PHI        = 1.618;   // Golden Root
-export const PSI        = 1.414;   // Silver Bridge
-export const BASE_FREQUENCY_HZ    = 72;   // Holographic resonance lock
-export const FOUNDATION_NODES     = 8;
+export const PHI = 1.618; // Golden Root
+export const PSI = 1.414; // Silver Bridge
+export const BASE_FREQUENCY_HZ = 72; // Holographic resonance lock
+export const FOUNDATION_NODES = 8;
 export const BOSONIC_ANCHOR_NODES = 26;
-export const CANONICAL_LATTICE_NODES      = 48;
-export const HARMONIC_SPECTRUM_NODES      = 480;
-export const CANONICAL_ARCHITECTURE       = "8,26,48:480";
+export const CANONICAL_LATTICE_NODES = 48;
+export const HARMONIC_SPECTRUM_NODES = 480;
+export const CANONICAL_ARCHITECTURE = "8,26,48:480";
 export const CANONICAL_ARCHITECTURE_DISPLAY = "8→26→48:480";
 
 // ── Adaptive coupling tiers ───────────────────────────────────────────────────
 // Node counts follow the same 8→26→48 integer-divisibility pattern: 480/48/360/420 all div by 8.
 export const COUPLING_TIERS = Object.freeze([
-  { nodeCount: 480, slotsPerNode: 10,  label: "D480",  resonanceBand: "FULL_HARMONIC"  },
-  { nodeCount: 420, slotsPerNode: 15,  label: "D420",  resonanceBand: "BOSONIC_BRIDGE" },
-  { nodeCount: 360, slotsPerNode: 20,  label: "D360",  resonanceBand: "FOUNDATION_ARC" },
+  {
+    nodeCount: 480,
+    slotsPerNode: 10,
+    label: "D480",
+    resonanceBand: "FULL_HARMONIC",
+  },
+  {
+    nodeCount: 420,
+    slotsPerNode: 15,
+    label: "D420",
+    resonanceBand: "BOSONIC_BRIDGE",
+  },
+  {
+    nodeCount: 360,
+    slotsPerNode: 20,
+    label: "D360",
+    resonanceBand: "FOUNDATION_ARC",
+  },
 ]);
 
 // ── GeoQode Semantic Frequency Map ───────────────────────────────────────────
 export const SEMANTIC_FREQUENCY_MAP = Object.freeze({
-  ENTITY:      396,
-  LOCATION:    417,
-  ACTION:      528,
-  DIALOGUE:    639,
-  EMOTION:     741,
-  PHYSICS:     852,
-  NARRATIVE:   963,
-  HOLOGRAPHIC:  72,
+  ENTITY: 396,
+  LOCATION: 417,
+  ACTION: 528,
+  DIALOGUE: 639,
+  EMOTION: 741,
+  PHYSICS: 852,
+  NARRATIVE: 963,
+  HOLOGRAPHIC: 72,
 });
 
 /** Build a GeoQode coordinate envelope (the native lattice language). */
-export function buildGeoCoordinate({ domain, sector = 5, confidence = 0.95, source = "merkaba480-runtime", semanticType = "HOLOGRAPHIC" }) {
-  const frequency  = SEMANTIC_FREQUENCY_MAP[semanticType] ?? BASE_FREQUENCY_HZ;
-  const latticeNode   = Math.min(47, (((sector - 1) * 6) + Math.floor(confidence * PHI * 2)) % 48);
-  const harmonicNode  = Math.min(479, latticeNode * 10);
+export function buildGeoCoordinate({
+  domain,
+  sector = 5,
+  confidence = 0.95,
+  source = "merkaba480-runtime",
+  semanticType = "HOLOGRAPHIC",
+}) {
+  const frequency = SEMANTIC_FREQUENCY_MAP[semanticType] ?? BASE_FREQUENCY_HZ;
+  const latticeNode = Math.min(
+    47,
+    ((sector - 1) * 6 + Math.floor(confidence * PHI * 2)) % 48,
+  );
+  const harmonicNode = Math.min(479, latticeNode * 10);
   return {
-    architectureSignature:  CANONICAL_ARCHITECTURE,
-    architectureDisplay:    CANONICAL_ARCHITECTURE_DISPLAY,
+    architectureSignature: CANONICAL_ARCHITECTURE,
+    architectureDisplay: CANONICAL_ARCHITECTURE_DISPLAY,
     semanticType,
     frequency,
     latticeNode,
     harmonicNode,
-    phiCoefficient:  PHI,
-    psiCoefficient:  PSI,
-    coherence:       Math.min(1, Math.max(0, confidence)),
+    phiCoefficient: PHI,
+    psiCoefficient: PSI,
+    coherence: Math.min(1, Math.max(0, confidence)),
     domain,
     source,
-    d48Expansion:  "CANONICAL",
+    d48Expansion: "CANONICAL",
     d480Expansion: "FULL_HARMONIC",
   };
 }
@@ -86,11 +110,11 @@ export class LatticeNode {
    * @param {number} harmonicHz   — Resonance frequency for this node (PHI-modulated)
    */
   constructor(id, resonanceSlot, harmonicHz) {
-    this.id            = id;
+    this.id = id;
     this.resonanceSlot = resonanceSlot;
-    this.harmonicHz    = harmonicHz;
-    this.agents        = [];          // active agent descriptors
-    this.coherence     = 1.0;         // 0-1 local coherence
+    this.harmonicHz = harmonicHz;
+    this.agents = []; // active agent descriptors
+    this.coherence = 1.0; // 0-1 local coherence
   }
 
   /** True when this node can accept another agent without coherence drop. */
@@ -110,12 +134,12 @@ export class LatticeNode {
   assignAgent(agent) {
     if (!this.hasCapacity) return null;
     this.agents.push(agent);
-    this.coherence = +(1 - (this.loadRatio * (1 / PHI))).toFixed(4);
+    this.coherence = +(1 - this.loadRatio * (1 / PHI)).toFixed(4);
     return buildGeoCoordinate({
-      domain:       agent.domain ?? "self-evolve",
-      sector:       agent.sector ?? 5,
-      confidence:   this.coherence,
-      source:       `lattice-node:${this.id}`,
+      domain: agent.domain ?? "self-evolve",
+      sector: agent.sector ?? 5,
+      confidence: this.coherence,
+      source: `lattice-node:${this.id}`,
       semanticType: agent.semanticType ?? "HOLOGRAPHIC",
     });
   }
@@ -125,7 +149,7 @@ export class LatticeNode {
     const before = this.agents.length;
     this.agents = this.agents.filter((a) => a.id !== agentId);
     if (this.agents.length < before) {
-      this.coherence = +(1 - (this.loadRatio * (1 / PHI))).toFixed(4);
+      this.coherence = +(1 - this.loadRatio * (1 / PHI)).toFixed(4);
       return true;
     }
     return false;
@@ -133,12 +157,12 @@ export class LatticeNode {
 
   toJSON() {
     return {
-      id:            this.id,
-      harmonicHz:    this.harmonicHz,
+      id: this.id,
+      harmonicHz: this.harmonicHz,
       resonanceSlot: this.resonanceSlot,
-      agentCount:    this.agents.length,
-      loadRatio:     this.loadRatio,
-      coherence:     this.coherence,
+      agentCount: this.agents.length,
+      loadRatio: this.loadRatio,
+      coherence: this.coherence,
     };
   }
 }
@@ -155,11 +179,11 @@ export class LatticeRuntime extends EventEmitter {
    */
   constructor({ nodeCount = 480, clusterId = "primary" } = {}) {
     super();
-    this.clusterId         = clusterId;
-    this._tierIndex        = 0;    // index into COUPLING_TIERS
-    this._agentCount       = 0;
-    this._scaleDownCount   = 0;
-    this._startedAt        = Date.now();
+    this.clusterId = clusterId;
+    this._tierIndex = 0; // index into COUPLING_TIERS
+    this._agentCount = 0;
+    this._scaleDownCount = 0;
+    this._startedAt = Date.now();
 
     this._initTier(0);
 
@@ -167,28 +191,41 @@ export class LatticeRuntime extends EventEmitter {
     this.emit("lattice:boot", {
       event: "lattice:boot",
       nodeCount: this.nodeCount,
-      tier:      this.tier.label,
-      geoqode:   buildGeoCoordinate({
-        domain: "self-evolve", sector: 5, confidence: 1.0,
-        source: `lattice-runtime:${clusterId}`, semanticType: "HOLOGRAPHIC",
+      tier: this.tier.label,
+      geoqode: buildGeoCoordinate({
+        domain: "self-evolve",
+        sector: 5,
+        confidence: 1.0,
+        source: `lattice-runtime:${clusterId}`,
+        semanticType: "HOLOGRAPHIC",
       }),
     });
   }
 
   /** Current coupling tier descriptor. */
-  get tier() { return COUPLING_TIERS[this._tierIndex]; }
+  get tier() {
+    return COUPLING_TIERS[this._tierIndex];
+  }
 
   /** Active node count. */
-  get nodeCount() { return this.tier.nodeCount; }
+  get nodeCount() {
+    return this.tier.nodeCount;
+  }
 
   /** Slots per node at the current tier. */
-  get slotsPerNode() { return this.tier.slotsPerNode; }
+  get slotsPerNode() {
+    return this.tier.slotsPerNode;
+  }
 
   /** Total theoretical capacity at this tier. */
-  get totalCapacity() { return this.nodeCount * this.slotsPerNode; }
+  get totalCapacity() {
+    return this.nodeCount * this.slotsPerNode;
+  }
 
   /** Live agent count. */
-  get activeAgents() { return this._agentCount; }
+  get activeAgents() {
+    return this._agentCount;
+  }
 
   /** Overall coherence: PHI-weighted mean of all nodes. */
   get coherence() {
@@ -215,7 +252,7 @@ export class LatticeRuntime extends EventEmitter {
     let bestLoad = Infinity;
     for (const node of this._nodes) {
       if (node.hasCapacity && node.loadRatio < bestLoad) {
-        best     = node;
+        best = node;
         bestLoad = node.loadRatio;
       }
     }
@@ -233,7 +270,7 @@ export class LatticeRuntime extends EventEmitter {
    * triggered an adaptive scale-down (still assigned after re-init).
    */
   distributeAgents(agents) {
-    const overflow   = [];
+    const overflow = [];
     const assignedCoords = [];
 
     for (const agent of agents) {
@@ -257,7 +294,8 @@ export class LatticeRuntime extends EventEmitter {
     }
 
     const geoqode = buildGeoCoordinate({
-      domain: "self-evolve", sector: 5,
+      domain: "self-evolve",
+      sector: 5,
       confidence: this.coherence,
       source: `lattice-runtime:${this.clusterId}`,
       semanticType: "HOLOGRAPHIC",
@@ -265,16 +303,21 @@ export class LatticeRuntime extends EventEmitter {
 
     if (agents.length > 0) {
       this.emit("agents:distributed", {
-        event:     "agents:distributed",
-        count:     agents.length,
-        overflow:  overflow.length,
-        tier:      this.tier.label,
+        event: "agents:distributed",
+        count: agents.length,
+        overflow: overflow.length,
+        tier: this.tier.label,
         coherence: this.coherence,
         geoqode,
       });
     }
 
-    return { assigned: agents.length - overflow.length, overflow: overflow.length, coords: assignedCoords, geoqode };
+    return {
+      assigned: agents.length - overflow.length,
+      overflow: overflow.length,
+      coords: assignedCoords,
+      geoqode,
+    };
   }
 
   /**
@@ -285,8 +328,16 @@ export class LatticeRuntime extends EventEmitter {
       if (node.releaseAgent(agentId)) {
         this._agentCount = Math.max(0, this._agentCount - 1);
         this.emit("agent:released", {
-          event: "agent:released", agentId, tier: this.tier.label,
-          geoqode: buildGeoCoordinate({ domain: "self-evolve", sector: 5, confidence: this.coherence, source: `lattice-runtime:${this.clusterId}`, semanticType: "HOLOGRAPHIC" }),
+          event: "agent:released",
+          agentId,
+          tier: this.tier.label,
+          geoqode: buildGeoCoordinate({
+            domain: "self-evolve",
+            sector: 5,
+            confidence: this.coherence,
+            source: `lattice-runtime:${this.clusterId}`,
+            semanticType: "HOLOGRAPHIC",
+          }),
         });
         return true;
       }
@@ -313,15 +364,18 @@ export class LatticeRuntime extends EventEmitter {
     this.distributeAgents(allAgents);
 
     this.emit("lattice:scale-down", {
-      event:       "lattice:scale-down",
-      fromTier:    COUPLING_TIERS[nextTier - 1].label,
-      toTier:      this.tier.label,
-      nodeCount:   this.nodeCount,
+      event: "lattice:scale-down",
+      fromTier: COUPLING_TIERS[nextTier - 1].label,
+      toTier: this.tier.label,
+      nodeCount: this.nodeCount,
       slotsPerNode: this.slotsPerNode,
       scaleDownCount: this._scaleDownCount,
-      geoqode:     buildGeoCoordinate({
-        domain: "quantum-arch", sector: 1, confidence: this.coherence,
-        source: `lattice-runtime:${this.clusterId}`, semanticType: "PHYSICS",
+      geoqode: buildGeoCoordinate({
+        domain: "quantum-arch",
+        sector: 1,
+        confidence: this.coherence,
+        source: `lattice-runtime:${this.clusterId}`,
+        semanticType: "PHYSICS",
       }),
     });
   }
@@ -333,24 +387,27 @@ export class LatticeRuntime extends EventEmitter {
     const tl = this.tier;
     return {
       architectureSignature: CANONICAL_ARCHITECTURE,
-      architectureDisplay:   CANONICAL_ARCHITECTURE_DISPLAY,
-      clusterId:       this.clusterId,
-      tier:            tl.label,
-      nodeCount:       this.nodeCount,
-      slotsPerNode:    this.slotsPerNode,
-      totalCapacity:   this.totalCapacity,
-      activeAgents:    this._agentCount,
-      loadRatio:       +(this._agentCount / this.totalCapacity).toFixed(4),
-      coherence:       this.coherence,
-      scaleDownCount:  this._scaleDownCount,
-      uptimeMs:        Date.now() - this._startedAt,
-      phiAnchor:       PHI,
-      psiAnchor:       PSI,
+      architectureDisplay: CANONICAL_ARCHITECTURE_DISPLAY,
+      clusterId: this.clusterId,
+      tier: tl.label,
+      nodeCount: this.nodeCount,
+      slotsPerNode: this.slotsPerNode,
+      totalCapacity: this.totalCapacity,
+      activeAgents: this._agentCount,
+      loadRatio: +(this._agentCount / this.totalCapacity).toFixed(4),
+      coherence: this.coherence,
+      scaleDownCount: this._scaleDownCount,
+      uptimeMs: Date.now() - this._startedAt,
+      phiAnchor: PHI,
+      psiAnchor: PSI,
       baseFrequencyHz: BASE_FREQUENCY_HZ,
-      nodeSnapshots:   this._nodes.slice(0, 10).map((n) => n.toJSON()), // first 10
-      geoqode:         buildGeoCoordinate({
-        domain: "self-evolve", sector: 5, confidence: this.coherence,
-        source: `lattice-runtime:${this.clusterId}`, semanticType: "HOLOGRAPHIC",
+      nodeSnapshots: this._nodes.slice(0, 10).map((n) => n.toJSON()), // first 10
+      geoqode: buildGeoCoordinate({
+        domain: "self-evolve",
+        sector: 5,
+        confidence: this.coherence,
+        source: `lattice-runtime:${this.clusterId}`,
+        semanticType: "HOLOGRAPHIC",
       }),
     };
   }

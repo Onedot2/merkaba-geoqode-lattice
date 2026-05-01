@@ -24,7 +24,16 @@
  * Architecture: CANONICAL_ARCHITECTURE = "8,26,48:480"  ← LOCKED
  */
 
-import { LatticeRuntime, buildGeoCoordinate, PHI, PSI, BASE_FREQUENCY_HZ, CANONICAL_ARCHITECTURE, CANONICAL_ARCHITECTURE_DISPLAY, COUPLING_TIERS } from "./merkaba480-runtime.js";
+import {
+  LatticeRuntime,
+  buildGeoCoordinate,
+  PHI,
+  PSI,
+  BASE_FREQUENCY_HZ,
+  CANONICAL_ARCHITECTURE,
+  CANONICAL_ARCHITECTURE_DISPLAY,
+  COUPLING_TIERS,
+} from "./merkaba480-runtime.js";
 
 // ── Hardware capability detection ─────────────────────────────────────────────
 
@@ -34,9 +43,14 @@ async function detectHardware() {
   // Try onnxruntime-node (supports CUDA) — optional peer dependency
   try {
     const ort = await import("onnxruntime-node");
-    const providers = ort.env?.wasm?.numThreads != null ? ["CUDAExecutionProvider", "CPUExecutionProvider"] : [];
+    const providers =
+      ort.env?.wasm?.numThreads != null
+        ? ["CUDAExecutionProvider", "CPUExecutionProvider"]
+        : [];
     caps.gpu = providers.includes("CUDAExecutionProvider");
-  } catch { /* not installed */ }
+  } catch {
+    /* not installed */
+  }
 
   // Try @tensorflow/tfjs-node-gpu — optional peer dependency
   try {
@@ -44,7 +58,9 @@ async function detectHardware() {
     await tf.ready();
     caps.gpu = true;
     caps.gpuName = "TensorFlow GPU";
-  } catch { /* not installed */ }
+  } catch {
+    /* not installed */
+  }
 
   return caps;
 }
@@ -60,13 +76,13 @@ export class AcceleratedAgent {
    * @param {object} [meta]   — optional GeoQode metadata
    */
   constructor(agentId, data = [], meta = {}) {
-    this.id          = agentId;
-    this.data        = data;
-    this.domain      = meta.domain      ?? "perf-forge";
-    this.sector      = meta.sector      ?? 7;
+    this.id = agentId;
+    this.data = data;
+    this.domain = meta.domain ?? "perf-forge";
+    this.sector = meta.sector ?? 7;
     this.semanticType = meta.semanticType ?? "ACTION";
-    this.timestamp   = new Date().toISOString();
-    this._result     = null;
+    this.timestamp = new Date().toISOString();
+    this._result = null;
   }
 
   /**
@@ -78,25 +94,30 @@ export class AcceleratedAgent {
     // ReLU activation on data vector (GPU/CPU — same math, different substrate)
     const activated = this.data.map((x) => Math.max(0, x));
     // PHI-modulated normalization (lattice-native signal processing)
-    const phiNorm   = activated.map((x) => +(x / (1 + PHI)).toFixed(6));
+    const phiNorm = activated.map((x) => +(x / (1 + PHI)).toFixed(6));
 
     this._result = {
-      agentId:   this.id,
+      agentId: this.id,
       activated: phiNorm,
       mode,
-      coherence: phiNorm.length > 0 ? +(phiNorm.reduce((a, b) => a + b, 0) / phiNorm.length).toFixed(4) : 0,
-      geoqode:   buildGeoCoordinate({
-        domain:       this.domain,
-        sector:       this.sector,
-        confidence:   0.92,
-        source:       `accelerated-agent:${this.id}`,
+      coherence:
+        phiNorm.length > 0
+          ? +(phiNorm.reduce((a, b) => a + b, 0) / phiNorm.length).toFixed(4)
+          : 0,
+      geoqode: buildGeoCoordinate({
+        domain: this.domain,
+        sector: this.sector,
+        confidence: 0.92,
+        source: `accelerated-agent:${this.id}`,
         semanticType: this.semanticType,
       }),
     };
     return this._result;
   }
 
-  get result() { return this._result; }
+  get result() {
+    return this._result;
+  }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -110,13 +131,13 @@ export class TPUAgent {
    * @param {object} [meta]
    */
   constructor(agentId, matrix = [[]], meta = {}) {
-    this.id          = agentId;
-    this.matrix      = matrix;
-    this.domain      = meta.domain      ?? "quantum-arch";
-    this.sector      = meta.sector      ?? 1;
+    this.id = agentId;
+    this.matrix = matrix;
+    this.domain = meta.domain ?? "quantum-arch";
+    this.sector = meta.sector ?? 1;
     this.semanticType = meta.semanticType ?? "PHYSICS";
-    this.timestamp   = new Date().toISOString();
-    this._result     = null;
+    this.timestamp = new Date().toISOString();
+    this._result = null;
   }
 
   /**
@@ -125,27 +146,34 @@ export class TPUAgent {
    */
   async process(mode = "cpu") {
     const activated = this.matrix.map((row) => row.map((x) => Math.max(0, x)));
-    const flat      = activated.flat();
-    const coherence = flat.length > 0 ? +(flat.reduce((a, b) => a + b, 0) / flat.length / (1 + PHI)).toFixed(4) : 0;
+    const flat = activated.flat();
+    const coherence =
+      flat.length > 0
+        ? +(flat.reduce((a, b) => a + b, 0) / flat.length / (1 + PHI)).toFixed(
+            4,
+          )
+        : 0;
 
     this._result = {
-      agentId:   this.id,
-      shape:     [this.matrix.length, (this.matrix[0] ?? []).length],
+      agentId: this.id,
+      shape: [this.matrix.length, (this.matrix[0] ?? []).length],
       mode,
       coherence,
       activated,
-      geoqode:   buildGeoCoordinate({
-        domain:       this.domain,
-        sector:       this.sector,
-        confidence:   Math.min(1, coherence * PHI),
-        source:       `tpu-agent:${this.id}`,
+      geoqode: buildGeoCoordinate({
+        domain: this.domain,
+        sector: this.sector,
+        confidence: Math.min(1, coherence * PHI),
+        source: `tpu-agent:${this.id}`,
         semanticType: this.semanticType,
       }),
     };
     return this._result;
   }
 
-  get result() { return this._result; }
+  get result() {
+    return this._result;
+  }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -161,29 +189,38 @@ export class AcceleratedLatticeRuntime extends LatticeRuntime {
    * @param {boolean} [opts.useTpu=false]   — attempt TPU execution
    * @param {number}  [opts.batchSize=64]   — agents per hardware batch
    */
-  constructor({ nodeCount = 480, clusterId = "accelerated", useGpu = true, useTpu = false, batchSize = 64 } = {}) {
+  constructor({
+    nodeCount = 480,
+    clusterId = "accelerated",
+    useGpu = true,
+    useTpu = false,
+    batchSize = 64,
+  } = {}) {
     super({ nodeCount, clusterId });
-    this.useGpu    = useGpu;
-    this.useTpu    = useTpu;
+    this.useGpu = useGpu;
+    this.useTpu = useTpu;
     this.batchSize = batchSize;
-    this._hwCaps   = { gpu: false, tpu: false };
-    this._execMode = "cpu";   // resolved after _init
+    this._hwCaps = { gpu: false, tpu: false };
+    this._execMode = "cpu"; // resolved after _init
     this._initHardware();
   }
 
   async _initHardware() {
     this._hwCaps = await detectHardware();
-    if (this.useGpu  && this._hwCaps.gpu)  this._execMode = "gpu";
+    if (this.useGpu && this._hwCaps.gpu) this._execMode = "gpu";
     else if (this.useTpu && this._hwCaps.tpu) this._execMode = "tpu";
-    else                                       this._execMode = "cpu";
+    else this._execMode = "cpu";
 
     this.emit("hardware:ready", {
-      event:    "hardware:ready",
+      event: "hardware:ready",
       execMode: this._execMode,
-      hwCaps:   this._hwCaps,
-      geoqode:  buildGeoCoordinate({
-        domain: "perf-forge", sector: 7, confidence: this._hwCaps.gpu ? 0.98 : 0.75,
-        source: `accelerated-runtime:${this.clusterId}`, semanticType: "ACTION",
+      hwCaps: this._hwCaps,
+      geoqode: buildGeoCoordinate({
+        domain: "perf-forge",
+        sector: 7,
+        confidence: this._hwCaps.gpu ? 0.98 : 0.75,
+        source: `accelerated-runtime:${this.clusterId}`,
+        semanticType: "ACTION",
       }),
     });
   }
@@ -197,7 +234,9 @@ export class AcceleratedLatticeRuntime extends LatticeRuntime {
    */
   async execute() {
     const all = this._nodes.flatMap((node) =>
-      node.agents.filter((a) => a instanceof AcceleratedAgent || a instanceof TPUAgent),
+      node.agents.filter(
+        (a) => a instanceof AcceleratedAgent || a instanceof TPUAgent,
+      ),
     );
 
     if (all.length === 0) {
@@ -208,28 +247,36 @@ export class AcceleratedLatticeRuntime extends LatticeRuntime {
     // Process in batches for memory efficiency
     for (let i = 0; i < all.length; i += this.batchSize) {
       const batch = all.slice(i, i + this.batchSize);
-      const batchResults = await Promise.all(batch.map((a) => a.process(this._execMode)));
+      const batchResults = await Promise.all(
+        batch.map((a) => a.process(this._execMode)),
+      );
       results.push(...batchResults);
 
       this.emit("hardware:batch", {
-        event:      "hardware:batch",
+        event: "hardware:batch",
         batchIndex: Math.floor(i / this.batchSize),
-        batchSize:  batch.length,
-        execMode:   this._execMode,
-        geoqode:    buildGeoCoordinate({
-          domain: "perf-forge", sector: 7, confidence: 0.94,
-          source: `accelerated-runtime:${this.clusterId}`, semanticType: "ACTION",
+        batchSize: batch.length,
+        execMode: this._execMode,
+        geoqode: buildGeoCoordinate({
+          domain: "perf-forge",
+          sector: 7,
+          confidence: 0.94,
+          source: `accelerated-runtime:${this.clusterId}`,
+          semanticType: "ACTION",
         }),
       });
     }
 
     this.emit("hardware:execute-complete", {
-      event:    "hardware:execute-complete",
-      total:    all.length,
+      event: "hardware:execute-complete",
+      total: all.length,
       execMode: this._execMode,
-      geoqode:  buildGeoCoordinate({
-        domain: "perf-forge", sector: 7, confidence: this.coherence,
-        source: `accelerated-runtime:${this.clusterId}`, semanticType: "ACTION",
+      geoqode: buildGeoCoordinate({
+        domain: "perf-forge",
+        sector: 7,
+        confidence: this.coherence,
+        source: `accelerated-runtime:${this.clusterId}`,
+        semanticType: "ACTION",
       }),
     });
 
@@ -242,10 +289,10 @@ export class AcceleratedLatticeRuntime extends LatticeRuntime {
       ...super.statusSnapshot(),
       hardware: {
         execMode: this._execMode,
-        useGpu:   this.useGpu,
-        useTpu:   this.useTpu,
+        useGpu: this.useGpu,
+        useTpu: this.useTpu,
         batchSize: this.batchSize,
-        detected:  this._hwCaps,
+        detected: this._hwCaps,
       },
     };
   }

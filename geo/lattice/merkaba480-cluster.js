@@ -23,7 +23,16 @@
  */
 
 import { EventEmitter } from "node:events";
-import { LatticeRuntime, buildGeoCoordinate, PHI, PSI, BASE_FREQUENCY_HZ, CANONICAL_ARCHITECTURE, CANONICAL_ARCHITECTURE_DISPLAY, COUPLING_TIERS } from "./merkaba480-runtime.js";
+import {
+  LatticeRuntime,
+  buildGeoCoordinate,
+  PHI,
+  PSI,
+  BASE_FREQUENCY_HZ,
+  CANONICAL_ARCHITECTURE,
+  CANONICAL_ARCHITECTURE_DISPLAY,
+  COUPLING_TIERS,
+} from "./merkaba480-runtime.js";
 import { AcceleratedLatticeRuntime } from "./merkaba480-accelerated.js";
 import { GovernanceBoard } from "./merkaba480-governance.js";
 
@@ -41,22 +50,24 @@ export class LatticeCluster extends EventEmitter {
    * @param {boolean} [opts.withGovernance=true] — Attach a GovernanceBoard
    */
   constructor({
-    clusterCount      = 1,
-    accelerated       = false,
-    accelerationOpts  = {},
-    clusterId         = "storm",
-    withGovernance    = true,
+    clusterCount = 1,
+    accelerated = false,
+    accelerationOpts = {},
+    clusterId = "storm",
+    withGovernance = true,
   } = {}) {
     super();
-    this.clusterId      = clusterId;
-    this.accelerated    = accelerated;
-    this._lattices      = [];
-    this._agentIndex    = 0;    // round-robin cursor
-    this._startedAt     = Date.now();
-    this._expandCount   = 0;
+    this.clusterId = clusterId;
+    this.accelerated = accelerated;
+    this._lattices = [];
+    this._agentIndex = 0; // round-robin cursor
+    this._startedAt = Date.now();
+    this._expandCount = 0;
 
     for (let i = 0; i < clusterCount; i++) {
-      this._lattices.push(this._makeLattice(`${clusterId}-${i}`, accelerationOpts));
+      this._lattices.push(
+        this._makeLattice(`${clusterId}-${i}`, accelerationOpts),
+      );
     }
 
     this.governance = withGovernance
@@ -64,13 +75,16 @@ export class LatticeCluster extends EventEmitter {
       : null;
 
     this.emit("cluster:boot", {
-      event:        "cluster:boot",
+      event: "cluster:boot",
       clusterId,
       latticeCount: this._lattices.length,
       accelerated,
-      geoqode:      buildGeoCoordinate({
-        domain: "systems-design", sector: 3, confidence: 1.0,
-        source: `lattice-cluster:${clusterId}`, semanticType: "NARRATIVE",
+      geoqode: buildGeoCoordinate({
+        domain: "systems-design",
+        sector: 3,
+        confidence: 1.0,
+        source: `lattice-cluster:${clusterId}`,
+        semanticType: "NARRATIVE",
       }),
     });
   }
@@ -91,13 +105,16 @@ export class LatticeCluster extends EventEmitter {
    */
   _selectLattice() {
     // Prefer highest coherence (healthiest)
-    let best      = null;
+    let best = null;
     let bestScore = -Infinity;
 
     for (const lat of this._lattices) {
-      const freeRatio  = 1 - (lat.activeAgents / Math.max(1, lat.totalCapacity));
-      const score      = freeRatio * PHI + lat.coherence;
-      if (score > bestScore) { best = lat; bestScore = score; }
+      const freeRatio = 1 - lat.activeAgents / Math.max(1, lat.totalCapacity);
+      const score = freeRatio * PHI + lat.coherence;
+      if (score > bestScore) {
+        best = lat;
+        bestScore = score;
+      }
     }
 
     if (!best) {
@@ -135,15 +152,18 @@ export class LatticeCluster extends EventEmitter {
     }
 
     const geoqode = buildGeoCoordinate({
-      domain: "systems-design", sector: 3, confidence: this.coherence,
-      source: `lattice-cluster:${this.clusterId}`, semanticType: "NARRATIVE",
+      domain: "systems-design",
+      sector: 3,
+      confidence: this.coherence,
+      source: `lattice-cluster:${this.clusterId}`,
+      semanticType: "NARRATIVE",
     });
 
     this.emit("cluster:distributed", {
-      event:        "cluster:distributed",
-      agentCount:   agents.length,
-      assigned:     totalAssigned,
-      overflow:     totalOverflow,
+      event: "cluster:distributed",
+      agentCount: agents.length,
+      assigned: totalAssigned,
+      overflow: totalOverflow,
       latticeCount: this._lattices.length,
       geoqode,
     });
@@ -167,16 +187,19 @@ export class LatticeCluster extends EventEmitter {
     this._expandCount += count;
 
     const geoqode = buildGeoCoordinate({
-      domain: "systems-design", sector: 3, confidence: 1.0,
-      source: `lattice-cluster:${this.clusterId}`, semanticType: "NARRATIVE",
+      domain: "systems-design",
+      sector: 3,
+      confidence: 1.0,
+      source: `lattice-cluster:${this.clusterId}`,
+      semanticType: "NARRATIVE",
     });
 
     this.emit("cluster:expanded", {
-      event:        "cluster:expanded",
-      addedCount:   count,
+      event: "cluster:expanded",
+      addedCount: count,
       totalLattices: this._lattices.length,
-      addedIds:     added,
-      expandCount:  this._expandCount,
+      addedIds: added,
+      expandCount: this._expandCount,
       geoqode,
     });
 
@@ -202,7 +225,8 @@ export class LatticeCluster extends EventEmitter {
    * Certify an agent output through the cluster's GovernanceBoard.
    */
   certify(agentOutput) {
-    if (!this.governance) throw new Error("[LatticeCluster] Governance not enabled");
+    if (!this.governance)
+      throw new Error("[LatticeCluster] Governance not enabled");
     return this.governance.certify(agentOutput);
   }
 
@@ -228,26 +252,31 @@ export class LatticeCluster extends EventEmitter {
    */
   statusSnapshot() {
     return {
-      reportType:             "CLUSTER_STATUS",
-      clusterId:              this.clusterId,
-      architectureSignature:  CANONICAL_ARCHITECTURE,
-      architectureDisplay:    CANONICAL_ARCHITECTURE_DISPLAY,
-      latticeCount:           this._lattices.length,
-      totalAgents:            this.totalAgents,
-      totalCapacity:          this.totalCapacity,
-      loadRatio:              +(this.totalAgents / Math.max(1, this.totalCapacity)).toFixed(4),
-      coherence:              this.coherence,
-      expandCount:            this._expandCount,
-      accelerated:            this.accelerated,
-      uptimeMs:               Date.now() - this._startedAt,
-      phiAnchor:              PHI,
-      psiAnchor:              PSI,
-      baseFrequencyHz:        BASE_FREQUENCY_HZ,
-      lattices:               this._lattices.map((l) => l.statusSnapshot()),
-      governance:             this.governance?.statusSnapshot() ?? null,
-      geoqode:                buildGeoCoordinate({
-        domain: "systems-design", sector: 3, confidence: this.coherence,
-        source: `lattice-cluster:${this.clusterId}`, semanticType: "NARRATIVE",
+      reportType: "CLUSTER_STATUS",
+      clusterId: this.clusterId,
+      architectureSignature: CANONICAL_ARCHITECTURE,
+      architectureDisplay: CANONICAL_ARCHITECTURE_DISPLAY,
+      latticeCount: this._lattices.length,
+      totalAgents: this.totalAgents,
+      totalCapacity: this.totalCapacity,
+      loadRatio: +(this.totalAgents / Math.max(1, this.totalCapacity)).toFixed(
+        4,
+      ),
+      coherence: this.coherence,
+      expandCount: this._expandCount,
+      accelerated: this.accelerated,
+      uptimeMs: Date.now() - this._startedAt,
+      phiAnchor: PHI,
+      psiAnchor: PSI,
+      baseFrequencyHz: BASE_FREQUENCY_HZ,
+      lattices: this._lattices.map((l) => l.statusSnapshot()),
+      governance: this.governance?.statusSnapshot() ?? null,
+      geoqode: buildGeoCoordinate({
+        domain: "systems-design",
+        sector: 3,
+        confidence: this.coherence,
+        source: `lattice-cluster:${this.clusterId}`,
+        semanticType: "NARRATIVE",
       }),
     };
   }
