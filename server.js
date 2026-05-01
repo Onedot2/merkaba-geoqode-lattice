@@ -284,13 +284,16 @@ const server = createServer(async (req, res) => {
 
     // ── GET /products/:slug — individual AIOS product pages ──────────────
     if (req.method === "GET" && pathname.startsWith("/products/")) {
-      const slug = pathname.slice("/products/".length).replace(/[^a-z0-9-]/gi, "");
+      const slug = pathname
+        .slice("/products/".length)
+        .replace(/[^a-z0-9-]/gi, "");
       const AIOS_PRODUCTS = {
         "app-factory": {
           name: "AIOS App Factory",
           color: "#00f5d4",
           icon: "⚡",
-          tagline: "Build fully self-healing, AI-native apps with a single command",
+          tagline:
+            "Build fully self-healing, AI-native apps with a single command",
           features: [
             "Zero-config scaffolding with AI-native architecture baked in from day one",
             "Self-healing runtime — apps detect and recover from failures autonomously",
@@ -299,15 +302,24 @@ const server = createServer(async (req, res) => {
           ],
           pricing: [
             { tier: "Free", price: "$0/mo", desc: "1 app, community support" },
-            { tier: "Pro", price: "$49/mo", desc: "10 apps, priority support, advanced self-healing" },
-            { tier: "Studio", price: "$149/mo", desc: "Unlimited apps, team seats, 99.9% SLA" },
+            {
+              tier: "Pro",
+              price: "$49/mo",
+              desc: "10 apps, priority support, advanced self-healing",
+            },
+            {
+              tier: "Studio",
+              price: "$149/mo",
+              desc: "Unlimited apps, team seats, 99.9% SLA",
+            },
           ],
         },
         "attested-ai": {
           name: "AttestedAI",
           color: "#a855f7",
           icon: "✓",
-          tagline: "AI audit & compliance attestation. Every answer verified by two independent AI poles",
+          tagline:
+            "AI audit & compliance attestation. Every answer verified by two independent AI poles",
           features: [
             "Dual-pole verification — every AI output is independently confirmed before delivery",
             "Immutable audit trail for every decision, answer, and recommendation",
@@ -315,15 +327,24 @@ const server = createServer(async (req, res) => {
             "Real-time attestation dashboard with confidence scores and anomaly detection",
           ],
           pricing: [
-            { tier: "Team", price: "$199/mo", desc: "Up to 10 users, 50K attestations/mo" },
-            { tier: "Enterprise", price: "$699/mo", desc: "Unlimited users, custom frameworks, dedicated SLA" },
+            {
+              tier: "Team",
+              price: "$199/mo",
+              desc: "Up to 10 users, 50K attestations/mo",
+            },
+            {
+              tier: "Enterprise",
+              price: "$699/mo",
+              desc: "Unlimited users, custom frameworks, dedicated SLA",
+            },
           ],
         },
         "never-down": {
           name: "NeverDown",
           color: "#2dd4bf",
           icon: "↺",
-          tagline: "AI-powered uptime intelligence. AIOS monitors, detects, and heals production incidents at the OS layer",
+          tagline:
+            "AI-powered uptime intelligence. AIOS monitors, detects, and heals production incidents at the OS layer",
           features: [
             "OS-layer monitoring — catches failures before they surface to users",
             "Autonomous incident remediation with no human intervention required",
@@ -331,15 +352,24 @@ const server = createServer(async (req, res) => {
             "Integrates with any cloud, bare-metal, or edge deployment in minutes",
           ],
           pricing: [
-            { tier: "Growth", price: "$149/mo", desc: "Up to 20 services, 5-min healing SLA" },
-            { tier: "Scale", price: "$449/mo", desc: "Unlimited services, 1-min healing SLA, custom playbooks" },
+            {
+              tier: "Growth",
+              price: "$149/mo",
+              desc: "Up to 20 services, 5-min healing SLA",
+            },
+            {
+              tier: "Scale",
+              price: "$449/mo",
+              desc: "Unlimited services, 1-min healing SLA, custom playbooks",
+            },
           ],
         },
         "truth-agent": {
           name: "TruthAgent",
           color: "#ec4899",
           icon: "◈",
-          tagline: "AI hallucination detection & grounding for healthcare, legal, and finance",
+          tagline:
+            "AI hallucination detection & grounding for healthcare, legal, and finance",
           features: [
             "Real-time hallucination detection across any LLM output or AI-generated content",
             "Grounding engine anchors AI answers to verified, citable source material",
@@ -347,15 +377,24 @@ const server = createServer(async (req, res) => {
             "Confidence scoring and explainable flags for every claim flagged or passed",
           ],
           pricing: [
-            { tier: "Professional", price: "$299/mo", desc: "100K checks/mo, standard domains" },
-            { tier: "Enterprise", price: "$1,499/mo", desc: "Unlimited checks, custom domains, dedicated support" },
+            {
+              tier: "Professional",
+              price: "$299/mo",
+              desc: "100K checks/mo, standard domains",
+            },
+            {
+              tier: "Enterprise",
+              price: "$1,499/mo",
+              desc: "Unlimited checks, custom domains, dedicated support",
+            },
           ],
         },
         "freq-hub": {
           name: "FreqHub",
           color: "#f59e0b",
           icon: "◎",
-          tagline: "AI signal marketplace for publishers. Publish, discover, and monetize AI signals semantically",
+          tagline:
+            "AI signal marketplace for publishers. Publish, discover, and monetize AI signals semantically",
           features: [
             "Publish AI signals, datasets, and intelligence streams to a global marketplace",
             "Semantic discovery — buyers find your signals by meaning, not just keywords",
@@ -363,16 +402,29 @@ const server = createServer(async (req, res) => {
             "Quality scoring and attestation for every published signal in the marketplace",
           ],
           pricing: [
-            { tier: "Publisher Free", price: "$0/mo", desc: "1 signal stream, community distribution" },
-            { tier: "Publisher Pro", price: "$79/mo", desc: "Unlimited streams, premium placement, analytics" },
-            { tier: "Consumer Pro", price: "$29/mo", desc: "Unlimited signal access, semantic search, API" },
+            {
+              tier: "Publisher Free",
+              price: "$0/mo",
+              desc: "1 signal stream, community distribution",
+            },
+            {
+              tier: "Publisher Pro",
+              price: "$79/mo",
+              desc: "Unlimited streams, premium placement, analytics",
+            },
+            {
+              tier: "Consumer Pro",
+              price: "$29/mo",
+              desc: "Unlimited signal access, semantic search, API",
+            },
           ],
         },
         "freq-match": {
           name: "FreqMatch",
           color: "#3b82f6",
           icon: "⟷",
-          tagline: "AI-native talent & collaboration matching. Find the right people semantically, not just keywords",
+          tagline:
+            "AI-native talent & collaboration matching. Find the right people semantically, not just keywords",
           features: [
             "Semantic matching that understands skills, context, and working style — not just job titles",
             "AI-powered fit scoring across technical ability, cultural alignment, and project needs",
@@ -380,8 +432,16 @@ const server = createServer(async (req, res) => {
             "Privacy-first: candidates control their signal, employers see only what is shared",
           ],
           pricing: [
-            { tier: "Company", price: "$199/mo", desc: "Up to 5 open roles, AI matching, analytics" },
-            { tier: "Studio", price: "$599/mo", desc: "Unlimited roles, custom AI profiles, dedicated success manager" },
+            {
+              tier: "Company",
+              price: "$199/mo",
+              desc: "Up to 5 open roles, AI matching, analytics",
+            },
+            {
+              tier: "Studio",
+              price: "$599/mo",
+              desc: "Unlimited roles, custom AI profiles, dedicated success manager",
+            },
           ],
         },
       };
@@ -389,23 +449,33 @@ const server = createServer(async (req, res) => {
       const product = AIOS_PRODUCTS[slug];
       if (!product) {
         res.writeHead(404, { "Content-Type": "text/html; charset=utf-8" });
-        res.end(`<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Product Not Found — AIOS</title><style>*{margin:0;box-sizing:border-box}body{background:#0a0a0f;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;text-align:center}h1{font-size:2rem;margin-bottom:1rem}a{color:#00f5d4;text-decoration:none}</style></head><body><div><h1>Product Not Found</h1><p style="color:#888;margin-bottom:2rem">That product does not exist.</p><a href="/">&#8592; Back to AIOS</a></div></body></html>`);
+        res.end(
+          `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Product Not Found — AIOS</title><style>*{margin:0;box-sizing:border-box}body{background:#0a0a0f;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;text-align:center}h1{font-size:2rem;margin-bottom:1rem}a{color:#00f5d4;text-decoration:none}</style></head><body><div><h1>Product Not Found</h1><p style="color:#888;margin-bottom:2rem">That product does not exist.</p><a href="/">&#8592; Back to AIOS</a></div></body></html>`,
+        );
         return;
       }
 
-      const pricingHTML = product.pricing.map(p => `
+      const pricingHTML = product.pricing
+        .map(
+          (p) => `
         <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:2rem;text-align:center">
           <div style="font-size:0.8rem;color:#888;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem">${p.tier}</div>
           <div style="font-size:2rem;font-weight:700;color:${product.color};margin-bottom:0.5rem">${p.price}</div>
           <div style="font-size:0.9rem;color:#aaa;margin-bottom:1.5rem">${p.desc}</div>
           <button onclick="document.getElementById(\x22wl\x22).scrollIntoView({behavior:\x22smooth\x22})" style="background:${product.color};color:#0a0a0f;border:none;padding:0.6rem 1.4rem;border-radius:8px;font-weight:600;cursor:pointer;font-size:0.9rem">Join Waitlist &#8594;</button>
-        </div>`).join("");
+        </div>`,
+        )
+        .join("");
 
-      const featuresHTML = product.features.map(f => `
+      const featuresHTML = product.features
+        .map(
+          (f) => `
         <div style="display:flex;gap:0.75rem;align-items:flex-start">
           <span style="color:${product.color};font-size:1.1rem;flex-shrink:0;margin-top:0.1rem">&#10022;</span>
           <span style="color:#ccc;line-height:1.6">${f}</span>
-        </div>`).join("");
+        </div>`,
+        )
+        .join("");
 
       const productNameJSON = JSON.stringify(product.name);
       const html = `<!DOCTYPE html>
@@ -574,10 +644,14 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
           email: String(email).trim().slice(0, 254),
           organization: "AIOS Early Access",
           role: "Early Adopter",
-          interests: `Products: ${String(product || "AIOS").trim().slice(0, 80)}\nNotes: ${String(message || "")
+          interests: `Products: ${String(product || "AIOS")
+            .trim()
+            .slice(0, 80)}\nNotes: ${String(message || "")
             .trim()
             .slice(0, 500)}\nSource: realaios.com`,
-          product: String(product || "AIOS").trim().slice(0, 80),
+          product: String(product || "AIOS")
+            .trim()
+            .slice(0, 80),
         };
         const upstream = await fetch(`${STORM_API}/api/waitlist`, {
           method: "POST",
@@ -621,8 +695,14 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
         canonicalLatticeNodes: 48,
         harmonicSpectrumNodes: 480,
         semanticFrequencyMap: {
-          ENTITY: 396, LOCATION: 417, ACTION: 528, DIALOGUE: 639,
-          EMOTION: 741, PHYSICS: 852, NARRATIVE: 963, HOLOGRAPHIC: 72,
+          ENTITY: 396,
+          LOCATION: 417,
+          ACTION: 528,
+          DIALOGUE: 639,
+          EMOTION: 741,
+          PHYSICS: 852,
+          NARRATIVE: 963,
+          HOLOGRAPHIC: 72,
         },
         timestamp: new Date().toISOString(),
       });

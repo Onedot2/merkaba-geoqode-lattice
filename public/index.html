@@ -1226,7 +1226,12 @@
               <span class="tier-badge paid">Pro — $49/mo</span>
               <span class="tier-badge enterprise">Studio — $149/mo</span>
             </div>
-            <a href="#waitlist" class="product-cta" data-product="AIOS App Factory">Join Waitlist →</a>
+            <a
+              href="#waitlist"
+              class="product-cta"
+              data-product="AIOS App Factory"
+              >Join Waitlist →</a
+            >
           </div>
 
           <!-- AttestedAI -->
@@ -1244,7 +1249,9 @@
               <span class="tier-badge paid">Team — $199/mo</span>
               <span class="tier-badge enterprise">Enterprise — $699/mo</span>
             </div>
-            <a href="#waitlist" class="product-cta" data-product="AttestedAI">Join Waitlist →</a>
+            <a href="#waitlist" class="product-cta" data-product="AttestedAI"
+              >Join Waitlist →</a
+            >
           </div>
 
           <!-- NeverDown -->
@@ -1262,7 +1269,9 @@
               <span class="tier-badge paid">Growth — $149/mo</span>
               <span class="tier-badge enterprise">Scale — $449/mo</span>
             </div>
-            <a href="#waitlist" class="product-cta" data-product="NeverDown">Join Waitlist →</a>
+            <a href="#waitlist" class="product-cta" data-product="NeverDown"
+              >Join Waitlist →</a
+            >
           </div>
 
           <!-- TruthAgent -->
@@ -1280,7 +1289,9 @@
               <span class="tier-badge paid">Professional — $299/mo</span>
               <span class="tier-badge enterprise">Enterprise — $1,499/mo</span>
             </div>
-            <a href="#waitlist" class="product-cta" data-product="TruthAgent">Join Waitlist →</a>
+            <a href="#waitlist" class="product-cta" data-product="TruthAgent"
+              >Join Waitlist →</a
+            >
           </div>
 
           <!-- FreqHub -->
@@ -1299,7 +1310,9 @@
               <span class="tier-badge paid">Publisher Pro — $79/mo</span>
               <span class="tier-badge paid">Consumer Pro — $29/mo</span>
             </div>
-            <a href="#waitlist" class="product-cta" data-product="FreqHub">Join Waitlist →</a>
+            <a href="#waitlist" class="product-cta" data-product="FreqHub"
+              >Join Waitlist →</a
+            >
           </div>
 
           <!-- FreqMatch -->
@@ -1317,7 +1330,9 @@
               <span class="tier-badge paid">Company — $199/mo</span>
               <span class="tier-badge enterprise">Studio — $599/mo</span>
             </div>
-            <a href="#waitlist" class="product-cta" data-product="FreqMatch">Join Waitlist →</a>
+            <a href="#waitlist" class="product-cta" data-product="FreqMatch"
+              >Join Waitlist →</a
+            >
           </div>
         </div>
       </div>
@@ -2043,15 +2058,20 @@
         }
 
         // Product card waitlist links — capture product name before scrolling to form
-        document.querySelectorAll(".product-cta[data-product]").forEach(function (link) {
-          link.addEventListener("click", function () {
-            _waitlistProduct = link.dataset.product;
-            var msgEl = document.getElementById("w-msg");
-            if (msgEl && !msgEl.value) {
-              msgEl.placeholder = "Interested in " + _waitlistProduct + " — tell us more (optional)";
-            }
+        document
+          .querySelectorAll(".product-cta[data-product]")
+          .forEach(function (link) {
+            link.addEventListener("click", function () {
+              _waitlistProduct = link.dataset.product;
+              var msgEl = document.getElementById("w-msg");
+              if (msgEl && !msgEl.value) {
+                msgEl.placeholder =
+                  "Interested in " +
+                  _waitlistProduct +
+                  " — tell us more (optional)";
+              }
+            });
           });
-        });
 
         // Hero form
         var wSubmit = document.getElementById("w-submit");
