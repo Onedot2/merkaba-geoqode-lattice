@@ -71,8 +71,8 @@ export const DELTA = PHI / PSI; // ≈ 1.1442
  * Delta (PHI/PSI) = live-lattice intent coherence.
  */
 const _3SUM = PHI + PSI + DELTA;
-export const ALPHA_WEIGHT_3 = +(PHI / _3SUM).toFixed(6);  // ≈ 0.3874
-export const OMEGA_WEIGHT_3 = +(PSI / _3SUM).toFixed(6);  // ≈ 0.3386
+export const ALPHA_WEIGHT_3 = +(PHI / _3SUM).toFixed(6); // ≈ 0.3874
+export const OMEGA_WEIGHT_3 = +(PSI / _3SUM).toFixed(6); // ≈ 0.3386
 export const DELTA_WEIGHT_3 = +(DELTA / _3SUM).toFixed(6); // ≈ 0.2740
 
 /** Number of D480 harmonic nodes per D48 canonical zone. */
@@ -84,33 +84,33 @@ export const NODES_PER_ZONE = HARMONIC_SPECTRUM_NODES / CANONICAL_LATTICE_NODES;
  * Foundation zones 0-7 use direct sector mapping (S1→S8).
  */
 const SEMANTIC_SLOTS = [
-  { type: "HOLOGRAPHIC", freq: 72,  domain: "self-evolve",   sector: 5 },
-  { type: "ENTITY",      freq: 396, domain: "data-structs",  sector: 4 },
-  { type: "LOCATION",    freq: 417, domain: "quantum-arch",  sector: 1 },
-  { type: "ACTION",      freq: 528, domain: "code-eng",      sector: 2 },
-  { type: "DIALOGUE",    freq: 639, domain: "systems-design",sector: 3 },
-  { type: "EMOTION",     freq: 741, domain: "pain-removal",  sector: 6 },
-  { type: "PHYSICS",     freq: 852, domain: "quantum-arch",  sector: 1 },
-  { type: "NARRATIVE",   freq: 963, domain: "systems-design",sector: 3 },
+  { type: "HOLOGRAPHIC", freq: 72, domain: "self-evolve", sector: 5 },
+  { type: "ENTITY", freq: 396, domain: "data-structs", sector: 4 },
+  { type: "LOCATION", freq: 417, domain: "quantum-arch", sector: 1 },
+  { type: "ACTION", freq: 528, domain: "code-eng", sector: 2 },
+  { type: "DIALOGUE", freq: 639, domain: "systems-design", sector: 3 },
+  { type: "EMOTION", freq: 741, domain: "pain-removal", sector: 6 },
+  { type: "PHYSICS", freq: 852, domain: "quantum-arch", sector: 1 },
+  { type: "NARRATIVE", freq: 963, domain: "systems-design", sector: 3 },
 ];
 
 /** Foundation zone affinity — mirrors BESX DRONE_DEFS sectors S1-S8. */
 const FOUNDATION_AFFINITY = [
-  { type: "PHYSICS",     freq: 852, domain: "quantum-arch",   sector: 1 }, // Zone 0 = S1
-  { type: "ACTION",      freq: 528, domain: "code-eng",       sector: 2 }, // Zone 1 = S2
-  { type: "NARRATIVE",   freq: 963, domain: "systems-design", sector: 3 }, // Zone 2 = S3
-  { type: "ENTITY",      freq: 396, domain: "data-structs",   sector: 4 }, // Zone 3 = S4
-  { type: "HOLOGRAPHIC", freq: 72,  domain: "self-evolve",    sector: 5 }, // Zone 4 = S5
-  { type: "EMOTION",     freq: 741, domain: "pain-removal",   sector: 6 }, // Zone 5 = S6
-  { type: "ACTION",      freq: 528, domain: "perf-forge",     sector: 7 }, // Zone 6 = S7
-  { type: "PHYSICS",     freq: 852, domain: "security-forge", sector: 8 }, // Zone 7 = S8
+  { type: "PHYSICS", freq: 852, domain: "quantum-arch", sector: 1 }, // Zone 0 = S1
+  { type: "ACTION", freq: 528, domain: "code-eng", sector: 2 }, // Zone 1 = S2
+  { type: "NARRATIVE", freq: 963, domain: "systems-design", sector: 3 }, // Zone 2 = S3
+  { type: "ENTITY", freq: 396, domain: "data-structs", sector: 4 }, // Zone 3 = S4
+  { type: "HOLOGRAPHIC", freq: 72, domain: "self-evolve", sector: 5 }, // Zone 4 = S5
+  { type: "EMOTION", freq: 741, domain: "pain-removal", sector: 6 }, // Zone 5 = S6
+  { type: "ACTION", freq: 528, domain: "perf-forge", sector: 7 }, // Zone 6 = S7
+  { type: "PHYSICS", freq: 852, domain: "security-forge", sector: 8 }, // Zone 7 = S8
 ];
 
 // ── Ring boundaries ───────────────────────────────────────────────────────────
 const RING_MAP = [
-  { name: "FOUNDATION", startZone: 0,  endZone: 7  }, //  8 zones
-  { name: "BOSONIC",    startZone: 8,  endZone: 25 }, // 18 zones
-  { name: "CANONICAL",  startZone: 26, endZone: 47 }, // 22 zones
+  { name: "FOUNDATION", startZone: 0, endZone: 7 }, //  8 zones
+  { name: "BOSONIC", startZone: 8, endZone: 25 }, // 18 zones
+  { name: "CANONICAL", startZone: 26, endZone: 47 }, // 22 zones
 ];
 
 function getRing(zoneIndex) {
@@ -134,15 +134,15 @@ function buildDroneDefs() {
     }
     const ring = getRing(z);
     drones.push({
-      id:               `MAX-D${String(z).padStart(2, "0")}-${ring[0]}-${affinity.type}`,
-      zoneIndex:        z,
-      nodeStart:        z * NODES_PER_ZONE,
-      nodeEnd:          z * NODES_PER_ZONE + NODES_PER_ZONE - 1,
+      id: `MAX-D${String(z).padStart(2, "0")}-${ring[0]}-${affinity.type}`,
+      zoneIndex: z,
+      nodeStart: z * NODES_PER_ZONE,
+      nodeEnd: z * NODES_PER_ZONE + NODES_PER_ZONE - 1,
       ring,
-      affinityType:     affinity.type,
-      affinityFrequency:affinity.freq,
-      affinityDomain:   affinity.domain,
-      affinitySector:   affinity.sector,
+      affinityType: affinity.type,
+      affinityFrequency: affinity.freq,
+      affinityDomain: affinity.domain,
+      affinitySector: affinity.sector,
     });
   }
   return drones;
@@ -168,25 +168,25 @@ export class MerkabaBeEyeMAXswarm extends EventEmitter {
    * @param {number}  [opts.amberZoneThreshold=0.65] — Load ratio → AMBER zone.
    */
   constructor({
-    heartbeatMs       = 30_000,
-    maxHistory        = 20,
-    swarmId           = "max-alpha",
-    redZoneThreshold   = 0.85,
+    heartbeatMs = 30_000,
+    maxHistory = 20,
+    swarmId = "max-alpha",
+    redZoneThreshold = 0.85,
     amberZoneThreshold = 0.65,
   } = {}) {
     super();
 
-    this.swarmId           = swarmId;
-    this.drones            = MAX_DRONE_DEFS; // 48 drones, immutable manifest
-    this._heartbeatMs      = heartbeatMs;
-    this._maxHistory       = maxHistory;
-    this._redThreshold     = redZoneThreshold;
-    this._amberThreshold   = amberZoneThreshold;
-    this._heartbeatTimer   = null;
-    this._scanCount        = 0;
-    this._lastScan         = null;
-    this._history          = [];
-    this._startedAt        = null;
+    this.swarmId = swarmId;
+    this.drones = MAX_DRONE_DEFS; // 48 drones, immutable manifest
+    this._heartbeatMs = heartbeatMs;
+    this._maxHistory = maxHistory;
+    this._redThreshold = redZoneThreshold;
+    this._amberThreshold = amberZoneThreshold;
+    this._heartbeatTimer = null;
+    this._scanCount = 0;
+    this._lastScan = null;
+    this._history = [];
+    this._startedAt = null;
   }
 
   // ── Core sweep ───────────────────────────────────────────────────────────────
@@ -205,7 +205,7 @@ export class MerkabaBeEyeMAXswarm extends EventEmitter {
     }
 
     this._scanCount++;
-    const scanTs  = Date.now();
+    const scanTs = Date.now();
     const findings = [];
     const droneReadings = [];
 
@@ -241,56 +241,64 @@ export class MerkabaBeEyeMAXswarm extends EventEmitter {
       const w = Math.pow(PHI, -(i / this.drones.length)); // exponential PHI decay
       return sum + w;
     }, 0);
-    const weightedCoherence = droneReadings.reduce((sum, r, i) => {
-      const w = Math.pow(PHI, -(i / this.drones.length));
-      return sum + r.tripleCoherence * w;
-    }, 0) / totalPhi;
+    const weightedCoherence =
+      droneReadings.reduce((sum, r, i) => {
+        const w = Math.pow(PHI, -(i / this.drones.length));
+        return sum + r.tripleCoherence * w;
+      }, 0) / totalPhi;
 
-    const swarmCoherence = +Math.min(1, Math.max(0, weightedCoherence)).toFixed(4);
+    const swarmCoherence = +Math.min(1, Math.max(0, weightedCoherence)).toFixed(
+      4,
+    );
 
     // ── Safe zone classification ────────────────────────────────────────────
     const overallLoadRatio = this._computeOverallLoad(nodeMap);
     const safeZone =
-      overallLoadRatio >= this._redThreshold   ? "RED"   :
-      overallLoadRatio >= this._amberThreshold ? "AMBER" : "GREEN";
+      overallLoadRatio >= this._redThreshold
+        ? "RED"
+        : overallLoadRatio >= this._amberThreshold
+          ? "AMBER"
+          : "GREEN";
 
     const report = {
-      reportType:      "MAX_SWARM_SCAN",
-      swarmId:         this.swarmId,
-      scanId:          `max-${this._scanCount}`,
-      timestamp:       new Date(scanTs).toISOString(),
+      reportType: "MAX_SWARM_SCAN",
+      swarmId: this.swarmId,
+      scanId: `max-${this._scanCount}`,
+      timestamp: new Date(scanTs).toISOString(),
       architectureSignature: CANONICAL_ARCHITECTURE,
-      architectureDisplay:   CANONICAL_ARCHITECTURE_DISPLAY,
-      droneCount:      this.drones.length,
-      latticeCount:    lattices.length,
-      nodesCovered:    nodeMap.size,
+      architectureDisplay: CANONICAL_ARCHITECTURE_DISPLAY,
+      droneCount: this.drones.length,
+      latticeCount: lattices.length,
+      nodesCovered: nodeMap.size,
       swarmCoherence,
       overallLoadRatio: +overallLoadRatio.toFixed(4),
       safeZone,
-      safeZoneDetail:  {
-        GREEN:  overallLoadRatio < this._amberThreshold,
-        AMBER:  overallLoadRatio >= this._amberThreshold && overallLoadRatio < this._redThreshold,
-        RED:    overallLoadRatio >= this._redThreshold,
+      safeZoneDetail: {
+        GREEN: overallLoadRatio < this._amberThreshold,
+        AMBER:
+          overallLoadRatio >= this._amberThreshold &&
+          overallLoadRatio < this._redThreshold,
+        RED: overallLoadRatio >= this._redThreshold,
       },
       findings,
-      findingCount:      findings.length,
-      criticalCount:     findings.filter((f) => f.severity === "CRITICAL").length,
-      highCount:         findings.filter((f) => f.severity === "HIGH").length,
-      mediumCount:       findings.filter((f) => f.severity === "MEDIUM").length,
+      findingCount: findings.length,
+      criticalCount: findings.filter((f) => f.severity === "CRITICAL").length,
+      highCount: findings.filter((f) => f.severity === "HIGH").length,
+      mediumCount: findings.filter((f) => f.severity === "MEDIUM").length,
       droneReadings,
       ringStats,
       rerouteMap,
-      phiAnchor:    PHI,
-      psiAnchor:    PSI,
-      deltaAnchor:  +DELTA.toFixed(6),
+      phiAnchor: PHI,
+      psiAnchor: PSI,
+      deltaAnchor: +DELTA.toFixed(6),
       alphaWeight3: ALPHA_WEIGHT_3,
       omegaWeight3: OMEGA_WEIGHT_3,
       deltaWeight3: DELTA_WEIGHT_3,
       geoqode: buildGeoCoordinate({
-        domain:       "self-evolve",
-        sector:       5,
-        confidence:   swarmCoherence,
-        source:       `MAXswarm:${this.swarmId}:${ctx.source ?? "live-lattice"}`,
+        domain: "self-evolve",
+        sector: 5,
+        confidence: swarmCoherence,
+        source: `MAXswarm:${this.swarmId}:${ctx.source ?? "live-lattice"}`,
         semanticType: "HOLOGRAPHIC",
       }),
     };
@@ -303,7 +311,12 @@ export class MerkabaBeEyeMAXswarm extends EventEmitter {
     this.emit("swarm:scan", report);
 
     if (safeZone === "RED") {
-      this.emit("swarm:pressure", { safeZone, swarmCoherence, overallLoadRatio, geoqode: report.geoqode });
+      this.emit("swarm:pressure", {
+        safeZone,
+        swarmCoherence,
+        overallLoadRatio,
+        geoqode: report.geoqode,
+      });
     }
     if (findings.some((f) => f.severity === "CRITICAL")) {
       this.emit("swarm:critical", report);
@@ -315,7 +328,15 @@ export class MerkabaBeEyeMAXswarm extends EventEmitter {
   // ── Zone scan (one drone) ─────────────────────────────────────────────────
 
   _scanZone(drone, nodeMap, ctx) {
-    const { zoneIndex, nodeStart, nodeEnd, ring, affinityType, affinityDomain, affinityFrequency } = drone;
+    const {
+      zoneIndex,
+      nodeStart,
+      nodeEnd,
+      ring,
+      affinityType,
+      affinityDomain,
+      affinityFrequency,
+    } = drone;
     const findings = [];
 
     // Collect all nodes in this zone
@@ -331,7 +352,7 @@ export class MerkabaBeEyeMAXswarm extends EventEmitter {
       const node = nodeMap.get(nid);
       if (!node) continue;
       nodeCount++;
-      totalAgents   += node.agents.length;
+      totalAgents += node.agents.length;
       totalCapacity += node.resonanceSlot;
       totalCoherence += node.coherence ?? 1.0;
 
@@ -354,65 +375,73 @@ export class MerkabaBeEyeMAXswarm extends EventEmitter {
     if (nodeCount === 0) {
       // Zone not in this lattice config — not an error
       return {
-        droneId: drone.id, zoneIndex, ring, nodeCount: 0,
-        loadRatio: 0, zoneCoherence: 1.0, tripleCoherence: 1.0,
-        findings, agentSemanticTypes,
+        droneId: drone.id,
+        zoneIndex,
+        ring,
+        nodeCount: 0,
+        loadRatio: 0,
+        zoneCoherence: 1.0,
+        tripleCoherence: 1.0,
+        findings,
+        agentSemanticTypes,
       };
     }
 
-    const loadRatio    = totalCapacity > 0 ? totalAgents / totalCapacity : 0;
+    const loadRatio = totalCapacity > 0 ? totalAgents / totalCapacity : 0;
     const zoneCoherence = totalCoherence / nodeCount;
 
     // Semantic alignment score (0-1): fraction of agents correctly typed
-    const semanticAlignment = totalAgents > 0
-      ? Math.max(0, 1 - misalignedAgents / totalAgents)
-      : 1.0;
+    const semanticAlignment =
+      totalAgents > 0 ? Math.max(0, 1 - misalignedAgents / totalAgents) : 1.0;
 
     // Intent clarity score (0-1): fraction of agents correctly domained
-    const intentClarity = totalAgents > 0
-      ? Math.max(0, 1 - intentDriftAgents / totalAgents)
-      : 1.0;
+    const intentClarity =
+      totalAgents > 0 ? Math.max(0, 1 - intentDriftAgents / totalAgents) : 1.0;
 
     // Triple coherence: node_coherence × semantic_alignment × intent_clarity
-    const tripleCoherence = +(zoneCoherence * semanticAlignment * intentClarity).toFixed(4);
+    const tripleCoherence = +(
+      zoneCoherence *
+      semanticAlignment *
+      intentClarity
+    ).toFixed(4);
 
     // ── Finding generation ──────────────────────────────────────────────────
 
     if (loadRatio >= this._redThreshold) {
       findings.push({
-        severity:   "HIGH",
-        droneId:    drone.id,
+        severity: "HIGH",
+        droneId: drone.id,
         zoneIndex,
         ring,
-        issue:      `Zone ${zoneIndex} (${affinityType} ${affinityFrequency}Hz) OVERLOADED: ${(loadRatio * 100).toFixed(1)}%`,
+        issue: `Zone ${zoneIndex} (${affinityType} ${affinityFrequency}Hz) OVERLOADED: ${(loadRatio * 100).toFixed(1)}%`,
         suggestion: `Expand cluster or reroute overflow to free ${ring} zones`,
-        loadRatio:  +loadRatio.toFixed(4),
-        agents:     totalAgents,
-        capacity:   totalCapacity,
+        loadRatio: +loadRatio.toFixed(4),
+        agents: totalAgents,
+        capacity: totalCapacity,
       });
     } else if (loadRatio >= this._amberThreshold) {
       findings.push({
-        severity:   "MEDIUM",
-        droneId:    drone.id,
+        severity: "MEDIUM",
+        droneId: drone.id,
         zoneIndex,
         ring,
-        issue:      `Zone ${zoneIndex} (${affinityType} ${affinityFrequency}Hz) AMBER pressure: ${(loadRatio * 100).toFixed(1)}%`,
+        issue: `Zone ${zoneIndex} (${affinityType} ${affinityFrequency}Hz) AMBER pressure: ${(loadRatio * 100).toFixed(1)}%`,
         suggestion: `Monitor closely — pre-expand before hitting RED`,
-        loadRatio:  +loadRatio.toFixed(4),
+        loadRatio: +loadRatio.toFixed(4),
       });
     }
 
     if (misalignedAgents > 0 && totalAgents > 0) {
       const pct = ((misalignedAgents / totalAgents) * 100).toFixed(1);
       findings.push({
-        severity:     "MEDIUM",
-        droneId:      drone.id,
+        severity: "MEDIUM",
+        droneId: drone.id,
         zoneIndex,
         ring,
-        issue:        `Semantic misalignment: ${misalignedAgents}/${totalAgents} (${pct}%) agents not aligned to ${affinityType}`,
-        suggestion:   `Redistribute to zones with matching ${affinityType} affinity (${affinityFrequency}Hz)`,
-        misaligned:   misalignedAgents,
-        agentTypes:   agentSemanticTypes,
+        issue: `Semantic misalignment: ${misalignedAgents}/${totalAgents} (${pct}%) agents not aligned to ${affinityType}`,
+        suggestion: `Redistribute to zones with matching ${affinityType} affinity (${affinityFrequency}Hz)`,
+        misaligned: misalignedAgents,
+        agentTypes: agentSemanticTypes,
         affinityType,
         affinityFrequency,
       });
@@ -421,11 +450,11 @@ export class MerkabaBeEyeMAXswarm extends EventEmitter {
     if (intentDriftAgents > 0 && totalAgents > 0) {
       const pct = ((intentDriftAgents / totalAgents) * 100).toFixed(1);
       findings.push({
-        severity:   "MEDIUM",
-        droneId:    drone.id,
+        severity: "MEDIUM",
+        droneId: drone.id,
         zoneIndex,
         ring,
-        issue:      `Intent drift: ${intentDriftAgents}/${totalAgents} (${pct}%) agents outside ${affinityDomain} domain`,
+        issue: `Intent drift: ${intentDriftAgents}/${totalAgents} (${pct}%) agents outside ${affinityDomain} domain`,
         suggestion: `Reroute to zones with ${affinityDomain} affinity`,
         driftCount: intentDriftAgents,
         affinityDomain,
@@ -434,18 +463,18 @@ export class MerkabaBeEyeMAXswarm extends EventEmitter {
 
     if (zoneCoherence < 0.5) {
       findings.push({
-        severity:      "HIGH",
-        droneId:       drone.id,
+        severity: "HIGH",
+        droneId: drone.id,
         zoneIndex,
         ring,
-        issue:         `Zone ${zoneIndex} coherence collapse: ${zoneCoherence.toFixed(3)} (below 0.5 threshold)`,
-        suggestion:    `Release stale agents from zone ${zoneIndex} to restore PHI-coherence`,
+        issue: `Zone ${zoneIndex} coherence collapse: ${zoneCoherence.toFixed(3)} (below 0.5 threshold)`,
+        suggestion: `Release stale agents from zone ${zoneIndex} to restore PHI-coherence`,
         zoneCoherence: +zoneCoherence.toFixed(4),
       });
     }
 
     return {
-      droneId:          drone.id,
+      droneId: drone.id,
       zoneIndex,
       ring,
       affinityType,
@@ -454,10 +483,10 @@ export class MerkabaBeEyeMAXswarm extends EventEmitter {
       nodeCount,
       totalAgents,
       totalCapacity,
-      loadRatio:        +loadRatio.toFixed(4),
-      zoneCoherence:    +zoneCoherence.toFixed(4),
-      semanticAlignment:+semanticAlignment.toFixed(4),
-      intentClarity:    +intentClarity.toFixed(4),
+      loadRatio: +loadRatio.toFixed(4),
+      zoneCoherence: +zoneCoherence.toFixed(4),
+      semanticAlignment: +semanticAlignment.toFixed(4),
+      intentClarity: +intentClarity.toFixed(4),
       tripleCoherence,
       misalignedAgents,
       intentDriftAgents,
@@ -474,24 +503,33 @@ export class MerkabaBeEyeMAXswarm extends EventEmitter {
       const zoneReadings = droneReadings.filter(
         (d) => d.zoneIndex >= r.startZone && d.zoneIndex <= r.endZone,
       );
-      const totalAgents   = zoneReadings.reduce((s, d) => s + (d.totalAgents ?? 0), 0);
-      const totalCapacity = zoneReadings.reduce((s, d) => s + (d.totalCapacity ?? 0), 0);
-      const avgCoherence  = zoneReadings.length
-        ? zoneReadings.reduce((s, d) => s + (d.zoneCoherence ?? 1.0), 0) / zoneReadings.length
+      const totalAgents = zoneReadings.reduce(
+        (s, d) => s + (d.totalAgents ?? 0),
+        0,
+      );
+      const totalCapacity = zoneReadings.reduce(
+        (s, d) => s + (d.totalCapacity ?? 0),
+        0,
+      );
+      const avgCoherence = zoneReadings.length
+        ? zoneReadings.reduce((s, d) => s + (d.zoneCoherence ?? 1.0), 0) /
+          zoneReadings.length
         : 1.0;
       const avgTripleCoherence = zoneReadings.length
-        ? zoneReadings.reduce((s, d) => s + (d.tripleCoherence ?? 1.0), 0) / zoneReadings.length
+        ? zoneReadings.reduce((s, d) => s + (d.tripleCoherence ?? 1.0), 0) /
+          zoneReadings.length
         : 1.0;
       stats[r.name] = {
-        ring:          r.name,
-        zoneCount:     zoneReadings.length,
+        ring: r.name,
+        zoneCount: zoneReadings.length,
         totalAgents,
         totalCapacity,
-        loadRatio:     totalCapacity > 0 ? +(totalAgents / totalCapacity).toFixed(4) : 0,
-        avgCoherence:  +avgCoherence.toFixed(4),
+        loadRatio:
+          totalCapacity > 0 ? +(totalAgents / totalCapacity).toFixed(4) : 0,
+        avgCoherence: +avgCoherence.toFixed(4),
         avgTripleCoherence: +avgTripleCoherence.toFixed(4),
-        startZone:     r.startZone,
-        endZone:       r.endZone,
+        startZone: r.startZone,
+        endZone: r.endZone,
       };
     }
     return stats;
@@ -499,22 +537,26 @@ export class MerkabaBeEyeMAXswarm extends EventEmitter {
 
   _detectRingImbalance(ringStats) {
     const findings = [];
-    const loads    = Object.values(ringStats).map((r) => r.loadRatio);
+    const loads = Object.values(ringStats).map((r) => r.loadRatio);
     if (loads.length < 2) return findings;
     const maxLoad = Math.max(...loads);
     const minLoad = Math.min(...loads);
     const imbalance = maxLoad - minLoad;
     if (imbalance > 0.3) {
-      const heavy = Object.entries(ringStats).find(([, r]) => r.loadRatio === maxLoad)?.[0];
-      const light = Object.entries(ringStats).find(([, r]) => r.loadRatio === minLoad)?.[0];
+      const heavy = Object.entries(ringStats).find(
+        ([, r]) => r.loadRatio === maxLoad,
+      )?.[0];
+      const light = Object.entries(ringStats).find(
+        ([, r]) => r.loadRatio === minLoad,
+      )?.[0];
       findings.push({
-        severity:   "MEDIUM",
-        droneId:    "META-RING-BALANCE",
-        issue:      `Ring load imbalance: ${heavy} at ${(maxLoad * 100).toFixed(1)}% vs ${light} at ${(minLoad * 100).toFixed(1)}%`,
+        severity: "MEDIUM",
+        droneId: "META-RING-BALANCE",
+        issue: `Ring load imbalance: ${heavy} at ${(maxLoad * 100).toFixed(1)}% vs ${light} at ${(minLoad * 100).toFixed(1)}%`,
         suggestion: `Redistribute agents from ${heavy} ring to ${light} ring zones`,
         imbalanceDelta: +imbalance.toFixed(4),
-        heavyRing:  heavy,
-        lightRing:  light,
+        heavyRing: heavy,
+        lightRing: light,
       });
     }
     return findings;
@@ -542,7 +584,7 @@ export class MerkabaBeEyeMAXswarm extends EventEmitter {
     let totalAgents = 0;
     let totalCapacity = 0;
     for (const node of nodeMap.values()) {
-      totalAgents   += node.agents?.length ?? 0;
+      totalAgents += node.agents?.length ?? 0;
       totalCapacity += node.resonanceSlot ?? 0;
     }
     return totalCapacity > 0 ? totalAgents / totalCapacity : 0;
@@ -553,17 +595,17 @@ export class MerkabaBeEyeMAXswarm extends EventEmitter {
   _emptyReport(ctx) {
     return {
       reportType: "MAX_SWARM_SCAN",
-      swarmId:    this.swarmId,
-      scanId:     `max-${this._scanCount}`,
-      timestamp:  new Date().toISOString(),
+      swarmId: this.swarmId,
+      scanId: `max-${this._scanCount}`,
+      timestamp: new Date().toISOString(),
       architectureSignature: CANONICAL_ARCHITECTURE,
       droneCount: this.drones.length,
       latticeCount: 0,
       nodesCovered: 0,
       swarmCoherence: 1.0,
       overallLoadRatio: 0,
-      safeZone:   "GREEN",
-      findings:   [],
+      safeZone: "GREEN",
+      findings: [],
       findingCount: 0,
       criticalCount: 0,
       highCount: 0,
@@ -572,8 +614,11 @@ export class MerkabaBeEyeMAXswarm extends EventEmitter {
       ringStats: {},
       rerouteMap: {},
       geoqode: buildGeoCoordinate({
-        domain: "self-evolve", sector: 5, confidence: 1.0,
-        source: `MAXswarm:${this.swarmId}:empty`, semanticType: "HOLOGRAPHIC",
+        domain: "self-evolve",
+        sector: 5,
+        confidence: 1.0,
+        source: `MAXswarm:${this.swarmId}:empty`,
+        semanticType: "HOLOGRAPHIC",
       }),
     };
   }
@@ -604,12 +649,15 @@ export class MerkabaBeEyeMAXswarm extends EventEmitter {
     this._heartbeatTimer = setInterval(tick, this._heartbeatMs);
 
     this.emit("swarm:heartbeat-start", {
-      swarmId:    this.swarmId,
+      swarmId: this.swarmId,
       droneCount: this.drones.length,
       heartbeatMs: this._heartbeatMs,
       geoqode: buildGeoCoordinate({
-        domain: "self-evolve", sector: 5, confidence: 1.0,
-        source: `MAXswarm:${this.swarmId}:boot`, semanticType: "HOLOGRAPHIC",
+        domain: "self-evolve",
+        sector: 5,
+        confidence: 1.0,
+        source: `MAXswarm:${this.swarmId}:boot`,
+        semanticType: "HOLOGRAPHIC",
       }),
     });
 
@@ -622,9 +670,9 @@ export class MerkabaBeEyeMAXswarm extends EventEmitter {
       clearInterval(this._heartbeatTimer);
       this._heartbeatTimer = null;
       this.emit("swarm:heartbeat-stop", {
-        swarmId:   this.swarmId,
+        swarmId: this.swarmId,
         scanCount: this._scanCount,
-        uptimeMs:  this._startedAt ? Date.now() - this._startedAt : 0,
+        uptimeMs: this._startedAt ? Date.now() - this._startedAt : 0,
       });
     }
     return this;
@@ -632,29 +680,37 @@ export class MerkabaBeEyeMAXswarm extends EventEmitter {
 
   // ── Status accessors ─────────────────────────────────────────────────────
 
-  get isRunning()  { return this._heartbeatTimer != null; }
-  get scanCount()  { return this._scanCount; }
-  get lastScan()   { return this._lastScan; }
-  get history()    { return [...this._history]; }
+  get isRunning() {
+    return this._heartbeatTimer != null;
+  }
+  get scanCount() {
+    return this._scanCount;
+  }
+  get lastScan() {
+    return this._lastScan;
+  }
+  get history() {
+    return [...this._history];
+  }
 
   /** Concise status snapshot for health endpoints. */
   statusSnapshot() {
     const last = this._lastScan;
     return {
-      swarmId:       this.swarmId,
-      droneCount:    this.drones.length,
-      isRunning:     this.isRunning,
-      scanCount:     this._scanCount,
-      heartbeatMs:   this._heartbeatMs,
-      lastScanAt:    last?.timestamp ?? null,
-      swarmCoherence:last?.swarmCoherence ?? null,
-      safeZone:      last?.safeZone ?? "UNKNOWN",
-      findingCount:  last?.findingCount ?? 0,
+      swarmId: this.swarmId,
+      droneCount: this.drones.length,
+      isRunning: this.isRunning,
+      scanCount: this._scanCount,
+      heartbeatMs: this._heartbeatMs,
+      lastScanAt: last?.timestamp ?? null,
+      swarmCoherence: last?.swarmCoherence ?? null,
+      safeZone: last?.safeZone ?? "UNKNOWN",
+      findingCount: last?.findingCount ?? 0,
       criticalCount: last?.criticalCount ?? 0,
-      highCount:     last?.highCount ?? 0,
-      phiAnchor:    PHI,
-      psiAnchor:    PSI,
-      deltaAnchor:  +DELTA.toFixed(6),
+      highCount: last?.highCount ?? 0,
+      phiAnchor: PHI,
+      psiAnchor: PSI,
+      deltaAnchor: +DELTA.toFixed(6),
       alphaWeight3: ALPHA_WEIGHT_3,
       omegaWeight3: OMEGA_WEIGHT_3,
       deltaWeight3: DELTA_WEIGHT_3,

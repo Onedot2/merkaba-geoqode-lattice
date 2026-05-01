@@ -87,9 +87,7 @@ export {
   DELTA,
 } from "../intelligence/MerkabaBeEyeMAXswarm.js";
 
-export {
-  MerkabaMAXSwarmCoordinator,
-} from "../intelligence/MerkabaMAXSwarmCoordinator.js";
+export { MerkabaMAXSwarmCoordinator } from "../intelligence/MerkabaMAXSwarmCoordinator.js";
 
 // ── Merkaba480OS — unified facade ─────────────────────────────────────────────
 
@@ -158,8 +156,8 @@ export class Merkaba480OS {
     osId = "storm",
     monitorIntervalMs = 5_000,
     autoMonitor = false,
-    autoSwarm   = false,
-    swarmOpts   = {},
+    autoSwarm = false,
+    swarmOpts = {},
   } = {}) {
     // Boot assertion
     if (CANONICAL_ARCHITECTURE !== "8,26,48:480") {
@@ -191,10 +189,16 @@ export class Merkaba480OS {
     this.swarm = null;
     if (autoSwarm) {
       try {
-        this.swarm = new SwarmBridge(this, { bridgeId: `${osId}-swarm`, ...swarmOpts });
+        this.swarm = new SwarmBridge(this, {
+          bridgeId: `${osId}-swarm`,
+          ...swarmOpts,
+        });
         this.swarm.start({ source: `merkaba480-os:${osId}` });
       } catch (e) {
-        console.warn("[Merkaba480OS] SwarmBridge init failed (non-fatal):", e.message);
+        console.warn(
+          "[Merkaba480OS] SwarmBridge init failed (non-fatal):",
+          e.message,
+        );
       }
     }
 
@@ -299,7 +303,10 @@ export class Merkaba480OS {
    */
   attachSwarm(opts = {}) {
     if (this.swarm?.isRunning) return this.swarm;
-    this.swarm = new SwarmBridge(this, { bridgeId: `${this.osId}-swarm`, ...opts });
+    this.swarm = new SwarmBridge(this, {
+      bridgeId: `${this.osId}-swarm`,
+      ...opts,
+    });
     this.swarm.start({ source: `merkaba480-os:${this.osId}` });
     return this.swarm;
   }

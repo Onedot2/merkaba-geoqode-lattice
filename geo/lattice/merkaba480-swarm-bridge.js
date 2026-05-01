@@ -42,13 +42,15 @@ import { MerkabaMAXSwarmCoordinator } from "../intelligence/MerkabaMAXSwarmCoord
 
 // ── Architecture assertion ────────────────────────────────────────────────────
 if (CANONICAL_ARCHITECTURE !== "8,26,48:480") {
-  throw new Error(`[SwarmBridge] CANONICAL_ARCHITECTURE drift: "${CANONICAL_ARCHITECTURE}"`);
+  throw new Error(
+    `[SwarmBridge] CANONICAL_ARCHITECTURE drift: "${CANONICAL_ARCHITECTURE}"`,
+  );
 }
 
 // ── Adaptive heartbeat thresholds ────────────────────────────────────────────
-const HEARTBEAT_NORMAL_MS = 30_000;  // 30s under GREEN load
-const HEARTBEAT_AMBER_MS  = 15_000;  // 15s under AMBER load
-const HEARTBEAT_RED_MS    = 8_000;   // 8s under RED load (maximum telemetry)
+const HEARTBEAT_NORMAL_MS = 30_000; // 30s under GREEN load
+const HEARTBEAT_AMBER_MS = 15_000; // 15s under AMBER load
+const HEARTBEAT_RED_MS = 8_000; // 8s under RED load (maximum telemetry)
 
 // ─────────────────────────────────────────────────────────────────────────────
 // SwarmBridge
@@ -63,23 +65,26 @@ export class SwarmBridge extends EventEmitter {
    * @param {boolean}  [opts.emitReroute=true] — Emit 'bridge:reroute' on misalignment
    * @param {string}   [opts.bridgeId="storm-bridge"]
    */
-  constructor(os, {
-    coordinatorHeartbeatMs = 60_000,
-    autoExpand  = true,
-    emitReroute = true,
-    bridgeId    = "storm-bridge",
-  } = {}) {
+  constructor(
+    os,
+    {
+      coordinatorHeartbeatMs = 60_000,
+      autoExpand = true,
+      emitReroute = true,
+      bridgeId = "storm-bridge",
+    } = {},
+  ) {
     super();
 
     if (!os || typeof os.cluster !== "object") {
       throw new TypeError("[SwarmBridge] os must be a Merkaba480OS instance");
     }
 
-    this.os         = os;
-    this.bridgeId   = bridgeId;
-    this._autoExpand  = autoExpand;
+    this.os = os;
+    this.bridgeId = bridgeId;
+    this._autoExpand = autoExpand;
     this._emitReroute = emitReroute;
-    this._startedAt   = null;
+    this._startedAt = null;
     this._expandCount = 0;
     this._rerouteCount = 0;
     this._currentSafeZone = "GREEN";
@@ -89,11 +94,11 @@ export class SwarmBridge extends EventEmitter {
 
     // Coordinator (holds MAXswarm internally)
     this.coordinator = new MerkabaMAXSwarmCoordinator({
-      coordinatorId:         `${bridgeId}-coord`,
+      coordinatorId: `${bridgeId}-coord`,
       coordinatorHeartbeatMs,
       maxSwarmOpts: {
         heartbeatMs: HEARTBEAT_NORMAL_MS,
-        swarmId:     `${bridgeId}-delta`,
+        swarmId: `${bridgeId}-delta`,
       },
 
       // Autonomous cluster expansion callback
@@ -109,11 +114,15 @@ export class SwarmBridge extends EventEmitter {
           console.warn("[SwarmBridge] expand() failed:", e.message);
         }
         this.emit("bridge:expanded", {
-          count, expandCount: this._expandCount,
+          count,
+          expandCount: this._expandCount,
           osCoherence: this.os.coherence,
           geoqode: buildGeoCoordinate({
-            domain: "quantum-arch", sector: 1, confidence: this.os.coherence,
-            source: `bridge:${this.bridgeId}`, semanticType: "PHYSICS",
+            domain: "quantum-arch",
+            sector: 1,
+            confidence: this.os.coherence,
+            source: `bridge:${this.bridgeId}`,
+            semanticType: "PHYSICS",
           }),
         });
       },
@@ -126,8 +135,11 @@ export class SwarmBridge extends EventEmitter {
           rerouteMap,
           rerouteCount: this._rerouteCount,
           geoqode: buildGeoCoordinate({
-            domain: "systems-design", sector: 3, confidence: 0.8,
-            source: `bridge:${this.bridgeId}`, semanticType: "DIALOGUE",
+            domain: "systems-design",
+            sector: 3,
+            confidence: 0.8,
+            source: `bridge:${this.bridgeId}`,
+            semanticType: "DIALOGUE",
           }),
         });
       },
@@ -141,10 +153,18 @@ export class SwarmBridge extends EventEmitter {
     });
 
     // Forward coordinator events
-    this.coordinator.on("coord:attestation",          (r) => this.emit("bridge:attestation", r));
-    this.coordinator.on("coord:critical",             (r) => this.emit("bridge:critical",    r));
-    this.coordinator.on("coord:critical-attestation", (r) => this.emit("bridge:critical-attestation", r));
-    this.coordinator.on("coord:pressure",             (r) => this.emit("bridge:pressure",   r));
+    this.coordinator.on("coord:attestation", (r) =>
+      this.emit("bridge:attestation", r),
+    );
+    this.coordinator.on("coord:critical", (r) =>
+      this.emit("bridge:critical", r),
+    );
+    this.coordinator.on("coord:critical-attestation", (r) =>
+      this.emit("bridge:critical-attestation", r),
+    );
+    this.coordinator.on("coord:pressure", (r) =>
+      this.emit("bridge:pressure", r),
+    );
   }
 
   // ── Lifecycle ─────────────────────────────────────────────────────────────
@@ -163,22 +183,25 @@ export class SwarmBridge extends EventEmitter {
     });
 
     this.emit("bridge:start", {
-      bridgeId:    this.bridgeId,
-      osId:        this.os.osId,
-      autoExpand:  this._autoExpand,
-      droneCount:  this.coordinator.maxSwarm.drones.length,
-      phiAnchor:   PHI,
-      psiAnchor:   PSI,
+      bridgeId: this.bridgeId,
+      osId: this.os.osId,
+      autoExpand: this._autoExpand,
+      droneCount: this.coordinator.maxSwarm.drones.length,
+      phiAnchor: PHI,
+      psiAnchor: PSI,
       architectureSignature: CANONICAL_ARCHITECTURE,
       geoqode: buildGeoCoordinate({
-        domain: "self-evolve", sector: 5, confidence: 1.0,
-        source: `bridge:${this.bridgeId}`, semanticType: "HOLOGRAPHIC",
+        domain: "self-evolve",
+        sector: 5,
+        confidence: 1.0,
+        source: `bridge:${this.bridgeId}`,
+        semanticType: "HOLOGRAPHIC",
       }),
     });
 
     console.log(
       `[SwarmBridge] ⬡ LIVE — 48-drone MAXswarm + triple-attestation coordinator | ` +
-      `autoExpand=${this._autoExpand} | osId=${this.os.osId}`,
+        `autoExpand=${this._autoExpand} | osId=${this.os.osId}`,
     );
 
     return this;
@@ -188,10 +211,10 @@ export class SwarmBridge extends EventEmitter {
   stop() {
     this.coordinator.stop();
     this.emit("bridge:stop", {
-      bridgeId:    this.bridgeId,
+      bridgeId: this.bridgeId,
       expandCount: this._expandCount,
       rerouteCount: this._rerouteCount,
-      uptimeMs:    this._startedAt ? Date.now() - this._startedAt : 0,
+      uptimeMs: this._startedAt ? Date.now() - this._startedAt : 0,
     });
     return this;
   }
@@ -199,22 +222,31 @@ export class SwarmBridge extends EventEmitter {
   // ── Alpha / Omega score injection ─────────────────────────────────────────
 
   /** Inject an Alpha (BESX code-scan) coherence score (0-1). */
-  setAlpha(score) { this.coordinator.setAlphaScore(score); return this; }
+  setAlpha(score) {
+    this.coordinator.setAlphaScore(score);
+    return this;
+  }
 
   /** Inject an Omega (Witness code-scan) coherence score (0-1). */
-  setOmega(score) { this.coordinator.setOmegaScore(score); return this; }
+  setOmega(score) {
+    this.coordinator.setOmegaScore(score);
+    return this;
+  }
 
   // ── Adaptive heartbeat ────────────────────────────────────────────────────
 
   _adaptHeartbeat(safeZone) {
     const swarm = this.coordinator.maxSwarm;
     const target =
-      safeZone === "RED"   ? HEARTBEAT_RED_MS :
-      safeZone === "AMBER" ? HEARTBEAT_AMBER_MS : HEARTBEAT_NORMAL_MS;
+      safeZone === "RED"
+        ? HEARTBEAT_RED_MS
+        : safeZone === "AMBER"
+          ? HEARTBEAT_AMBER_MS
+          : HEARTBEAT_NORMAL_MS;
 
     if (swarm._heartbeatMs !== target && swarm._heartbeatTimer) {
       clearInterval(swarm._heartbeatTimer);
-      swarm._heartbeatMs    = target;
+      swarm._heartbeatMs = target;
       swarm._heartbeatTimer = setInterval(async () => {
         try {
           const lats = await Promise.resolve(this._latticeProvider());
@@ -223,35 +255,42 @@ export class SwarmBridge extends EventEmitter {
       }, target);
 
       this.emit("bridge:heartbeat-adapted", {
-        safeZone, newIntervalMs: target, bridgeId: this.bridgeId,
+        safeZone,
+        newIntervalMs: target,
+        bridgeId: this.bridgeId,
       });
     }
   }
 
   // ── Status ────────────────────────────────────────────────────────────────
 
-  get isRunning()      { return this.coordinator.isRunning; }
-  get currentSafeZone() { return this._currentSafeZone; }
+  get isRunning() {
+    return this.coordinator.isRunning;
+  }
+  get currentSafeZone() {
+    return this._currentSafeZone;
+  }
 
   /** Full bridge status snapshot for REST/monitoring endpoints. */
   statusSnapshot() {
     return {
-      bridgeId:         this.bridgeId,
-      osId:             this.os.osId,
-      isRunning:        this.isRunning,
-      currentSafeZone:  this._currentSafeZone,
-      expandCount:      this._expandCount,
-      rerouteCount:     this._rerouteCount,
-      uptimeMs:         this._startedAt ? Date.now() - this._startedAt : 0,
-      coordinator:      this.coordinator.statusSnapshot(),
-      osCoherence:      this.os.coherence,
-      osTotalAgents:    this.os.activeAgents,
-      osTotalCapacity:  this.os.totalCapacity,
-      phiAnchor:        PHI,
-      psiAnchor:        PSI,
+      bridgeId: this.bridgeId,
+      osId: this.os.osId,
+      isRunning: this.isRunning,
+      currentSafeZone: this._currentSafeZone,
+      expandCount: this._expandCount,
+      rerouteCount: this._rerouteCount,
+      uptimeMs: this._startedAt ? Date.now() - this._startedAt : 0,
+      coordinator: this.coordinator.statusSnapshot(),
+      osCoherence: this.os.coherence,
+      osTotalAgents: this.os.activeAgents,
+      osTotalCapacity: this.os.totalCapacity,
+      phiAnchor: PHI,
+      psiAnchor: PSI,
       architectureSignature: CANONICAL_ARCHITECTURE,
       geoqode: buildGeoCoordinate({
-        domain: "self-evolve", sector: 5,
+        domain: "self-evolve",
+        sector: 5,
         confidence: this.os.coherence,
         source: `bridge:${this.bridgeId}:snapshot`,
         semanticType: "HOLOGRAPHIC",

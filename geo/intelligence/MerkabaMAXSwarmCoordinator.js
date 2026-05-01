@@ -62,11 +62,19 @@ if (CANONICAL_ARCHITECTURE !== "8,26,48:480") {
 
 // ── Attestation verdict table ─────────────────────────────────────────────────
 const VERDICTS = {
-  TRIPLE_ATTESTED:  { threshold: 0.95, label: "TRIPLE_ATTESTED",  severity: "OK"       },
-  DUAL_CONFIRMED:   { threshold: 0.80, label: "DUAL_CONFIRMED",   severity: "INFO"     },
-  PARTIAL:          { threshold: 0.60, label: "PARTIAL",          severity: "MEDIUM"   },
-  DEGRADED:         { threshold: 0.40, label: "DEGRADED",         severity: "HIGH"     },
-  CRITICAL_DRIFT:   { threshold: 0.00, label: "CRITICAL_DRIFT",   severity: "CRITICAL" },
+  TRIPLE_ATTESTED: {
+    threshold: 0.95,
+    label: "TRIPLE_ATTESTED",
+    severity: "OK",
+  },
+  DUAL_CONFIRMED: { threshold: 0.8, label: "DUAL_CONFIRMED", severity: "INFO" },
+  PARTIAL: { threshold: 0.6, label: "PARTIAL", severity: "MEDIUM" },
+  DEGRADED: { threshold: 0.4, label: "DEGRADED", severity: "HIGH" },
+  CRITICAL_DRIFT: {
+    threshold: 0.0,
+    label: "CRITICAL_DRIFT",
+    severity: "CRITICAL",
+  },
 };
 
 function classifyAttestation(score) {
@@ -92,44 +100,44 @@ export class MerkabaMAXSwarmCoordinator extends EventEmitter {
    */
   constructor({
     coordinatorHeartbeatMs = 60_000,
-    maxHistoryDepth        = 30,
-    coordinatorId          = "max-coord",
-    maxSwarmOpts           = {},
-    onExpand               = null,
-    onReroute              = null,
+    maxHistoryDepth = 30,
+    coordinatorId = "max-coord",
+    maxSwarmOpts = {},
+    onExpand = null,
+    onReroute = null,
   } = {}) {
     super();
 
     this.coordinatorId = coordinatorId;
     this._coordinatorMs = coordinatorHeartbeatMs;
-    this._maxHistory    = maxHistoryDepth;
-    this._onExpand      = onExpand;
-    this._onReroute     = onReroute;
+    this._maxHistory = maxHistoryDepth;
+    this._onExpand = onExpand;
+    this._onReroute = onReroute;
     this._coordinatorTimer = null;
-    this._attestCount   = 0;
-    this._history       = [];
-    this._startedAt     = null;
+    this._attestCount = 0;
+    this._history = [];
+    this._startedAt = null;
 
     // Alpha score cache (from external BESX sweep, updated by setAlphaScore)
-    this._alphaScore    = null;
-    this._alphaTs       = null;
+    this._alphaScore = null;
+    this._alphaTs = null;
 
     // Omega score cache (from external Witness sweep, updated by setOmegaScore)
-    this._omegaScore    = null;
-    this._omegaTs       = null;
+    this._omegaScore = null;
+    this._omegaTs = null;
 
     // Delta score comes from MAXswarm's own sweep (live lattice)
     this.maxSwarm = new MerkabaBeEyeMAXswarm({
-      swarmId:     `${coordinatorId}-delta`,
+      swarmId: `${coordinatorId}-delta`,
       heartbeatMs: maxSwarmOpts.heartbeatMs ?? 30_000,
-      maxHistory:  maxSwarmOpts.maxHistory  ?? 20,
+      maxHistory: maxSwarmOpts.maxHistory ?? 20,
       ...maxSwarmOpts,
     });
 
     // Forward MAXswarm pressure events
-    this.maxSwarm.on("swarm:pressure",  (r) => this.emit("coord:pressure",  r));
-    this.maxSwarm.on("swarm:critical",  (r) => this.emit("coord:critical",  r));
-    this.maxSwarm.on("swarm:scan",      (r) => this._onDeltaScan(r));
+    this.maxSwarm.on("swarm:pressure", (r) => this.emit("coord:pressure", r));
+    this.maxSwarm.on("swarm:critical", (r) => this.emit("coord:critical", r));
+    this.maxSwarm.on("swarm:scan", (r) => this._onDeltaScan(r));
   }
 
   // ── Alpha / Omega score injection (from BESX + Witness sweeps) ────────────
@@ -140,8 +148,11 @@ export class MerkabaMAXSwarmCoordinator extends EventEmitter {
    */
   setAlphaScore(score) {
     this._alphaScore = Math.min(1, Math.max(0, score));
-    this._alphaTs    = Date.now();
-    this.emit("coord:alpha-updated", { score: this._alphaScore, ts: this._alphaTs });
+    this._alphaTs = Date.now();
+    this.emit("coord:alpha-updated", {
+      score: this._alphaScore,
+      ts: this._alphaTs,
+    });
   }
 
   /**
@@ -150,8 +161,11 @@ export class MerkabaMAXSwarmCoordinator extends EventEmitter {
    */
   setOmegaScore(score) {
     this._omegaScore = Math.min(1, Math.max(0, score));
-    this._omegaTs    = Date.now();
-    this.emit("coord:omega-updated", { score: this._omegaScore, ts: this._omegaTs });
+    this._omegaTs = Date.now();
+    this.emit("coord:omega-updated", {
+      score: this._omegaScore,
+      ts: this._omegaTs,
+    });
   }
 
   // ── Delta scan integration ────────────────────────────────────────────────
@@ -167,7 +181,9 @@ export class MerkabaMAXSwarmCoordinator extends EventEmitter {
     // Trigger reroute suggestions when significant misalignment detected
     if (
       maxReport.rerouteMap &&
-      Object.values(maxReport.rerouteMap).some((v) => v.overloaded?.length > 0) &&
+      Object.values(maxReport.rerouteMap).some(
+        (v) => v.overloaded?.length > 0,
+      ) &&
       typeof this._onReroute === "function"
     ) {
       this._onReroute(maxReport.rerouteMap);
@@ -176,8 +192,8 @@ export class MerkabaMAXSwarmCoordinator extends EventEmitter {
     // Emit delta update for coordinator cycle
     this.emit("coord:delta-updated", {
       deltaScore,
-      safeZone:   maxReport.safeZone,
-      scanId:     maxReport.scanId,
+      safeZone: maxReport.safeZone,
+      scanId: maxReport.scanId,
       findingCount: maxReport.findingCount,
     });
   }
@@ -202,34 +218,46 @@ export class MerkabaMAXSwarmCoordinator extends EventEmitter {
     const verdict = classifyAttestation(attestedScore);
 
     const geo = buildGeoCoordinate({
-      domain:       "security-forge",
-      sector:       8,
-      confidence:   attestedScore,
-      source:       `coordinator:${this.coordinatorId}`,
+      domain: "security-forge",
+      sector: 8,
+      confidence: attestedScore,
+      source: `coordinator:${this.coordinatorId}`,
       semanticType: "PHYSICS",
     });
 
     return {
       attestedScore,
-      verdict:          verdict.label,
-      severity:         verdict.severity,
+      verdict: verdict.label,
+      severity: verdict.severity,
       poles: {
-        alpha: { score: alpha, weight: ALPHA_WEIGHT_3, ts: this._alphaTs ?? null },
-        omega: { score: omega, weight: OMEGA_WEIGHT_3, ts: this._omegaTs ?? null },
-        delta: { score: delta, weight: DELTA_WEIGHT_3, ts: this.maxSwarm.lastScan?.timestamp ?? null },
+        alpha: {
+          score: alpha,
+          weight: ALPHA_WEIGHT_3,
+          ts: this._alphaTs ?? null,
+        },
+        omega: {
+          score: omega,
+          weight: OMEGA_WEIGHT_3,
+          ts: this._omegaTs ?? null,
+        },
+        delta: {
+          score: delta,
+          weight: DELTA_WEIGHT_3,
+          ts: this.maxSwarm.lastScan?.timestamp ?? null,
+        },
       },
       anchors: {
         PHI,
         PSI,
-        DELTA:        +DELTA.toFixed(6),
-        GOLDEN_BAND:  +(PHI + PSI).toFixed(3),
+        DELTA: +DELTA.toFixed(6),
+        GOLDEN_BAND: +(PHI + PSI).toFixed(3),
         ALPHA_WEIGHT_3,
         OMEGA_WEIGHT_3,
         DELTA_WEIGHT_3,
       },
       architectureSignature: CANONICAL_ARCHITECTURE,
-      architectureDisplay:   CANONICAL_ARCHITECTURE_DISPLAY,
-      geoqode:  geo,
+      architectureDisplay: CANONICAL_ARCHITECTURE_DISPLAY,
+      geoqode: geo,
     };
   }
 
@@ -243,14 +271,14 @@ export class MerkabaMAXSwarmCoordinator extends EventEmitter {
     const attest = this.computeAttestation();
 
     const report = {
-      reportType:   "MAX_SWARM_COORDINATOR_STATUS",
+      reportType: "MAX_SWARM_COORDINATOR_STATUS",
       coordinatorId: this.coordinatorId,
-      cycleId:      `coord-${this._attestCount}`,
-      timestamp:    new Date().toISOString(),
+      cycleId: `coord-${this._attestCount}`,
+      timestamp: new Date().toISOString(),
       ...attest,
       deltaSwarmStatus: this.maxSwarm.statusSnapshot(),
-      cycleCount:   this._attestCount,
-      uptimeMs:     this._startedAt ? Date.now() - this._startedAt : 0,
+      cycleCount: this._attestCount,
+      uptimeMs: this._startedAt ? Date.now() - this._startedAt : 0,
     };
 
     this._history.unshift(report);
@@ -287,25 +315,36 @@ export class MerkabaMAXSwarmCoordinator extends EventEmitter {
 
     // Periodic attestation report
     this._coordinatorTimer = setInterval(() => {
-      try { this.runCycle(); } catch (_) { /* non-fatal */ }
+      try {
+        this.runCycle();
+      } catch (_) {
+        /* non-fatal */
+      }
     }, this._coordinatorMs);
 
     // Run first cycle immediately
-    setTimeout(() => { try { this.runCycle(); } catch (_) {} }, 100);
+    setTimeout(() => {
+      try {
+        this.runCycle();
+      } catch (_) {}
+    }, 100);
 
     this.emit("coord:start", {
-      coordinatorId:  this.coordinatorId,
-      coordinatorMs:  this._coordinatorMs,
+      coordinatorId: this.coordinatorId,
+      coordinatorMs: this._coordinatorMs,
       deltaHeartbeatMs: this.maxSwarm._heartbeatMs,
-      phiAnchor:      PHI,
-      psiAnchor:      PSI,
-      deltaAnchor:    +DELTA.toFixed(6),
-      alphaWeight3:   ALPHA_WEIGHT_3,
-      omegaWeight3:   OMEGA_WEIGHT_3,
-      deltaWeight3:   DELTA_WEIGHT_3,
+      phiAnchor: PHI,
+      psiAnchor: PSI,
+      deltaAnchor: +DELTA.toFixed(6),
+      alphaWeight3: ALPHA_WEIGHT_3,
+      omegaWeight3: OMEGA_WEIGHT_3,
+      deltaWeight3: DELTA_WEIGHT_3,
       geoqode: buildGeoCoordinate({
-        domain: "security-forge", sector: 8, confidence: 1.0,
-        source: `coordinator:${this.coordinatorId}`, semanticType: "PHYSICS",
+        domain: "security-forge",
+        sector: 8,
+        confidence: 1.0,
+        source: `coordinator:${this.coordinatorId}`,
+        semanticType: "PHYSICS",
       }),
     });
 
@@ -321,31 +360,39 @@ export class MerkabaMAXSwarmCoordinator extends EventEmitter {
     this.maxSwarm.stopHeartbeat();
     this.emit("coord:stop", {
       coordinatorId: this.coordinatorId,
-      cycleCount:    this._attestCount,
-      uptimeMs:      this._startedAt ? Date.now() - this._startedAt : 0,
+      cycleCount: this._attestCount,
+      uptimeMs: this._startedAt ? Date.now() - this._startedAt : 0,
     });
     return this;
   }
 
   // ── Status ────────────────────────────────────────────────────────────────
 
-  get isRunning()   { return this._coordinatorTimer != null; }
-  get cycleCount()  { return this._attestCount; }
-  get history()     { return [...this._history]; }
-  get latestAttestation() { return this._history[0] ?? null; }
+  get isRunning() {
+    return this._coordinatorTimer != null;
+  }
+  get cycleCount() {
+    return this._attestCount;
+  }
+  get history() {
+    return [...this._history];
+  }
+  get latestAttestation() {
+    return this._history[0] ?? null;
+  }
 
   /** Full coordinator status for REST/monitoring endpoints. */
   statusSnapshot() {
     const attest = this.computeAttestation();
     return {
-      coordinatorId:    this.coordinatorId,
-      isRunning:        this.isRunning,
-      cycleCount:       this._attestCount,
-      coordinatorMs:    this._coordinatorMs,
-      uptimeMs:         this._startedAt ? Date.now() - this._startedAt : 0,
+      coordinatorId: this.coordinatorId,
+      isRunning: this.isRunning,
+      cycleCount: this._attestCount,
+      coordinatorMs: this._coordinatorMs,
+      uptimeMs: this._startedAt ? Date.now() - this._startedAt : 0,
       currentAttestation: attest,
-      deltaSwarm:       this.maxSwarm.statusSnapshot(),
-      historyDepth:     this._history.length,
+      deltaSwarm: this.maxSwarm.statusSnapshot(),
+      historyDepth: this._history.length,
       architectureSignature: CANONICAL_ARCHITECTURE,
     };
   }
