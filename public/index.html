@@ -1,881 +1,1159 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AIOS — The AI-Native Operating System</title>
-  <meta name="description" content="AIOS is the world's first AI-native operating system. Built for autonomous intelligence, resonance-certified, and self-aware by design. Join the early access waitlist." />
-  <meta name="keywords" content="AIOS, AI operating system, autonomous intelligence, GeoQode, AI runtime" />
-  <meta property="og:title" content="AIOS — The AI-Native Operating System" />
-  <meta property="og:description" content="The OS that thinks before it acts. Built for the age of autonomous intelligence." />
-  <meta property="og:url" content="https://67aios.com" />
-  <meta property="og:type" content="website" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="AIOS — The AI-Native Operating System" />
-  <meta name="twitter:description" content="The OS that thinks before it acts." />
-  <link rel="icon" type="image/svg+xml" href="/public/favicon.svg" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg:       #050a14;
-      --bg2:      #0a1225;
-      --bg3:      #0f1c35;
-      --cyan:     #00d4ff;
-      --purple:   #7c3aed;
-      --pink:     #d946ef;
-      --text:     #e2e8f0;
-      --muted:    #64748b;
-      --border:   rgba(0,212,255,0.12);
-      --card-bg:  rgba(10,18,37,0.8);
-      --glow:     0 0 40px rgba(0,212,255,0.15);
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      overflow-x: hidden;
-      line-height: 1.6;
-    }
-
-    /* ── Grid background ── */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
-      background-size: 60px 60px;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    /* ── NAV ── */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      padding: 16px 32px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: rgba(5,10,20,0.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .nav-brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-    }
-
-    .nav-logo {
-      font-size: 22px;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-      color: var(--cyan);
-      line-height: 1;
-    }
-
-    .nav-badge {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      color: var(--muted);
-      border: 1px solid var(--border);
-      padding: 2px 7px;
-      border-radius: 4px;
-      text-transform: uppercase;
-    }
-
-    .nav-cta {
-      background: var(--cyan);
-      color: #000;
-      font-weight: 700;
-      font-size: 13px;
-      padding: 8px 18px;
-      border-radius: 6px;
-      text-decoration: none;
-      letter-spacing: 0.3px;
-      transition: opacity 0.2s;
-    }
-
-    .nav-cta:hover { opacity: 0.85; }
-
-    /* ── HERO ── */
-    .hero {
-      position: relative;
-      z-index: 1;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 120px 24px 80px;
-    }
-
-    /* Radial glow behind hero */
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: 30%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 700px;
-      height: 700px;
-      background: radial-gradient(ellipse at center, rgba(0,212,255,0.08) 0%, transparent 65%);
-      pointer-events: none;
-    }
-
-    .hero-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      color: var(--cyan);
-      padding: 6px 16px;
-      border: 1px solid rgba(0,212,255,0.25);
-      border-radius: 100px;
-      margin-bottom: 32px;
-    }
-
-    .hero-eyebrow::before {
-      content: '';
-      width: 6px; height: 6px;
-      background: var(--cyan);
-      border-radius: 50%;
-      animation: pulse 2s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.75); }
-    }
-
-    .hero-title {
-      font-size: clamp(80px, 16vw, 160px);
-      font-weight: 900;
-      letter-spacing: -6px;
-      line-height: 0.9;
-      margin-bottom: 24px;
-      background: linear-gradient(135deg, #fff 0%, var(--cyan) 50%, var(--purple) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .hero-subtitle {
-      font-size: clamp(20px, 3vw, 28px);
-      font-weight: 400;
-      color: var(--muted);
-      max-width: 580px;
-      margin: 0 auto 16px;
-    }
-
-    .hero-subtitle strong {
-      color: var(--text);
-      font-weight: 600;
-    }
-
-    .hero-tagline {
-      font-size: 14px;
-      color: var(--muted);
-      margin-bottom: 48px;
-      letter-spacing: 0.5px;
-    }
-
-    /* ── WAITLIST FORM ── */
-    .waitlist-form {
-      width: 100%;
-      max-width: 520px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin: 0 auto;
-    }
-
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .form-input {
-      width: 100%;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 14px 18px;
-      border-radius: 10px;
-      font-size: 15px;
-      font-family: inherit;
-      transition: border-color 0.2s, box-shadow 0.2s;
-      outline: none;
-    }
-
-    .form-input::placeholder { color: var(--muted); }
-
-    .form-input:focus {
-      border-color: var(--cyan);
-      box-shadow: 0 0 0 3px rgba(0,212,255,0.08);
-    }
-
-    .form-submit {
-      width: 100%;
-      padding: 16px;
-      background: linear-gradient(135deg, var(--cyan), var(--purple));
-      border: none;
-      border-radius: 10px;
-      color: #fff;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-      font-family: inherit;
-      letter-spacing: 0.3px;
-      transition: opacity 0.2s, transform 0.1s;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .form-submit:hover { opacity: 0.9; transform: translateY(-1px); }
-    .form-submit:active { transform: translateY(0); }
-    .form-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-
-    .form-note {
-      font-size: 12px;
-      color: var(--muted);
-      text-align: center;
-    }
-
-    .form-success {
-      display: none;
-      text-align: center;
-      padding: 24px;
-      background: rgba(0,212,255,0.07);
-      border: 1px solid rgba(0,212,255,0.2);
-      border-radius: 12px;
-    }
-
-    .form-success.visible { display: block; }
-
-    .form-success .success-icon { font-size: 36px; margin-bottom: 12px; }
-    .form-success h3 { color: var(--cyan); margin-bottom: 8px; font-size: 18px; }
-    .form-success p { color: var(--muted); font-size: 14px; }
-
-    /* ── STATS ── */
-    .stats-row {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 48px;
-      padding: 40px 24px;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      background: var(--bg2);
-    }
-
-    .stat { text-align: center; }
-    .stat-value { font-size: 32px; font-weight: 800; color: var(--cyan); line-height: 1; }
-    .stat-label { font-size: 12px; color: var(--muted); margin-top: 4px; letter-spacing: 0.5px; }
-
-    /* ── SECTIONS ── */
-    section {
-      position: relative;
-      z-index: 1;
-      padding: 100px 24px;
-    }
-
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    .section-label {
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--cyan);
-      margin-bottom: 16px;
-    }
-
-    .section-title {
-      font-size: clamp(32px, 5vw, 52px);
-      font-weight: 800;
-      letter-spacing: -1.5px;
-      line-height: 1.1;
-      margin-bottom: 20px;
-    }
-
-    .section-body {
-      font-size: 18px;
-      color: var(--muted);
-      max-width: 600px;
-      line-height: 1.7;
-    }
-
-    /* ── FEATURE CARDS ── */
-    .feature-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      margin-top: 60px;
-    }
-
-    .feature-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 32px;
-      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
-      backdrop-filter: blur(8px);
-    }
-
-    .feature-card:hover {
-      border-color: rgba(0,212,255,0.3);
-      box-shadow: var(--glow);
-      transform: translateY(-3px);
-    }
-
-    .feature-icon {
-      width: 48px; height: 48px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      margin-bottom: 20px;
-    }
-
-    .feature-icon.cyan  { background: rgba(0,212,255,0.1); }
-    .feature-icon.purple{ background: rgba(124,58,237,0.1); }
-    .feature-icon.pink  { background: rgba(217,70,239,0.1); }
-    .feature-icon.gold  { background: rgba(251,191,36,0.1); }
-
-    .feature-card h3 {
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 10px;
-      letter-spacing: -0.3px;
-    }
-
-    .feature-card p {
-      font-size: 15px;
-      color: var(--muted);
-      line-height: 1.65;
-    }
-
-    /* ── PHILOSOPHY SECTION ── */
-    .philosophy {
-      background: var(--bg2);
-    }
-
-    .philosophy-split {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: center;
-    }
-
-    .philosophy-quote {
-      font-size: clamp(24px, 3.5vw, 36px);
-      font-weight: 700;
-      letter-spacing: -1px;
-      line-height: 1.25;
-      margin-bottom: 24px;
-    }
-
-    .philosophy-quote span { color: var(--cyan); }
-
-    .philosophy-points {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .philosophy-points li {
-      display: flex;
-      align-items: flex-start;
-      gap: 14px;
-      font-size: 16px;
-      color: var(--muted);
-    }
-
-    .philosophy-points li::before {
-      content: '→';
-      color: var(--cyan);
-      font-weight: 700;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-
-    .compare-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 48px;
-      font-size: 15px;
-    }
-
-    .compare-table th {
-      padding: 14px 20px;
-      text-align: left;
-      font-size: 12px;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--muted);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .compare-table th.highlight { color: var(--cyan); }
-
-    .compare-table td {
-      padding: 16px 20px;
-      border-bottom: 1px solid rgba(255,255,255,0.04);
-      color: var(--muted);
-      vertical-align: top;
-    }
-
-    .compare-table td.highlight {
-      color: var(--text);
-      font-weight: 500;
-    }
-
-    .compare-table td:first-child { color: var(--text); font-weight: 500; }
-
-    .check { color: var(--cyan); font-weight: 700; }
-    .cross { color: #475569; }
-
-    /* ── CTA SECTION ── */
-    .cta-section {
-      text-align: center;
-      padding: 120px 24px;
-      background: radial-gradient(ellipse at 50% 0%, rgba(0,212,255,0.07) 0%, transparent 70%);
-    }
-
-    .cta-section .section-title { margin-bottom: 16px; }
-    .cta-section .section-body { margin: 0 auto 48px; }
-
-    /* ── FOOTER ── */
-    footer {
-      position: relative;
-      z-index: 1;
-      padding: 40px 32px;
-      border-top: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 16px;
-      background: var(--bg);
-      font-size: 13px;
-      color: var(--muted);
-    }
-
-    .footer-brand { font-weight: 700; color: var(--text); }
-    .footer-brand span { color: var(--cyan); }
-    .footer-links { display: flex; gap: 24px; }
-    .footer-links a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
-    .footer-links a:hover { color: var(--cyan); }
-
-    /* ── TOAST ── */
-    #toast {
-      position: fixed;
-      bottom: 32px;
-      left: 50%;
-      transform: translateX(-50%) translateY(80px);
-      background: var(--bg3);
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 14px 24px;
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: 500;
-      backdrop-filter: blur(12px);
-      transition: transform 0.3s ease, opacity 0.3s ease;
-      opacity: 0;
-      z-index: 999;
-      white-space: nowrap;
-    }
-
-    #toast.visible {
-      transform: translateX(-50%) translateY(0);
-      opacity: 1;
-    }
-
-    #toast.success { border-color: rgba(0,212,255,0.4); }
-    #toast.error   { border-color: rgba(217,70,239,0.4); }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 768px) {
-      nav { padding: 12px 20px; }
-      .nav-badge { display: none; }
-      .form-row { grid-template-columns: 1fr; }
-      .stats-row { flex-wrap: wrap; gap: 28px; }
-      .philosophy-split { grid-template-columns: 1fr; gap: 40px; }
-      .compare-table { font-size: 13px; }
-      .compare-table th, .compare-table td { padding: 12px 14px; }
-      footer { justify-content: center; text-align: center; }
-      .footer-links { justify-content: center; }
-    }
-
-    @media (max-width: 480px) {
-      .hero-title { letter-spacing: -3px; }
-      section { padding: 70px 20px; }
-    }
-  </style>
-</head>
-<body>
-
-  <!-- ── NAV ── -->
-  <nav>
-    <a href="/" class="nav-brand">
-      <span class="nav-logo">AIOS</span>
-      <span class="nav-badge">67 · Early Access</span>
-    </a>
-    <a href="#waitlist" class="nav-cta">Get Early Access</a>
-  </nav>
-
-  <!-- ── HERO ── -->
-  <section class="hero">
-    <div class="hero-eyebrow">Now accepting early access applications</div>
-    <h1 class="hero-title">AIOS</h1>
-    <p class="hero-subtitle">
-      The <strong>AI-Native Operating System</strong>.<br />
-      Built for the age of autonomous intelligence.
-    </p>
-    <p class="hero-tagline">The OS that thinks before it acts.</p>
-
-    <div class="waitlist-form" id="hero-form">
-      <div class="form-row">
-        <input class="form-input" type="text" id="w-name" name="name" placeholder="Your name" autocomplete="name" />
-        <input class="form-input" type="email" id="w-email" name="email" placeholder="Email address" required autocomplete="email" />
-      </div>
-      <input class="form-input" type="text" id="w-msg" name="message" placeholder="What do you want to build? (optional)" />
-      <button class="form-submit" id="w-submit" type="button">
-        Join the AIOS Waitlist →
-      </button>
-      <p class="form-note">No spam. No noise. Just early access when we're ready.</p>
-    </div>
-
-    <div class="form-success" id="hero-success">
-      <div class="success-icon">✦</div>
-      <h3>You're in.</h3>
-      <p>We'll reach out when early access opens. <br />Thank you for believing in a smarter OS.</p>
-    </div>
-  </section>
-
-  <!-- ── STATS ── -->
-  <div class="stats-row">
-    <div class="stat">
-      <div class="stat-value">67</div>
-      <div class="stat-label">Dimensions of intelligence</div>
-    </div>
-    <div class="stat">
-      <div class="stat-value">∞</div>
-      <div class="stat-label">Concurrent AI processes</div>
-    </div>
-    <div class="stat">
-      <div class="stat-value">0</div>
-      <div class="stat-label">Stale decisions tolerated</div>
-    </div>
-    <div class="stat">
-      <div class="stat-value">1</div>
-      <div class="stat-label">OS built for autonomous agents</div>
-    </div>
-  </div>
-
-  <!-- ── FEATURES ── -->
-  <section>
-    <div class="container">
-      <p class="section-label">Core Capabilities</p>
-      <h2 class="section-title">Not your grandmother's OS.</h2>
-      <p class="section-body">
-        Every traditional OS was built to manage hardware and apps.
-        AIOS was built to <strong>manage intelligence</strong> — self-certifying,
-        resonance-native, and designed from day one for autonomous AI agents.
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AIOS — The AI-Native Operating System</title>
+    <meta
+      name="description"
+      content="AIOS is the world's first AI-native operating system. Built for autonomous intelligence, resonance-certified, and self-aware by design. Join the early access waitlist."
+    />
+    <meta
+      name="keywords"
+      content="AIOS, AI operating system, autonomous intelligence, GeoQode, AI runtime"
+    />
+    <meta property="og:title" content="AIOS — The AI-Native Operating System" />
+    <meta
+      property="og:description"
+      content="The OS that thinks before it acts. Built for the age of autonomous intelligence."
+    />
+    <meta property="og:url" content="https://67aios.com" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="AIOS — The AI-Native Operating System"
+    />
+    <meta
+      name="twitter:description"
+      content="The OS that thinks before it acts."
+    />
+    <link rel="icon" type="image/svg+xml" href="/public/favicon.svg" />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --bg: #050a14;
+        --bg2: #0a1225;
+        --bg3: #0f1c35;
+        --cyan: #00d4ff;
+        --purple: #7c3aed;
+        --pink: #d946ef;
+        --text: #e2e8f0;
+        --muted: #64748b;
+        --border: rgba(0, 212, 255, 0.12);
+        --card-bg: rgba(10, 18, 37, 0.8);
+        --glow: 0 0 40px rgba(0, 212, 255, 0.15);
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        overflow-x: hidden;
+        line-height: 1.6;
+      }
+
+      /* ── Grid background ── */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+        background-size: 60px 60px;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* ── NAV ── */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        padding: 16px 32px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: rgba(5, 10, 20, 0.85);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .nav-brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+      }
+
+      .nav-logo {
+        font-size: 22px;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        color: var(--cyan);
+        line-height: 1;
+      }
+
+      .nav-badge {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        color: var(--muted);
+        border: 1px solid var(--border);
+        padding: 2px 7px;
+        border-radius: 4px;
+        text-transform: uppercase;
+      }
+
+      .nav-cta {
+        background: var(--cyan);
+        color: #000;
+        font-weight: 700;
+        font-size: 13px;
+        padding: 8px 18px;
+        border-radius: 6px;
+        text-decoration: none;
+        letter-spacing: 0.3px;
+        transition: opacity 0.2s;
+      }
+
+      .nav-cta:hover {
+        opacity: 0.85;
+      }
+
+      /* ── HERO ── */
+      .hero {
+        position: relative;
+        z-index: 1;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 120px 24px 80px;
+      }
+
+      /* Radial glow behind hero */
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: 30%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 700px;
+        height: 700px;
+        background: radial-gradient(
+          ellipse at center,
+          rgba(0, 212, 255, 0.08) 0%,
+          transparent 65%
+        );
+        pointer-events: none;
+      }
+
+      .hero-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        color: var(--cyan);
+        padding: 6px 16px;
+        border: 1px solid rgba(0, 212, 255, 0.25);
+        border-radius: 100px;
+        margin-bottom: 32px;
+      }
+
+      .hero-eyebrow::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        background: var(--cyan);
+        border-radius: 50%;
+        animation: pulse 2s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.4;
+          transform: scale(0.75);
+        }
+      }
+
+      .hero-title {
+        font-size: clamp(80px, 16vw, 160px);
+        font-weight: 900;
+        letter-spacing: -6px;
+        line-height: 0.9;
+        margin-bottom: 24px;
+        background: linear-gradient(
+          135deg,
+          #fff 0%,
+          var(--cyan) 50%,
+          var(--purple) 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .hero-subtitle {
+        font-size: clamp(20px, 3vw, 28px);
+        font-weight: 400;
+        color: var(--muted);
+        max-width: 580px;
+        margin: 0 auto 16px;
+      }
+
+      .hero-subtitle strong {
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      .hero-tagline {
+        font-size: 14px;
+        color: var(--muted);
+        margin-bottom: 48px;
+        letter-spacing: 0.5px;
+      }
+
+      /* ── WAITLIST FORM ── */
+      .waitlist-form {
+        width: 100%;
+        max-width: 520px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin: 0 auto;
+      }
+
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      .form-input {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid var(--border);
+        color: var(--text);
+        padding: 14px 18px;
+        border-radius: 10px;
+        font-size: 15px;
+        font-family: inherit;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+        outline: none;
+      }
+
+      .form-input::placeholder {
+        color: var(--muted);
+      }
+
+      .form-input:focus {
+        border-color: var(--cyan);
+        box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.08);
+      }
+
+      .form-submit {
+        width: 100%;
+        padding: 16px;
+        background: linear-gradient(135deg, var(--cyan), var(--purple));
+        border: none;
+        border-radius: 10px;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        font-family: inherit;
+        letter-spacing: 0.3px;
+        transition:
+          opacity 0.2s,
+          transform 0.1s;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .form-submit:hover {
+        opacity: 0.9;
+        transform: translateY(-1px);
+      }
+      .form-submit:active {
+        transform: translateY(0);
+      }
+      .form-submit:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .form-note {
+        font-size: 12px;
+        color: var(--muted);
+        text-align: center;
+      }
+
+      .form-success {
+        display: none;
+        text-align: center;
+        padding: 24px;
+        background: rgba(0, 212, 255, 0.07);
+        border: 1px solid rgba(0, 212, 255, 0.2);
+        border-radius: 12px;
+      }
+
+      .form-success.visible {
+        display: block;
+      }
+
+      .form-success .success-icon {
+        font-size: 36px;
+        margin-bottom: 12px;
+      }
+      .form-success h3 {
+        color: var(--cyan);
+        margin-bottom: 8px;
+        font-size: 18px;
+      }
+      .form-success p {
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      /* ── STATS ── */
+      .stats-row {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 48px;
+        padding: 40px 24px;
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+        background: var(--bg2);
+      }
+
+      .stat {
+        text-align: center;
+      }
+      .stat-value {
+        font-size: 32px;
+        font-weight: 800;
+        color: var(--cyan);
+        line-height: 1;
+      }
+      .stat-label {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 4px;
+        letter-spacing: 0.5px;
+      }
+
+      /* ── SECTIONS ── */
+      section {
+        position: relative;
+        z-index: 1;
+        padding: 100px 24px;
+      }
+
+      .container {
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+
+      .section-label {
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--cyan);
+        margin-bottom: 16px;
+      }
+
+      .section-title {
+        font-size: clamp(32px, 5vw, 52px);
+        font-weight: 800;
+        letter-spacing: -1.5px;
+        line-height: 1.1;
+        margin-bottom: 20px;
+      }
+
+      .section-body {
+        font-size: 18px;
+        color: var(--muted);
+        max-width: 600px;
+        line-height: 1.7;
+      }
+
+      /* ── FEATURE CARDS ── */
+      .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-top: 60px;
+      }
+
+      .feature-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 32px;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s,
+          transform 0.2s;
+        backdrop-filter: blur(8px);
+      }
+
+      .feature-card:hover {
+        border-color: rgba(0, 212, 255, 0.3);
+        box-shadow: var(--glow);
+        transform: translateY(-3px);
+      }
+
+      .feature-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+
+      .feature-icon.cyan {
+        background: rgba(0, 212, 255, 0.1);
+      }
+      .feature-icon.purple {
+        background: rgba(124, 58, 237, 0.1);
+      }
+      .feature-icon.pink {
+        background: rgba(217, 70, 239, 0.1);
+      }
+      .feature-icon.gold {
+        background: rgba(251, 191, 36, 0.1);
+      }
+
+      .feature-card h3 {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 10px;
+        letter-spacing: -0.3px;
+      }
+
+      .feature-card p {
+        font-size: 15px;
+        color: var(--muted);
+        line-height: 1.65;
+      }
+
+      /* ── PHILOSOPHY SECTION ── */
+      .philosophy {
+        background: var(--bg2);
+      }
+
+      .philosophy-split {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 80px;
+        align-items: center;
+      }
+
+      .philosophy-quote {
+        font-size: clamp(24px, 3.5vw, 36px);
+        font-weight: 700;
+        letter-spacing: -1px;
+        line-height: 1.25;
+        margin-bottom: 24px;
+      }
+
+      .philosophy-quote span {
+        color: var(--cyan);
+      }
+
+      .philosophy-points {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .philosophy-points li {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        font-size: 16px;
+        color: var(--muted);
+      }
+
+      .philosophy-points li::before {
+        content: "→";
+        color: var(--cyan);
+        font-weight: 700;
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+
+      .compare-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 48px;
+        font-size: 15px;
+      }
+
+      .compare-table th {
+        padding: 14px 20px;
+        text-align: left;
+        font-size: 12px;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: var(--muted);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .compare-table th.highlight {
+        color: var(--cyan);
+      }
+
+      .compare-table td {
+        padding: 16px 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        color: var(--muted);
+        vertical-align: top;
+      }
+
+      .compare-table td.highlight {
+        color: var(--text);
+        font-weight: 500;
+      }
+
+      .compare-table td:first-child {
+        color: var(--text);
+        font-weight: 500;
+      }
+
+      .check {
+        color: var(--cyan);
+        font-weight: 700;
+      }
+      .cross {
+        color: #475569;
+      }
+
+      /* ── CTA SECTION ── */
+      .cta-section {
+        text-align: center;
+        padding: 120px 24px;
+        background: radial-gradient(
+          ellipse at 50% 0%,
+          rgba(0, 212, 255, 0.07) 0%,
+          transparent 70%
+        );
+      }
+
+      .cta-section .section-title {
+        margin-bottom: 16px;
+      }
+      .cta-section .section-body {
+        margin: 0 auto 48px;
+      }
+
+      /* ── FOOTER ── */
+      footer {
+        position: relative;
+        z-index: 1;
+        padding: 40px 32px;
+        border-top: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 16px;
+        background: var(--bg);
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      .footer-brand {
+        font-weight: 700;
+        color: var(--text);
+      }
+      .footer-brand span {
+        color: var(--cyan);
+      }
+      .footer-links {
+        display: flex;
+        gap: 24px;
+      }
+      .footer-links a {
+        color: var(--muted);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .footer-links a:hover {
+        color: var(--cyan);
+      }
+
+      /* ── TOAST ── */
+      #toast {
+        position: fixed;
+        bottom: 32px;
+        left: 50%;
+        transform: translateX(-50%) translateY(80px);
+        background: var(--bg3);
+        border: 1px solid var(--border);
+        color: var(--text);
+        padding: 14px 24px;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 500;
+        backdrop-filter: blur(12px);
+        transition:
+          transform 0.3s ease,
+          opacity 0.3s ease;
+        opacity: 0;
+        z-index: 999;
+        white-space: nowrap;
+      }
+
+      #toast.visible {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+      }
+
+      #toast.success {
+        border-color: rgba(0, 212, 255, 0.4);
+      }
+      #toast.error {
+        border-color: rgba(217, 70, 239, 0.4);
+      }
+
+      /* ── RESPONSIVE ── */
+      @media (max-width: 768px) {
+        nav {
+          padding: 12px 20px;
+        }
+        .nav-badge {
+          display: none;
+        }
+        .form-row {
+          grid-template-columns: 1fr;
+        }
+        .stats-row {
+          flex-wrap: wrap;
+          gap: 28px;
+        }
+        .philosophy-split {
+          grid-template-columns: 1fr;
+          gap: 40px;
+        }
+        .compare-table {
+          font-size: 13px;
+        }
+        .compare-table th,
+        .compare-table td {
+          padding: 12px 14px;
+        }
+        footer {
+          justify-content: center;
+          text-align: center;
+        }
+        .footer-links {
+          justify-content: center;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .hero-title {
+          letter-spacing: -3px;
+        }
+        section {
+          padding: 70px 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ── NAV ── -->
+    <nav>
+      <a href="/" class="nav-brand">
+        <span class="nav-logo">AIOS</span>
+        <span class="nav-badge">67 · Early Access</span>
+      </a>
+      <a href="#waitlist" class="nav-cta">Get Early Access</a>
+    </nav>
+
+    <!-- ── HERO ── -->
+    <section class="hero">
+      <div class="hero-eyebrow">Now accepting early access applications</div>
+      <h1 class="hero-title">AIOS</h1>
+      <p class="hero-subtitle">
+        The <strong>AI-Native Operating System</strong>.<br />
+        Built for the age of autonomous intelligence.
       </p>
+      <p class="hero-tagline">The OS that thinks before it acts.</p>
 
-      <div class="feature-grid">
-        <div class="feature-card">
-          <div class="feature-icon cyan">⬡</div>
-          <h3>Resonance-Native Runtime</h3>
-          <p>Processes don't just run — they resonate. AIOS schedules work by semantic frequency, not CPU ticks. Your agents operate in harmony.</p>
+      <div class="waitlist-form" id="hero-form">
+        <div class="form-row">
+          <input
+            class="form-input"
+            type="text"
+            id="w-name"
+            name="name"
+            placeholder="Your name"
+            autocomplete="name"
+          />
+          <input
+            class="form-input"
+            type="email"
+            id="w-email"
+            name="email"
+            placeholder="Email address"
+            required
+            autocomplete="email"
+          />
         </div>
+        <input
+          class="form-input"
+          type="text"
+          id="w-msg"
+          name="message"
+          placeholder="What do you want to build? (optional)"
+        />
+        <button class="form-submit" id="w-submit" type="button">
+          Join the AIOS Waitlist →
+        </button>
+        <p class="form-note">
+          No spam. No noise. Just early access when we're ready.
+        </p>
+      </div>
 
-        <div class="feature-card">
-          <div class="feature-icon purple">⊗</div>
-          <h3>Dual-Pole Consensus</h3>
-          <p>Every critical decision is cross-verified by two geometrically independent agents. Agreement required from both before action is taken. No echo chambers.</p>
-        </div>
+      <div class="form-success" id="hero-success">
+        <div class="success-icon">✦</div>
+        <h3>You're in.</h3>
+        <p>
+          We'll reach out when early access opens. <br />Thank you for believing
+          in a smarter OS.
+        </p>
+      </div>
+    </section>
 
-        <div class="feature-card">
-          <div class="feature-icon pink">◈</div>
-          <h3>Self-Certifying Intelligence</h3>
-          <p>AIOS tokens carry embedded geometry. A credential without coherence is rejected. Security is structural, not bolted on.</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon gold">⬠</div>
-          <h3>Holographic Display Layer</h3>
-          <p>Instead of windows and tabs, AIOS renders environments. Immersive, narrative-driven interfaces that adapt to context in real time.</p>
-        </div>
+    <!-- ── STATS ── -->
+    <div class="stats-row">
+      <div class="stat">
+        <div class="stat-value">67</div>
+        <div class="stat-label">Dimensions of intelligence</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">∞</div>
+        <div class="stat-label">Concurrent AI processes</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">0</div>
+        <div class="stat-label">Stale decisions tolerated</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">1</div>
+        <div class="stat-label">OS built for autonomous agents</div>
       </div>
     </div>
-  </section>
 
-  <!-- ── PHILOSOPHY ── -->
-  <section class="philosophy">
-    <div class="container">
-      <div class="philosophy-split">
-        <div>
-          <p class="section-label">The AIOS Philosophy</p>
-          <h2 class="philosophy-quote">
-            Traditional OSes manage processes.<br />
-            AIOS <span>authors them</span>.
-          </h2>
-          <p class="section-body" style="max-width:100%;">
-            An operating system should understand what it's running —
-            not just where to schedule it. AIOS introduces understanding
-            as a first-class OS primitive.
+    <!-- ── FEATURES ── -->
+    <section>
+      <div class="container">
+        <p class="section-label">Core Capabilities</p>
+        <h2 class="section-title">Not your grandmother's OS.</h2>
+        <p class="section-body">
+          Every traditional OS was built to manage hardware and apps. AIOS was
+          built to <strong>manage intelligence</strong> — self-certifying,
+          resonance-native, and designed from day one for autonomous AI agents.
+        </p>
+
+        <div class="feature-grid">
+          <div class="feature-card">
+            <div class="feature-icon cyan">⬡</div>
+            <h3>Resonance-Native Runtime</h3>
+            <p>
+              Processes don't just run — they resonate. AIOS schedules work by
+              semantic frequency, not CPU ticks. Your agents operate in harmony.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon purple">⊗</div>
+            <h3>Dual-Pole Consensus</h3>
+            <p>
+              Every critical decision is cross-verified by two geometrically
+              independent agents. Agreement required from both before action is
+              taken. No echo chambers.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon pink">◈</div>
+            <h3>Self-Certifying Intelligence</h3>
+            <p>
+              AIOS tokens carry embedded geometry. A credential without
+              coherence is rejected. Security is structural, not bolted on.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon gold">⬠</div>
+            <h3>Holographic Display Layer</h3>
+            <p>
+              Instead of windows and tabs, AIOS renders environments. Immersive,
+              narrative-driven interfaces that adapt to context in real time.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── PHILOSOPHY ── -->
+    <section class="philosophy">
+      <div class="container">
+        <div class="philosophy-split">
+          <div>
+            <p class="section-label">The AIOS Philosophy</p>
+            <h2 class="philosophy-quote">
+              Traditional OSes manage processes.<br />
+              AIOS <span>authors them</span>.
+            </h2>
+            <p class="section-body" style="max-width: 100%">
+              An operating system should understand what it's running — not just
+              where to schedule it. AIOS introduces understanding as a
+              first-class OS primitive.
+            </p>
+          </div>
+          <ul class="philosophy-points">
+            <li>
+              Autonomous agents deserve a runtime designed for them, not adapted
+              from human computing.
+            </li>
+            <li>
+              Intelligence should be certified by geometry, not policy files.
+            </li>
+            <li>
+              A truly autonomous OS must be self-aware — monitoring its own
+              coherence, healing its own faults.
+            </li>
+            <li>
+              Holographic output is the natural interface for intelligence that
+              operates beyond text.
+            </li>
+            <li>The OS is not a platform — it is an operating organism.</li>
+          </ul>
+        </div>
+
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>Capability</th>
+              <th>Legacy OS</th>
+              <th class="highlight">AIOS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Process scheduling</td>
+              <td>CPU time-slices</td>
+              <td class="highlight">Semantic frequency resonance</td>
+            </tr>
+            <tr>
+              <td>Security model</td>
+              <td>Permissions + certificates</td>
+              <td class="highlight">Geometry-embedded credentials</td>
+            </tr>
+            <tr>
+              <td>Decision verification</td>
+              <td class="cross">None</td>
+              <td class="highlight check">Dual-pole attestation</td>
+            </tr>
+            <tr>
+              <td>Self-awareness</td>
+              <td class="cross">None</td>
+              <td class="highlight check">
+                Coherence monitoring + self-healing
+              </td>
+            </tr>
+            <tr>
+              <td>Interface paradigm</td>
+              <td>Windows / apps</td>
+              <td class="highlight">Holographic environments</td>
+            </tr>
+            <tr>
+              <td>AI integration</td>
+              <td>Afterthought APIs</td>
+              <td class="highlight">Native runtime primitive</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── CTA ── -->
+    <section class="cta-section" id="waitlist">
+      <div class="container">
+        <p class="section-label">Early Access</p>
+        <h2 class="section-title">Be part of what's next.</h2>
+        <p class="section-body">
+          AIOS is in active development. Early access partners will shape the
+          platform — from runtime primitives to the agent ecosystem. Spots are
+          limited.
+        </p>
+
+        <div class="waitlist-form" id="cta-form">
+          <div class="form-row">
+            <input
+              class="form-input"
+              type="text"
+              id="c-name"
+              name="name"
+              placeholder="Your name"
+              autocomplete="name"
+            />
+            <input
+              class="form-input"
+              type="email"
+              id="c-email"
+              name="email"
+              placeholder="Email address"
+              required
+              autocomplete="email"
+            />
+          </div>
+          <input
+            class="form-input"
+            type="text"
+            id="c-msg"
+            name="message"
+            placeholder="What do you want to build with AIOS?"
+          />
+          <button class="form-submit" id="c-submit" type="button">
+            Request Early Access →
+          </button>
+          <p class="form-note">
+            No spam. No noise. Early access notifications only.
           </p>
         </div>
-        <ul class="philosophy-points">
-          <li>Autonomous agents deserve a runtime designed for them, not adapted from human computing.</li>
-          <li>Intelligence should be certified by geometry, not policy files.</li>
-          <li>A truly autonomous OS must be self-aware — monitoring its own coherence, healing its own faults.</li>
-          <li>Holographic output is the natural interface for intelligence that operates beyond text.</li>
-          <li>The OS is not a platform — it is an operating organism.</li>
-        </ul>
-      </div>
 
-      <table class="compare-table">
-        <thead>
-          <tr>
-            <th>Capability</th>
-            <th>Legacy OS</th>
-            <th class="highlight">AIOS</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Process scheduling</td>
-            <td>CPU time-slices</td>
-            <td class="highlight">Semantic frequency resonance</td>
-          </tr>
-          <tr>
-            <td>Security model</td>
-            <td>Permissions + certificates</td>
-            <td class="highlight">Geometry-embedded credentials</td>
-          </tr>
-          <tr>
-            <td>Decision verification</td>
-            <td class="cross">None</td>
-            <td class="highlight check">Dual-pole attestation</td>
-          </tr>
-          <tr>
-            <td>Self-awareness</td>
-            <td class="cross">None</td>
-            <td class="highlight check">Coherence monitoring + self-healing</td>
-          </tr>
-          <tr>
-            <td>Interface paradigm</td>
-            <td>Windows / apps</td>
-            <td class="highlight">Holographic environments</td>
-          </tr>
-          <tr>
-            <td>AI integration</td>
-            <td>Afterthought APIs</td>
-            <td class="highlight">Native runtime primitive</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <!-- ── CTA ── -->
-  <section class="cta-section" id="waitlist">
-    <div class="container">
-      <p class="section-label">Early Access</p>
-      <h2 class="section-title">Be part of what's next.</h2>
-      <p class="section-body">
-        AIOS is in active development. Early access partners will shape the
-        platform — from runtime primitives to the agent ecosystem.
-        Spots are limited.
-      </p>
-
-      <div class="waitlist-form" id="cta-form">
-        <div class="form-row">
-          <input class="form-input" type="text" id="c-name" name="name" placeholder="Your name" autocomplete="name" />
-          <input class="form-input" type="email" id="c-email" name="email" placeholder="Email address" required autocomplete="email" />
+        <div class="form-success" id="cta-success">
+          <div class="success-icon">✦</div>
+          <h3>You're on the list.</h3>
+          <p>We'll be in touch when your access window opens.</p>
         </div>
-        <input class="form-input" type="text" id="c-msg" name="message" placeholder="What do you want to build with AIOS?" />
-        <button class="form-submit" id="c-submit" type="button">
-          Request Early Access →
-        </button>
-        <p class="form-note">No spam. No noise. Early access notifications only.</p>
       </div>
+    </section>
 
-      <div class="form-success" id="cta-success">
-        <div class="success-icon">✦</div>
-        <h3>You're on the list.</h3>
-        <p>We'll be in touch when your access window opens.</p>
+    <!-- ── FOOTER ── -->
+    <footer>
+      <div>
+        <div class="footer-brand">
+          <span>AIOS</span> &nbsp;·&nbsp; 67aios.com
+        </div>
+        <div style="margin-top: 6px; font-size: 12px">
+          Powered by AIOS · Stewardship Edition · Founder: Bradley Levitan
+        </div>
       </div>
-    </div>
-  </section>
-
-  <!-- ── FOOTER ── -->
-  <footer>
-    <div>
-      <div class="footer-brand"><span>AIOS</span> &nbsp;·&nbsp; 67aios.com</div>
-      <div style="margin-top:6px; font-size:12px;">
-        Powered by AIOS · Stewardship Edition · Founder: Bradley Levitan
+      <nav class="footer-links">
+        <a href="/api">API</a>
+        <a href="/health">Status</a>
+        <a href="mailto:storm.s4ai@gmail.com">Contact</a>
+      </nav>
+      <div style="font-size: 12px; text-align: right">
+        © 2026 AIOS. All rights reserved.<br />
+        Interface layer: MIT · Kernel: Proprietary
       </div>
-    </div>
-    <nav class="footer-links">
-      <a href="/api">API</a>
-      <a href="/health">Status</a>
-      <a href="mailto:storm.s4ai@gmail.com">Contact</a>
-    </nav>
-    <div style="font-size:12px; text-align:right;">
-      © 2026 AIOS. All rights reserved.<br />
-      Interface layer: MIT · Kernel: Proprietary
-    </div>
-  </footer>
+    </footer>
 
-  <!-- ── TOAST ── -->
-  <div id="toast"></div>
+    <!-- ── TOAST ── -->
+    <div id="toast"></div>
 
-  <script>
-    (function () {
-      'use strict';
+    <script>
+      (function () {
+        "use strict";
 
-      const API_BASE = ''; // same origin — POST to /waitlist
+        const API_BASE = ""; // same origin — POST to /waitlist
 
-      function showToast(msg, type) {
-        var t = document.getElementById('toast');
-        t.textContent = msg;
-        t.className = 'visible ' + (type || '');
-        clearTimeout(t._timer);
-        t._timer = setTimeout(function () { t.className = ''; }, 4000);
-      }
+        function showToast(msg, type) {
+          var t = document.getElementById("toast");
+          t.textContent = msg;
+          t.className = "visible " + (type || "");
+          clearTimeout(t._timer);
+          t._timer = setTimeout(function () {
+            t.className = "";
+          }, 4000);
+        }
 
-      function isValidEmail(email) {
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-      }
+        function isValidEmail(email) {
+          return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
 
-      function submitWaitlist(nameEl, emailEl, msgEl, submitBtn, formEl, successEl) {
-        var name  = nameEl  ? nameEl.value.trim()  : '';
-        var email = emailEl ? emailEl.value.trim()  : '';
-        var msg   = msgEl   ? msgEl.value.trim()   : '';
+        function submitWaitlist(
+          nameEl,
+          emailEl,
+          msgEl,
+          submitBtn,
+          formEl,
+          successEl,
+        ) {
+          var name = nameEl ? nameEl.value.trim() : "";
+          var email = emailEl ? emailEl.value.trim() : "";
+          var msg = msgEl ? msgEl.value.trim() : "";
 
-        if (!email) { showToast('Please enter your email address.', 'error'); return; }
-        if (!isValidEmail(email)) { showToast('Please enter a valid email address.', 'error'); return; }
-
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Joining…';
-
-        fetch(API_BASE + '/waitlist', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name: name || 'AIOS Subscriber', email: email, message: msg })
-        })
-        .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, data: d }; }); })
-        .then(function (result) {
-          if (result.ok || result.data.ok) {
-            formEl.style.display = 'none';
-            successEl.classList.add('visible');
-            showToast('✦ You\'re on the AIOS waitlist!', 'success');
-          } else {
-            showToast(result.data.error || 'Something went wrong. Please try again.', 'error');
-            submitBtn.disabled = false;
-            submitBtn.textContent = submitBtn.dataset.label;
+          if (!email) {
+            showToast("Please enter your email address.", "error");
+            return;
           }
-        })
-        .catch(function () {
-          showToast('Connection error. Please try again.', 'error');
-          submitBtn.disabled = false;
-          submitBtn.textContent = submitBtn.dataset.label;
-        });
-      }
-
-      // Hero form
-      var wSubmit = document.getElementById('w-submit');
-      if (wSubmit) {
-        wSubmit.dataset.label = wSubmit.textContent;
-        wSubmit.addEventListener('click', function () {
-          submitWaitlist(
-            document.getElementById('w-name'),
-            document.getElementById('w-email'),
-            document.getElementById('w-msg'),
-            wSubmit,
-            document.getElementById('hero-form'),
-            document.getElementById('hero-success')
-          );
-        });
-      }
-
-      // CTA form
-      var cSubmit = document.getElementById('c-submit');
-      if (cSubmit) {
-        cSubmit.dataset.label = cSubmit.textContent;
-        cSubmit.addEventListener('click', function () {
-          submitWaitlist(
-            document.getElementById('c-name'),
-            document.getElementById('c-email'),
-            document.getElementById('c-msg'),
-            cSubmit,
-            document.getElementById('cta-form'),
-            document.getElementById('cta-success')
-          );
-        });
-      }
-
-      // Enter key support
-      document.querySelectorAll('.form-input').forEach(function (input) {
-        input.addEventListener('keydown', function (e) {
-          if (e.key === 'Enter') {
-            var form = input.closest('.waitlist-form');
-            if (form) {
-              var btn = form.querySelector('.form-submit');
-              if (btn && !btn.disabled) btn.click();
-            }
+          if (!isValidEmail(email)) {
+            showToast("Please enter a valid email address.", "error");
+            return;
           }
-        });
-      });
 
-      // Reveal-on-scroll (optional, graceful degradation)
-      if ('IntersectionObserver' in window) {
-        var style = document.createElement('style');
-        style.textContent = '.reveal{opacity:0;transform:translateY(24px);transition:opacity .5s ease,transform .5s ease;}.reveal.visible{opacity:1;transform:none;}';
-        document.head.appendChild(style);
+          submitBtn.disabled = true;
+          submitBtn.textContent = "Joining…";
 
-        document.querySelectorAll('.feature-card, .philosophy-points li, .compare-table tr').forEach(function (el) {
-          el.classList.add('reveal');
-        });
+          fetch(API_BASE + "/waitlist", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              name: name || "AIOS Subscriber",
+              email: email,
+              message: msg,
+            }),
+          })
+            .then(function (r) {
+              return r.json().then(function (d) {
+                return { ok: r.ok, data: d };
+              });
+            })
+            .then(function (result) {
+              if (result.ok || result.data.ok) {
+                formEl.style.display = "none";
+                successEl.classList.add("visible");
+                showToast("✦ You're on the AIOS waitlist!", "success");
+              } else {
+                showToast(
+                  result.data.error ||
+                    "Something went wrong. Please try again.",
+                  "error",
+                );
+                submitBtn.disabled = false;
+                submitBtn.textContent = submitBtn.dataset.label;
+              }
+            })
+            .catch(function () {
+              showToast("Connection error. Please try again.", "error");
+              submitBtn.disabled = false;
+              submitBtn.textContent = submitBtn.dataset.label;
+            });
+        }
 
-        var io = new IntersectionObserver(function (entries) {
-          entries.forEach(function (e) {
-            if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+        // Hero form
+        var wSubmit = document.getElementById("w-submit");
+        if (wSubmit) {
+          wSubmit.dataset.label = wSubmit.textContent;
+          wSubmit.addEventListener("click", function () {
+            submitWaitlist(
+              document.getElementById("w-name"),
+              document.getElementById("w-email"),
+              document.getElementById("w-msg"),
+              wSubmit,
+              document.getElementById("hero-form"),
+              document.getElementById("hero-success"),
+            );
           });
-        }, { threshold: 0.1 });
+        }
 
-        document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
-      }
-    })();
-  </script>
-</body>
+        // CTA form
+        var cSubmit = document.getElementById("c-submit");
+        if (cSubmit) {
+          cSubmit.dataset.label = cSubmit.textContent;
+          cSubmit.addEventListener("click", function () {
+            submitWaitlist(
+              document.getElementById("c-name"),
+              document.getElementById("c-email"),
+              document.getElementById("c-msg"),
+              cSubmit,
+              document.getElementById("cta-form"),
+              document.getElementById("cta-success"),
+            );
+          });
+        }
+
+        // Enter key support
+        document.querySelectorAll(".form-input").forEach(function (input) {
+          input.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") {
+              var form = input.closest(".waitlist-form");
+              if (form) {
+                var btn = form.querySelector(".form-submit");
+                if (btn && !btn.disabled) btn.click();
+              }
+            }
+          });
+        });
+
+        // Reveal-on-scroll (optional, graceful degradation)
+        if ("IntersectionObserver" in window) {
+          var style = document.createElement("style");
+          style.textContent =
+            ".reveal{opacity:0;transform:translateY(24px);transition:opacity .5s ease,transform .5s ease;}.reveal.visible{opacity:1;transform:none;}";
+          document.head.appendChild(style);
+
+          document
+            .querySelectorAll(
+              ".feature-card, .philosophy-points li, .compare-table tr",
+            )
+            .forEach(function (el) {
+              el.classList.add("reveal");
+            });
+
+          var io = new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (e) {
+                if (e.isIntersecting) {
+                  e.target.classList.add("visible");
+                  io.unobserve(e.target);
+                }
+              });
+            },
+            { threshold: 0.1 },
+          );
+
+          document.querySelectorAll(".reveal").forEach(function (el) {
+            io.observe(el);
+          });
+        }
+      })();
+    </script>
+  </body>
 </html>

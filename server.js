@@ -49,12 +49,12 @@ const AIOS_HTML = existsSync(AIOS_HTML_PATH)
 
 const MIME_TYPES = {
   ".html": "text/html; charset=utf-8",
-  ".css":  "text/css; charset=utf-8",
-  ".js":   "text/javascript; charset=utf-8",
-  ".svg":  "image/svg+xml",
-  ".ico":  "image/x-icon",
-  ".png":  "image/png",
-  ".jpg":  "image/jpeg",
+  ".css": "text/css; charset=utf-8",
+  ".js": "text/javascript; charset=utf-8",
+  ".svg": "image/svg+xml",
+  ".ico": "image/x-icon",
+  ".png": "image/png",
+  ".jpg": "image/jpeg",
   ".webp": "image/webp",
   ".json": "application/json; charset=utf-8",
 };
@@ -224,13 +224,21 @@ const server = createServer(async (req, res) => {
     // ── GET / — serve AIOS landing page (HTML) or JSON for API consumers ──
     if (req.method === "GET" && pathname === "/") {
       const accept = req.headers["accept"] || "";
-      if (AIOS_HTML && (accept.includes("text/html") || accept.includes("*/*"))) {
+      if (
+        AIOS_HTML &&
+        (accept.includes("text/html") || accept.includes("*/*"))
+      ) {
         res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
         res.end(AIOS_HTML);
         return;
       }
       // Fallback JSON for programmatic consumers
-      return json(res, 200, { ok: true, service: "aios", brand: "AIOS", url: "https://67aios.com" });
+      return json(res, 200, {
+        ok: true,
+        service: "aios",
+        brand: "AIOS",
+        url: "https://67aios.com",
+      });
     }
 
     // ── GET /api — GeoQode OS API info (JSON) ──────────────────────────────
@@ -289,17 +297,25 @@ const server = createServer(async (req, res) => {
 
       // Basic validation
       if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email).trim())) {
-        return json(res, 400, { ok: false, error: "Valid email address required" });
+        return json(res, 400, {
+          ok: false,
+          error: "Valid email address required",
+        });
       }
 
-      const STORM_API = process.env.STORM_API_URL || "https://api.getbrains4ai.com";
+      const STORM_API =
+        process.env.STORM_API_URL || "https://api.getbrains4ai.com";
       try {
         const payload = {
-          name: String(name || "AIOS Subscriber").trim().slice(0, 120),
+          name: String(name || "AIOS Subscriber")
+            .trim()
+            .slice(0, 120),
           email: String(email).trim().slice(0, 254),
           organization: "AIOS Early Access",
           role: "Early Adopter",
-          interests: `Products: AIOS\nNotes: ${String(message || "").trim().slice(0, 500)}\nSource: 67aios.com`,
+          interests: `Products: AIOS\nNotes: ${String(message || "")
+            .trim()
+            .slice(0, 500)}\nSource: 67aios.com`,
         };
         const upstream = await fetch(`${STORM_API}/api/waitlist`, {
           method: "POST",
@@ -309,12 +325,21 @@ const server = createServer(async (req, res) => {
         });
         const data = await upstream.json().catch(() => ({}));
         if (upstream.ok) {
-          return json(res, 200, { ok: true, message: "You're on the AIOS waitlist!" });
+          return json(res, 200, {
+            ok: true,
+            message: "You're on the AIOS waitlist!",
+          });
         }
-        return json(res, 400, { ok: false, error: data.error || "Waitlist registration failed" });
+        return json(res, 400, {
+          ok: false,
+          error: data.error || "Waitlist registration failed",
+        });
       } catch (err) {
         console.error("[AIOS] Waitlist proxy error:", err.message);
-        return json(res, 500, { ok: false, error: "Could not reach registration service. Please try again." });
+        return json(res, 500, {
+          ok: false,
+          error: "Could not reach registration service. Please try again.",
+        });
       }
     }
 

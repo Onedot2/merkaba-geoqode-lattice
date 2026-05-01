@@ -33,12 +33,12 @@ SOFTWARE.
 SCOPE OF THIS LICENSE:
 This MIT license applies exclusively to the interface layer, including:
 
-  - docs/               (public documentation and specs)
-  - geo/cinema/         (cinema pipeline tooling)
-  - geo/runtime/        (scheduler and execution surface)
-  - examples/           (usage examples)
-  - scripts/            (build and utility scripts)
-  - server.js           (public API server)
+- docs/ (public documentation and specs)
+- geo/cinema/ (cinema pipeline tooling)
+- geo/runtime/ (scheduler and execution surface)
+- examples/ (usage examples)
+- scripts/ (build and utility scripts)
+- server.js (public API server)
 
 EXCLUDED FROM THIS LICENSE:
 The MERKABA kernel runtime formula, lattice geometry constants, adaptive
