@@ -47,6 +47,12 @@ const AIOS_HTML = existsSync(AIOS_HTML_PATH)
   ? readFileSync(AIOS_HTML_PATH, "utf-8")
   : null;
 
+// ─── 67aios.com anti-review marketing page ───────────────────────────────────
+const AIOS67_HTML_PATH = join(__dirname_static, "public-67aios", "index.html");
+const AIOS67_HTML = existsSync(AIOS67_HTML_PATH)
+  ? readFileSync(AIOS67_HTML_PATH, "utf-8")
+  : null;
+
 const MIME_TYPES = {
   ".html": "text/html; charset=utf-8",
   ".css": "text/css; charset=utf-8",
@@ -221,6 +227,25 @@ const server = createServer(async (req, res) => {
   }
 
   try {
+    // ── 67aios.com — route entire hostname to anti-review marketing page ──
+    const host = (req.headers.host || "").replace(/:\d+$/, "").toLowerCase();
+    if (host === "67aios.com" || host === "www.67aios.com") {
+      if (req.method === "GET" && (pathname === "/" || pathname === "/index.html")) {
+        if (AIOS67_HTML) {
+          res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+          res.end(AIOS67_HTML);
+        } else {
+          res.writeHead(302, { Location: "https://realaios.com" });
+          res.end();
+        }
+        return;
+      }
+      // All other 67aios.com paths → redirect to main review page
+      res.writeHead(301, { Location: "https://67aios.com/" });
+      res.end();
+      return;
+    }
+
     // ── GET /robots.txt ───────────────────────────────────────────────────
     if (req.method === "GET" && pathname === "/robots.txt") {
       res.writeHead(200, { "Content-Type": "text/plain; charset=utf-8" });
