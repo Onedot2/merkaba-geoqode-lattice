@@ -201,20 +201,10 @@ function getALM() {
 
 // ─── Minimal HTTP server — no external framework dependency needed ────────
 function json(res, status, data) {
-  const canonicalArchitecture = assertCanonicalArchitectureSignature(
-    CANONICAL_ARCHITECTURE,
-    {
-      source: "server.json",
-    },
-  );
-
   const body = JSON.stringify(data);
   res.writeHead(status, {
     "Content-Type": "application/json",
-    "X-Service": "geoqode-os",
-    "X-MERKABA-Dimensions": "48",
-    "X-MERKABA-Architecture": canonicalArchitecture,
-    "X-MERKABA-Spectrum-Nodes": String(HARMONIC_SPECTRUM_NODES),
+    "X-Service": "aios",
   });
   res.end(body);
 }
@@ -633,7 +623,7 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
     if (req.method === "GET" && pathname === "/api") {
       return json(res, 200, {
         ok: true,
-        service: "geoqode-os",
+        service: "aios",
         description: "AIOS GeoQode OS — AI-native runtime API.",
         endpoints: [
           "GET  /api",
@@ -777,30 +767,16 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       const os = new MerkabageoqodeOS();
       return json(res, 200, {
         ok: true,
-        service: "geoqode-os",
+        service: "aios",
         version: os.version,
-        lattice: {
-          strictCanonicalArchitecture: assertCanonicalArchitectureSignature(
-            CANONICAL_ARCHITECTURE,
-            {
-              source: "GET /status",
-            },
-          ),
-          dimensions: CANONICAL_LATTICE_NODES,
-          architecture: CANONICAL_ARCHITECTURE,
-          anchors: {
-            foundation: FOUNDATION_NODES,
-            bosonic: BOSONIC_ANCHOR_NODES,
-            harmonicSpectrum: HARMONIC_SPECTRUM_NODES,
-          },
-          tiers: 4,
-          tierLabels: [
-            "Core Foundations",
-            "Operational Systems",
-            "Knowledge Dimensions",
-            "Emergent Dimensions",
-          ],
-        },
+        dimensions: CANONICAL_LATTICE_NODES,
+        tiers: 4,
+        tierLabels: [
+          "Core Foundations",
+          "Operational Systems",
+          "Knowledge Dimensions",
+          "Emergent Dimensions",
+        ],
         adapter: {
           totalRuns: stats.totalRuns || 0,
           successRate: stats.successRate || null,
@@ -825,7 +801,6 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       const result = codex.executeCodex();
       return json(res, 200, {
         ok: true,
-        architecture: CANONICAL_ARCHITECTURE,
         result,
       });
     }

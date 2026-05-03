@@ -778,8 +778,8 @@
         <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px"><span style="color:var(--muted)">Iterations</span><span style="font-weight:700">${iterations}</span></div>
         <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px"><span style="color:var(--muted)">Drift Events</span><span style="font-weight:700">${typeof drifts === "object" ? JSON.stringify(drifts) : drifts}</span></div>
         <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px"><span style="color:var(--muted)">Uptime (ms)</span><span style="font-weight:700">${typeof uptime === "number" ? Math.round(uptime / 1000) + "s" : uptime}</span></div>
-        <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px"><span style="color:var(--muted)">Architecture</span><span style="font-weight:700;color:var(--cyan)">${awareness.architectureSignature || "8,26,48:480"}</span></div>
-        <div style="display:flex;justify-content:space-between;padding:7px 0;font-size:13px"><span style="color:var(--muted)">PHI Coefficient</span><span style="font-weight:700;color:var(--cyan)">${awareness.phiCoefficient || "1.618"}</span></div>
+        <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px"><span style="color:var(--muted)">Architecture</span><span style="font-weight:700;color:var(--cyan)">AIOS-48</span></div>
+        <div style="display:flex;justify-content:space-between;padding:7px 0;font-size:13px"><span style="color:var(--muted)">Coherence Mode</span><span style="font-weight:700;color:var(--cyan)">${awareness.coherenceMode || "CANONICAL"}</span></div>
       </div>`;
 
           // Check for coherence thresholds crossing
