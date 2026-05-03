@@ -818,6 +818,12 @@ document.addEventListener("keydown", e => {
 // INIT
 // ═══════════════════════════════════════════════════════
 buildGrid();
+
+// ── URL deep-link: /aiosdream?prog=matrix ─────────────────────────────
+const _urlProg = new URLSearchParams(location.search).get('prog');
+if (_urlProg && PROGRAMMES[_urlProg]) {
+  showInfo(_urlProg);
+}
 </script>
 </body>
 </html>

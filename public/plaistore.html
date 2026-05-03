@@ -879,12 +879,15 @@
           ? '<span class="app-verified"></span>'
           : "";
 
+        const theatreBadge = app.type === 'theatre-programme'
+          ? `<span style="font-size:10px;color:#a855f7;border:1px solid rgba(168,85,247,0.3);border-radius:4px;padding:1px 5px;margin-left:6px">🎬 AIOSdream</span>`
+          : '';
         return `
       <div class="app-card" onclick="openApp(${app.id})">
         <div class="app-card-header">
           <div class="app-icon">${icon}</div>
           <div class="app-info">
-            <div class="app-name">${esc(app.name)}</div>
+            <div class="app-name">${esc(app.name)}${theatreBadge}</div>
             <div class="app-developer">${esc(devName)}${verified}</div>
           </div>
         </div>
@@ -907,6 +910,10 @@
           if (!app) throw new Error("Not found");
           const icon = CATEGORY_ICONS[app.category] || "📦";
           const launchUrl = app.entry_point || "https://realaios.com";
+          const progKey = app.type === 'theatre-programme' ? app.bundle_id.replace('com.aios.', '') : null;
+          const dreamBtn = progKey
+            ? `<a href="/aiosdream?prog=${progKey}" class="btn btn-outline" style="border-color:#a855f7;color:#a855f7">🎬 Watch in AIOSdream</a>`
+            : '';
           document.getElementById("modal-body").innerHTML = `
         <div class="modal-app-header">
           <div class="modal-icon">${icon}</div>
@@ -918,7 +925,8 @@
         <p class="modal-desc">${esc(app.description || "")}</p>
         <div class="modal-actions">
           <button class="btn btn-primary" onclick="installApp(${app.id}, '${esc(app.name)}')">Install</button>
-          <a href="${esc(launchUrl)}" target="_blank" rel="noopener" class="btn btn-outline">Open in AIOS</a>
+          ${dreamBtn}
+          <a href="${esc(launchUrl)}" target="_blank" rel="noopener" class="btn btn-outline">Open in AIOS →</a>
         </div>
       `;
         } catch {
