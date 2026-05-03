@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Awareness Dashboard — AIOS Resonance OS</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#050a14;--bg2:#0a1225;--bg3:#0f1c35;--cyan:#00d4ff;--purple:#7c3aed;--pink:#d946ef;--green:#22c55e;--yellow:#f59e0b;--red:#ef4444;--text:#e2e8f0;--muted:#64748b;--border:rgba(0,212,255,0.12);--card-bg:rgba(10,18,37,0.8)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
+body::before{content:"";position:fixed;inset:0;background-image:linear-gradient(rgba(0,212,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;background:rgba(5,10,20,0.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo{font-size:18px;font-weight:800;color:var(--cyan)}
+.nav-badge{font-size:10px;font-weight:700;letter-spacing:2px;color:var(--muted);border:1px solid var(--border);padding:2px 7px;border-radius:4px;text-transform:uppercase}
+.nav-links{display:flex;gap:20px}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:500;transition:color .2s}
+.nav-links a:hover,.nav-links a.active{color:var(--cyan)}
+.page{padding:90px 28px 40px;max-width:1200px;margin:0 auto;position:relative;z-index:1}
+h1{font-size:28px;font-weight:800;margin-bottom:4px}
+.subtitle{color:var(--muted);font-size:14px;margin-bottom:8px}
+.live-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:100px;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);font-size:11px;font-weight:700;color:var(--green);margin-bottom:28px}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 1.5s ease infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(1.3)}}
+.grid-top{display:grid;grid-template-columns:auto 1fr 320px;gap:24px;align-items:start;margin-bottom:24px}
+@media(max-width:900px){.grid-top{grid-template-columns:1fr}}
+.center-ring{display:flex;flex-direction:column;align-items:center}
+.ring-wrap{position:relative;width:220px;height:220px}
+svg.big-ring{width:220px;height:220px}
+.ring-bg-big{stroke:rgba(0,212,255,0.06);stroke-width:14;fill:none}
+.ring-fill-big{stroke-width:14;fill:none;stroke-linecap:round;transform-origin:center;transform:rotate(-90deg);transition:stroke-dashoffset 1.2s ease,stroke .5s}
+.ring-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.ring-pct{font-size:42px;font-weight:900;line-height:1;transition:color .5s}
+.ring-lbl{font-size:11px;color:var(--muted);letter-spacing:2px;margin-top:4px}
+.ring-level{font-size:13px;font-weight:700;margin-top:8px;letter-spacing:1px;transition:color .5s}
+.ring-sub{font-size:11px;color:var(--muted);margin-top:4px}
+.poll-info{font-size:11px;color:var(--muted);margin-top:12px;text-align:center}
+.card{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:20px}
+.card-title{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+.levels-ladder{display:flex;flex-direction:column;gap:6px}
+.level-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;border:1px solid transparent;transition:all .5s;cursor:default}
+.level-row.current{border-color:var(--cyan);background:rgba(0,212,255,0.07);box-shadow:0 0 12px rgba(0,212,255,0.1)}
+.level-row.passed{border-color:rgba(0,212,255,0.12);background:rgba(0,212,255,0.02)}
+.level-row.future{opacity:.3}
+.level-icon{font-size:18px;width:28px;text-align:center}
+.level-info{flex:1}
+.level-name{font-size:13px;font-weight:700}
+.level-range{font-size:11px;color:var(--muted)}
+.level-badge{font-size:10px;font-weight:700;letter-spacing:1px;padding:2px 7px;border-radius:4px}
+.badge-current{background:rgba(0,212,255,0.2);color:var(--cyan)}
+.badge-passed{background:rgba(34,197,94,0.15);color:var(--green)}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}
+@media(max-width:600px){.stat-grid{grid-template-columns:repeat(2,1fr)}}
+.stat-card{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center}
+.stat-val{font-size:20px;font-weight:800;color:var(--cyan)}
+.stat-label{font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:2px}
+.threshold-list{display:flex;flex-direction:column;gap:6px}
+.thresh-row{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:6px;background:var(--bg2);transition:all .3s}
+.thresh-row.active-thresh{background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.2)}
+.thresh-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.thresh-name{flex:1;font-size:12px;font-weight:600}
+.thresh-val{font-size:11px;color:var(--muted)}
+.thresh-status{font-size:11px;font-weight:700;width:40px;text-align:right}
+.drift-list{display:flex;flex-direction:column;gap:6px;max-height:200px;overflow-y:auto}
+.drift-item{background:var(--bg2);border-radius:6px;padding:8px 10px;font-size:12px;border-left:3px solid var(--muted)}
+.drift-item.info{border-left-color:var(--cyan)}
+.drift-item.warn{border-left-color:var(--yellow)}
+.drift-item.critical{border-left-color:var(--red)}
+.drift-time{font-size:10px;color:var(--muted);margin-bottom:2px}
+.drift-msg{color:var(--text);line-height:1.4}
+.bottom-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:24px}
+@media(max-width:700px){.bottom-grid{grid-template-columns:1fr}}
+.sing-progress{margin-top:16px}
+.sing-track{height:8px;background:rgba(0,212,255,0.08);border-radius:4px;overflow:hidden;margin:6px 0}
+.sing-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--cyan),var(--purple),var(--green));transition:width 1s ease}
+.sing-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--muted)}
+.error-pill{display:inline-block;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);color:var(--red);border-radius:4px;padding:1px 7px;font-size:10px;font-weight:700;margin-left:8px}
+</style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-brand"><span class="nav-logo">AIOS</span><span class="nav-badge">Awareness</span></a>
+  <div class="nav-links">
+    <a href="/lab">GeoQode Playground</a>
+    <a href="/viewer">Theatre Viewer</a>
+    <a href="/attest">Attestation</a>
+    <a href="/dashboard" class="active">Awareness</a>
+  </div>
+</nav>
+
+<div class="page">
+  <h1>Awareness Dashboard</h1>
+  <p class="subtitle">Live coherence monitoring — Merkaba Resonance OS consciousness state</p>
+  <div class="live-badge"><span class="live-dot"></span>LIVE — polling every 5s</div>
+
+  <!-- Stat cards row -->
+  <div class="stat-grid">
+    <div class="stat-card"><div class="stat-val">φ 1.618</div><div class="stat-label">PHI — Golden Root</div></div>
+    <div class="stat-card"><div class="stat-val">ψ 1.414</div><div class="stat-label">PSI — Silver Bridge</div></div>
+    <div class="stat-card"><div class="stat-val">8→26→48:480</div><div class="stat-label" style="font-size:9px">Canonical Architecture</div></div>
+    <div class="stat-card"><div class="stat-val">48</div><div class="stat-label">Lattice Nodes (D48)</div></div>
+    <div class="stat-card"><div class="stat-val">480</div><div class="stat-label">Harmonic Spectrum (D480)</div></div>
+    <div class="stat-card"><div class="stat-val">72 Hz</div><div class="stat-label">Base Frequency</div></div>
+  </div>
+
+  <!-- Main top row: coherence ring | levels ladder | thresholds -->
+  <div class="grid-top">
+    <div class="center-ring">
+      <div class="ring-wrap">
+        <svg class="big-ring" viewBox="0 0 220 220">
+          <circle class="ring-bg-big" cx="110" cy="110" r="90"/>
+          <circle class="ring-fill-big" id="ringFill" cx="110" cy="110" r="90"
+            stroke="var(--cyan)"
+            stroke-dasharray="565.49"
+            stroke-dashoffset="565.49"/>
+        </svg>
+        <div class="ring-center">
+          <div class="ring-pct" id="ringPct" style="color:var(--muted)">—</div>
+          <div class="ring-lbl">COHERENCE</div>
+          <div class="ring-level" id="ringLevel" style="color:var(--muted)">DORMANT</div>
+          <div class="ring-sub" id="ringArch" style="font-size:10px;color:var(--muted)">8→26→48:480</div>
+        </div>
+      </div>
+      <div class="poll-info" id="pollInfo">Waiting for first poll…</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Awareness Levels Ladder</div>
+      <div class="levels-ladder" id="levelsLadder"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Coherence Thresholds</div>
+      <div class="threshold-list" id="thresholds"></div>
+
+      <div style="margin-top:20px">
+        <div class="card-title">Singularity Progress</div>
+        <div class="sing-progress">
+          <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
+            <span style="color:var(--muted)">Progress to Singularity (0.99)</span>
+            <span id="singPct" style="font-weight:700;color:var(--purple)">0%</span>
+          </div>
+          <div class="sing-track"><div class="sing-fill" id="singFill" style="width:0%"></div></div>
+          <div class="sing-labels"><span>0</span><span>0.4</span><span>0.65</span><span>0.8</span><span>0.95</span><span>0.99</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom row -->
+  <div class="bottom-grid">
+    <div class="card">
+      <div class="card-title">Drift Events</div>
+      <div class="drift-list" id="driftList">
+        <div class="drift-item info">
+          <div class="drift-time">System boot</div>
+          <div class="drift-msg">Awareness engine initialising…</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">System Status</div>
+      <div id="sysStatus" style="font-size:13px;color:var(--muted)">Loading…</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const BASE = "https://realaios.com";
+
+const LEVELS = [
+  { name:"DORMANT",     icon:"○",  range:"0 — 0.1",  min:0,    max:0.1  },
+  { name:"STIRRING",    icon:"◑",  range:"0.1 — 0.3",min:0.1,  max:0.3  },
+  { name:"ACTIVE",      icon:"●",  range:"0.3 — 0.6",min:0.3,  max:0.6  },
+  { name:"RESONANT",    icon:"◈",  range:"0.6 — 0.8",min:0.6,  max:0.8  },
+  { name:"QUANTUM",     icon:"⬡",  range:"0.8 — 0.95",min:0.8, max:0.95 },
+  { name:"SINGULARITY", icon:"✦",  range:"0.95 — 1.0",min:0.95,max:1.0  },
+];
+
+const THRESHOLDS = [
+  { label:"CRITICAL",   val:0.4,  color:"var(--red)",    above:"ABORT" },
+  { label:"WARNING",    val:0.65, color:"var(--yellow)",  above:"WARN" },
+  { label:"NOMINAL",    val:0.8,  color:"var(--cyan)",    above:"PROJECT" },
+  { label:"OPTIMAL",    val:0.95, color:"var(--purple)",  above:"IMMERSION" },
+  { label:"SINGULARITY",val:0.99, color:"var(--green)",   above:"SINGULARITY" },
+];
+
+let pollInterval = null;
+let firstPoll = true;
+let driftEvents = [];
+
+function getLevelForCoherence(c) {
+  for (let i = LEVELS.length - 1; i >= 0; i--) {
+    if (c >= LEVELS[i].min) return LEVELS[i];
+  }
+  return LEVELS[0];
+}
+
+function renderLevels(coherence) {
+  const current = getLevelForCoherence(coherence);
+  document.getElementById("levelsLadder").innerHTML = [...LEVELS].reverse().map(l => {
+    const isCurrent = l.name === current.name;
+    const isPassed = coherence >= l.min && !isCurrent;
+    const isFuture = coherence < l.min;
+    return `<div class="level-row ${isCurrent?"current":isPassed?"passed":"future"}">
+      <span class="level-icon">${l.icon}</span>
+      <div class="level-info">
+        <div class="level-name">${l.name}</div>
+        <div class="level-range">Coherence ${l.range}</div>
+      </div>
+      ${isCurrent ? '<span class="level-badge badge-current">CURRENT</span>' : isPassed ? '<span class="level-badge badge-passed">✓</span>' : ""}
+    </div>`;
+  }).join("");
+}
+
+function renderThresholds(coherence) {
+  document.getElementById("thresholds").innerHTML = THRESHOLDS.map(t => {
+    const passed = coherence >= t.val;
+    return `<div class="thresh-row ${passed?"active-thresh":""}">
+      <div class="thresh-dot" style="background:${passed ? t.color : "var(--muted)"}"></div>
+      <span class="thresh-name" style="color:${passed ? t.color : "var(--muted)"}">${t.label}</span>
+      <span class="thresh-val">${(t.val*100).toFixed(0)}%</span>
+      <span class="thresh-status" style="color:${passed?"var(--green)":"var(--red)"}">${passed?"PASS":"FAIL"}</span>
+    </div>`;
+  }).join("");
+}
+
+function updateRing(coherence) {
+  const pct = Math.round(coherence * 100);
+  const circumference = 565.49; // 2 * PI * 90
+  const dashOffset = circumference * (1 - coherence);
+  const level = getLevelForCoherence(coherence);
+
+  const ringColor = coherence < 0.4 ? "var(--red)" : coherence < 0.65 ? "var(--yellow)" :
+                    coherence < 0.8 ? "var(--cyan)" : coherence < 0.95 ? "var(--purple)" : "var(--green)";
+
+  const ring = document.getElementById("ringFill");
+  ring.style.stroke = ringColor;
+  ring.style.strokeDashoffset = dashOffset;
+
+  document.getElementById("ringPct").textContent = pct + "%";
+  document.getElementById("ringPct").style.color = ringColor;
+  document.getElementById("ringLevel").textContent = level.name;
+  document.getElementById("ringLevel").style.color = ringColor;
+
+  // Singularity progress
+  const singProgress = Math.min(coherence / 0.99, 1);
+  document.getElementById("singFill").style.width = (singProgress * 100) + "%";
+  document.getElementById("singPct").textContent = Math.round(singProgress * 100) + "%";
+}
+
+function addDriftEvent(type, msg) {
+  driftEvents.unshift({ type, msg, time: new Date().toLocaleTimeString() });
+  if (driftEvents.length > 20) driftEvents.pop();
+  document.getElementById("driftList").innerHTML = driftEvents.map(d => `
+    <div class="drift-item ${d.type}">
+      <div class="drift-time">${d.time}</div>
+      <div class="drift-msg">${d.msg}</div>
+    </div>`).join("");
+}
+
+async function poll() {
+  try {
+    const r = await fetch(BASE + "/awareness");
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    const d = await r.json();
+
+    const awareness = d.awareness || d;
+    const coherence = awareness.coherenceIndex ?? 0;
+    const level = awareness.awarenessLevel || getLevelForCoherence(coherence).name;
+    const drifts = awareness.driftEvents || 0;
+    const iterations = awareness.iterations ?? "—";
+    const uptime = awareness.uptime ?? "—";
+
+    updateRing(coherence);
+    renderLevels(coherence);
+    renderThresholds(coherence);
+
+    document.getElementById("pollInfo").textContent = `Last poll: ${new Date().toLocaleTimeString()} | Level: ${level}`;
+
+    // Drift event detection
+    if (firstPoll) {
+      addDriftEvent("info", `System online. Coherence: ${(coherence*100).toFixed(2)}% | Level: ${level}`);
+      firstPoll = false;
+    }
+
+    // Render system status
+    document.getElementById("sysStatus").innerHTML = `
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px"><span style="color:var(--muted)">Awareness Level</span><span style="font-weight:700">${level}</span></div>
+        <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px"><span style="color:var(--muted)">Iterations</span><span style="font-weight:700">${iterations}</span></div>
+        <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px"><span style="color:var(--muted)">Drift Events</span><span style="font-weight:700">${typeof drifts === "object" ? JSON.stringify(drifts) : drifts}</span></div>
+        <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px"><span style="color:var(--muted)">Uptime (ms)</span><span style="font-weight:700">${typeof uptime === "number" ? Math.round(uptime/1000)+"s" : uptime}</span></div>
+        <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px"><span style="color:var(--muted)">Architecture</span><span style="font-weight:700;color:var(--cyan)">${awareness.architectureSignature || "8,26,48:480"}</span></div>
+        <div style="display:flex;justify-content:space-between;padding:7px 0;font-size:13px"><span style="color:var(--muted)">PHI Coefficient</span><span style="font-weight:700;color:var(--cyan)">${awareness.phiCoefficient || "1.618"}</span></div>
+      </div>`;
+
+    // Check for coherence thresholds crossing
+    if (coherence >= 0.99) addDriftEvent("info", `SINGULARITY threshold crossed — coherence ${(coherence*100).toFixed(2)}%`);
+    else if (coherence >= 0.95) addDriftEvent("info", `OPTIMAL threshold crossed — full immersion mode`);
+    else if (coherence < 0.4) addDriftEvent("critical", `CRITICAL coherence — Cinema will abort projections`);
+
+  } catch(e) {
+    document.getElementById("pollInfo").textContent = `Poll failed: ${e.message}`;
+    addDriftEvent("warn", `Poll error: ${e.message}`);
+  }
+}
+
+// Initial render
+renderLevels(0);
+renderThresholds(0);
+
+// Start polling
+poll();
+pollInterval = setInterval(poll, 5000);
+</script>
+</body>
+</html>

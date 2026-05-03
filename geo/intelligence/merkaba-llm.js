@@ -169,12 +169,29 @@ Text: ${text}`;
    * This is the main entry point for cinema virtualization and narrative parsing.
    *
    * @param {string} text
-   * @returns {{ units: MerkabaSemUnit[], embeddings: ResonanceEmbedding[] }}
+   * @returns {Promise<{ units: MerkabaSemUnit[], embeddings: ResonanceEmbedding[] }>}
    */
   async process(text) {
     const units = await this.parse(text);
     const embeddings = this.embed(units);
     return { units, embeddings };
+  }
+
+  /**
+   * Synchronous convenience: parse text → embed → return semantic profile.
+   * Used by MerkabaTheatreEngine.project() in its synchronous pipeline step.
+   * Always uses the pattern parser (no real LLM call) — no await required.
+   *
+   * @param {string} text
+   * @param {object} [opts]
+   * @param {string} [opts.genre]
+   * @returns {{ units: MerkabaSemUnit[], embeddings: ResonanceEmbedding[], genre: string }}
+   */
+  embedText(text, opts = {}) {
+    const safe = typeof text === "string" ? text : "";
+    const units = this._patternParse(safe, safe);
+    const embeddings = this.embed(units);
+    return { units, embeddings, genre: opts.genre || "narrative" };
   }
 
   /**

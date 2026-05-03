@@ -22,6 +22,11 @@ import {
   REALITY_MODES,
 } from "./MerkabaTheatreEngine.js";
 import {
+  createMerkabaALM,
+  SOLFEGGIO,
+  AUDIO_FREQUENCY_MAP,
+} from "./geo/audio/MerkabaALM.js";
+import {
   MerkabageoqodeOS,
   StormMerkabaTransformCodex,
   CANONICAL_ARCHITECTURE,
@@ -46,6 +51,15 @@ const AIOS_HTML_PATH = join(PUBLIC_DIR, "index.html");
 const AIOS_HTML = existsSync(AIOS_HTML_PATH)
   ? readFileSync(AIOS_HTML_PATH, "utf-8")
   : null;
+
+const LAB_HTML_PATH = join(PUBLIC_DIR, "lab.html");
+const LAB_HTML = existsSync(LAB_HTML_PATH) ? readFileSync(LAB_HTML_PATH, "utf-8") : null;
+const VIEWER_HTML_PATH = join(PUBLIC_DIR, "viewer.html");
+const VIEWER_HTML = existsSync(VIEWER_HTML_PATH) ? readFileSync(VIEWER_HTML_PATH, "utf-8") : null;
+const ATTEST_HTML_PATH = join(PUBLIC_DIR, "attest.html");
+const ATTEST_HTML = existsSync(ATTEST_HTML_PATH) ? readFileSync(ATTEST_HTML_PATH, "utf-8") : null;
+const DASHBOARD_HTML_PATH = join(PUBLIC_DIR, "dashboard.html");
+const DASHBOARD_HTML = existsSync(DASHBOARD_HTML_PATH) ? readFileSync(DASHBOARD_HTML_PATH, "utf-8") : null;
 
 // ─── 67aios.com anti-review marketing page ───────────────────────────────────
 const AIOS67_HTML_PATH = join(__dirname_static, "public-67aios", "index.html");
@@ -168,6 +182,13 @@ let _theatre = null;
 async function getTheatre() {
   if (!_theatre) _theatre = await createMerkabaTheatreEngine();
   return _theatre;
+}
+
+// Singleton MerkabaALM (Audio Learning Model)
+let _alm = null;
+function getALM() {
+  if (!_alm) _alm = createMerkabaALM({ mode: "unified" });
+  return _alm;
 }
 
 // ─── Minimal HTTP server — no external framework dependency needed ────────
@@ -1361,6 +1382,68 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       }
     }
 
+    // ── GET /lab — GeoQode Playground ──────────────────────────────────────
+    if (req.method === "GET" && pathname === "/lab") {
+      if (!LAB_HTML) return json(res, 404, { ok: false, error: "Lab page not found" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.end(LAB_HTML);
+      return;
+    }
+
+    // ── GET /viewer — Theatre Viewer ──────────────────────────────────────
+    if (req.method === "GET" && pathname === "/viewer") {
+      if (!VIEWER_HTML) return json(res, 404, { ok: false, error: "Viewer page not found" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.end(VIEWER_HTML);
+      return;
+    }
+
+    // ── GET /attest — Swarm Attestation UI ───────────────────────────────
+    if (req.method === "GET" && pathname === "/attest") {
+      if (!ATTEST_HTML) return json(res, 404, { ok: false, error: "Attest page not found" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.end(ATTEST_HTML);
+      return;
+    }
+
+    // ── GET /dashboard — Awareness Dashboard ─────────────────────────────
+    if (req.method === "GET" && pathname === "/dashboard") {
+      if (!DASHBOARD_HTML) return json(res, 404, { ok: false, error: "Dashboard page not found" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.end(DASHBOARD_HTML);
+      return;
+    }
+
+    // ── GET /audio/status ─────────────────────────────────────────────────
+    if (req.method === "GET" && pathname === "/audio/status") {
+      return json(res, 200, { ok: true, alm: getALM().getStatus() });
+    }
+
+    // ── GET /audio/frequencies ────────────────────────────────────────────
+    if (req.method === "GET" && pathname === "/audio/frequencies") {
+      return json(res, 200, { ok: true, solfeggioScale: SOLFEGGIO, audioFrequencyMap: AUDIO_FREQUENCY_MAP });
+    }
+
+    // ── POST /audio/score ─────────────────────────────────────────────────
+    if (req.method === "POST" && pathname === "/audio/score") {
+      const body = await readBody(req);
+      if (!body.text || typeof body.text !== "string") {
+        return json(res, 400, { ok: false, error: "text (string) is required" });
+      }
+      const profile = getALM().score(body.text, { genre: body.genre });
+      return json(res, 200, { ok: true, profile });
+    }
+
+    // ── POST /audio/sequence ──────────────────────────────────────────────
+    if (req.method === "POST" && pathname === "/audio/sequence") {
+      const body = await readBody(req);
+      if (!body.text || typeof body.text !== "string") {
+        return json(res, 400, { ok: false, error: "text (string) is required" });
+      }
+      const seq = getALM().sequence(body.text, { maxSteps: body.maxSteps || 16 });
+      return json(res, 200, { ok: true, sequence: seq });
+    }
+
     // ── GET /swarm/attest ─────────────────────────────────────────────────
     // Run PHI/PSI dual attestation on the scanner files directly.
     // Returns: alphaCoherence, omegaCoherence, goldenBand, status, consensus.
@@ -1414,6 +1497,14 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
         "GET  /swarm/sweep",
         "GET  /swarm/sweep?attest=1",
         "GET  /swarm/attest",
+        "GET  /lab",
+        "GET  /viewer",
+        "GET  /attest",
+        "GET  /dashboard",
+        "GET  /audio/status",
+        "GET  /audio/frequencies",
+        "POST /audio/score",
+        "POST /audio/sequence",
       ],
     });
   } catch (err) {

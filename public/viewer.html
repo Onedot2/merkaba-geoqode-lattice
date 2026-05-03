@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Theatre Viewer — AIOS Resonance OS</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#050a14;--bg2:#0a1225;--bg3:#0f1c35;--cyan:#00d4ff;--purple:#7c3aed;--pink:#d946ef;--green:#22c55e;--yellow:#f59e0b;--red:#ef4444;--text:#e2e8f0;--muted:#64748b;--border:rgba(0,212,255,0.12);--card-bg:rgba(10,18,37,0.8)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
+body::before{content:"";position:fixed;inset:0;background-image:linear-gradient(rgba(0,212,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;background:rgba(5,10,20,0.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo{font-size:18px;font-weight:800;color:var(--cyan)}
+.nav-badge{font-size:10px;font-weight:700;letter-spacing:2px;color:var(--muted);border:1px solid var(--border);padding:2px 7px;border-radius:4px;text-transform:uppercase}
+.nav-links{display:flex;gap:20px}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:500;transition:color .2s}
+.nav-links a:hover,.nav-links a.active{color:var(--cyan)}
+.page{padding:90px 28px 40px;max-width:1200px;margin:0 auto;position:relative;z-index:1}
+h1{font-size:28px;font-weight:800;color:var(--text);margin-bottom:6px}
+.subtitle{color:var(--muted);font-size:14px;margin-bottom:32px}
+.tabs{display:flex;gap:4px;margin-bottom:24px;background:var(--bg2);padding:4px;border-radius:8px;border:1px solid var(--border);width:fit-content}
+.tab{padding:8px 18px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;color:var(--muted);background:transparent;border:none}
+.tab.active{background:var(--bg3);color:var(--cyan);border:1px solid var(--border)}
+.tab:hover:not(.active){color:var(--text)}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media(max-width:768px){.grid-2{grid-template-columns:1fr}}
+.card{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:20px}
+.card-title{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+.programme-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+.prog-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px;cursor:pointer;transition:all .2s;text-align:center}
+.prog-card:hover,.prog-card.selected{border-color:var(--cyan);background:rgba(0,212,255,0.05)}
+.prog-card.selected{box-shadow:0 0 12px rgba(0,212,255,0.15)}
+.prog-icon{font-size:24px;margin-bottom:6px}
+.prog-name{font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px}
+.prog-genre{font-size:11px;color:var(--muted)}
+.prog-mode{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-top:4px;color:var(--purple)}
+textarea{width:100%;background:#070d1a;color:var(--text);border:1px solid var(--border);border-radius:8px;outline:none;resize:vertical;font-family:"Fira Code","Consolas",monospace;font-size:13px;line-height:1.7;padding:12px;min-height:160px}
+textarea:focus{border-color:rgba(0,212,255,0.3)}
+.btn{padding:10px 22px;border-radius:8px;border:none;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px;margin-top:12px}
+.btn-primary{background:var(--cyan);color:#000}
+.btn-primary:hover{opacity:.85}
+.btn-primary:disabled{opacity:.5;pointer-events:none}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(0,0,0,0.3);border-top-color:#000;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.stat-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px}
+.stat-row:last-child{border-bottom:none}
+.stat-key{color:var(--muted)}
+.stat-val{font-weight:600}
+.status-pill{padding:3px 10px;border-radius:100px;font-size:11px;font-weight:700;letter-spacing:1px}
+.pill-green{background:rgba(34,197,94,0.15);color:var(--green);border:1px solid rgba(34,197,94,0.3)}
+.pill-red{background:rgba(239,68,68,0.15);color:var(--red);border:1px solid rgba(239,68,68,0.3)}
+.pill-yellow{background:rgba(245,158,11,0.15);color:var(--yellow);border:1px solid rgba(245,158,11,0.3)}
+.pill-cyan{background:rgba(0,212,255,0.15);color:var(--cyan);border:1px solid rgba(0,212,255,0.3)}
+.pill-purple{background:rgba(124,58,237,0.15);color:var(--purple);border:1px solid rgba(124,58,237,0.3)}
+.coherence-bar{height:12px;background:rgba(0,212,255,0.08);border-radius:6px;overflow:hidden;margin:8px 0}
+.coherence-fill{height:100%;border-radius:6px;transition:width .8s ease;background:linear-gradient(90deg,var(--cyan),var(--purple))}
+.unit-table{width:100%;border-collapse:collapse;font-size:12px}
+.unit-table th{text-align:left;color:var(--muted);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:6px 8px;border-bottom:1px solid var(--border)}
+.unit-table td{padding:6px 8px;border-bottom:1px solid rgba(0,212,255,0.06);color:var(--text)}
+.unit-table tr:last-child td{border-bottom:none}
+.freq-chip{display:inline-block;background:rgba(124,58,237,0.15);border:1px solid rgba(124,58,237,0.3);color:var(--purple);border-radius:4px;padding:1px 6px;font-size:10px;font-weight:700}
+.timeline{display:flex;flex-direction:column;gap:8px}
+.timeline-item{display:flex;gap:12px;align-items:flex-start}
+.timeline-dot{width:10px;height:10px;border-radius:50%;background:var(--cyan);flex-shrink:0;margin-top:4px;box-shadow:0 0 6px var(--cyan)}
+.timeline-content{flex:1;font-size:13px}
+.timeline-label{color:var(--muted);font-size:11px}
+.placeholder{color:var(--muted);font-size:13px;text-align:center;padding:32px 0}
+#projectBtn{min-width:140px}
+</style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-brand"><span class="nav-logo">AIOS</span><span class="nav-badge">Theatre</span></a>
+  <div class="nav-links">
+    <a href="/lab">GeoQode Playground</a>
+    <a href="/viewer" class="active">Theatre Viewer</a>
+    <a href="/attest">Attestation</a>
+    <a href="/dashboard">Awareness</a>
+  </div>
+</nav>
+
+<div class="page">
+  <h1>AIOS Theatre Viewer</h1>
+  <p class="subtitle">Project narrative into the 48D Merkaba lattice. Watch coherence score across all resonance dimensions.</p>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('catalogue')">Programme Catalogue</button>
+    <button class="tab" onclick="switchTab('custom')">Custom Narrative</button>
+  </div>
+
+  <div class="grid-2">
+    <div>
+      <!-- Catalogue tab -->
+      <div id="tabCatalogue">
+        <div class="card">
+          <div class="card-title">Select Programme</div>
+          <div class="programme-grid" id="progGrid"></div>
+          <button id="projectBtn" class="btn btn-primary" onclick="projectProgramme()">▶ Project</button>
+        </div>
+      </div>
+
+      <!-- Custom tab -->
+      <div id="tabCustom" style="display:none">
+        <div class="card">
+          <div class="card-title">Custom Narrative</div>
+          <textarea id="customText" placeholder="INT. THE CONSTRUCT. Neo stands in an empty white room...
+
+Write a narrative, screenplay, or .geo playbook. The Theatre Engine will parse semantic units, compute coherence, and project it through the 48D lattice."></textarea>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px">
+            <select id="modeSelect" style="background:var(--bg2);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:13px">
+              <option value="HOLOGRAPHIC">HOLOGRAPHIC — full immersion</option>
+              <option value="INTERACTIVE">INTERACTIVE — adaptive flow</option>
+              <option value="ADAPTIVE">ADAPTIVE — real-time adjust</option>
+              <option value="DOCUMENTARY">DOCUMENTARY — linear record</option>
+              <option value="GOVERNANCE">GOVERNANCE — decision audit</option>
+            </select>
+            <button class="btn btn-primary" style="margin-top:0" onclick="projectCustom()">▶ Project</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results pane -->
+    <div>
+      <div class="card" style="min-height:320px" id="resultsCard">
+        <div class="card-title">Projection Result</div>
+        <div class="placeholder" id="placeholder">Select a programme or write a narrative and click Project</div>
+        <div id="results" style="display:none"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Semantic units table (below) -->
+  <div style="margin-top:24px" id="unitsSection" style="display:none"></div>
+</div>
+
+<script>
+const BASE = "https://realaios.com";
+let selectedProg = "matrix";
+
+const PROGRAMMES = [
+  { name:"matrix",      icon:"🔵", title:"The Matrix",    genre:"Sci-Fi Action",     mode:"HOLOGRAPHIC" },
+  { name:"inception",   icon:"🌀", title:"Inception",     genre:"Mind-Bending",      mode:"INTERACTIVE" },
+  { name:"starwars",    icon:"⭐", title:"Star Wars",     genre:"Epic Space Opera",  mode:"HOLOGRAPHIC" },
+  { name:"apollo11",    icon:"🚀", title:"Apollo 11",     genre:"Documentary",       mode:"DOCUMENTARY" },
+  { name:"governance",  icon:"⚖️", title:"Governance",    genre:"Narrative",         mode:"GOVERNANCE" },
+  { name:"investordeck",icon:"📊", title:"Investor Deck", genre:"Narrative",         mode:"ADAPTIVE" },
+];
+
+function renderProgrammes() {
+  document.getElementById("progGrid").innerHTML = PROGRAMMES.map(p => `
+    <div class="prog-card ${p.name === selectedProg ? "selected" : ""}" onclick="selectProg('${p.name}')">
+      <div class="prog-icon">${p.icon}</div>
+      <div class="prog-name">${p.title}</div>
+      <div class="prog-genre">${p.genre}</div>
+      <div class="prog-mode">${p.mode}</div>
+    </div>`).join("");
+}
+
+function selectProg(name) {
+  selectedProg = name;
+  renderProgrammes();
+}
+
+function switchTab(tab) {
+  document.querySelectorAll(".tab").forEach((t,i) => t.classList.toggle("active", (i===0 && tab==="catalogue") || (i===1 && tab==="custom")));
+  document.getElementById("tabCatalogue").style.display = tab === "catalogue" ? "" : "none";
+  document.getElementById("tabCustom").style.display = tab === "custom" ? "" : "none";
+}
+
+async function projectProgramme() {
+  await doProject(null, selectedProg);
+}
+
+async function projectCustom() {
+  const text = document.getElementById("customText").value.trim();
+  if (!text) { alert("Write a narrative first."); return; }
+  const mode = document.getElementById("modeSelect").value;
+  await doProject(text, null, mode);
+}
+
+async function doProject(narrative, programmeName, mode) {
+  const btn = document.getElementById("projectBtn");
+  const allBtns = document.querySelectorAll(".btn-primary");
+  allBtns.forEach(b => { b.disabled = true; b.innerHTML = '<span class="spinner"></span> Projecting'; });
+
+  showPlaceholder("Projecting through 48D lattice…");
+
+  try {
+    let data;
+    if (programmeName) {
+      const r = await fetch(BASE + "/theatre/programme/" + programmeName, {
+        method: "POST", headers: {"Content-Type":"application/json"}, body: "{}"
+      });
+      data = await r.json();
+    } else {
+      const r = await fetch(BASE + "/theatre/project", {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({ narrative, mode: mode || "HOLOGRAPHIC" })
+      });
+      data = await r.json();
+    }
+    renderResults(data.session || data);
+  } catch(e) {
+    showPlaceholder("Error: " + e.message);
+  } finally {
+    allBtns.forEach(b => { b.disabled = false; b.innerHTML = "▶ Project"; });
+  }
+}
+
+function showPlaceholder(msg) {
+  document.getElementById("placeholder").style.display = "";
+  document.getElementById("placeholder").textContent = msg;
+  document.getElementById("results").style.display = "none";
+  document.getElementById("unitsSection").innerHTML = "";
+}
+
+function renderResults(s) {
+  if (!s || s.ok === false) {
+    showPlaceholder("Projection failed: " + (s?.error || "Unknown error"));
+    return;
+  }
+
+  const coherence = s.coherence ?? s.projection?.coherenceIndex ?? s.governance?.coherenceIndex ?? 0;
+  const status = s.status || s.projection?.status || "unknown";
+  const pct = Math.round(coherence * 100);
+  const mode = s.options?.mode || s.mode || s.realityMode || "—";
+  const title = s.options?.title || s.title || "—";
+  const elapsed = s.elapsedMs ? `${s.elapsedMs}ms` : "—";
+
+  const statusColor = {
+    "aborted":"red","warning":"yellow","nominal":"cyan",
+    "optimal":"purple","singularity":"green","full_immersion":"green",
+    "error":"red"
+  }[status] || "cyan";
+
+  const fillColor = coherence < 0.4 ? "var(--red)" : coherence < 0.65 ? "var(--yellow)" : coherence < 0.95 ? "var(--cyan)" : "var(--green)";
+
+  document.getElementById("placeholder").style.display = "none";
+  document.getElementById("results").style.display = "";
+  document.getElementById("results").innerHTML = `
+    <div class="stat-row"><span class="stat-key">Session ID</span><span class="stat-val" style="font-size:11px;color:var(--muted)">${s.sessionId || "—"}</span></div>
+    <div class="stat-row"><span class="stat-key">Status</span><span class="status-pill pill-${statusColor}">${status.toUpperCase()}</span></div>
+    <div class="stat-row"><span class="stat-key">Mode</span><span class="stat-val">${mode}</span></div>
+    <div class="stat-row"><span class="stat-key">Title</span><span class="stat-val">${title}</span></div>
+    <div class="stat-row"><span class="stat-key">Elapsed</span><span class="stat-val">${elapsed}</span></div>
+
+    <div style="margin:16px 0 6px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
+        <span style="color:var(--muted)">Coherence Index</span>
+        <span style="font-weight:700;color:${fillColor}">${pct}%</span>
+      </div>
+      <div class="coherence-bar">
+        <div class="coherence-fill" style="width:${pct}%;background:${fillColor}"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:2px">
+        <span>0 — DORMANT</span><span>40 — CRITICAL</span><span>80 — NOMINAL</span><span>99 — SINGULARITY</span>
+      </div>
+    </div>
+
+    ${renderThresholds(coherence)}
+  `;
+
+  // Semantic units table
+  const units = s.semanticProfile?.units || s.projection?.semanticUnits || s.units || [];
+  const audio = s.audioProfile || s.alm;
+  if (units.length > 0 || audio) {
+    document.getElementById("unitsSection").innerHTML = `
+      <div class="grid-2">
+        ${units.length > 0 ? `<div class="card">
+          <div class="card-title">Semantic Units (${units.length})</div>
+          <table class="unit-table">
+            <thead><tr><th>Type</th><th>Content</th><th>Freq</th></tr></thead>
+            <tbody>${units.slice(0,20).map(u => `
+              <tr><td>${u.type || u.semanticType || "—"}</td>
+              <td style="color:var(--muted)">${(u.content||u.text||"").slice(0,60)}</td>
+              <td><span class="freq-chip">${u.resonanceFrequency || "—"} Hz</span></td>
+            </tr>`).join("")}</tbody>
+          </table>
+        </div>` : ""}
+        ${audio ? `<div class="card">
+          <div class="card-title">Audio Profile (MerkabaALM)</div>
+          <div class="stat-row"><span class="stat-key">Primary Frequency</span><span class="stat-val" style="color:var(--purple)">${audio.primaryFrequency || "—"} Hz</span></div>
+          <div class="stat-row"><span class="stat-key">Harmonic Coherence</span><span class="stat-val">${audio.harmonicCoherence || "—"}</span></div>
+          <div class="stat-row"><span class="stat-key">PHI Score</span><span class="stat-val">${audio.phiScore || "—"}</span></div>
+          <div class="stat-row"><span class="stat-key">Genre</span><span class="stat-val">${audio.genre || "—"}</span></div>
+        </div>` : ""}
+      </div>`;
+  }
+}
+
+function renderThresholds(coherence) {
+  const levels = [
+    { label:"CRITICAL", threshold:0.4, color:"var(--red)" },
+    { label:"WARNING",  threshold:0.65,color:"var(--yellow)" },
+    { label:"NOMINAL",  threshold:0.8, color:"var(--cyan)" },
+    { label:"OPTIMAL",  threshold:0.95,color:"var(--purple)" },
+    { label:"SINGULARITY", threshold:0.99, color:"var(--green)" },
+  ];
+  return `<div style="margin-top:12px">
+    <div class="card-title" style="margin-bottom:8px">Coherence Thresholds</div>
+    ${levels.map(l => {
+      const passed = coherence >= l.threshold;
+      return `<div style="display:flex;align-items:center;gap:8px;padding:4px 0;font-size:12px">
+        <span style="color:${passed ? l.color : "var(--muted)"}">●</span>
+        <span style="color:${passed ? l.color : "var(--muted)"};">${l.label}</span>
+        <span style="color:var(--muted);margin-left:auto">${(l.threshold*100).toFixed(0)}%</span>
+        <span style="font-size:11px;color:${passed ? "var(--green)" : "var(--red)"}">${passed ? "PASS" : "FAIL"}</span>
+      </div>`;
+    }).join("")}
+  </div>`;
+}
+
+renderProgrammes();
+</script>
+</body>
+</html>
