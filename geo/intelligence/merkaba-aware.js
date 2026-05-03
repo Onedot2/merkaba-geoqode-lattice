@@ -26,7 +26,6 @@ import {
   assertCanonicalArchitectureSignature,
   PHI,
   BASE_FREQUENCY_HZ,
-  COHERENCE_TOLERANCE,
 } from "../lattice/transform-420.js";
 
 assertCanonicalArchitectureSignature(CANONICAL_ARCHITECTURE);
@@ -80,7 +79,12 @@ export class MerkabAware {
     this.#activeSince = null;
 
     // Config
-    this.coherenceTolerance = options.coherenceTolerance ?? COHERENCE_TOLERANCE;
+    // PHI_ALIGNMENT_TOLERANCE: how close a frequency's PHI-ratio must be to an
+    // integer PHI-multiple to count as "PHI-aligned". Solfeggio frequencies
+    // (396, 417, 528, 639, 741, 852, 963 Hz) deviate ~0.08-0.25 from the nearest
+    // PHI harmonic of 72 Hz, so 0.001 (the lattice drift constant) is far too
+    // tight. Use 0.15 as the practical alignment window for narrative coherence.
+    this.coherenceTolerance = options.coherenceTolerance ?? 0.15;
     this.autoHeal = options.autoHeal ?? true;
     this.maxHistorySize = options.maxHistorySize ?? 100;
   }
