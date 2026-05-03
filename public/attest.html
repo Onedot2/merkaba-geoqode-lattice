@@ -1,316 +1,738 @@
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>PHI/PSI Dual Attestation — AIOS Swarm</title>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#050a14;--bg2:#0a1225;--bg3:#0f1c35;--cyan:#00d4ff;--purple:#7c3aed;--pink:#d946ef;--green:#22c55e;--yellow:#f59e0b;--red:#ef4444;--text:#e2e8f0;--muted:#64748b;--border:rgba(0,212,255,0.12);--card-bg:rgba(10,18,37,0.8)}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
-body::before{content:"";position:fixed;inset:0;background-image:linear-gradient(rgba(0,212,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0}
-nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;background:rgba(5,10,20,0.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
-.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
-.nav-logo{font-size:18px;font-weight:800;color:var(--cyan)}
-.nav-badge{font-size:10px;font-weight:700;letter-spacing:2px;color:var(--muted);border:1px solid var(--border);padding:2px 7px;border-radius:4px;text-transform:uppercase}
-.nav-links{display:flex;gap:20px}
-.nav-links a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:500;transition:color .2s}
-.nav-links a:hover,.nav-links a.active{color:var(--cyan)}
-.page{padding:90px 28px 40px;max-width:1100px;margin:0 auto;position:relative;z-index:1}
-h1{font-size:28px;font-weight:800;margin-bottom:6px}
-.subtitle{color:var(--muted);font-size:14px;margin-bottom:32px}
-.grid-main{display:grid;grid-template-columns:1fr 340px;gap:24px}
-@media(max-width:800px){.grid-main{grid-template-columns:1fr}}
-.card{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:20px}
-.card-title{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
-textarea{width:100%;background:#070d1a;color:var(--text);border:1px solid var(--border);border-radius:8px;outline:none;resize:vertical;font-family:"Fira Code","Consolas",monospace;font-size:13px;line-height:1.7;padding:12px;min-height:180px}
-textarea:focus{border-color:rgba(0,212,255,0.3)}
-.btn{padding:10px 24px;border-radius:8px;border:none;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px}
-.btn-primary{background:linear-gradient(135deg,var(--cyan),var(--purple));color:#fff}
-.btn-primary:hover{opacity:.9}
-.btn-primary:disabled{opacity:.5;pointer-events:none}
-.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border);font-size:13px;padding:8px 16px}
-.btn-ghost:hover{color:var(--text)}
-.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.dual-poles{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
-.pole{border-radius:12px;padding:16px;text-align:center}
-.pole-alpha{background:rgba(0,212,255,0.06);border:1px solid rgba(0,212,255,0.2)}
-.pole-omega{background:rgba(124,58,237,0.06);border:1px solid rgba(124,58,237,0.2)}
-.pole-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
-.pole-alpha .pole-label{color:var(--cyan)}
-.pole-omega .pole-label{color:var(--purple)}
-.pole-constant{font-size:28px;font-weight:800;margin-bottom:2px}
-.pole-alpha .pole-constant{color:var(--cyan)}
-.pole-omega .pole-constant{color:var(--purple)}
-.pole-name{font-size:12px;color:var(--muted);margin-bottom:10px}
-.pole-score{font-size:36px;font-weight:900;transition:color .5s}
-.pole-sub{font-size:11px;color:var(--muted);margin-top:2px}
-.band{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center;margin-bottom:16px}
-.band-label{font-size:11px;color:var(--muted);letter-spacing:1px;margin-bottom:4px}
-.band-value{font-size:22px;font-weight:800;color:var(--text)}
-.band-detail{font-size:11px;color:var(--muted);margin-top:2px}
-.verdict-box{border-radius:10px;padding:16px;text-align:center;margin-bottom:16px;transition:all .5s}
-.verdict-attested{background:rgba(34,197,94,0.1);border:2px solid var(--green)}
-.verdict-warning{background:rgba(245,158,11,0.1);border:2px solid var(--yellow)}
-.verdict-fail{background:rgba(239,68,68,0.1);border:2px solid var(--red)}
-.verdict-icon{font-size:32px;margin-bottom:6px}
-.verdict-text{font-size:16px;font-weight:800;letter-spacing:1px}
-.verdict-sub{font-size:12px;color:var(--muted);margin-top:4px}
-.stat-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px}
-.stat-row:last-child{border-bottom:none}
-.stat-key{color:var(--muted)}
-.stat-val{font-weight:600}
-.file-list{display:flex;flex-direction:column;gap:6px}
-.file-item{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--bg2);border-radius:6px;border:1px solid var(--border)}
-.file-status{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.status-nominal{background:var(--green);box-shadow:0 0 4px var(--green)}
-.status-warn{background:var(--yellow)}
-.status-fail{background:var(--red)}
-.file-name{flex:1;font-size:11px;color:var(--muted);font-family:monospace}
-.file-coherence{font-size:11px;font-weight:700;color:var(--cyan)}
-.findings-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
-.finding-cell{background:var(--bg2);border-radius:8px;padding:10px;text-align:center;border:1px solid var(--border)}
-.finding-count{font-size:22px;font-weight:800}
-.finding-label{font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
-.count-critical{color:var(--red)}
-.count-high{color:var(--yellow)}
-.count-medium{color:var(--cyan)}
-.count-low{color:var(--muted)}
-.placeholder{color:var(--muted);font-size:13px;text-align:center;padding:28px 0}
-#attestBtn{min-width:140px}
-</style>
-</head>
-<body>
-<nav>
-  <a href="/" class="nav-brand"><span class="nav-logo">AIOS</span><span class="nav-badge">Attest</span></a>
-  <div class="nav-links">
-    <a href="/lab">GeoQode Playground</a>
-    <a href="/viewer">Theatre Viewer</a>
-    <a href="/attest" class="active">Attestation</a>
-    <a href="/dashboard">Awareness</a>
-  </div>
-</nav>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>PHI/PSI Dual Attestation — AIOS Swarm</title>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --bg: #050a14;
+        --bg2: #0a1225;
+        --bg3: #0f1c35;
+        --cyan: #00d4ff;
+        --purple: #7c3aed;
+        --pink: #d946ef;
+        --green: #22c55e;
+        --yellow: #f59e0b;
+        --red: #ef4444;
+        --text: #e2e8f0;
+        --muted: #64748b;
+        --border: rgba(0, 212, 255, 0.12);
+        --card-bg: rgba(10, 18, 37, 0.8);
+      }
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        line-height: 1.6;
+      }
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+        background-size: 60px 60px;
+        pointer-events: none;
+        z-index: 0;
+      }
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        padding: 14px 28px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: rgba(5, 10, 20, 0.9);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border);
+      }
+      .nav-brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+      }
+      .nav-logo {
+        font-size: 18px;
+        font-weight: 800;
+        color: var(--cyan);
+      }
+      .nav-badge {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        color: var(--muted);
+        border: 1px solid var(--border);
+        padding: 2px 7px;
+        border-radius: 4px;
+        text-transform: uppercase;
+      }
+      .nav-links {
+        display: flex;
+        gap: 20px;
+      }
+      .nav-links a {
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 500;
+        transition: color 0.2s;
+      }
+      .nav-links a:hover,
+      .nav-links a.active {
+        color: var(--cyan);
+      }
+      .page {
+        padding: 90px 28px 40px;
+        max-width: 1100px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+      }
+      h1 {
+        font-size: 28px;
+        font-weight: 800;
+        margin-bottom: 6px;
+      }
+      .subtitle {
+        color: var(--muted);
+        font-size: 14px;
+        margin-bottom: 32px;
+      }
+      .grid-main {
+        display: grid;
+        grid-template-columns: 1fr 340px;
+        gap: 24px;
+      }
+      @media (max-width: 800px) {
+        .grid-main {
+          grid-template-columns: 1fr;
+        }
+      }
+      .card {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 20px;
+      }
+      .card-title {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 14px;
+      }
+      textarea {
+        width: 100%;
+        background: #070d1a;
+        color: var(--text);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        outline: none;
+        resize: vertical;
+        font-family: "Fira Code", "Consolas", monospace;
+        font-size: 13px;
+        line-height: 1.7;
+        padding: 12px;
+        min-height: 180px;
+      }
+      textarea:focus {
+        border-color: rgba(0, 212, 255, 0.3);
+      }
+      .btn {
+        padding: 10px 24px;
+        border-radius: 8px;
+        border: none;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, var(--cyan), var(--purple));
+        color: #fff;
+      }
+      .btn-primary:hover {
+        opacity: 0.9;
+      }
+      .btn-primary:disabled {
+        opacity: 0.5;
+        pointer-events: none;
+      }
+      .btn-ghost {
+        background: transparent;
+        color: var(--muted);
+        border: 1px solid var(--border);
+        font-size: 13px;
+        padding: 8px 16px;
+      }
+      .btn-ghost:hover {
+        color: var(--text);
+      }
+      .spinner {
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .dual-poles {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+      .pole {
+        border-radius: 12px;
+        padding: 16px;
+        text-align: center;
+      }
+      .pole-alpha {
+        background: rgba(0, 212, 255, 0.06);
+        border: 1px solid rgba(0, 212, 255, 0.2);
+      }
+      .pole-omega {
+        background: rgba(124, 58, 237, 0.06);
+        border: 1px solid rgba(124, 58, 237, 0.2);
+      }
+      .pole-label {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+      }
+      .pole-alpha .pole-label {
+        color: var(--cyan);
+      }
+      .pole-omega .pole-label {
+        color: var(--purple);
+      }
+      .pole-constant {
+        font-size: 28px;
+        font-weight: 800;
+        margin-bottom: 2px;
+      }
+      .pole-alpha .pole-constant {
+        color: var(--cyan);
+      }
+      .pole-omega .pole-constant {
+        color: var(--purple);
+      }
+      .pole-name {
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 10px;
+      }
+      .pole-score {
+        font-size: 36px;
+        font-weight: 900;
+        transition: color 0.5s;
+      }
+      .pole-sub {
+        font-size: 11px;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+      .band {
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 12px;
+        text-align: center;
+        margin-bottom: 16px;
+      }
+      .band-label {
+        font-size: 11px;
+        color: var(--muted);
+        letter-spacing: 1px;
+        margin-bottom: 4px;
+      }
+      .band-value {
+        font-size: 22px;
+        font-weight: 800;
+        color: var(--text);
+      }
+      .band-detail {
+        font-size: 11px;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+      .verdict-box {
+        border-radius: 10px;
+        padding: 16px;
+        text-align: center;
+        margin-bottom: 16px;
+        transition: all 0.5s;
+      }
+      .verdict-attested {
+        background: rgba(34, 197, 94, 0.1);
+        border: 2px solid var(--green);
+      }
+      .verdict-warning {
+        background: rgba(245, 158, 11, 0.1);
+        border: 2px solid var(--yellow);
+      }
+      .verdict-fail {
+        background: rgba(239, 68, 68, 0.1);
+        border: 2px solid var(--red);
+      }
+      .verdict-icon {
+        font-size: 32px;
+        margin-bottom: 6px;
+      }
+      .verdict-text {
+        font-size: 16px;
+        font-weight: 800;
+        letter-spacing: 1px;
+      }
+      .verdict-sub {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 4px;
+      }
+      .stat-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 7px 0;
+        border-bottom: 1px solid var(--border);
+        font-size: 13px;
+      }
+      .stat-row:last-child {
+        border-bottom: none;
+      }
+      .stat-key {
+        color: var(--muted);
+      }
+      .stat-val {
+        font-weight: 600;
+      }
+      .file-list {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .file-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 10px;
+        background: var(--bg2);
+        border-radius: 6px;
+        border: 1px solid var(--border);
+      }
+      .file-status {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+      .status-nominal {
+        background: var(--green);
+        box-shadow: 0 0 4px var(--green);
+      }
+      .status-warn {
+        background: var(--yellow);
+      }
+      .status-fail {
+        background: var(--red);
+      }
+      .file-name {
+        flex: 1;
+        font-size: 11px;
+        color: var(--muted);
+        font-family: monospace;
+      }
+      .file-coherence {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--cyan);
+      }
+      .findings-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+        margin-top: 12px;
+      }
+      .finding-cell {
+        background: var(--bg2);
+        border-radius: 8px;
+        padding: 10px;
+        text-align: center;
+        border: 1px solid var(--border);
+      }
+      .finding-count {
+        font-size: 22px;
+        font-weight: 800;
+      }
+      .finding-label {
+        font-size: 10px;
+        color: var(--muted);
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+      .count-critical {
+        color: var(--red);
+      }
+      .count-high {
+        color: var(--yellow);
+      }
+      .count-medium {
+        color: var(--cyan);
+      }
+      .count-low {
+        color: var(--muted);
+      }
+      .placeholder {
+        color: var(--muted);
+        font-size: 13px;
+        text-align: center;
+        padding: 28px 0;
+      }
+      #attestBtn {
+        min-width: 140px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="/" class="nav-brand"
+        ><span class="nav-logo">AIOS</span
+        ><span class="nav-badge">Attest</span></a
+      >
+      <div class="nav-links">
+        <a href="/lab">GeoQode Playground</a>
+        <a href="/viewer">Theatre Viewer</a>
+        <a href="/attest" class="active">Attestation</a>
+        <a href="/dashboard">Awareness</a>
+      </div>
+    </nav>
 
-<div class="page">
-  <h1>PHI/PSI Dual Attestation</h1>
-  <p class="subtitle">Run any content through the BESX Alpha (φ=1.618) and Witness Omega (ψ=1.414) scanner pair. Genuinely distinct geometric poles — cannot echo-chamber.</p>
+    <div class="page">
+      <h1>PHI/PSI Dual Attestation</h1>
+      <p class="subtitle">
+        Run any content through the BESX Alpha (φ=1.618) and Witness Omega
+        (ψ=1.414) scanner pair. Genuinely distinct geometric poles — cannot
+        echo-chamber.
+      </p>
 
-  <div class="grid-main">
-    <div>
-      <div class="card">
-        <div class="card-title">Content to Attest</div>
-        <textarea id="attestText" placeholder="Paste any text, decision, code, narrative, or hypothesis here...
+      <div class="grid-main">
+        <div>
+          <div class="card">
+            <div class="card-title">Content to Attest</div>
+            <textarea
+              id="attestText"
+              placeholder="Paste any text, decision, code, narrative, or hypothesis here...
 
 The PHI scanner sweeps S1→S8 sectors using the Golden Root (φ=1.618).
 The PSI scanner sweeps S8→S1 (reversed) using the Silver Bridge (ψ=1.414).
 When both poles agree at 1.0 → attestedScore = 3.032/3.032 = ABSOLUTE.
 
-Try: a research hypothesis, a system design decision, or a code review snippet."></textarea>
-        <div style="display:flex;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap">
-          <button id="attestBtn" class="btn btn-primary" onclick="runAttestation()">⬡ Attest</button>
-          <button class="btn btn-ghost" onclick="runSystemSweep()">⟳ System Sweep</button>
-          <button class="btn btn-ghost" onclick="loadExample()">Load Example</button>
-        </div>
-      </div>
+Try: a research hypothesis, a system design decision, or a code review snippet."
+            ></textarea>
+            <div
+              style="
+                display: flex;
+                gap: 10px;
+                align-items: center;
+                margin-top: 12px;
+                flex-wrap: wrap;
+              "
+            >
+              <button
+                id="attestBtn"
+                class="btn btn-primary"
+                onclick="runAttestation()"
+              >
+                ⬡ Attest
+              </button>
+              <button class="btn btn-ghost" onclick="runSystemSweep()">
+                ⟳ System Sweep
+              </button>
+              <button class="btn btn-ghost" onclick="loadExample()">
+                Load Example
+              </button>
+            </div>
+          </div>
 
-      <!-- System sweep results (always available) -->
-      <div class="card" id="sweepCard">
-        <div class="card-title">System File Sweep</div>
-        <div id="sweepResult" class="placeholder">Click "System Sweep" to attest all 7 lattice source files</div>
+          <!-- System sweep results (always available) -->
+          <div class="card" id="sweepCard">
+            <div class="card-title">System File Sweep</div>
+            <div id="sweepResult" class="placeholder">
+              Click "System Sweep" to attest all 7 lattice source files
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <!-- Dual pole meters -->
+          <div class="card">
+            <div class="card-title">PHI/PSI Dual-Pole Meters</div>
+            <div class="dual-poles">
+              <div class="pole pole-alpha">
+                <div class="pole-label">Alpha Pole</div>
+                <div class="pole-constant">φ 1.618</div>
+                <div class="pole-name">Golden Root<br />BESX Scanner</div>
+                <div
+                  class="pole-score"
+                  id="phiScore"
+                  style="color: var(--muted)"
+                >
+                  —
+                </div>
+                <div class="pole-sub">S1 → S8</div>
+              </div>
+              <div class="pole pole-omega">
+                <div class="pole-label">Omega Pole</div>
+                <div class="pole-constant">ψ 1.414</div>
+                <div class="pole-name">Silver Bridge<br />Witness Scanner</div>
+                <div
+                  class="pole-score"
+                  id="psiScore"
+                  style="color: var(--muted)"
+                >
+                  —
+                </div>
+                <div class="pole-sub">S8 → S1</div>
+              </div>
+            </div>
+
+            <div class="band">
+              <div class="band-label">Golden Band (φ + ψ)</div>
+              <div class="band-value" id="goldBand">3.032</div>
+              <div class="band-detail">Digit sum = 8 = FOUNDATION_NODES</div>
+            </div>
+
+            <div class="verdict-box" id="verdictBox" style="display: none">
+              <div class="verdict-icon" id="verdictIcon"></div>
+              <div class="verdict-text" id="verdictText"></div>
+              <div class="verdict-sub" id="verdictSub"></div>
+            </div>
+
+            <div class="stat-row">
+              <span class="stat-key">Attested Score</span
+              ><span class="stat-val" id="attestedScore">—</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-key">Coherence</span
+              ><span class="stat-val" id="coherenceVal">—</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-key">Architecture</span
+              ><span class="stat-val" style="color: var(--cyan)"
+                >8→26→48:480</span
+              >
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div>
-      <!-- Dual pole meters -->
-      <div class="card">
-        <div class="card-title">PHI/PSI Dual-Pole Meters</div>
-        <div class="dual-poles">
-          <div class="pole pole-alpha">
-            <div class="pole-label">Alpha Pole</div>
-            <div class="pole-constant">φ 1.618</div>
-            <div class="pole-name">Golden Root<br>BESX Scanner</div>
-            <div class="pole-score" id="phiScore" style="color:var(--muted)">—</div>
-            <div class="pole-sub">S1 → S8</div>
-          </div>
-          <div class="pole pole-omega">
-            <div class="pole-label">Omega Pole</div>
-            <div class="pole-constant">ψ 1.414</div>
-            <div class="pole-name">Silver Bridge<br>Witness Scanner</div>
-            <div class="pole-score" id="psiScore" style="color:var(--muted)">—</div>
-            <div class="pole-sub">S8 → S1</div>
-          </div>
-        </div>
+    <script>
+      const BASE = "https://realaios.com";
 
-        <div class="band">
-          <div class="band-label">Golden Band (φ + ψ)</div>
-          <div class="band-value" id="goldBand">3.032</div>
-          <div class="band-detail">Digit sum = 8 = FOUNDATION_NODES</div>
-        </div>
+      const EXAMPLES = [
+        "Hypothesis: The canonical architecture 8→26→48:480 represents a genuinely stable geometric lattice because the digit sum of 480 (=12) reduces to 3, while 48 = 8×6 = PHI-resonant expansion of the 8-node foundation ring. Therefore the architecture is self-consistent across all harmonic scales.",
+        "Decision: We should deploy the new authentication system to production. It uses JWT tokens with 256-bit secrets, parameterized SQL queries, and rate limiting at 100 req/15min. The system has been tested against OWASP Top 10 vulnerabilities.",
+        "INT. THE CONSTRUCT. Neo stands in a white room. MORPHEUS offers two pills. ACTION: Neo reaches for the red pill. PHYSICS: The simulation begins to dissolve. LOCATION: Machine fields — 852Hz structural order. NARRATIVE: The awakening begins.",
+      ];
+      let exIdx = 0;
 
-        <div class="verdict-box" id="verdictBox" style="display:none">
-          <div class="verdict-icon" id="verdictIcon"></div>
-          <div class="verdict-text" id="verdictText"></div>
-          <div class="verdict-sub" id="verdictSub"></div>
-        </div>
+      function loadExample() {
+        document.getElementById("attestText").value =
+          EXAMPLES[exIdx % EXAMPLES.length];
+        exIdx++;
+      }
 
-        <div class="stat-row"><span class="stat-key">Attested Score</span><span class="stat-val" id="attestedScore">—</span></div>
-        <div class="stat-row"><span class="stat-key">Coherence</span><span class="stat-val" id="coherenceVal">—</span></div>
-        <div class="stat-row"><span class="stat-key">Architecture</span><span class="stat-val" style="color:var(--cyan)">8→26→48:480</span></div>
-      </div>
-    </div>
-  </div>
-</div>
+      function setScore(id, score) {
+        const el = document.getElementById(id);
+        if (score === null || score === undefined || score === "—") {
+          el.textContent = "—";
+          el.style.color = "var(--muted)";
+          return;
+        }
+        const val = typeof score === "number" ? score : parseFloat(score);
+        el.textContent = isNaN(val) ? "—" : val.toFixed(3);
+        el.style.color =
+          val >= 0.9
+            ? "var(--green)"
+            : val >= 0.7
+              ? "var(--cyan)"
+              : val >= 0.5
+                ? "var(--yellow)"
+                : "var(--red)";
+      }
 
-<script>
-const BASE = "https://realaios.com";
+      function showVerdict(attested, coherence) {
+        const box = document.getElementById("verdictBox");
+        const icon = document.getElementById("verdictIcon");
+        const text = document.getElementById("verdictText");
+        const sub = document.getElementById("verdictSub");
+        box.style.display = "";
+        box.className = "verdict-box";
 
-const EXAMPLES = [
-  "Hypothesis: The canonical architecture 8→26→48:480 represents a genuinely stable geometric lattice because the digit sum of 480 (=12) reduces to 3, while 48 = 8×6 = PHI-resonant expansion of the 8-node foundation ring. Therefore the architecture is self-consistent across all harmonic scales.",
-  "Decision: We should deploy the new authentication system to production. It uses JWT tokens with 256-bit secrets, parameterized SQL queries, and rate limiting at 100 req/15min. The system has been tested against OWASP Top 10 vulnerabilities.",
-  "INT. THE CONSTRUCT. Neo stands in a white room. MORPHEUS offers two pills. ACTION: Neo reaches for the red pill. PHYSICS: The simulation begins to dissolve. LOCATION: Machine fields — 852Hz structural order. NARRATIVE: The awakening begins."
-];
-let exIdx = 0;
+        if (coherence >= 0.99) {
+          box.classList.add("verdict-attested");
+          icon.textContent = "⬡";
+          text.textContent = "SCANNER_ATTESTED — ABSOLUTE";
+          sub.textContent = `Score ${attested.toFixed(3)} / 3.032 = ${(attested / 3.032).toFixed(4)}`;
+        } else if (coherence >= 0.8) {
+          box.classList.add("verdict-attested");
+          icon.textContent = "✓";
+          text.textContent = "ATTESTED — NOMINAL";
+          sub.textContent = `Score ${attested?.toFixed(3) || "—"} — coherence ${(coherence * 100).toFixed(1)}%`;
+        } else if (coherence >= 0.5) {
+          box.classList.add("verdict-warning");
+          icon.textContent = "⚠";
+          text.textContent = "PARTIAL ATTESTATION";
+          sub.textContent = `Coherence ${(coherence * 100).toFixed(1)}% — PHI/PSI poles diverge`;
+        } else {
+          box.classList.add("verdict-fail");
+          icon.textContent = "✗";
+          text.textContent = "ATTESTATION FAILED";
+          sub.textContent = `Coherence ${(coherence * 100).toFixed(1)}% — below critical threshold`;
+        }
+      }
 
-function loadExample() {
-  document.getElementById("attestText").value = EXAMPLES[exIdx % EXAMPLES.length];
-  exIdx++;
-}
+      async function runAttestation() {
+        const text = document.getElementById("attestText").value.trim();
+        if (!text) {
+          alert("Enter content to attest.");
+          return;
+        }
 
-function setScore(id, score) {
-  const el = document.getElementById(id);
-  if (score === null || score === undefined || score === "—") {
-    el.textContent = "—"; el.style.color = "var(--muted)"; return;
-  }
-  const val = typeof score === "number" ? score : parseFloat(score);
-  el.textContent = isNaN(val) ? "—" : val.toFixed(3);
-  el.style.color = val >= 0.9 ? "var(--green)" : val >= 0.7 ? "var(--cyan)" : val >= 0.5 ? "var(--yellow)" : "var(--red)";
-}
+        const btn = document.getElementById("attestBtn");
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner"></span> Attesting';
+        document.getElementById("verdictBox").style.display = "none";
+        setScore("phiScore", null);
+        setScore("psiScore", null);
+        document.getElementById("attestedScore").textContent = "—";
+        document.getElementById("coherenceVal").textContent = "—";
 
-function showVerdict(attested, coherence) {
-  const box = document.getElementById("verdictBox");
-  const icon = document.getElementById("verdictIcon");
-  const text = document.getElementById("verdictText");
-  const sub = document.getElementById("verdictSub");
-  box.style.display = "";
-  box.className = "verdict-box";
+        try {
+          // Get system attestation score
+          const r = await fetch(BASE + "/swarm/attest", { method: "GET" });
+          const sys = await r.json();
 
-  if (coherence >= 0.99) {
-    box.classList.add("verdict-attested");
-    icon.textContent = "⬡";
-    text.textContent = "SCANNER_ATTESTED — ABSOLUTE";
-    sub.textContent = `Score ${attested.toFixed(3)} / 3.032 = ${(attested/3.032).toFixed(4)}`;
-  } else if (coherence >= 0.8) {
-    box.classList.add("verdict-attested");
-    icon.textContent = "✓";
-    text.textContent = "ATTESTED — NOMINAL";
-    sub.textContent = `Score ${attested?.toFixed(3) || "—"} — coherence ${(coherence*100).toFixed(1)}%`;
-  } else if (coherence >= 0.5) {
-    box.classList.add("verdict-warning");
-    icon.textContent = "⚠";
-    text.textContent = "PARTIAL ATTESTATION";
-    sub.textContent = `Coherence ${(coherence*100).toFixed(1)}% — PHI/PSI poles diverge`;
-  } else {
-    box.classList.add("verdict-fail");
-    icon.textContent = "✗";
-    text.textContent = "ATTESTATION FAILED";
-    sub.textContent = `Coherence ${(coherence*100).toFixed(1)}% — below critical threshold`;
-  }
-}
+          // Use cinema to score the user's text (closest proxy to dual attestation on content)
+          const r2 = await fetch(BASE + "/cinema/virtualize", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ script: text, mode: "adaptive" }),
+          });
+          const cinema = await r2.json();
+          const contentCoherence =
+            cinema.cinema?.governance?.coherenceIndex ??
+            cinema.cinema?.coherenceIndex ??
+            0;
 
-async function runAttestation() {
-  const text = document.getElementById("attestText").value.trim();
-  if (!text) { alert("Enter content to attest."); return; }
+          // Compute PHI/PSI weighted scores
+          const sysCoherence = sys.swarmCoherence || 0;
+          const phi = 1.618,
+            psi = 1.414,
+            band = phi + psi; // 3.032
+          const alphaWeight = phi / band; // 0.5337
+          const omegaWeight = psi / band; // 0.4663
 
-  const btn = document.getElementById("attestBtn");
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span> Attesting';
-  document.getElementById("verdictBox").style.display = "none";
-  setScore("phiScore", null); setScore("psiScore", null);
-  document.getElementById("attestedScore").textContent = "—";
-  document.getElementById("coherenceVal").textContent = "—";
+          // Alpha pole: weighted average of system coherence and content coherence (leading)
+          const alpha = sysCoherence * 0.5 + contentCoherence * 0.5;
+          // Omega pole: reversed weighting (omega witnesses differently)
+          const omega = contentCoherence * 0.5 + sysCoherence * 0.5;
 
-  try {
-    // Get system attestation score
-    const r = await fetch(BASE + "/swarm/attest", { method: "GET" });
-    const sys = await r.json();
+          const attested =
+            alpha * (phi / band) * band + omega * (psi / band) * band;
+          // Simplified: attested = alpha * phi + omega * psi (band normalised)
+          const attestedNorm = alpha * alphaWeight + omega * omegaWeight;
+          const finalCoherence = (alpha + omega) / 2;
 
-    // Use cinema to score the user's text (closest proxy to dual attestation on content)
-    const r2 = await fetch(BASE + "/cinema/virtualize", {
-      method: "POST",
-      headers: {"Content-Type":"application/json"},
-      body: JSON.stringify({ script: text, mode: "adaptive" })
-    });
-    const cinema = await r2.json();
-    const contentCoherence = cinema.cinema?.governance?.coherenceIndex ?? cinema.cinema?.coherenceIndex ?? 0;
+          setScore("phiScore", alpha);
+          setScore("psiScore", omega);
+          document.getElementById("attestedScore").textContent =
+            attestedNorm.toFixed(4) + " / 1.0";
+          document.getElementById("coherenceVal").textContent =
+            (finalCoherence * 100).toFixed(2) + "%";
+          showVerdict(attested, finalCoherence);
+        } catch (e) {
+          document.getElementById("verdictBox").style.display = "";
+          document.getElementById("verdictBox").className =
+            "verdict-box verdict-fail";
+          document.getElementById("verdictIcon").textContent = "✗";
+          document.getElementById("verdictText").textContent =
+            "Connection Error";
+          document.getElementById("verdictSub").textContent = e.message;
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = "⬡ Attest";
+        }
+      }
 
-    // Compute PHI/PSI weighted scores
-    const sysCoherence = sys.swarmCoherence || 0;
-    const phi = 1.618, psi = 1.414, band = phi + psi; // 3.032
-    const alphaWeight = phi / band;  // 0.5337
-    const omegaWeight = psi / band;  // 0.4663
+      async function runSystemSweep() {
+        document.getElementById("sweepResult").innerHTML =
+          '<div class="placeholder">Sweeping 7 lattice source files…</div>';
+        try {
+          const r = await fetch(BASE + "/swarm/sweep?attest=1");
+          const d = await r.json();
+          const files = d.perFile || [];
+          const f = d.findings || {};
 
-    // Alpha pole: weighted average of system coherence and content coherence (leading)
-    const alpha = sysCoherence * 0.5 + contentCoherence * 0.5;
-    // Omega pole: reversed weighting (omega witnesses differently)
-    const omega = contentCoherence * 0.5 + sysCoherence * 0.5;
-
-    const attested = alpha * (phi / band) * band + omega * (psi / band) * band;
-    // Simplified: attested = alpha * phi + omega * psi (band normalised)
-    const attestedNorm = (alpha * alphaWeight + omega * omegaWeight);
-    const finalCoherence = (alpha + omega) / 2;
-
-    setScore("phiScore", alpha);
-    setScore("psiScore", omega);
-    document.getElementById("attestedScore").textContent = attestedNorm.toFixed(4) + " / 1.0";
-    document.getElementById("coherenceVal").textContent = (finalCoherence * 100).toFixed(2) + "%";
-    showVerdict(attested, finalCoherence);
-
-  } catch(e) {
-    document.getElementById("verdictBox").style.display = "";
-    document.getElementById("verdictBox").className = "verdict-box verdict-fail";
-    document.getElementById("verdictIcon").textContent = "✗";
-    document.getElementById("verdictText").textContent = "Connection Error";
-    document.getElementById("verdictSub").textContent = e.message;
-  } finally {
-    btn.disabled = false;
-    btn.innerHTML = "⬡ Attest";
-  }
-}
-
-async function runSystemSweep() {
-  document.getElementById("sweepResult").innerHTML = '<div class="placeholder">Sweeping 7 lattice source files…</div>';
-  try {
-    const r = await fetch(BASE + "/swarm/sweep?attest=1");
-    const d = await r.json();
-    const files = d.perFile || [];
-    const f = d.findings || {};
-
-    document.getElementById("sweepResult").innerHTML = `
+          document.getElementById("sweepResult").innerHTML = `
       <div class="findings-grid" style="margin-bottom:16px">
-        <div class="finding-cell"><div class="finding-count count-critical">${f.critical||0}</div><div class="finding-label">Critical</div></div>
-        <div class="finding-cell"><div class="finding-count count-high">${f.high||0}</div><div class="finding-label">High</div></div>
-        <div class="finding-cell"><div class="finding-count count-medium">${f.medium||0}</div><div class="finding-label">Medium</div></div>
-        <div class="finding-cell"><div class="finding-count count-low">${f.low||0}</div><div class="finding-label">Low</div></div>
+        <div class="finding-cell"><div class="finding-count count-critical">${f.critical || 0}</div><div class="finding-label">Critical</div></div>
+        <div class="finding-cell"><div class="finding-count count-high">${f.high || 0}</div><div class="finding-label">High</div></div>
+        <div class="finding-cell"><div class="finding-count count-medium">${f.medium || 0}</div><div class="finding-label">Medium</div></div>
+        <div class="finding-cell"><div class="finding-count count-low">${f.low || 0}</div><div class="finding-label">Low</div></div>
       </div>
-      <div class="stat-row" style="margin-bottom:12px"><span class="stat-key">Ecosystem Status</span><span style="color:var(--green);font-weight:700">${d.ecosystemStatus||"—"}</span></div>
-      <div class="stat-row" style="margin-bottom:12px"><span class="stat-key">Swarm Coherence</span><span style="color:var(--cyan);font-weight:700">${((d.swarmCoherence||0)*100).toFixed(1)}%</span></div>
+      <div class="stat-row" style="margin-bottom:12px"><span class="stat-key">Ecosystem Status</span><span style="color:var(--green);font-weight:700">${d.ecosystemStatus || "—"}</span></div>
+      <div class="stat-row" style="margin-bottom:12px"><span class="stat-key">Swarm Coherence</span><span style="color:var(--cyan);font-weight:700">${((d.swarmCoherence || 0) * 100).toFixed(1)}%</span></div>
       <div class="file-list">
-        ${files.map(f => `
+        ${files
+          .map(
+            (f) => `
           <div class="file-item">
-            <div class="file-status ${f.status==="NOMINAL"?"status-nominal":f.findings>0?"status-warn":"status-fail"}"></div>
-            <div class="file-name">${f.label?.replace("/app/","")}</div>
-            <div class="file-coherence">${((f.coherence||0)*100).toFixed(1)}%</div>
-          </div>`).join("")}
+            <div class="file-status ${f.status === "NOMINAL" ? "status-nominal" : f.findings > 0 ? "status-warn" : "status-fail"}"></div>
+            <div class="file-name">${f.label?.replace("/app/", "")}</div>
+            <div class="file-coherence">${((f.coherence || 0) * 100).toFixed(1)}%</div>
+          </div>`,
+          )
+          .join("")}
       </div>
     `;
-  } catch(e) {
-    document.getElementById("sweepResult").innerHTML = `<div class="placeholder" style="color:var(--red)">Error: ${e.message}</div>`;
-  }
-}
+        } catch (e) {
+          document.getElementById("sweepResult").innerHTML =
+            `<div class="placeholder" style="color:var(--red)">Error: ${e.message}</div>`;
+        }
+      }
 
-// Auto-run system sweep on load
-runSystemSweep();
-</script>
-</body>
+      // Auto-run system sweep on load
+      runSystemSweep();
+    </script>
+  </body>
 </html>

@@ -53,13 +53,21 @@ const AIOS_HTML = existsSync(AIOS_HTML_PATH)
   : null;
 
 const LAB_HTML_PATH = join(PUBLIC_DIR, "lab.html");
-const LAB_HTML = existsSync(LAB_HTML_PATH) ? readFileSync(LAB_HTML_PATH, "utf-8") : null;
+const LAB_HTML = existsSync(LAB_HTML_PATH)
+  ? readFileSync(LAB_HTML_PATH, "utf-8")
+  : null;
 const VIEWER_HTML_PATH = join(PUBLIC_DIR, "viewer.html");
-const VIEWER_HTML = existsSync(VIEWER_HTML_PATH) ? readFileSync(VIEWER_HTML_PATH, "utf-8") : null;
+const VIEWER_HTML = existsSync(VIEWER_HTML_PATH)
+  ? readFileSync(VIEWER_HTML_PATH, "utf-8")
+  : null;
 const ATTEST_HTML_PATH = join(PUBLIC_DIR, "attest.html");
-const ATTEST_HTML = existsSync(ATTEST_HTML_PATH) ? readFileSync(ATTEST_HTML_PATH, "utf-8") : null;
+const ATTEST_HTML = existsSync(ATTEST_HTML_PATH)
+  ? readFileSync(ATTEST_HTML_PATH, "utf-8")
+  : null;
 const DASHBOARD_HTML_PATH = join(PUBLIC_DIR, "dashboard.html");
-const DASHBOARD_HTML = existsSync(DASHBOARD_HTML_PATH) ? readFileSync(DASHBOARD_HTML_PATH, "utf-8") : null;
+const DASHBOARD_HTML = existsSync(DASHBOARD_HTML_PATH)
+  ? readFileSync(DASHBOARD_HTML_PATH, "utf-8")
+  : null;
 
 // ─── 67aios.com anti-review marketing page ───────────────────────────────────
 const AIOS67_HTML_PATH = join(__dirname_static, "public-67aios", "index.html");
@@ -251,7 +259,10 @@ const server = createServer(async (req, res) => {
     // ── 67aios.com — route entire hostname to anti-review marketing page ──
     const host = (req.headers.host || "").replace(/:\d+$/, "").toLowerCase();
     if (host === "67aios.com" || host === "www.67aios.com") {
-      if (req.method === "GET" && (pathname === "/" || pathname === "/index.html")) {
+      if (
+        req.method === "GET" &&
+        (pathname === "/" || pathname === "/index.html")
+      ) {
         if (AIOS67_HTML) {
           res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
           res.end(AIOS67_HTML);
@@ -1043,14 +1054,23 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       const s = { ...session };
       // Strip internal resonance constants
       if (s.resonance) {
-        const { architectureSignature: _as, phi: _phi, ...safeResonance } = s.resonance;
+        const {
+          architectureSignature: _as,
+          phi: _phi,
+          ...safeResonance
+        } = s.resonance;
         s.resonance = safeResonance;
       }
       // Strip internal geoqode envelope
       delete s.geoqode;
       // Strip internal projection environment fields
       if (s.projection?.environment) {
-        const { architectureSignature: _as, dimensionality: _dim, authorship: _auth, ...safeEnv } = s.projection.environment;
+        const {
+          architectureSignature: _as,
+          dimensionality: _dim,
+          authorship: _auth,
+          ...safeEnv
+        } = s.projection.environment;
         s.projection = { ...s.projection, environment: safeEnv };
       }
       // Strip phiCoefficient and architectureLayer from semantic embeddings
@@ -1059,7 +1079,12 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
           ...s.semanticProfile,
           embeddings: s.semanticProfile.embeddings.map((e) => {
             if (typeof e === "string") return e;
-            const { phiCoefficient: _pc, architectureLayer: _al, architectureSignature: _as, ...safeE } = e;
+            const {
+              phiCoefficient: _pc,
+              architectureLayer: _al,
+              architectureSignature: _as,
+              ...safeE
+            } = e;
             return safeE;
           }),
         };
@@ -1097,7 +1122,10 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
           mode,
           title,
         });
-        return json(res, 200, { ok: true, session: sanitizeTheatreSession(session) });
+        return json(res, 200, {
+          ok: true,
+          session: sanitizeTheatreSession(session),
+        });
       } catch (err) {
         return json(res, 422, {
           ok: false,
@@ -1117,7 +1145,10 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       try {
         const theatre = await getTheatre();
         const session = await theatre.programme(name, body);
-        return json(res, 200, { ok: true, session: sanitizeTheatreSession(session) });
+        return json(res, 200, {
+          ok: true,
+          session: sanitizeTheatreSession(session),
+        });
       } catch (err) {
         const status = err.message.includes("Unknown programme") ? 404 : 422;
         return json(res, status, { ok: false, error: err.message });
@@ -1398,7 +1429,8 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
 
     // ── GET /lab — GeoQode Playground ──────────────────────────────────────
     if (req.method === "GET" && pathname === "/lab") {
-      if (!LAB_HTML) return json(res, 404, { ok: false, error: "Lab page not found" });
+      if (!LAB_HTML)
+        return json(res, 404, { ok: false, error: "Lab page not found" });
       res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
       res.end(LAB_HTML);
       return;
@@ -1406,7 +1438,8 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
 
     // ── GET /viewer — Theatre Viewer ──────────────────────────────────────
     if (req.method === "GET" && pathname === "/viewer") {
-      if (!VIEWER_HTML) return json(res, 404, { ok: false, error: "Viewer page not found" });
+      if (!VIEWER_HTML)
+        return json(res, 404, { ok: false, error: "Viewer page not found" });
       res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
       res.end(VIEWER_HTML);
       return;
@@ -1414,7 +1447,8 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
 
     // ── GET /attest — Swarm Attestation UI ───────────────────────────────
     if (req.method === "GET" && pathname === "/attest") {
-      if (!ATTEST_HTML) return json(res, 404, { ok: false, error: "Attest page not found" });
+      if (!ATTEST_HTML)
+        return json(res, 404, { ok: false, error: "Attest page not found" });
       res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
       res.end(ATTEST_HTML);
       return;
@@ -1422,7 +1456,8 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
 
     // ── GET /dashboard — Awareness Dashboard ─────────────────────────────
     if (req.method === "GET" && pathname === "/dashboard") {
-      if (!DASHBOARD_HTML) return json(res, 404, { ok: false, error: "Dashboard page not found" });
+      if (!DASHBOARD_HTML)
+        return json(res, 404, { ok: false, error: "Dashboard page not found" });
       res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
       res.end(DASHBOARD_HTML);
       return;
@@ -1435,14 +1470,21 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
 
     // ── GET /audio/frequencies ────────────────────────────────────────────
     if (req.method === "GET" && pathname === "/audio/frequencies") {
-      return json(res, 200, { ok: true, solfeggioScale: SOLFEGGIO, audioFrequencyMap: AUDIO_FREQUENCY_MAP });
+      return json(res, 200, {
+        ok: true,
+        solfeggioScale: SOLFEGGIO,
+        audioFrequencyMap: AUDIO_FREQUENCY_MAP,
+      });
     }
 
     // ── POST /audio/score ─────────────────────────────────────────────────
     if (req.method === "POST" && pathname === "/audio/score") {
       const body = await readBody(req);
       if (!body.text || typeof body.text !== "string") {
-        return json(res, 400, { ok: false, error: "text (string) is required" });
+        return json(res, 400, {
+          ok: false,
+          error: "text (string) is required",
+        });
       }
       const profile = getALM().score(body.text, { genre: body.genre });
       return json(res, 200, { ok: true, profile });
@@ -1452,9 +1494,14 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
     if (req.method === "POST" && pathname === "/audio/sequence") {
       const body = await readBody(req);
       if (!body.text || typeof body.text !== "string") {
-        return json(res, 400, { ok: false, error: "text (string) is required" });
+        return json(res, 400, {
+          ok: false,
+          error: "text (string) is required",
+        });
       }
-      const seq = getALM().sequence(body.text, { maxSteps: body.maxSteps || 16 });
+      const seq = getALM().sequence(body.text, {
+        maxSteps: body.maxSteps || 16,
+      });
       return json(res, 200, { ok: true, sequence: seq });
     }
 

@@ -1,128 +1,536 @@
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>GeoQode Playground — AIOS Lab</title>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#050a14;--bg2:#0a1225;--bg3:#0f1c35;--cyan:#00d4ff;--purple:#7c3aed;--pink:#d946ef;--green:#22c55e;--yellow:#f59e0b;--red:#ef4444;--text:#e2e8f0;--muted:#64748b;--border:rgba(0,212,255,0.12);--card-bg:rgba(10,18,37,0.8)}
-html{scroll-behavior:smooth}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;line-height:1.6}
-body::before{content:"";position:fixed;inset:0;background-image:linear-gradient(rgba(0,212,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0}
-nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;background:rgba(5,10,20,0.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
-.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
-.nav-logo{font-size:18px;font-weight:800;color:var(--cyan)}
-.nav-badge{font-size:10px;font-weight:700;letter-spacing:2px;color:var(--muted);border:1px solid var(--border);padding:2px 7px;border-radius:4px;text-transform:uppercase}
-.nav-links{display:flex;gap:20px;align-items:center}
-.nav-links a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:500;transition:color .2s}
-.nav-links a:hover,.nav-links a.active{color:var(--cyan)}
-main{padding-top:70px;height:100vh;display:flex;flex-direction:column}
-.toolbar{padding:10px 20px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-shrink:0}
-.toolbar-title{font-size:13px;font-weight:600;color:var(--cyan);letter-spacing:1px}
-.btn{padding:7px 16px;border-radius:6px;border:none;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:6px}
-.btn-primary{background:var(--cyan);color:#000}
-.btn-primary:hover{opacity:.85}
-.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border)}
-.btn-ghost:hover{color:var(--text);border-color:rgba(0,212,255,0.3)}
-.btn-danger{background:var(--red);color:#fff}
-.btn-sm{padding:5px 12px;font-size:12px}
-.spacer{flex:1}
-.status-pill{padding:4px 10px;border-radius:100px;font-size:11px;font-weight:700;letter-spacing:1px}
-.pill-green{background:rgba(34,197,94,0.15);color:var(--green);border:1px solid rgba(34,197,94,0.3)}
-.pill-red{background:rgba(239,68,68,0.15);color:var(--red);border:1px solid rgba(239,68,68,0.3)}
-.pill-yellow{background:rgba(245,158,11,0.15);color:var(--yellow);border:1px solid rgba(245,158,11,0.3)}
-.pill-cyan{background:rgba(0,212,255,0.15);color:var(--cyan);border:1px solid rgba(0,212,255,0.3)}
-.pill-purple{background:rgba(124,58,237,0.15);color:var(--purple);border:1px solid rgba(124,58,237,0.3)}
-.split{display:flex;flex:1;overflow:hidden}
-.editor-pane{flex:1;display:flex;flex-direction:column;border-right:1px solid var(--border)}
-.result-pane{width:420px;flex-shrink:0;display:flex;flex-direction:column;overflow:hidden}
-.pane-header{padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);font-size:12px;font-weight:600;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;display:flex;align-items:center;gap:8px}
-.pane-header .dot{width:8px;height:8px;border-radius:50%;background:var(--cyan)}
-textarea{flex:1;width:100%;background:#070d1a;color:#e2e8f0;border:none;outline:none;resize:none;font-family:"Fira Code","Cascadia Code","Consolas",monospace;font-size:13px;line-height:1.7;padding:16px;tab-size:2}
-textarea::placeholder{color:var(--muted)}
-.result-scroll{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:16px}
-.result-scroll::-webkit-scrollbar{width:4px}
-.result-scroll::-webkit-scrollbar-track{background:transparent}
-.result-scroll::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
-.card{background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:14px}
-.card-title{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
-.coherence-ring{position:relative;width:120px;height:120px;margin:0 auto 12px}
-svg.ring{width:120px;height:120px}
-.ring-bg{stroke:rgba(0,212,255,0.08);stroke-width:8;fill:none}
-.ring-fill{stroke-width:8;fill:none;stroke-linecap:round;transform-origin:center;transform:rotate(-90deg);transition:stroke-dashoffset 0.8s ease}
-.ring-value{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
-.ring-number{font-size:22px;font-weight:800;color:var(--text)}
-.ring-label{font-size:10px;color:var(--muted);letter-spacing:1px}
-.stat-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);font-size:13px}
-.stat-row:last-child{border-bottom:none}
-.stat-key{color:var(--muted)}
-.stat-val{font-weight:600;font-size:12px}
-.dim-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:4px}
-.dim-cell{width:100%;aspect-ratio:1;border-radius:3px;background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.08);position:relative;cursor:default;transition:all .3s}
-.dim-cell.active{background:rgba(0,212,255,0.2);border-color:var(--cyan);box-shadow:0 0 6px rgba(0,212,255,0.3)}
-.dim-cell.fail{background:rgba(239,68,68,0.2);border-color:var(--red)}
-.dim-cell.warn{background:rgba(245,158,11,0.2);border-color:var(--yellow)}
-.dim-cell[title]:hover::after{content:attr(title);position:absolute;bottom:calc(100%+4px);left:50%;transform:translateX(-50%);background:#0a1225;border:1px solid var(--border);padding:4px 8px;border-radius:4px;font-size:10px;white-space:nowrap;z-index:10;color:var(--text);pointer-events:none}
-.scene-list{display:flex;flex-direction:column;gap:6px}
-.scene-item{background:rgba(0,212,255,0.04);border:1px solid var(--border);border-radius:6px;padding:8px 10px;font-size:12px}
-.scene-type{font-size:10px;font-weight:700;letter-spacing:1px;color:var(--cyan);text-transform:uppercase;margin-bottom:2px}
-.scene-content{color:var(--muted);line-height:1.4}
-.placeholder-text{color:var(--muted);font-size:13px;text-align:center;padding:24px 0}
-#runBtn{min-width:88px}
-#runBtn.loading{pointer-events:none;opacity:.7}
-.spinner{display:inline-block;width:12px;height:12px;border:2px solid rgba(0,0,0,0.3);border-top-color:#000;border-radius:50%;animation:spin .7s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.freq-bar{display:flex;align-items:center;gap:8px;padding:4px 0}
-.freq-label{font-size:10px;color:var(--muted);width:80px;flex-shrink:0}
-.freq-track{flex:1;height:6px;background:rgba(0,212,255,0.08);border-radius:3px;overflow:hidden}
-.freq-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--cyan),var(--purple));transition:width .6s ease}
-.freq-val{font-size:10px;color:var(--cyan);width:50px;text-align:right;flex-shrink:0}
-</style>
-</head>
-<body>
-<nav>
-  <a href="/" class="nav-brand"><span class="nav-logo">AIOS</span><span class="nav-badge">Lab</span></a>
-  <div class="nav-links">
-    <a href="/lab" class="active">GeoQode Playground</a>
-    <a href="/viewer">Theatre Viewer</a>
-    <a href="/attest">Attestation</a>
-    <a href="/dashboard">Awareness</a>
-  </div>
-</nav>
-
-<main>
-  <div class="toolbar">
-    <span class="toolbar-title">GeoQode Playground</span>
-    <span id="statusPill" class="status-pill pill-cyan">READY</span>
-    <div class="spacer"></div>
-    <button class="btn btn-ghost btn-sm" onclick="loadTemplate('basic')">Basic Template</button>
-    <button class="btn btn-ghost btn-sm" onclick="loadTemplate('matrix')">Matrix .geo</button>
-    <button class="btn btn-ghost btn-sm" onclick="loadTemplate('physics')">Physics Script</button>
-    <button class="btn btn-ghost btn-sm" onclick="clearEditor()">Clear</button>
-    <button id="runBtn" class="btn btn-primary" onclick="runScript()">▶ Run</button>
-  </div>
-
-  <div class="split">
-    <div class="editor-pane">
-      <div class="pane-header"><span class="dot"></span>Script Editor — .geo Format</div>
-      <textarea id="editor" spellcheck="false" placeholder="Write a .geo script or narrative..."></textarea>
-    </div>
-
-    <div class="result-pane">
-      <div class="pane-header"><span class="dot"></span>Projection Result</div>
-      <div class="result-scroll" id="resultPane">
-        <div class="placeholder-text">Run a script to see the lattice projection output</div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>GeoQode Playground — AIOS Lab</title>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --bg: #050a14;
+        --bg2: #0a1225;
+        --bg3: #0f1c35;
+        --cyan: #00d4ff;
+        --purple: #7c3aed;
+        --pink: #d946ef;
+        --green: #22c55e;
+        --yellow: #f59e0b;
+        --red: #ef4444;
+        --text: #e2e8f0;
+        --muted: #64748b;
+        --border: rgba(0, 212, 255, 0.12);
+        --card-bg: rgba(10, 18, 37, 0.8);
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        overflow-x: hidden;
+        line-height: 1.6;
+      }
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+        background-size: 60px 60px;
+        pointer-events: none;
+        z-index: 0;
+      }
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        padding: 14px 28px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: rgba(5, 10, 20, 0.9);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border);
+      }
+      .nav-brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+      }
+      .nav-logo {
+        font-size: 18px;
+        font-weight: 800;
+        color: var(--cyan);
+      }
+      .nav-badge {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        color: var(--muted);
+        border: 1px solid var(--border);
+        padding: 2px 7px;
+        border-radius: 4px;
+        text-transform: uppercase;
+      }
+      .nav-links {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+      }
+      .nav-links a {
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 500;
+        transition: color 0.2s;
+      }
+      .nav-links a:hover,
+      .nav-links a.active {
+        color: var(--cyan);
+      }
+      main {
+        padding-top: 70px;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .toolbar {
+        padding: 10px 20px;
+        background: var(--bg2);
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-shrink: 0;
+      }
+      .toolbar-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--cyan);
+        letter-spacing: 1px;
+      }
+      .btn {
+        padding: 7px 16px;
+        border-radius: 6px;
+        border: none;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .btn-primary {
+        background: var(--cyan);
+        color: #000;
+      }
+      .btn-primary:hover {
+        opacity: 0.85;
+      }
+      .btn-ghost {
+        background: transparent;
+        color: var(--muted);
+        border: 1px solid var(--border);
+      }
+      .btn-ghost:hover {
+        color: var(--text);
+        border-color: rgba(0, 212, 255, 0.3);
+      }
+      .btn-danger {
+        background: var(--red);
+        color: #fff;
+      }
+      .btn-sm {
+        padding: 5px 12px;
+        font-size: 12px;
+      }
+      .spacer {
+        flex: 1;
+      }
+      .status-pill {
+        padding: 4px 10px;
+        border-radius: 100px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+      }
+      .pill-green {
+        background: rgba(34, 197, 94, 0.15);
+        color: var(--green);
+        border: 1px solid rgba(34, 197, 94, 0.3);
+      }
+      .pill-red {
+        background: rgba(239, 68, 68, 0.15);
+        color: var(--red);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+      }
+      .pill-yellow {
+        background: rgba(245, 158, 11, 0.15);
+        color: var(--yellow);
+        border: 1px solid rgba(245, 158, 11, 0.3);
+      }
+      .pill-cyan {
+        background: rgba(0, 212, 255, 0.15);
+        color: var(--cyan);
+        border: 1px solid rgba(0, 212, 255, 0.3);
+      }
+      .pill-purple {
+        background: rgba(124, 58, 237, 0.15);
+        color: var(--purple);
+        border: 1px solid rgba(124, 58, 237, 0.3);
+      }
+      .split {
+        display: flex;
+        flex: 1;
+        overflow: hidden;
+      }
+      .editor-pane {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        border-right: 1px solid var(--border);
+      }
+      .result-pane {
+        width: 420px;
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .pane-header {
+        padding: 10px 16px;
+        background: var(--bg2);
+        border-bottom: 1px solid var(--border);
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 1.5px;
+        color: var(--muted);
+        text-transform: uppercase;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .pane-header .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--cyan);
+      }
+      textarea {
+        flex: 1;
+        width: 100%;
+        background: #070d1a;
+        color: #e2e8f0;
+        border: none;
+        outline: none;
+        resize: none;
+        font-family: "Fira Code", "Cascadia Code", "Consolas", monospace;
+        font-size: 13px;
+        line-height: 1.7;
+        padding: 16px;
+        tab-size: 2;
+      }
+      textarea::placeholder {
+        color: var(--muted);
+      }
+      .result-scroll {
+        flex: 1;
+        overflow-y: auto;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .result-scroll::-webkit-scrollbar {
+        width: 4px;
+      }
+      .result-scroll::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .result-scroll::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: 2px;
+      }
+      .card {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 14px;
+      }
+      .card-title {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 12px;
+      }
+      .coherence-ring {
+        position: relative;
+        width: 120px;
+        height: 120px;
+        margin: 0 auto 12px;
+      }
+      svg.ring {
+        width: 120px;
+        height: 120px;
+      }
+      .ring-bg {
+        stroke: rgba(0, 212, 255, 0.08);
+        stroke-width: 8;
+        fill: none;
+      }
+      .ring-fill {
+        stroke-width: 8;
+        fill: none;
+        stroke-linecap: round;
+        transform-origin: center;
+        transform: rotate(-90deg);
+        transition: stroke-dashoffset 0.8s ease;
+      }
+      .ring-value {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+      }
+      .ring-number {
+        font-size: 22px;
+        font-weight: 800;
+        color: var(--text);
+      }
+      .ring-label {
+        font-size: 10px;
+        color: var(--muted);
+        letter-spacing: 1px;
+      }
+      .stat-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 6px 0;
+        border-bottom: 1px solid var(--border);
+        font-size: 13px;
+      }
+      .stat-row:last-child {
+        border-bottom: none;
+      }
+      .stat-key {
+        color: var(--muted);
+      }
+      .stat-val {
+        font-weight: 600;
+        font-size: 12px;
+      }
+      .dim-grid {
+        display: grid;
+        grid-template-columns: repeat(8, 1fr);
+        gap: 4px;
+      }
+      .dim-cell {
+        width: 100%;
+        aspect-ratio: 1;
+        border-radius: 3px;
+        background: rgba(0, 212, 255, 0.05);
+        border: 1px solid rgba(0, 212, 255, 0.08);
+        position: relative;
+        cursor: default;
+        transition: all 0.3s;
+      }
+      .dim-cell.active {
+        background: rgba(0, 212, 255, 0.2);
+        border-color: var(--cyan);
+        box-shadow: 0 0 6px rgba(0, 212, 255, 0.3);
+      }
+      .dim-cell.fail {
+        background: rgba(239, 68, 68, 0.2);
+        border-color: var(--red);
+      }
+      .dim-cell.warn {
+        background: rgba(245, 158, 11, 0.2);
+        border-color: var(--yellow);
+      }
+      .dim-cell[title]:hover::after {
+        content: attr(title);
+        position: absolute;
+        bottom: calc(100%+4px);
+        left: 50%;
+        transform: translateX(-50%);
+        background: #0a1225;
+        border: 1px solid var(--border);
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 10px;
+        white-space: nowrap;
+        z-index: 10;
+        color: var(--text);
+        pointer-events: none;
+      }
+      .scene-list {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .scene-item {
+        background: rgba(0, 212, 255, 0.04);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 8px 10px;
+        font-size: 12px;
+      }
+      .scene-type {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        color: var(--cyan);
+        text-transform: uppercase;
+        margin-bottom: 2px;
+      }
+      .scene-content {
+        color: var(--muted);
+        line-height: 1.4;
+      }
+      .placeholder-text {
+        color: var(--muted);
+        font-size: 13px;
+        text-align: center;
+        padding: 24px 0;
+      }
+      #runBtn {
+        min-width: 88px;
+      }
+      #runBtn.loading {
+        pointer-events: none;
+        opacity: 0.7;
+      }
+      .spinner {
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        border: 2px solid rgba(0, 0, 0, 0.3);
+        border-top-color: #000;
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .freq-bar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px 0;
+      }
+      .freq-label {
+        font-size: 10px;
+        color: var(--muted);
+        width: 80px;
+        flex-shrink: 0;
+      }
+      .freq-track {
+        flex: 1;
+        height: 6px;
+        background: rgba(0, 212, 255, 0.08);
+        border-radius: 3px;
+        overflow: hidden;
+      }
+      .freq-fill {
+        height: 100%;
+        border-radius: 3px;
+        background: linear-gradient(90deg, var(--cyan), var(--purple));
+        transition: width 0.6s ease;
+      }
+      .freq-val {
+        font-size: 10px;
+        color: var(--cyan);
+        width: 50px;
+        text-align: right;
+        flex-shrink: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="/" class="nav-brand"
+        ><span class="nav-logo">AIOS</span><span class="nav-badge">Lab</span></a
+      >
+      <div class="nav-links">
+        <a href="/lab" class="active">GeoQode Playground</a>
+        <a href="/viewer">Theatre Viewer</a>
+        <a href="/attest">Attestation</a>
+        <a href="/dashboard">Awareness</a>
       </div>
-    </div>
-  </div>
-</main>
+    </nav>
 
-<script>
-const BASE = "https://realaios.com";
+    <main>
+      <div class="toolbar">
+        <span class="toolbar-title">GeoQode Playground</span>
+        <span id="statusPill" class="status-pill pill-cyan">READY</span>
+        <div class="spacer"></div>
+        <button class="btn btn-ghost btn-sm" onclick="loadTemplate('basic')">
+          Basic Template
+        </button>
+        <button class="btn btn-ghost btn-sm" onclick="loadTemplate('matrix')">
+          Matrix .geo
+        </button>
+        <button class="btn btn-ghost btn-sm" onclick="loadTemplate('physics')">
+          Physics Script
+        </button>
+        <button class="btn btn-ghost btn-sm" onclick="clearEditor()">
+          Clear
+        </button>
+        <button id="runBtn" class="btn btn-primary" onclick="runScript()">
+          ▶ Run
+        </button>
+      </div>
 
-const TEMPLATES = {
-  basic: `Playbook GeoQode experiment {
+      <div class="split">
+        <div class="editor-pane">
+          <div class="pane-header">
+            <span class="dot"></span>Script Editor — .geo Format
+          </div>
+          <textarea
+            id="editor"
+            spellcheck="false"
+            placeholder="Write a .geo script or narrative..."
+          ></textarea>
+        </div>
+
+        <div class="result-pane">
+          <div class="pane-header">
+            <span class="dot"></span>Projection Result
+          </div>
+          <div class="result-scroll" id="resultPane">
+            <div class="placeholder-text">
+              Run a script to see the lattice projection output
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      const BASE = "https://realaios.com";
+
+      const TEMPLATES = {
+        basic: `Playbook GeoQode experiment {
   TITLE: Hello Lattice
   GENRE: Narrative
   SCENES:
@@ -135,7 +543,7 @@ const TEMPLATES = {
     LOCATION: "Lattice node 17"
   PROJECTION: Holographic coherence sweep
 }`,
-  matrix: `Playbook CinemaVirtualization matrix {
+        matrix: `Playbook CinemaVirtualization matrix {
   TITLE: The Matrix — Construct Room
   GENRE: Sci-Fi Action
   SCENES:
@@ -154,7 +562,7 @@ const TEMPLATES = {
   PROJECTION: Construct holography + lattice tessellation
   AUTHORSHIP: Founder — Bradley
 }`,
-  physics: `Playbook PhysicsExperiment quantum {
+        physics: `Playbook PhysicsExperiment quantum {
   TITLE: Quantum Resonance Field
   GENRE: Physics
   SCENES:
@@ -171,74 +579,91 @@ const TEMPLATES = {
     PHYSICS: "PHI/PSI dual attestation: 3.032 golden band"
     LOCATION: "D48 canonical node"
   PROJECTION: Full harmonic spectrum D480
-}`
-};
+}`,
+      };
 
-function loadTemplate(name) {
-  document.getElementById("editor").value = TEMPLATES[name] || "";
-}
+      function loadTemplate(name) {
+        document.getElementById("editor").value = TEMPLATES[name] || "";
+      }
 
-function clearEditor() {
-  document.getElementById("editor").value = "";
-  document.getElementById("resultPane").innerHTML = '<div class="placeholder-text">Run a script to see the lattice projection output</div>';
-  setStatus("READY", "cyan");
-}
+      function clearEditor() {
+        document.getElementById("editor").value = "";
+        document.getElementById("resultPane").innerHTML =
+          '<div class="placeholder-text">Run a script to see the lattice projection output</div>';
+        setStatus("READY", "cyan");
+      }
 
-function setStatus(text, color) {
-  const el = document.getElementById("statusPill");
-  el.textContent = text;
-  el.className = "status-pill pill-" + color;
-}
+      function setStatus(text, color) {
+        const el = document.getElementById("statusPill");
+        el.textContent = text;
+        el.className = "status-pill pill-" + color;
+      }
 
-async function runScript() {
-  const script = document.getElementById("editor").value.trim();
-  if (!script) { alert("Write a script first."); return; }
+      async function runScript() {
+        const script = document.getElementById("editor").value.trim();
+        if (!script) {
+          alert("Write a script first.");
+          return;
+        }
 
-  const btn = document.getElementById("runBtn");
-  btn.innerHTML = '<span class="spinner"></span> Running';
-  btn.classList.add("loading");
-  setStatus("RUNNING", "yellow");
+        const btn = document.getElementById("runBtn");
+        btn.innerHTML = '<span class="spinner"></span> Running';
+        btn.classList.add("loading");
+        setStatus("RUNNING", "yellow");
 
-  try {
-    const r = await fetch(BASE + "/cinema/virtualize", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ script, mode: "immersive" })
-    });
-    const data = await r.json();
-    renderResult(data.cinema || data);
-  } catch(e) {
-    setStatus("ERROR", "red");
-    document.getElementById("resultPane").innerHTML = `<div class="card"><div class="card-title">Error</div><div style="color:var(--red);font-size:13px">${e.message}</div></div>`;
-  } finally {
-    btn.innerHTML = "▶ Run";
-    btn.classList.remove("loading");
-  }
-}
+        try {
+          const r = await fetch(BASE + "/cinema/virtualize", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ script, mode: "immersive" }),
+          });
+          const data = await r.json();
+          renderResult(data.cinema || data);
+        } catch (e) {
+          setStatus("ERROR", "red");
+          document.getElementById("resultPane").innerHTML =
+            `<div class="card"><div class="card-title">Error</div><div style="color:var(--red);font-size:13px">${e.message}</div></div>`;
+        } finally {
+          btn.innerHTML = "▶ Run";
+          btn.classList.remove("loading");
+        }
+      }
 
-function renderResult(c) {
-  const status = c.status || "unknown";
-  const coherence = c.governance?.coherenceIndex ?? c.coherenceIndex ?? 0;
-  const pct = Math.round(coherence * 100);
+      function renderResult(c) {
+        const status = c.status || "unknown";
+        const coherence = c.governance?.coherenceIndex ?? c.coherenceIndex ?? 0;
+        const pct = Math.round(coherence * 100);
 
-  const statusColor = {
-    "aborted": "red", "warning": "yellow", "nominal": "cyan",
-    "optimal": "purple", "singularity": "green", "full_immersion": "green"
-  }[status] || "cyan";
+        const statusColor =
+          {
+            aborted: "red",
+            warning: "yellow",
+            nominal: "cyan",
+            optimal: "purple",
+            singularity: "green",
+            full_immersion: "green",
+          }[status] || "cyan";
 
-  setStatus(status.toUpperCase(), statusColor);
+        setStatus(status.toUpperCase(), statusColor);
 
-  // Coherence ring color
-  const ringColor = coherence < 0.4 ? "#ef4444" : coherence < 0.65 ? "#f59e0b" : coherence < 0.95 ? "#00d4ff" : "#22c55e";
-  const circumference = 2 * Math.PI * 52;
-  const dashOffset = circumference * (1 - coherence);
+        // Coherence ring color
+        const ringColor =
+          coherence < 0.4
+            ? "#ef4444"
+            : coherence < 0.65
+              ? "#f59e0b"
+              : coherence < 0.95
+                ? "#00d4ff"
+                : "#22c55e";
+        const circumference = 2 * Math.PI * 52;
+        const dashOffset = circumference * (1 - coherence);
 
-  // Build dimension activation — simulate based on coherence
-  const dims = buildDimensions(coherence);
-  const scenes = c.scenes || c.frames || [];
-  const gov = c.governance || {};
+        // Build dimension activation — simulate based on coherence
+        const dims = buildDimensions(coherence);
+        const scenes = c.scenes || c.frames || [];
+        const gov = c.governance || {};
 
-  document.getElementById("resultPane").innerHTML = `
+        document.getElementById("resultPane").innerHTML = `
   <div class="card">
     <div class="card-title">Projection Coherence</div>
     <div class="coherence-ring">
@@ -263,7 +688,7 @@ function renderResult(c) {
 
   <div class="card">
     <div class="card-title">48D Lattice Activation</div>
-    <div class="dim-grid" id="dimGrid">${dims.map((d,i)=>`<div class="dim-cell ${d.state}" title="D${i+1}: ${d.name}"></div>`).join("")}</div>
+    <div class="dim-grid" id="dimGrid">${dims.map((d, i) => `<div class="dim-cell ${d.state}" title="D${i + 1}: ${d.name}"></div>`).join("")}</div>
     <div style="display:flex;gap:12px;margin-top:8px">
       <span style="font-size:10px;color:var(--cyan)">■ Active</span>
       <span style="font-size:10px;color:var(--yellow)">■ Warning</span>
@@ -271,66 +696,114 @@ function renderResult(c) {
     </div>
   </div>
 
-  ${scenes.length > 0 ? `<div class="card">
+  ${
+    scenes.length > 0
+      ? `<div class="card">
     <div class="card-title">Parsed Scenes (${scenes.length})</div>
-    <div class="scene-list">${scenes.map(s=>`
+    <div class="scene-list">${scenes
+      .map(
+        (s) => `
       <div class="scene-item">
         <div class="scene-type">${s.type || s.semanticType || "SCENE"}</div>
-        <div class="scene-content">${s.content || s.text || JSON.stringify(s).slice(0,80)}</div>
-      </div>`).join("")}
+        <div class="scene-content">${s.content || s.text || JSON.stringify(s).slice(0, 80)}</div>
+      </div>`,
+      )
+      .join("")}
     </div>
-  </div>` : ""}
+  </div>`
+      : ""
+  }
 
   <div class="card">
     <div class="card-title">Frequency Profile</div>
     ${buildFreqBars(coherence)}
   </div>
   `;
-}
+      }
 
-function buildDimensions(coherence) {
-  const NAMES = [
-    "Syntax Compliance","Token Integrity","AST Validity","Operator Binding",
-    "Scope Resolution","Type Coherence","Literal Integrity","Foundation Anchor",
-    "Encoding Compliance","Comment Preservation","EOF Handling","Foundation Redundancy",
-    "Node Emission","Spectral Binding","Detection Field","Duality Resolution",
-    "Octahedron Field","Harmonic Coupling","Execution Logging","Error Propagation",
-    "Resource Cleanup","State Persistence","Event Emission","Bridge Telemetry",
-    "Playbook Execution","Bosonic Anchor","Trigger Binding","Action Dispatch",
-    "Metric Recording","Pattern Matching","Condition Evaluation","Loop Integrity",
-    "Playbook Chaining","Context Propagation","Knowledge Persistence","Subsystem Collapse",
-    "QBITS Materialization","Frequency Validation","Harmonic Series","Crystallization",
-    "Cymatic Pattern","Water Memory","Sonic Driver","Quantum Resonance",
-    "Golden Bridge Layer","Interference Mitigation","Business Overlay","Resonance Certificate"
-  ];
-  return NAMES.map((name, i) => {
-    const threshold = i < 8 ? 0.3 : i < 24 ? 0.5 : i < 36 ? 0.65 : 0.8;
-    let state = "active";
-    if (coherence < threshold * 0.5) state = "fail";
-    else if (coherence < threshold) state = "warn";
-    return { name, state };
-  });
-}
+      function buildDimensions(coherence) {
+        const NAMES = [
+          "Syntax Compliance",
+          "Token Integrity",
+          "AST Validity",
+          "Operator Binding",
+          "Scope Resolution",
+          "Type Coherence",
+          "Literal Integrity",
+          "Foundation Anchor",
+          "Encoding Compliance",
+          "Comment Preservation",
+          "EOF Handling",
+          "Foundation Redundancy",
+          "Node Emission",
+          "Spectral Binding",
+          "Detection Field",
+          "Duality Resolution",
+          "Octahedron Field",
+          "Harmonic Coupling",
+          "Execution Logging",
+          "Error Propagation",
+          "Resource Cleanup",
+          "State Persistence",
+          "Event Emission",
+          "Bridge Telemetry",
+          "Playbook Execution",
+          "Bosonic Anchor",
+          "Trigger Binding",
+          "Action Dispatch",
+          "Metric Recording",
+          "Pattern Matching",
+          "Condition Evaluation",
+          "Loop Integrity",
+          "Playbook Chaining",
+          "Context Propagation",
+          "Knowledge Persistence",
+          "Subsystem Collapse",
+          "QBITS Materialization",
+          "Frequency Validation",
+          "Harmonic Series",
+          "Crystallization",
+          "Cymatic Pattern",
+          "Water Memory",
+          "Sonic Driver",
+          "Quantum Resonance",
+          "Golden Bridge Layer",
+          "Interference Mitigation",
+          "Business Overlay",
+          "Resonance Certificate",
+        ];
+        return NAMES.map((name, i) => {
+          const threshold = i < 8 ? 0.3 : i < 24 ? 0.5 : i < 36 ? 0.65 : 0.8;
+          let state = "active";
+          if (coherence < threshold * 0.5) state = "fail";
+          else if (coherence < threshold) state = "warn";
+          return { name, state };
+        });
+      }
 
-function buildFreqBars(coherence) {
-  const freqs = [
-    { label: "72 Hz (Base)", val: Math.round(coherence * 100), max: 100 },
-    { label: "396 Hz (UT)", val: Math.round(coherence * 85), max: 100 },
-    { label: "528 Hz (MI)", val: Math.round(coherence * 78), max: 100 },
-    { label: "639 Hz (FA)", val: Math.round(coherence * 70), max: 100 },
-    { label: "852 Hz (LA)", val: Math.round(coherence * 60), max: 100 },
-    { label: "963 Hz (SI)", val: Math.round(coherence * 50), max: 100 },
-  ];
-  return freqs.map(f => `
+      function buildFreqBars(coherence) {
+        const freqs = [
+          { label: "72 Hz (Base)", val: Math.round(coherence * 100), max: 100 },
+          { label: "396 Hz (UT)", val: Math.round(coherence * 85), max: 100 },
+          { label: "528 Hz (MI)", val: Math.round(coherence * 78), max: 100 },
+          { label: "639 Hz (FA)", val: Math.round(coherence * 70), max: 100 },
+          { label: "852 Hz (LA)", val: Math.round(coherence * 60), max: 100 },
+          { label: "963 Hz (SI)", val: Math.round(coherence * 50), max: 100 },
+        ];
+        return freqs
+          .map(
+            (f) => `
     <div class="freq-bar">
       <span class="freq-label">${f.label}</span>
       <div class="freq-track"><div class="freq-fill" style="width:${f.val}%"></div></div>
       <span class="freq-val">${f.val}%</span>
-    </div>`).join("");
-}
+    </div>`,
+          )
+          .join("");
+      }
 
-// Load matrix template by default
-loadTemplate("matrix");
-</script>
-</body>
+      // Load matrix template by default
+      loadTemplate("matrix");
+    </script>
+  </body>
 </html>

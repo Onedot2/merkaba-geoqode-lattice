@@ -40,13 +40,13 @@ assertCanonicalArchitectureSignature(CANONICAL_ARCHITECTURE);
 // ─── Solfeggio frequency constants ───────────────────────────────────────────
 
 export const SOLFEGGIO = Object.freeze({
-  UT:  396,   // Liberation — root liberation
-  RE:  417,   // Undoing — spatial reset
-  MI:  528,   // Transformation — DNA repair frequency
-  FA:  639,   // Connection — heart field
-  SOL: 741,   // Expression — intuition
-  LA:  852,   // Order — spiritual alignment
-  SI:  963,   // Awakening — crown activation
+  UT: 396, // Liberation — root liberation
+  RE: 417, // Undoing — spatial reset
+  MI: 528, // Transformation — DNA repair frequency
+  FA: 639, // Connection — heart field
+  SOL: 741, // Expression — intuition
+  LA: 852, // Order — spiritual alignment
+  SI: 963, // Awakening — crown activation
 });
 
 export const UNIVERSAL_ANCHOR_HZ = 432;
@@ -58,14 +58,14 @@ export const PSI_HARMONIC_HZ = Math.round(UNIVERSAL_ANCHOR_HZ * PSI); // 611 Hz 
 
 // Semantic type → primary Solfeggio frequency (mirrors SEMANTIC_FREQUENCY_MAP)
 export const AUDIO_FREQUENCY_MAP = Object.freeze({
-  ENTITY:      SOLFEGGIO.UT,   // 396 Hz
-  LOCATION:    SOLFEGGIO.RE,   // 417 Hz
-  ACTION:      SOLFEGGIO.MI,   // 528 Hz
-  DIALOGUE:    SOLFEGGIO.FA,   // 639 Hz
-  EMOTION:     SOLFEGGIO.SOL,  // 741 Hz
-  PHYSICS:     SOLFEGGIO.LA,   // 852 Hz
-  NARRATIVE:   SOLFEGGIO.SI,   // 963 Hz
-  HOLOGRAPHIC: BASE_HZ,        //  72 Hz
+  ENTITY: SOLFEGGIO.UT, // 396 Hz
+  LOCATION: SOLFEGGIO.RE, // 417 Hz
+  ACTION: SOLFEGGIO.MI, // 528 Hz
+  DIALOGUE: SOLFEGGIO.FA, // 639 Hz
+  EMOTION: SOLFEGGIO.SOL, // 741 Hz
+  PHYSICS: SOLFEGGIO.LA, // 852 Hz
+  NARRATIVE: SOLFEGGIO.SI, // 963 Hz
+  HOLOGRAPHIC: BASE_HZ, //  72 Hz
 });
 
 // Harmonic intervals that are consonant within the Solfeggio scale
@@ -77,13 +77,30 @@ export const ALM_VERSION = "1.0.0";
 // ─── Semantic pattern keywords (mirrors MerkabaLLM pattern parser) ────────────
 
 const PATTERN_MAP = [
-  { types: ["ENTITY"],    patterns: [/characters?:/i, /entity:/i, /agent:/i, /neo|morpheus|trinity|apollo|einstein|hawking/i] },
-  { types: ["LOCATION"],  patterns: [/location:/i, /scene:|int\.|ext\.|environment:/i] },
-  { types: ["ACTION"],    patterns: [/action:/i, /step:|execute:|transform:|emit:/i] },
-  { types: ["DIALOGUE"],  patterns: [/dialogue:/i, /says?:|speaks?:|narrat/i] },
-  { types: ["EMOTION"],   patterns: [/emotion:|feeling:|resonan/i] },
-  { types: ["PHYSICS"],   patterns: [/physics:|rule:|law:|frequency:|hz/i] },
-  { types: ["NARRATIVE"], patterns: [/scene\s+\d|narrative:|arc:|projection:/i] },
+  {
+    types: ["ENTITY"],
+    patterns: [
+      /characters?:/i,
+      /entity:/i,
+      /agent:/i,
+      /neo|morpheus|trinity|apollo|einstein|hawking/i,
+    ],
+  },
+  {
+    types: ["LOCATION"],
+    patterns: [/location:/i, /scene:|int\.|ext\.|environment:/i],
+  },
+  {
+    types: ["ACTION"],
+    patterns: [/action:/i, /step:|execute:|transform:|emit:/i],
+  },
+  { types: ["DIALOGUE"], patterns: [/dialogue:/i, /says?:|speaks?:|narrat/i] },
+  { types: ["EMOTION"], patterns: [/emotion:|feeling:|resonan/i] },
+  { types: ["PHYSICS"], patterns: [/physics:|rule:|law:|frequency:|hz/i] },
+  {
+    types: ["NARRATIVE"],
+    patterns: [/scene\s+\d|narrative:|arc:|projection:/i],
+  },
   { types: ["HOLOGRAPHIC"], patterns: [/holograph|lattice:|merkaba|geoqode/i] },
 ];
 
@@ -114,7 +131,7 @@ export class MerkabaALM {
     this.universalAnchorHz = UNIVERSAL_ANCHOR_HZ;
     this.mode = options.mode || "unified"; // unified | cinema | theatre | standalone
 
-    this.#latticeNodes = CANONICAL_LATTICE_NODES;    // 48
+    this.#latticeNodes = CANONICAL_LATTICE_NODES; // 48
     this.#harmonicSpectrum = HARMONIC_SPECTRUM_NODES; // 480
     this.#sessionHistory = [];
     this.#active = false;
@@ -125,11 +142,15 @@ export class MerkabaALM {
   activate() {
     assertCanonicalArchitectureSignature(this.architectureSignature);
     this.#active = true;
-    console.log(`[MerkabaALM] ✅ Audio Learning Model activated — ${this.architectureDisplay}, φ=${this.phi}`);
+    console.log(
+      `[MerkabaALM] ✅ Audio Learning Model activated — ${this.architectureDisplay}, φ=${this.phi}`,
+    );
     return this;
   }
 
-  isActive() { return this.#active; }
+  isActive() {
+    return this.#active;
+  }
 
   // ─── Core: Score ────────────────────────────────────────────────────────────
 
@@ -149,10 +170,15 @@ export class MerkabaALM {
     }
 
     const detectedTypes = this._detectSemanticTypes(text);
-    const frequencies = detectedTypes.map((t) => AUDIO_FREQUENCY_MAP[t] || BASE_HZ);
-    const primaryFrequency = frequencies.length > 0
-      ? Math.round(frequencies.reduce((a, b) => a + b, 0) / frequencies.length)
-      : UNIVERSAL_ANCHOR_HZ;
+    const frequencies = detectedTypes.map(
+      (t) => AUDIO_FREQUENCY_MAP[t] || BASE_HZ,
+    );
+    const primaryFrequency =
+      frequencies.length > 0
+        ? Math.round(
+            frequencies.reduce((a, b) => a + b, 0) / frequencies.length,
+          )
+        : UNIVERSAL_ANCHOR_HZ;
 
     const harmonicCoherence = this._computeHarmonicCoherence(frequencies);
     const phiScore = this._computePhiScore(frequencies, harmonicCoherence);
@@ -168,8 +194,8 @@ export class MerkabaALM {
       primaryFrequency,
       universalAnchorHz: this.universalAnchorHz,
       baseFrequencyHz: this.baseFrequencyHz,
-      harmonicCoherence,          // 0–1: how harmonically aligned the frequency set is
-      phiScore,                   // 0–1: PHI-weighted resonance score
+      harmonicCoherence, // 0–1: how harmonically aligned the frequency set is
+      phiScore, // 0–1: PHI-weighted resonance score
       audioLayer,
       timestamp: Date.now(),
     };
@@ -196,7 +222,10 @@ export class MerkabaALM {
     }
 
     const maxSteps = opts.maxSteps || 16;
-    const lines = text.split(/\n/).map((l) => l.trim()).filter(Boolean);
+    const lines = text
+      .split(/\n/)
+      .map((l) => l.trim())
+      .filter(Boolean);
     const steps = [];
 
     for (let i = 0; i < Math.min(lines.length, maxSteps); i++) {
@@ -249,17 +278,22 @@ export class MerkabaALM {
    * @returns {{ aligned: boolean, ratio: number, closestHarmonic: number, coherence: number }}
    */
   harmonize(freq1, freq2) {
-    if (freq1 <= 0 || freq2 <= 0) throw new Error("MerkabaALM.harmonize: frequencies must be positive");
+    if (freq1 <= 0 || freq2 <= 0)
+      throw new Error("MerkabaALM.harmonize: frequencies must be positive");
     const ratio = Math.max(freq1, freq2) / Math.min(freq1, freq2);
     let minDist = Infinity;
     let closestHarmonic = 1;
     for (const hr of HARMONIC_RATIOS) {
       const dist = Math.abs(ratio - hr);
-      if (dist < minDist) { minDist = dist; closestHarmonic = hr; }
+      if (dist < minDist) {
+        minDist = dist;
+        closestHarmonic = hr;
+      }
     }
     const coherence = Math.max(0, 1 - minDist / closestHarmonic);
     return {
-      freq1, freq2,
+      freq1,
+      freq2,
       ratio: Number(ratio.toFixed(4)),
       aligned: minDist < 0.12,
       closestHarmonic,
@@ -305,7 +339,9 @@ export class MerkabaALM {
     };
   }
 
-  getSessions() { return [...this.#sessionHistory]; }
+  getSessions() {
+    return [...this.#sessionHistory];
+  }
 
   // ─── Private ────────────────────────────────────────────────────────────────
 
@@ -358,14 +394,14 @@ export class MerkabaALM {
 
   _freqToSolfeggioName(hz) {
     const names = {
-      [SOLFEGGIO.UT]:  "UT (396 Hz) — Liberation",
-      [SOLFEGGIO.RE]:  "RE (417 Hz) — Spatial Anchor",
-      [SOLFEGGIO.MI]:  "MI (528 Hz) — Transformation",
-      [SOLFEGGIO.FA]:  "FA (639 Hz) — Connection",
+      [SOLFEGGIO.UT]: "UT (396 Hz) — Liberation",
+      [SOLFEGGIO.RE]: "RE (417 Hz) — Spatial Anchor",
+      [SOLFEGGIO.MI]: "MI (528 Hz) — Transformation",
+      [SOLFEGGIO.FA]: "FA (639 Hz) — Connection",
       [SOLFEGGIO.SOL]: "SOL (741 Hz) — Expression",
-      [SOLFEGGIO.LA]:  "LA (852 Hz) — Order",
-      [SOLFEGGIO.SI]:  "SI (963 Hz) — Awakening",
-      [BASE_HZ]:       "BASE (72 Hz) — Holographic Root",
+      [SOLFEGGIO.LA]: "LA (852 Hz) — Order",
+      [SOLFEGGIO.SI]: "SI (963 Hz) — Awakening",
+      [BASE_HZ]: "BASE (72 Hz) — Holographic Root",
     };
     return names[hz] || `${hz} Hz`;
   }
@@ -374,7 +410,8 @@ export class MerkabaALM {
     if (steps.length < 2) return { pattern: "single", coherence: 1.0 };
     const freqs = steps.map((s) => s.frequencyHz);
     // Detect if flow ascends, descends, oscillates, or is uniform
-    let ascending = 0, descending = 0;
+    let ascending = 0,
+      descending = 0;
     for (let i = 1; i < freqs.length; i++) {
       if (freqs[i] > freqs[i - 1]) ascending++;
       else if (freqs[i] < freqs[i - 1]) descending++;
