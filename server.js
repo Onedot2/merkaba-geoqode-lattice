@@ -1015,9 +1015,12 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
     // ── GET /theatre/status ─────────────────────────────────────────────
     if (req.method === "GET" && pathname === "/theatre/status") {
       const theatre = await getTheatre();
+      const health = theatre.getOSHealth();
+      // Strip internal constants before public delivery
+      const { architectureSignature: _as, architectureDisplay: _ad, phi: _phi, ...safeHealth } = health;
       return json(res, 200, {
         ok: true,
-        theatre: theatre.getOSHealth(),
+        theatre: safeHealth,
         programmes: Object.keys(PROGRAMME_CATALOGUE),
         realityModes: Object.keys(REALITY_MODES),
       });
