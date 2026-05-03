@@ -731,15 +731,6 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
         ok: true,
         service: "aios",
         brand: "AIOS",
-        architectureSignature: CANONICAL_ARCHITECTURE,
-        architectureDisplay: "8→26→48:480",
-        phi: 1.618,
-        psi: 1.414,
-        baseFrequencyHz: 72,
-        foundationNodes: 8,
-        bosonicAnchorNodes: 26,
-        canonicalLatticeNodes: 48,
-        harmonicSpectrumNodes: 480,
         semanticFrequencyMap: {
           ENTITY: 396,
           LOCATION: 417,
@@ -760,13 +751,8 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       const awState = aware.getStatus();
       return json(res, 200, {
         ok: true,
-        service: "geoqode-os",
-        os: "MerkabaDimensionalOS",
+        service: "aios",
         version: "1.0.0",
-        lattice: "48-dimension canonical MERKABA",
-        architecture: CANONICAL_ARCHITECTURE,
-        architectureDisplay: "8→26→48:480",
-        phi: 1.618,
         awarenessLevel: awState.awarenessLevel,
         coherenceIndex: awState.coherenceIndex,
         timestamp: new Date().toISOString(),
@@ -958,12 +944,11 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       return json(res, 200, {
         ok: true,
         cinema: {
-          system: "MERKABA48OS Cinema Virtualization",
-          architecture: "8→26→48:480",
+          system: "AIOS Cinema",
           pipeline: [
             "ScriptParser",
             "NarrativeEmbedder",
-            "MerkabAware",
+            "AwareEngine",
             "CinemaProjector",
           ],
           playbooks: CINEMA_PLAYBOOKS,
@@ -1370,7 +1355,6 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
           },
           lastRun: new Date().toISOString(),
           perFile,
-          architectureSignature: "8,26,48:480",
           ...(dualAttestation ? { dualAttestation } : {}),
         });
       } catch (err) {
