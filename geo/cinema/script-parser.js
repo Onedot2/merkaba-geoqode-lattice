@@ -112,8 +112,8 @@ export class ScriptParser {
 
   _parseGeoScenes(text) {
     const scenes = [];
-    // Match YAML-style scene blocks:  - Scene N: "..."
-    const sceneBlocks = text.split(/\n\s*-\s*Scene\s+\d+:/i);
+    // Support both YAML-style "- Scene N:" and bare "SCENE N:" formats
+    const sceneBlocks = text.split(/\n\s*(?:-\s*[Ss]cene|SCENE)\s+\d+:/i);
 
     for (
       let i = 1;

@@ -368,20 +368,23 @@ export class MerkabaTheatreEngine extends EventEmitter {
     realityMode,
   }) {
     const elapsedMs = Date.now() - startedAt;
+    const projSuccess = projection?.status === "projected";
     return {
       sessionId,
-      status: projection?.success ? "projected" : "partial",
-      title: options.title || projection?.meta?.title || "Untitled Projection",
+      status: projSuccess ? "projected" : "partial",
+      title: options.title || projection?.title || "Untitled Projection",
       mode: realityMode,
       elapsedMs,
-      // Cinema output
+      // Cinema output — CinemaVirtualizer result shape:
+      //   .status, .parsedScript.sceneCount, .embeddingCount
+      //   .projection (CinemaProjector) → .environment, .dreamFrames, .narrativeFlow
       projection: {
-        success: projection?.success ?? false,
-        sceneCount: projection?.sceneCount ?? 0,
+        success: projSuccess,
+        sceneCount: projection?.parsedScript?.sceneCount ?? 0,
         embeddingCount: projection?.embeddingCount ?? 0,
-        environment: projection?.environment ?? null,
-        narrative: projection?.narrative ?? null,
-        frames: projection?.dreamFrames ?? [],
+        environment: projection?.projection?.environment ?? null,
+        narrative: projection?.projection?.narrativeFlow ?? null,
+        frames: projection?.projection?.dreamFrames ?? [],
       },
       // Resonance OS state
       resonance: {
@@ -447,20 +450,102 @@ export class MerkabaTheatreEngine extends EventEmitter {
   }
 
   _buildProgrammeScript(name, prog) {
-    // Minimal embedded script seeds — the real content can be loaded from
-    // merkaba-geoqode-lattice/geo/playbooks/cinema/*.geo in production.
-    // These seeds are enough to boot the NarrativeEmbedder pipeline.
+    // Seeds use the canonical YAML .geo format so ScriptParser._parseGeoScenes()
+    // can split on "- Scene N:" and extract ACTION / CHARACTERS / LOCATION.
     const seeds = {
-      matrix: `TITLE: ${prog.title}\nGENRE: ${prog.genre}\nSCENE 1: INT. THE CONSTRUCT — HOLOGRAPHIC\nNeo awakens inside the construct room. The pure-white infinite void surrounds him.\nSEMANTIC: entity=Neo, location=The Construct, action=awakening\n`,
-      inception: `TITLE: ${prog.title}\nGENRE: ${prog.genre}\nSCENE 1: EXT. DREAM LAYER 1 — PARIS STREET\nPhysics of reality bend. Gravity rotates 90 degrees.\nSCENE 2: INT. DREAM LAYER 2 — HOTEL CORRIDOR\nArthur fights in zero gravity.\nSEMANTIC: entity=Cobb Arthur Ariadne, action=reality-bending gravity-flip, emotion=disorientation\n`,
-      starwars: `TITLE: ${prog.title}\nGENRE: ${prog.genre}\nSCENE 1: EXT. SPACE — DEATH STAR TRENCH RUN\nX-Wings race through the trench. The Force guides Luke's hand.\nSEMANTIC: entity=Luke Vader DeathStar, action=combat flight, physics=hyperspace gravity-cannon\n`,
-      apollo11: `TITLE: ${prog.title}\nGENRE: ${prog.genre}\nSCENE 1: INT. COMMAND MODULE — LUNAR ORBIT\nThe Earth rises over the Moon. Human history pivots in silence.\nSEMANTIC: entity=Armstrong Aldrin Collins, location=Moon lunar-orbit, narrative=human-achievement\n`,
-      governance: `TITLE: ${prog.title}\nGENRE: ${prog.genre}\nSCENE 1: INT. STORM GOVERNANCE LATTICE — D48 NODE\nAll 48 Storm service nodes are visible as living resonance cells. Decisions flow as coherence pulses.\nSEMANTIC: entity=Storm architecture=8→26→48:480, action=governance decision-flow, physics=coherence-index\n`,
-      investordeck: `TITLE: ${prog.title}\nGENRE: ${prog.genre}\nSCENE 1: EXT. STORM UNIVERSE — INVESTOR HOLODECK\nThe entire Storm ecosystem is projected as a living organism. Revenue streams pulse at 528Hz.\nSEMANTIC: entity=Storm Brains4Ai, narrative=autonomous-business-engine growth, action=revenue-generation\n`,
+      matrix:
+        `TITLE: ${prog.title}\nGENRE: ${prog.genre}\n` +
+        `- Scene 1: "Neo meets Morpheus in the Construct"\n` +
+        `  ACTION: "Morpheus offers the red pill. Neo must choose between truth and comfortable reality."\n` +
+        `  CHARACTERS: ["Neo", "Morpheus"]\n` +
+        `  LOCATION: "The Construct — holographic white void"\n` +
+        `- Scene 2: "Neo awakens in the Machine fields"\n` +
+        `  ACTION: "Neo emerges from the machine pod into the real world — dark and post-apocalyptic."\n` +
+        `  CHARACTERS: ["Neo", "Trinity"]\n` +
+        `  LOCATION: "Machine fields — 852Hz structural order"\n` +
+        `- Scene 3: "Training simulation"\n` +
+        `  ACTION: "Morpheus and Neo spar. Neo begins to understand reality bends to will."\n` +
+        `  CHARACTERS: ["Neo", "Morpheus"]\n` +
+        `  LOCATION: "Dojo simulation — 528Hz transformation field"\n` +
+        `PROJECTION: DreamProjector holographic construct immersion\n` +
+        `AUTHORSHIP: Founder — Bradley\n`,
+
+      inception:
+        `TITLE: ${prog.title}\nGENRE: ${prog.genre}\n` +
+        `- Scene 1: "Dream Layer 1 — Paris street fold"\n` +
+        `  ACTION: "Physics of reality bend. Gravity rotates 90 degrees. The city folds on itself."\n` +
+        `  CHARACTERS: ["Cobb", "Ariadne"]\n` +
+        `  LOCATION: "Paris — Dream Layer 1"\n` +
+        `- Scene 2: "Hotel corridor — zero gravity"\n` +
+        `  ACTION: "Arthur fights in zero gravity. The dreamscape tilts and spins."\n` +
+        `  CHARACTERS: ["Arthur"]\n` +
+        `  LOCATION: "Hotel corridor — Dream Layer 2"\n` +
+        `- Scene 3: "Snow fortress — Dream Layer 3"\n` +
+        `  ACTION: "The team infiltrates the snow fortress while time distorts across dream layers."\n` +
+        `  CHARACTERS: ["Cobb", "Eames", "Yusuf"]\n` +
+        `  LOCATION: "Snow fortress — Dream Layer 3"\n` +
+        `PROJECTION: Surreal layered dream immersion\n` +
+        `AUTHORSHIP: Founder — Bradley\n`,
+
+      starwars:
+        `TITLE: ${prog.title}\nGENRE: ${prog.genre}\n` +
+        `- Scene 1: "Death Star trench run"\n` +
+        `  ACTION: "X-Wings race through the trench. The Force guides Luke's targeting hand."\n` +
+        `  CHARACTERS: ["Luke", "Vader", "Han"]\n` +
+        `  LOCATION: "Death Star trench — space battle"\n` +
+        `- Scene 2: "Hyperspace jump"\n` +
+        `  ACTION: "The Millennium Falcon enters hyperspace. Stars blur into light trails."\n` +
+        `  CHARACTERS: ["Han", "Chewbacca", "Leia"]\n` +
+        `  LOCATION: "Hyperspace — interstellar void"\n` +
+        `PROJECTION: Epic space opera holographic projection\n` +
+        `AUTHORSHIP: Founder — Bradley\n`,
+
+      apollo11:
+        `TITLE: ${prog.title}\nGENRE: ${prog.genre}\n` +
+        `- Scene 1: "Lunar orbit — Earthrise"\n` +
+        `  ACTION: "The Earth rises over the Moon. Human history pivots in silence."\n` +
+        `  CHARACTERS: ["Armstrong", "Aldrin", "Collins"]\n` +
+        `  LOCATION: "Command Module — Lunar orbit"\n` +
+        `- Scene 2: "Touchdown on the Sea of Tranquility"\n` +
+        `  ACTION: "Armstrong steps onto the lunar surface. One small step for man."\n` +
+        `  CHARACTERS: ["Armstrong", "Aldrin"]\n` +
+        `  LOCATION: "Moon surface — Sea of Tranquility"\n` +
+        `PROJECTION: Documentary passive record\n` +
+        `AUTHORSHIP: Founder — Bradley\n`,
+
+      governance:
+        `TITLE: ${prog.title}\nGENRE: ${prog.genre}\n` +
+        `- Scene 1: "D48 Storm governance lattice"\n` +
+        `  ACTION: "All 48 Storm service nodes visible as living resonance cells. Decisions flow as coherence pulses."\n` +
+        `  CHARACTERS: ["Storm", "Brad"]\n` +
+        `  LOCATION: "Storm governance lattice — D48 node"\n` +
+        `- Scene 2: "Revenue coherence sweep"\n` +
+        `  ACTION: "Revenue streams pulse at 528Hz ACTION frequency. Self-healing agents stabilize drift."\n` +
+        `  CHARACTERS: ["Storm", "RevenueAgent"]\n` +
+        `  LOCATION: "Storm D480 harmonic spectrum"\n` +
+        `PROJECTION: Governance passive audit record\n` +
+        `AUTHORSHIP: Founder — Bradley\n`,
+
+      investordeck:
+        `TITLE: ${prog.title}\nGENRE: ${prog.genre}\n` +
+        `- Scene 1: "Storm universe investor holodeck"\n` +
+        `  ACTION: "The entire Storm ecosystem is projected as a living organism. Revenue streams pulse at 528Hz."\n` +
+        `  CHARACTERS: ["Storm", "Brad", "Investors"]\n` +
+        `  LOCATION: "AIOS investor holodeck — realaios.com"\n` +
+        `- Scene 2: "Autonomous product pipeline"\n` +
+        `  ACTION: "IDEA → BUILT → LAUNCHED → PROFITABLE pipeline fires autonomously. MRR ticker climbs."\n` +
+        `  CHARACTERS: ["ProductDiscovery", "ProductBuilder", "RevenueOptimizer"]\n` +
+        `  LOCATION: "Storm product engine — D48 lattice"\n` +
+        `PROJECTION: Adaptive investor storytelling\n` +
+        `AUTHORSHIP: Founder — Bradley\n`,
     };
     return (
       seeds[name] ||
-      `TITLE: ${prog.title}\nGENRE: ${prog.genre}\nSCENE 1: UNDEFINED\n`
+      `TITLE: ${prog.title}\nGENRE: ${prog.genre}\n` +
+        `- Scene 1: "Opening"\n` +
+        `  ACTION: "Programme begins."\n` +
+        `  CHARACTERS: []\n` +
+        `  LOCATION: "Unknown"\n`
     );
   }
 }
