@@ -630,6 +630,14 @@ const server = createServer(async (req, res) => {
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${product.name} &#8212; AIOS</title>
 <meta name="description" content="${product.tagline}">
+<meta property="og:title" content="${product.name} — AIOS">
+<meta property="og:description" content="${product.tagline}">
+<meta property="og:image" content="https://realaios.com/public/og-image.svg">
+<meta property="og:url" content="https://realaios.com/products/${slug}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${product.name} — AIOS">
+<meta name="twitter:description" content="${product.tagline}">
+<meta name="twitter:image" content="https://realaios.com/public/og-image.svg">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#0a0a0f;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;min-height:100vh}
@@ -663,7 +671,7 @@ footer{text-align:center;padding:3rem 2rem;color:#444;font-size:0.85rem;border-t
 <body>
 <nav>
   <a href="/" class="logo">AIOS</a>
-  <a href="/#products" class="back">&#8592; Back to Products</a>
+  <a href="/products" class="back">&#8592; All Products</a>
 </nav>
 <div class="hero">
   <div class="badge">AIOS Native</div>
