@@ -1838,7 +1838,7 @@ h1{font-size:1.6rem;font-weight:800;margin-bottom:0.75rem;line-height:1.25;}
     <a class="btn-vr" href="${vrUrl}">🥽 Launch in VR</a>
     <a class="btn-flat" href="${flatUrl}">⬛ Flat View</a>
   </div>
-  <a class="btn-hub" href="/vr-hub">← All 48 Experiences</a>
+  <a class="btn-hub" href="/vr-hub">← All 23 Live Experiences</a>
 </div>
 </body>
 </html>`;
@@ -2099,56 +2099,45 @@ function filterXP(cat, btn) {
       }
     }
 
-    // ── 404 ───────────────────────────────────────────────────────────────
-    return json(res, 404, {
-      ok: false,
-      error: "Not Found",
-      endpoints: [
-        "GET  /health",
-        "GET  /",
-        "GET  /status",
-        "GET  /dimensions",
-        "GET  /playbooks",
-        "GET  /codex/status",
-        "POST /codex/execute",
-        "GET  /merkaba/activation-update",
-        "GET  /merkaba/ai-verification-page",
-        "GET  /merkaba/install-manifest",
-        "GET  /stats",
-        "POST /execute",
-        "POST /playbook/:name",
-        "GET  /cinema/status",
-        "GET  /cinema/playbooks",
-        "GET  /cinema/playbooks/:name",
-        "POST /cinema/virtualize",
-        "POST /cinema/playbook/:name",
-        "GET  /theatre/status",
-        "GET  /theatre/programmes",
-        "POST /theatre/project",
-        "POST /theatre/programme/:name",
-        "POST /llm/embed",
-        "GET  /awareness",
-        "GET  /swarm/sweep",
-        "GET  /swarm/sweep?attest=1",
-        "GET  /swarm/attest",
-        "GET  /lab",
-        "GET  /viewer",
-        "GET  /attest",
-        "GET  /dashboard",
-        "GET  /vr",
-        "GET  /vr-hub",
-        "GET  /vr-developer",
-        "GET  /api/aios/vr/taxonomy",
-        "GET  /api/aios/vr/categories",
-        "GET  /api/aios/vr/experiences",
-        "GET  /api/aios/vr/events",
-        "GET  /api/aios/vr/experience/:id",
-        "GET  /audio/status",
-        "GET  /audio/frequencies",
-        "POST /audio/score",
-        "POST /audio/sequence",
-      ],
-    });
+    // ── 404 — HTML for browsers, JSON for API clients ──────────────────
+    const accept404 = req.headers["accept"] || "";
+    if (accept404.includes("text/html") || accept404.includes("*/*")) {
+      res.writeHead(404, { "Content-Type": "text/html; charset=utf-8" });
+      res.end(`<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Page Not Found — AIOS VR Platform</title>
+<meta name="robots" content="noindex"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#04080f;color:#edf4ff;font-family:system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:2rem;text-align:center;}
+.glyph{font-size:4rem;margin-bottom:1.25rem;opacity:0.5;}
+h1{font-size:1.75rem;font-weight:800;margin-bottom:0.5rem;}
+p{color:#8aa0c8;font-size:0.92rem;max-width:380px;line-height:1.6;margin-bottom:2.5rem;}
+.links{display:flex;gap:0.75rem;flex-wrap:wrap;justify-content:center;}
+.btn{padding:0.55rem 1.2rem;border-radius:10px;font-weight:700;font-size:0.85rem;text-decoration:none;}
+.btn-primary{background:#00d4ff;color:#000;}
+.btn-secondary{border:1px solid rgba(255,255,255,0.12);color:#8aa0c8;}
+.btn-secondary:hover{color:#edf4ff;}
+</style>
+</head>
+<body>
+<div class="glyph">⬡</div>
+<h1>Page Not Found</h1>
+<p>That URL doesn't exist on AIOS. Head back to the platform — 23 live VR worlds are waiting.</p>
+<div class="links">
+  <a class="btn btn-primary" href="/vr-hub">🥽 VR Hub</a>
+  <a class="btn btn-secondary" href="/">Home</a>
+  <a class="btn btn-secondary" href="/start">Start Here</a>
+  <a class="btn btn-secondary" href="/experiences">All Experiences</a>
+</div>
+</body>
+</html>`);
+      return;
+    }
+    return json(res, 404, { ok: false, error: "Not Found", hint: "Visit https://realaios.com for the full platform." });
   } catch (err) {
     console.error("[GeoQode OS] Request error:", err);
     return json(res, 500, {

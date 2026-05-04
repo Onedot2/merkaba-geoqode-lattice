@@ -563,6 +563,7 @@
         <a href="/vr">Theatre</a>
         <a href="/plaistore">PLAIstore</a>
         <a href="/lab">GeoQode Lab</a>
+        <a href="/start">Start Here</a>
         <a href="/vr-developer" class="active">Dev Portal</a>
       </div>
       <a href="/plaistore" class="nav-badge-dev">Submit App</a>
@@ -575,7 +576,7 @@
       </div>
       <h1>Build for the<br /><span>Merkaba Lattice</span></h1>
       <p class="hero-sub">
-        Create immersive WebXR experiences for Meta Quest 2/3, deploy to 31+
+        Create immersive WebXR experiences for Meta Quest 2/3, deploy to 48
         slots across 9 categories, and reach AIOS users with zero install
         friction. Powered by A-Frame 1.5, GeoQode geometry, and the PHI=1.618
         resonance lattice.
@@ -586,7 +587,7 @@
       </div>
       <div class="hero-stats">
         <div class="hero-stat">
-          <span class="hero-stat-num" id="live-xp-count">31</span
+          <span class="hero-stat-num" id="live-xp-count">48</span
           ><span class="hero-stat-label">Experience Slots</span>
         </div>
         <div class="hero-stat">
@@ -1435,11 +1436,8 @@
       fetch("/api/aios/vr/taxonomy")
         .then((r) => (r.ok ? r.json() : null))
         .then((d) => {
-          if (!d || !d.categories) return;
-          let total = 0;
-          d.categories.forEach((c) => {
-            total += (c.experiences || []).length;
-          });
+          if (!d) return;
+          const total = d.totalExperiences || (() => { let t=0; (d.categories||[]).forEach(c=>{ t+=(c.experiences||[]).length; }); return t; })();
           const el = document.getElementById("live-xp-count");
           if (el) el.textContent = total;
         })
