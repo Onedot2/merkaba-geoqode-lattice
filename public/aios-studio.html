@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AIOS Producer Studio — Autonomous Generative Content Factory</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:      #050508;
+  --bg2:     #0a0a14;
+  --bg3:     #0d0d1a;
+  --card:    #0f0f1e;
+  --border:  rgba(0,229,255,0.12);
+  --cyan:    #00e5ff;
+  --violet:  #7c3aed;
+  --gold:    #fbbf24;
+  --green:   #00ff7a;
+  --red:     #ff3b5c;
+  --text:    #e2e8f0;
+  --dim:     #64748b;
+  --phi:     1.618;
+}
+html, body {
+  background: var(--bg); color: var(--text);
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  min-height: 100vh; overflow-x: hidden;
+}
+/* ── TOP BAR ── */
+#topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px;
+  height: 52px; background: rgba(5,5,8,0.96);
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.logo-mark {
+  font-size: 11px; letter-spacing: 4px; color: var(--cyan);
+  display: flex; align-items: center; gap: 10px; font-weight: 700;
+}
+.logo-mark::before { content: '⬡'; font-size: 18px; animation: hex-pulse 2.4s ease-in-out infinite; }
+@keyframes hex-pulse { 0%,100%{opacity:1;} 50%{opacity:0.55;} }
+.topnav { display: flex; gap: 20px; }
+.topnav a {
+  font-size: 10px; letter-spacing: 2px; color: var(--dim);
+  text-decoration: none; transition: color 0.2s;
+}
+.topnav a:hover, .topnav a.active { color: var(--cyan); }
+.live-badge {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 10px; letter-spacing: 2px; color: var(--green);
+}
+.live-dot {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--green);
+  animation: blink 1s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.2;} }
+/* ── HERO ── */
+#hero {
+  padding: 36px 32px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.hero-title {
+  font-size: clamp(22px, 3vw, 38px); letter-spacing: 6px;
+  color: var(--cyan); font-weight: 700;
+  text-shadow: 0 0 40px rgba(0,229,255,0.35);
+}
+.hero-subtitle {
+  font-size: 11px; letter-spacing: 3px; color: var(--dim);
+  margin-top: 8px;
+}
+.hero-stats {
+  display: flex; gap: 32px; margin-top: 16px; flex-wrap: wrap;
+}
+.hstat { font-size: 11px; }
+.hstat span { color: var(--cyan); font-size: 18px; font-weight: 700; margin-right: 6px; }
+
+/* ── MAIN GRID ── */
+#main {
+  display: grid;
+  grid-template-columns: 280px 1fr 280px;
+  grid-template-rows: auto auto;
+  gap: 1px;
+  background: var(--border);
+  min-height: calc(100vh - 160px);
+}
+.panel {
+  background: var(--bg); padding: 20px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.panel-title {
+  font-size: 9px; letter-spacing: 4px; color: var(--dim);
+  border-bottom: 1px solid var(--border); padding-bottom: 8px;
+  margin-bottom: 4px;
+}
+
+/* ── AGENT CARDS ── */
+.agent-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 6px; padding: 12px;
+  transition: border-color 0.3s;
+}
+.agent-card.working { border-color: rgba(0,229,255,0.4); }
+.agent-card.reviewing { border-color: rgba(251,191,36,0.4); }
+.agent-card.releasing { border-color: rgba(0,255,122,0.4); }
+.agent-head {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 8px;
+}
+.agent-icon { font-size: 16px; }
+.agent-name { font-size: 11px; font-weight: 700; color: var(--text); }
+.agent-role { font-size: 9px; color: var(--dim); margin-top: 1px; }
+.agent-status {
+  margin-left: auto; font-size: 8px; letter-spacing: 2px;
+  padding: 2px 6px; border-radius: 10px; background: rgba(100,116,139,0.2);
+  color: var(--dim);
+}
+.agent-status.working { background: rgba(0,229,255,0.12); color: var(--cyan); }
+.agent-status.thinking { background: rgba(124,58,237,0.15); color: #a78bfa; }
+.agent-status.reviewing { background: rgba(251,191,36,0.12); color: var(--gold); }
+.agent-status.releasing { background: rgba(0,255,122,0.12); color: var(--green); }
+.agent-status.idle { background: rgba(100,116,139,0.1); color: var(--dim); }
+.agent-task { font-size: 9px; color: var(--dim); margin-bottom: 6px; min-height: 14px; }
+.progress-bar {
+  height: 3px; background: rgba(100,116,139,0.15); border-radius: 2px; overflow: hidden;
+}
+.progress-fill {
+  height: 100%; border-radius: 2px;
+  background: linear-gradient(90deg, var(--violet), var(--cyan));
+  transition: width 0.8s ease;
+}
+.progress-fill.gold { background: linear-gradient(90deg, #f59e0b, var(--gold)); }
+.progress-fill.green { background: linear-gradient(90deg, #10b981, var(--green)); }
+
+/* ── LIVE PREVIEW (centre panel) ── */
+#centre-panel { grid-row: 1 / 3; }
+.preview-wrap {
+  position: relative; aspect-ratio: 16/9;
+  background: #000; border: 1px solid var(--border); border-radius: 6px;
+  overflow: hidden;
+}
+#preview-canvas { width: 100%; height: 100%; display: block; }
+.preview-hud {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: linear-gradient(transparent, rgba(0,0,0,0.9));
+  padding: 16px 16px 12px;
+  display: flex; align-items: flex-end; justify-content: space-between;
+}
+.preview-title { font-size: 13px; font-weight: 700; color: var(--text); }
+.preview-meta { font-size: 9px; color: var(--dim); margin-top: 2px; }
+.preview-badge {
+  font-size: 8px; letter-spacing: 2px;
+  background: rgba(0,229,255,0.15); color: var(--cyan);
+  border: 1px solid var(--border); border-radius: 4px;
+  padding: 3px 8px;
+}
+.preview-prog {
+  margin-top: 10px; background: var(--card);
+  border: 1px solid var(--border); border-radius: 6px; padding: 12px;
+}
+.prog-bar-wrap { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
+.prog-pct { font-size: 10px; color: var(--cyan); min-width: 36px; text-align: right; }
+.prog-bar {
+  flex: 1; height: 4px; background: rgba(100,116,139,0.15);
+  border-radius: 2px; overflow: hidden;
+}
+.prog-bar-fill {
+  height: 100%; border-radius: 2px;
+  background: linear-gradient(90deg, var(--violet), var(--cyan), var(--green));
+  transition: width 1.2s ease;
+}
+.prog-eta { font-size: 9px; color: var(--dim); }
+
+/* ── PRODUCTION QUEUE ── */
+.queue-item {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 5px; padding: 10px 12px;
+  display: flex; align-items: center; gap: 10px;
+}
+.qi-icon { font-size: 14px; }
+.qi-info { flex: 1; }
+.qi-title { font-size: 10px; font-weight: 700; }
+.qi-meta { font-size: 8px; color: var(--dim); margin-top: 2px; }
+.qi-badge {
+  font-size: 8px; letter-spacing: 1px;
+  padding: 2px 6px; border-radius: 10px;
+}
+.qi-badge.queued { background: rgba(100,116,139,0.15); color: var(--dim); }
+.qi-badge.next { background: rgba(251,191,36,0.12); color: var(--gold); }
+
+/* ── RELEASED GEO LIST ── */
+.geo-item {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 5px; padding: 10px 12px;
+  display: flex; align-items: center; gap: 10px;
+}
+.geo-info { flex: 1; }
+.geo-title { font-size: 10px; font-weight: 700; }
+.geo-meta { font-size: 8px; color: var(--dim); margin-top: 2px; }
+.geo-dl {
+  font-size: 8px; letter-spacing: 1px; padding: 3px 8px;
+  border: 1px solid var(--border); border-radius: 4px;
+  background: rgba(0,229,255,0.06); color: var(--cyan);
+  cursor: pointer; transition: background 0.2s, border-color 0.2s;
+  white-space: nowrap;
+}
+.geo-dl:hover { background: rgba(0,229,255,0.15); border-color: var(--cyan); }
+
+/* ── GEO FORMAT VIEWER ── */
+.geo-code {
+  background: #060810; border: 1px solid var(--border); border-radius: 5px;
+  padding: 12px; font-size: 9.5px; line-height: 1.6;
+  color: #94a3b8; overflow-x: auto; overflow-y: hidden;
+  white-space: pre;
+}
+.geo-code .ky { color: #7c3aed; }
+.geo-code .str { color: #00e5ff; }
+.geo-code .num { color: #fbbf24; }
+.geo-code .cmt { color: #334155; }
+
+/* ── ACTIVITY LOG ── */
+#log-panel {
+  grid-column: 1 / 4;
+  background: var(--bg); border-top: 1px solid var(--border);
+  padding: 16px 24px; max-height: 140px; overflow: hidden;
+}
+#log-list {
+  display: flex; flex-direction: column-reverse; gap: 4px;
+  max-height: 90px; overflow: hidden;
+}
+.log-entry {
+  font-size: 9px; color: var(--dim);
+  display: flex; gap: 10px; animation: fadein 0.4s ease;
+}
+@keyframes fadein { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:none} }
+.log-time { color: #475569; min-width: 70px; }
+.log-agent { color: var(--cyan); min-width: 120px; }
+.log-msg { color: #94a3b8; }
+
+/* ── TICKER ── */
+#ticker {
+  overflow: hidden; height: 28px; background: rgba(0,229,255,0.04);
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center;
+}
+#ticker-inner {
+  white-space: nowrap; font-size: 9px; color: var(--dim);
+  animation: ticker 40s linear infinite;
+  display: inline-block; padding-left: 100%;
+}
+@keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+.tk { color: var(--cyan); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  #main { grid-template-columns: 1fr 1fr; }
+  #centre-panel { grid-column: 1 / 3; grid-row: 1; }
+}
+@media (max-width: 600px) {
+  #main { grid-template-columns: 1fr; }
+  #centre-panel { grid-column: 1; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<header id="topbar">
+  <div class="logo-mark">AIOS PRODUCER STUDIO</div>
+  <nav class="topnav">
+    <a href="/">HOME</a>
+    <a href="/aiosdream">THEATRE</a>
+    <a href="/vr-hub">AIOSOCULIS</a>
+    <a href="/aios-studio" class="active">STUDIO</a>
+  </nav>
+  <div class="live-badge">
+    <div class="live-dot"></div>
+    <span id="badge-text">LIVE PRODUCTION · 7 AGENTS ACTIVE</span>
+  </div>
+</header>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-title">AIOS PRODUCER STUDIO</div>
+  <div class="hero-subtitle">AUTONOMOUS GENERATIVE CONTENT FACTORY · 24/7 · .GEO NATIVE FORMAT</div>
+  <div class="hero-stats">
+    <div class="hstat"><span id="stat-produced">0</span>geo files produced</div>
+    <div class="hstat"><span id="stat-agents">7</span>agents active</div>
+    <div class="hstat"><span id="stat-rate">0</span>productions/hr</div>
+    <div class="hstat"><span id="stat-size">0</span>KB avg .geo size</div>
+  </div>
+</section>
+
+<!-- MAIN -->
+<div id="main">
+
+  <!-- LEFT: Production Floor -->
+  <div class="panel" id="agent-floor">
+    <div class="panel-title">PRODUCTION FLOOR</div>
+    <!-- Agent cards injected by JS -->
+  </div>
+
+  <!-- CENTRE: Live Preview -->
+  <div class="panel" id="centre-panel">
+    <div class="panel-title">NOW PRODUCING</div>
+    <div class="preview-wrap">
+      <canvas id="preview-canvas"></canvas>
+      <div class="preview-hud">
+        <div>
+          <div class="preview-title" id="preview-title">Initialising…</div>
+          <div class="preview-meta" id="preview-meta">RENDERER — SCENE 1</div>
+        </div>
+        <div class="preview-badge">GENERATIVE</div>
+      </div>
+    </div>
+
+    <!-- Production progress -->
+    <div class="preview-prog">
+      <div style="font-size:9px;color:var(--dim);letter-spacing:2px;">PRODUCTION PROGRESS</div>
+      <div class="prog-bar-wrap">
+        <div class="prog-bar" style="flex:1">
+          <div class="prog-bar-fill" id="prod-bar" style="width:0%"></div>
+        </div>
+        <div class="prog-pct" id="prod-pct">0%</div>
+      </div>
+      <div class="prog-eta" id="prod-eta">Calculating ETA…</div>
+    </div>
+
+    <!-- Queue -->
+    <div class="panel-title" style="margin-top:8px">QUEUE</div>
+    <div id="queue-list" style="display:flex;flex-direction:column;gap:6px"></div>
+
+    <!-- Released -->
+    <div class="panel-title" style="margin-top:8px">RECENTLY RELEASED</div>
+    <div id="released-list" style="display:flex;flex-direction:column;gap:6px"></div>
+  </div>
+
+  <!-- RIGHT: Geo format + Swarm stats -->
+  <div class="panel">
+    <div class="panel-title">.GEO FORMAT — AIOS NATIVE</div>
+    <div style="font-size:9px;color:var(--dim);line-height:1.7;margin-bottom:8px">
+      .geo is the AIOS-native content format. No video files — just a compact JSON specification
+      that any AIOS Theatre can interpret and play. Zero storage overhead. Infinite resolution.
+      Every playback is unique and procedurally generated.
+    </div>
+    <div class="geo-code" id="geo-viewer">Loading…</div>
+
+    <div class="panel-title" style="margin-top:12px">SWARM ATTRIBUTES</div>
+    <div style="font-size:9px;color:var(--dim);line-height:1.8">
+      <div>Format: <span style="color:var(--cyan)">aios-geo-v1</span></div>
+      <div>Architecture: <span style="color:var(--cyan)">8→26→48:480</span></div>
+      <div>Base Hz: <span style="color:var(--cyan)">72 Hz holographic</span></div>
+      <div>PHI anchor: <span style="color:var(--cyan)">1.618 golden root</span></div>
+      <div>PSI bridge: <span style="color:var(--cyan)">1.414 silver</span></div>
+    </div>
+
+    <div class="panel-title" style="margin-top:12px">PIPELINE STATUS</div>
+    <div id="pipeline-steps" style="display:flex;flex-direction:column;gap:4px;font-size:9px"></div>
+  </div>
+
+  <!-- BOTTOM: Activity Log -->
+  <div id="log-panel">
+    <div class="panel-title" style="border:none;padding:0;margin-bottom:8px">ACTIVITY LOG</div>
+    <div id="log-list"></div>
+  </div>
+
+</div>
+
+<!-- TICKER -->
+<div id="ticker">
+  <div id="ticker-inner">
+    <span class="tk">⬡ AIOS PRODUCER STUDIO</span>&nbsp;&nbsp;&nbsp;
+    Autonomous generative content factory &nbsp;·&nbsp;
+    <span class="tk">Zero video files — everything is procedural</span> &nbsp;·&nbsp;
+    .geo format plays on any AIOS Theatre &nbsp;·&nbsp;
+    <span class="tk">PHI=1.618 · PSI=1.414 · 8→26→48:480</span> &nbsp;·&nbsp;
+    Each production is a unique living algorithm &nbsp;·&nbsp;
+    <span class="tk">7 swarm agents active 24/7</span> &nbsp;·&nbsp;
+    Infinite resolution · Zero storage overhead &nbsp;·&nbsp;
+    <span class="tk">⬡ AIOS PRODUCER STUDIO</span>&nbsp;&nbsp;&nbsp;
+    Autonomous generative content factory &nbsp;·&nbsp;
+    <span class="tk">Zero video files — everything is procedural</span> &nbsp;·&nbsp;
+    .geo format plays on any AIOS Theatre &nbsp;·&nbsp;
+    <span class="tk">PHI=1.618 · PSI=1.414 · 8→26→48:480</span> &nbsp;·&nbsp;
+    Each production is a unique living algorithm &nbsp;·&nbsp;
+    <span class="tk">7 swarm agents active 24/7</span> &nbsp;·&nbsp;
+    Infinite resolution · Zero storage overhead
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════════════════
+// AIOS PRODUCER STUDIO — Client JS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+const PHI = 1.618;
+const PSI = 1.414;
+
+// ── Programme catalogue ──────────────────────────────────────────────────────
+const RENDERERS_LIST = ['matrix','inception','apollo','hyperspace','nebula','neural','quantum','merkaba','phoenix','ocean','escher','chronos'];
+const FREQ_MAP = {
+  ENTITY: 396, LOCATION: 417, ACTION: 528, DIALOGUE: 639,
+  EMOTION: 741, PHYSICS: 852, NARRATIVE: 963, HOLOGRAPHIC: 72
+};
+const GENRES = ['QUANTUM','NEURAL','FRACTAL','COSMIC','TEMPORAL','HARMONIC','BIOLUMINESCENT','RECURSIVE'];
+const ADJ = ['Quantum','Neural','Fractal','Hyperspatial','Harmonic','Chromatic','Temporal','Prismatic','Holographic','Resonant','Celestial','Emergent'];
+const NOUN = ['Emergence','Resonance','Convergence','Awakening','Drift','Pulse','Cascade','Singularity','Horizon','Lattice','Vortex','Nexus'];
+
+const SCENE_NAMES = [
+  ['Genesis','Expansion','Zenith','Dissolution','Unity'],
+  ['Silence','Tremor','Surge','Echo','Stillness'],
+  ['Origin','Structure','Complexity','Entropy','Resolution'],
+  ['Dawn','Ascent','Peak','Descent','Dusk'],
+  ['Seed','Growth','Bloom','Fade','Return']
+];
+
+function randEl(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+function randInt(a, b) { return Math.floor(Math.random() * (b - a + 1)) + a; }
+function randF(a, b) { return a + Math.random() * (b - a); }
+function fmtTime() {
+  const d = new Date();
+  return String(d.getHours()).padStart(2,'0') + ':' +
+         String(d.getMinutes()).padStart(2,'0') + ':' +
+         String(d.getSeconds()).padStart(2,'0');
+}
+
+function makeGeo(title) {
+  const renderer = randEl(RENDERERS_LIST);
+  const hz = randEl(Object.values(FREQ_MAP));
+  const semType = Object.keys(FREQ_MAP).find(k => FREQ_MAP[k] === hz) || 'NARRATIVE';
+  const latticeNode = randInt(0, 47);
+  const scenePack = randEl(SCENE_NAMES);
+  const dur = randInt(600, 2400);
+  const sceneDurs = scenePack.map(() => 0);
+  let rem = dur;
+  scenePack.forEach((_, i) => {
+    if (i === scenePack.length - 1) { sceneDurs[i] = rem; return; }
+    const d = Math.floor(rem * randF(0.15, 0.35));
+    sceneDurs[i] = d; rem -= d;
+  });
+  const pan = parseFloat((randF(-0.3, 0.3)).toFixed(2));
+  const noise = parseFloat(randF(0.05, 0.25).toFixed(2));
+  const palettes = [
+    ['#00e5ff','#7c3aed','#00ff7a'],
+    ['#fbbf24','#ef4444','#f97316'],
+    ['#0ea5e9','#8b5cf6','#ec4899'],
+    ['#10b981','#06b6d4','#3b82f6']
+  ];
+  const pal = randEl(palettes);
+  const filters = [
+    'saturate(1.1) contrast(1.06)',
+    'saturate(1.3) brightness(0.95)',
+    'hue-rotate(10deg) saturate(1.2)',
+    'contrast(1.1) brightness(1.02)'
+  ];
+  const moods = ['rgba(0,18,40,0.10)','rgba(40,0,30,0.10)','rgba(0,30,20,0.10)','rgba(20,0,40,0.10)'];
+
+  return {
+    format: 'aios-geo-v1',
+    id: 'geo_' + Math.random().toString(36).slice(2,10),
+    title: title || (randEl(ADJ) + ' ' + randEl(NOUN)),
+    genre: [GENRES[randInt(0,3)], GENRES[randInt(4,7)]],
+    runtime: dur,
+    created: new Date().toISOString(),
+    renderer: { type: renderer, palette: pal, intensity: parseFloat(randF(0.7, 1.0).toFixed(2)) },
+    audio: { hz, wave: randEl(['sine','triangle','sawtooth']), noise, lfoRate: parseFloat((1/PHI).toFixed(3)), drone: Math.random() > 0.4 },
+    scenes: scenePack.map((name, i) => ({ name, dur: sceneDurs[i], intensity: parseFloat(randF(0.4, 1.0).toFixed(2)) })),
+    colourGrade: { filter: randEl(filters), mood: randEl(moods) },
+    spatialPan: pan,
+    geoqode: {
+      architectureSignature: '8,26,48:480',
+      semanticType: semType,
+      frequency: hz,
+      latticeNode,
+      phiCoefficient: PHI
+    },
+    swarm: {
+      director: 'QuantumDirector-v3',
+      cinematographer: 'ChromaCine-v2',
+      composer: 'HarmonicForge-v4',
+      studio: 'AIOSProducerSwarm',
+      producedAt: 'Production-Floor-01'
+    }
+  };
+}
+
+// ── Agent definitions ────────────────────────────────────────────────────────
+const AGENTS = [
+  { id: 'director',   icon: '🎬', name: 'QuantumDirector',   role: 'Programme Vision & Scene Structure' },
+  { id: 'cine',       icon: '🎨', name: 'ChromaCine',        role: 'Renderer Palette & Composition' },
+  { id: 'composer',   icon: '🎵', name: 'HarmonicForge',     role: 'Audio Frequencies & LFO Design' },
+  { id: 'fx',         icon: '✨', name: 'ParticleForge',      role: 'Particle Systems & Visual FX' },
+  { id: 'colorist',   icon: '🎞️', name: 'LatticeColorist',   role: 'Colour Grading & Mood Overlays' },
+  { id: 'editor',     icon: '✂️', name: 'TemporalEditor',    role: 'Scene Pacing & Timing' },
+  { id: 'distributor',icon: '🚀', name: 'GeoDistributor',    role: 'Packaging & .geo Release' }
+];
+
+const AGENT_TASKS = {
+  director:    ['Structuring scene arc','Defining emotional trajectory','Aligning with GeoQode lattice','Writing narrative blueprint'],
+  cine:        ['Designing colour palette','Composing renderer parameters','Calibrating visual intensity','Tuning PHI-ratio composition'],
+  composer:    ['Selecting base frequency','Designing LFO envelope','Crafting harmonic progression','Calibrating spatial pan'],
+  fx:          ['Spawning particle system','Tuning physics parameters','Designing emission curves','Calibrating bloom intensity'],
+  colorist:    ['Applying grade filter','Mixing mood overlay','Balancing contrast ratios','Tuning HDR response'],
+  editor:      ['Pacing scene transitions','Calibrating scene durations','Syncing audio to visuals','Finalising crossfade timing'],
+  distributor: ['Encoding .geo payload','Signing lattice coordinates','Packaging metadata','Publishing to catalogue']
+};
+
+const STATUS_FLOW = ['thinking','working','working','reviewing','releasing','idle'];
+
+// ── State ────────────────────────────────────────────────────────────────────
+let agentStates = {};
+let currentGeo = null;
+let productionPct = 0;
+let producedCount = 0;
+let releasedGeos = [];
+let queuedGeos = [];
+let etaSec = 0;
+let sessionStart = Date.now();
+
+AGENTS.forEach(a => {
+  agentStates[a.id] = { status: 'idle', task: '', progress: 0, statusIdx: 0 };
+});
+
+// ── Render agent floor ───────────────────────────────────────────────────────
+function renderAgentFloor() {
+  const el = document.getElementById('agent-floor');
+  el.innerHTML = '<div class="panel-title">PRODUCTION FLOOR</div>';
+  AGENTS.forEach(a => {
+    const st = agentStates[a.id];
+    const card = document.createElement('div');
+    card.className = 'agent-card ' + st.status;
+    card.innerHTML = `
+      <div class="agent-head">
+        <span class="agent-icon">${a.icon}</span>
+        <div>
+          <div class="agent-name">${a.name}</div>
+          <div class="agent-role">${a.role}</div>
+        </div>
+        <div class="agent-status ${st.status}">${st.status.toUpperCase()}</div>
+      </div>
+      <div class="agent-task">${st.task || '—'}</div>
+      <div class="progress-bar">
+        <div class="progress-fill ${st.status === 'releasing' ? 'green' : st.status === 'reviewing' ? 'gold' : ''}"
+             style="width:${st.progress}%"></div>
+      </div>`;
+    el.appendChild(card);
+  });
+}
+
+// ── Render pipeline steps ────────────────────────────────────────────────────
+const PIPELINE = ['CONCEPT','DIRECTION','SCORED','RENDERED','MASTERED','RELEASED'];
+function renderPipeline(step) {
+  const el = document.getElementById('pipeline-steps');
+  el.innerHTML = '';
+  PIPELINE.forEach((name, i) => {
+    const done = i < step;
+    const active = i === step;
+    const div = document.createElement('div');
+    div.style.cssText = `display:flex;align-items:center;gap:8px;padding:4px 6px;
+      border-radius:4px;background:${active ? 'rgba(0,229,255,0.08)' : 'transparent'}`;
+    div.innerHTML = `
+      <span style="color:${done ? 'var(--green)' : active ? 'var(--cyan)' : 'var(--dim)'}">
+        ${done ? '✓' : active ? '▶' : '○'}
+      </span>
+      <span style="color:${done ? 'var(--green)' : active ? 'var(--cyan)' : 'var(--dim)'};
+                  letter-spacing:2px;font-size:9px">
+        ${name}
+      </span>`;
+    el.appendChild(div);
+  });
+}
+
+// ── Geo code viewer ──────────────────────────────────────────────────────────
+function renderGeoViewer(geo) {
+  const el = document.getElementById('geo-viewer');
+  if (!geo) return;
+  const j = JSON.stringify(geo, null, 2);
+  // Syntax highlight
+  const highlighted = j
+    .replace(/("[\w-]+")\s*:/g, '<span class="ky">$1</span>:')
+    .replace(/:\s*(".*?")/g, ': <span class="str">$1</span>')
+    .replace(/:\s*(-?\d+\.?\d*)/g, ': <span class="num">$1</span>')
+    .replace(/:\s*(true|false)/g, ': <span class="num">$1</span>');
+  el.innerHTML = highlighted;
+}
+
+// ── Production queue ─────────────────────────────────────────────────────────
+function renderQueue() {
+  const el = document.getElementById('queue-list');
+  el.innerHTML = '';
+  queuedGeos.slice(0, 3).forEach((g, i) => {
+    const div = document.createElement('div');
+    div.className = 'queue-item';
+    div.innerHTML = `<span class="qi-icon">⬡</span>
+      <div class="qi-info">
+        <div class="qi-title">${g.title}</div>
+        <div class="qi-meta">${g.renderer.type.toUpperCase()} · ${g.audio.hz}Hz</div>
+      </div>
+      <span class="qi-badge ${i === 0 ? 'next' : 'queued'}">${i === 0 ? 'NEXT' : 'QUEUED'}</span>`;
+    el.appendChild(div);
+  });
+}
+
+// ── Released geo list ────────────────────────────────────────────────────────
+function renderReleased() {
+  const el = document.getElementById('released-list');
+  el.innerHTML = '';
+  releasedGeos.slice(0, 5).forEach(g => {
+    const div = document.createElement('div');
+    div.className = 'geo-item';
+    div.innerHTML = `<div class="geo-info">
+        <div class="geo-title">${g.title}</div>
+        <div class="geo-meta">${g.renderer.type.toUpperCase()} · ${g.audio.hz}Hz · ${Math.round(g.runtime/60)}m</div>
+      </div>
+      <button class="geo-dl" onclick="downloadGeo('${g.id}')">⬇ .geo</button>`;
+    el.appendChild(div);
+  });
+}
+
+// ── Download .geo file ───────────────────────────────────────────────────────
+function downloadGeo(id) {
+  const g = releasedGeos.find(x => x.id === id) || currentGeo;
+  if (!g) return;
+  const blob = new Blob([JSON.stringify(g, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = g.title.replace(/\s+/g, '-').toLowerCase() + '.geo';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+window.downloadGeo = downloadGeo;
+
+// ── Activity log ─────────────────────────────────────────────────────────────
+const LOG_MAX = 8;
+function addLog(agentName, msg) {
+  const el = document.getElementById('log-list');
+  const div = document.createElement('div');
+  div.className = 'log-entry';
+  div.innerHTML = `<span class="log-time">[${fmtTime()}]</span>
+    <span class="log-agent">${agentName}</span>
+    <span class="log-msg">${msg}</span>`;
+  el.insertBefore(div, el.firstChild);
+  while (el.children.length > LOG_MAX) el.removeChild(el.lastChild);
+}
+
+// ── Hero stats ───────────────────────────────────────────────────────────────
+function updateStats() {
+  document.getElementById('stat-produced').textContent = producedCount;
+  const hrs = (Date.now() - sessionStart) / 3600000 || 0.001;
+  document.getElementById('stat-rate').textContent = (producedCount / hrs).toFixed(1);
+  document.getElementById('stat-size').textContent = currentGeo
+    ? Math.round(JSON.stringify(currentGeo).length / 1024 * 10) / 10
+    : '—';
+}
+
+// ── Production cycle ─────────────────────────────────────────────────────────
+const PROD_DURATION_MS = 45000; // 45s per production
+let prodStartTime = 0;
+let productionPhase = 0; // 0-5 matching pipeline steps
+
+function startProduction(geo) {
+  currentGeo = geo;
+  productionPct = 0;
+  productionPhase = 0;
+  prodStartTime = Date.now();
+  etaSec = Math.round(PROD_DURATION_MS / 1000);
+
+  document.getElementById('preview-title').textContent = geo.title;
+  document.getElementById('preview-meta').textContent =
+    geo.renderer.type.toUpperCase() + ' · ' + geo.audio.hz + 'Hz · ' + GENRES.slice(0,2).join(' / ');
+  renderGeoViewer(geo);
+  renderPipeline(0);
+  updatePreviewRenderer(geo.renderer.type);
+
+  // Reset agent states
+  AGENTS.forEach(a => {
+    agentStates[a.id] = { status: 'idle', task: '', progress: 0 };
+  });
+
+  addLog('QuantumDirector', `Starting production: "${geo.title}"`);
+  renderAgentFloor();
+  renderQueue();
+}
+
+function tickProduction() {
+  if (!currentGeo || !prodStartTime) return;
+  const elapsed = Date.now() - prodStartTime;
+  const frac = Math.min(elapsed / PROD_DURATION_MS, 1);
+  productionPct = Math.round(frac * 100);
+  productionPhase = Math.floor(frac * 5);
+  etaSec = Math.max(0, Math.round((PROD_DURATION_MS - elapsed) / 1000));
+
+  document.getElementById('prod-bar').style.width = productionPct + '%';
+  document.getElementById('prod-pct').textContent = productionPct + '%';
+  document.getElementById('prod-eta').textContent =
+    etaSec > 0 ? `ETA: ${Math.floor(etaSec/60)}m ${etaSec%60}s remaining` : 'Finalising…';
+
+  renderPipeline(productionPhase);
+
+  // Stagger agent activations across production lifecycle
+  const activations = [
+    [0.02, 'director'],    // Director starts first
+    [0.08, 'cine'],        // Cine joins
+    [0.12, 'composer'],    // Composer
+    [0.18, 'fx'],          // FX
+    [0.22, 'colorist'],    // Colorist
+    [0.30, 'editor'],      // Editor
+    [0.82, 'distributor'], // Distributor wraps at end
+  ];
+  activations.forEach(([threshold, id]) => {
+    if (frac >= threshold && agentStates[id].status === 'idle') {
+      const tasks = AGENT_TASKS[id];
+      agentStates[id].status = 'working';
+      agentStates[id].task = randEl(tasks);
+      addLog(AGENTS.find(a => a.id === id).name, agentStates[id].task);
+    }
+    if (agentStates[id].status !== 'idle') {
+      // Progress rises with frac, agents ahead of distributor finish sooner
+      const agentFrac = id === 'distributor' ? Math.max(0, (frac - 0.82) / 0.18) : Math.min(frac / 0.75, 1);
+      agentStates[id].progress = Math.round(agentFrac * 100);
+      if (agentFrac >= 1 && id !== 'distributor') agentStates[id].status = 'reviewing';
+    }
+  });
+  if (frac >= 0.9) agentStates['distributor'].status = 'releasing';
+
+  renderAgentFloor();
+
+  if (frac >= 1) {
+    // Release
+    releasedGeos.unshift(currentGeo);
+    if (releasedGeos.length > 20) releasedGeos.pop();
+    producedCount++;
+    addLog('GeoDistributor', `Released "${currentGeo.title}" → catalogue [${currentGeo.id}]`);
+    renderReleased();
+    updateStats();
+
+    // Start next
+    const next = queuedGeos.shift() || makeGeo();
+    queuedGeos.push(makeGeo());
+    queuedGeos.push(makeGeo());
+    setTimeout(() => startProduction(next), 2000);
+  }
+}
+
+// ── Mini preview renderer (Hyperspace) ───────────────────────────────────────
+let _previewRaf = null;
+let _previewRenderer = 'hyperspace';
+
+function updatePreviewRenderer(type) {
+  _previewRenderer = type;
+  if (_previewRaf) cancelAnimationFrame(_previewRaf);
+  startPreviewRenderer();
+}
+
+function startPreviewRenderer() {
+  const cv = document.getElementById('preview-canvas');
+  const container = cv.parentElement;
+  cv.width  = container.offsetWidth  || 640;
+  cv.height = container.offsetHeight || 360;
+  const ctx = cv.getContext('2d');
+  const W = cv.width, H = cv.height;
+  const cx = W/2, cy = H/2;
+
+  let t = 0;
+  const renderer = _previewRenderer;
+
+  // Simplified renderers for live preview
+  if (renderer === 'hyperspace') {
+    const stars = Array.from({length: 180}, () => ({
+      x: (Math.random()-0.5)*W,
+      y: (Math.random()-0.5)*H,
+      z: Math.random()*W,
+      pz: 0,
+      c: [randInt(100,255),randInt(100,255),randInt(200,255)]
+    }));
+    const loop = () => {
+      ctx.fillStyle = 'rgba(0,0,8,0.18)';
+      ctx.fillRect(0, 0, W, H);
+      stars.forEach(s => {
+        s.pz = s.z;
+        s.z -= 12;
+        if (s.z <= 0) { s.z = W; s.pz = W; s.x = (Math.random()-0.5)*W; s.y = (Math.random()-0.5)*H; }
+        const sx = (s.x/s.z)*W + cx, sy = (s.y/s.z)*H + cy;
+        const px = (s.x/s.pz)*W + cx, py = (s.y/s.pz)*H + cy;
+        const alpha = Math.min(1, (W-s.z)/W*2);
+        ctx.strokeStyle = `rgba(${s.c[0]},${s.c[1]},${s.c[2]},${alpha})`;
+        ctx.lineWidth = (W-s.z)/W*2;
+        ctx.beginPath(); ctx.moveTo(px,py); ctx.lineTo(sx,sy); ctx.stroke();
+      });
+      t += 0.016;
+      _previewRaf = requestAnimationFrame(loop);
+    };
+    loop();
+  } else if (renderer === 'quantum') {
+    const N = 3;
+    const srcs = Array.from({length:N}, (_,i) => ({
+      x: W*randF(0.2,0.8), y: H*randF(0.2,0.8)
+    }));
+    const loop = () => {
+      const id = ctx.createImageData(W, H);
+      const d = id.data;
+      for (let y = 0; y < H; y += 2) {
+        for (let x = 0; x < W; x += 2) {
+          let v = 0;
+          srcs.forEach((s,i) => {
+            const dx = x-s.x, dy = y-s.y;
+            v += Math.sin(Math.sqrt(dx*dx+dy*dy)*0.06 - t*2 + i*2);
+          });
+          v = (v/N+1)*0.5;
+          const p = (y*W+x)*4;
+          d[p]   = Math.floor(v*100);
+          d[p+1] = Math.floor(v*200);
+          d[p+2] = Math.floor(255*v);
+          d[p+3] = 220;
+          d[p+4]=d[p]; d[p+5]=d[p+1]; d[p+6]=d[p+2]; d[p+7]=220;
+          if (y+1<H){d[p+W*4]=d[p];d[p+W*4+1]=d[p+1];d[p+W*4+2]=d[p+2];d[p+W*4+3]=220;}
+        }
+      }
+      ctx.putImageData(id, 0, 0);
+      t += 0.025;
+      srcs.forEach((s,i) => { s.x += Math.sin(t*0.3+i)*0.8; s.y += Math.cos(t*0.25+i)*0.8; });
+      _previewRaf = requestAnimationFrame(loop);
+    };
+    loop();
+  } else if (renderer === 'merkaba') {
+    const TET_V = [[0,0,1],[-0.942,0,-0.333],[0.471,0.816,-0.333],[0.471,-0.816,-0.333]];
+    const TET_E = [[0,1],[1,2],[2,0],[0,3],[1,3],[2,3]];
+    function proj(v, angle, flip) {
+      const ca = Math.cos(angle*(flip?-1:1)), sa = Math.sin(angle*(flip?-1:1));
+      const xr = v[0]*ca - v[2]*sa, yr = v[1], zr = v[0]*sa + v[2]*ca;
+      const f = 2.2/(2.2+zr);
+      return [cx + xr*f*Math.min(W,H)*0.35, cy + yr*f*Math.min(W,H)*0.35];
+    }
+    const loop = () => {
+      ctx.fillStyle='rgba(8,4,18,0.15)'; ctx.fillRect(0,0,W,H);
+      [false,true].forEach(flip => {
+        const pts = TET_V.map(v => proj(v, t, flip));
+        const col = flip ? '#00e5ff' : '#f5a623';
+        [[0,1,2],[0,1,3],[0,2,3],[1,2,3]].forEach(([a,b,c]) => {
+          ctx.beginPath();
+          ctx.moveTo(pts[a][0],pts[a][1]); ctx.lineTo(pts[b][0],pts[b][1]); ctx.lineTo(pts[c][0],pts[c][1]);
+          ctx.closePath(); ctx.fillStyle = flip?'rgba(0,229,255,0.05)':'rgba(245,166,35,0.05)'; ctx.fill();
+        });
+        TET_E.forEach(([a,b]) => {
+          ctx.strokeStyle=col+'aa'; ctx.lineWidth=1.5;
+          ctx.beginPath(); ctx.moveTo(pts[a][0],pts[a][1]); ctx.lineTo(pts[b][0],pts[b][1]); ctx.stroke();
+        });
+      });
+      // PHI spiral
+      ctx.strokeStyle='rgba(251,191,36,0.1)'; ctx.lineWidth=0.8; ctx.beginPath();
+      for(let i=0;i<300;i++){const a=(i/100)*Math.PI,r=Math.pow(PHI,i/100)*2;
+        const px=cx+Math.cos(a+t*0.1)*r,py=cy+Math.sin(a+t*0.1)*r;
+        i===0?ctx.moveTo(px,py):ctx.lineTo(px,py);}
+      ctx.stroke();
+      t += 0.018;
+      _previewRaf = requestAnimationFrame(loop);
+    };
+    loop();
+  } else {
+    // Default: nebula particles
+    const particles = Array.from({length:120}, () => ({
+      x: Math.random()*W, y: Math.random()*H,
+      vx: (Math.random()-0.5)*0.4, vy: (Math.random()-0.5)*0.4,
+      r: Math.random()*3+1,
+      phase: Math.random()*Math.PI*2,
+      color: [randInt(0,100),randInt(100,255),randInt(180,255)]
+    }));
+    const loop = () => {
+      ctx.fillStyle='rgba(2,2,10,0.1)'; ctx.fillRect(0,0,W,H);
+      particles.forEach(p => {
+        p.x+=p.vx; p.y+=p.vy; p.phase+=0.02;
+        if(p.x<0)p.x=W; if(p.x>W)p.x=0;
+        if(p.y<0)p.y=H; if(p.y>H)p.y=0;
+        const a=(0.4+0.4*Math.sin(p.phase))*0.7;
+        ctx.fillStyle=`rgba(${p.color[0]},${p.color[1]},${p.color[2]},${a})`;
+        ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
+      });
+      t+=0.016;
+      _previewRaf=requestAnimationFrame(loop);
+    };
+    loop();
+  }
+}
+
+// ── Bootstrap ────────────────────────────────────────────────────────────────
+function init() {
+  // Pre-fill queue
+  queuedGeos = [makeGeo(), makeGeo(), makeGeo()];
+  const firstGeo = makeGeo();
+  startProduction(firstGeo);
+  startPreviewRenderer();
+
+  // Pre-seed released list with some placeholder entries for instant content
+  const seeds = [
+    'Neural Cascade','Fractal Emergence','Hyperspatial Drift','Quantum Resonance','Chromatic Vortex'
+  ];
+  seeds.forEach(title => {
+    releasedGeos.push(makeGeo(title));
+    producedCount++;
+  });
+  renderReleased();
+  updateStats();
+
+  // Initial log entries
+  addLog('GeoDistributor',  'Session started. Catalogue ready.');
+  addLog('QuantumDirector', 'Production floor online. 7 agents active.');
+
+  // Production tick
+  setInterval(tickProduction, 1000);
+
+  // Rotate agent tasks every 8-12s
+  setInterval(() => {
+    AGENTS.forEach(a => {
+      const st = agentStates[a.id];
+      if (st.status === 'working' && Math.random() < 0.35) {
+        st.task = randEl(AGENT_TASKS[a.id]);
+      }
+    });
+    renderAgentFloor();
+  }, 5000);
+
+  // Update stats every 10s
+  setInterval(updateStats, 10000);
+}
+
+window.addEventListener('DOMContentLoaded', init);
+window.addEventListener('resize', () => {
+  if (_previewRaf) cancelAnimationFrame(_previewRaf);
+  startPreviewRenderer();
+});
+</script>
+</body>
+</html>

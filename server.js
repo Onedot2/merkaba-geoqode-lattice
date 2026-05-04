@@ -120,6 +120,11 @@ const VR_HUB_HTML = existsSync(VR_HUB_HTML_PATH)
   ? withMeta(readFileSync(VR_HUB_HTML_PATH, "utf-8"))
   : null;
 
+const AIOS_STUDIO_HTML_PATH = join(PUBLIC_DIR, "aios-studio.html");
+const AIOS_STUDIO_HTML = existsSync(AIOS_STUDIO_HTML_PATH)
+  ? withMeta(readFileSync(AIOS_STUDIO_HTML_PATH, "utf-8"))
+  : null;
+
 const VR_DEV_HTML_PATH = join(PUBLIC_DIR, "vr-developer.html");
 const VR_DEV_HTML = existsSync(VR_DEV_HTML_PATH)
   ? withMeta(readFileSync(VR_DEV_HTML_PATH, "utf-8"))
@@ -1818,6 +1823,18 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
         return json(res, 404, { ok: false, error: "VR page not found" });
       res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
       res.end(VR_HTML);
+      return;
+    }
+
+    // ── GET /aios-studio — AIOSProducerSwarm Production Studio ────────────
+    if (
+      req.method === "GET" &&
+      (pathname === "/aios-studio" || pathname === "/aios-studio/")
+    ) {
+      if (!AIOS_STUDIO_HTML)
+        return json(res, 404, { ok: false, error: "AIOS Studio not found" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.end(AIOS_STUDIO_HTML);
       return;
     }
 
