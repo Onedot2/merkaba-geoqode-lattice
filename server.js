@@ -50,7 +50,7 @@ console.log(
 const GA_ID =
   process.env.GA_MEASUREMENT_ID ||
   process.env.GA_MEASUREMENT ||
-  "G-E3NTLP8HS3";
+  "G-G38FVKETP3";
 const GSC_TOKEN = process.env.GOOGLE_SITE_VERIFICATION || "";
 
 /** Inject GA4 + optional GSC meta tag + preconnect hints into any HTML string before </head> */
