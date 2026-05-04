@@ -1867,7 +1867,7 @@ h1{font-size:1.6rem;font-weight:800;margin-bottom:0.75rem;line-height:1.25;}
         }
       }
       const xpCards = allLive.map(({ xp, cat }) => `
-    <article class="xpc" style="--acc:${cat.accent || "#00d4ff"}">
+    <article class="xpc" data-cat="${cat.id}" style="--acc:${cat.accent || "#00d4ff"}">
       <div class="xpc-cat">${cat.icon || "🥽"} ${cat.display}</div>
       <h2 class="xpc-title"><a href="/vr-experience/${xp.id}">${xp.display}</a></h2>
       <p class="xpc-desc">${xp.shortDesc || xp.description || ""}</p>
@@ -1881,6 +1881,13 @@ h1{font-size:1.6rem;font-weight:800;margin-bottom:0.75rem;line-height:1.25;}
         <a href="/vr-experience/${xp.id}" class="btn-info">Details →</a>
       </div>
     </article>`).join("\n");
+
+      const liveCats = [...new Map(allLive.map(({ cat }) => [cat.id, cat])).values()];
+      const filterBtns = [`<button class="ft active" onclick="filterXP('all',this)">All (${allLive.length})</button>`,
+        ...liveCats.map(cat => {
+          const count = allLive.filter(({ cat: c }) => c.id === cat.id).length;
+          return `<button class="ft" onclick="filterXP('${cat.id}',this)">${cat.icon || ""} ${cat.display} (${count})</button>`;
+        })].join("\n");
 
       const ldItems = allLive.map(({ xp }) => ({
         "@type": "SoftwareApplication",
@@ -1915,12 +1922,16 @@ h1{font-size:1.6rem;font-weight:800;margin-bottom:0.75rem;line-height:1.25;}
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#04080f;color:#edf4ff;font-family:system-ui,sans-serif;padding:2rem 1.5rem;}
-.hero{text-align:center;padding:3rem 0 2.5rem;}
+.hero{text-align:center;padding:3rem 0 2rem;}
 .hero h1{font-size:2rem;font-weight:900;margin-bottom:0.5rem;}
-.hero p{color:#8aa0c8;font-size:0.95rem;max-width:480px;margin:0 auto 1.5rem;}
+.hero p{color:#8aa0c8;font-size:0.95rem;max-width:480px;margin:0 auto 1.25rem;}
 .count{display:inline-block;padding:0.3rem 0.9rem;background:#00d4ff1a;border:1px solid #00d4ff44;border-radius:20px;font-size:0.8rem;font-weight:700;color:#00d4ff;}
+.filters{display:flex;flex-wrap:wrap;gap:0.5rem;justify-content:center;max-width:900px;margin:0 auto 2rem;padding-top:1.5rem;}
+.ft{padding:0.35rem 0.9rem;border-radius:20px;border:1px solid rgba(255,255,255,0.15);background:transparent;color:#8aa0c8;font-size:0.78rem;font-weight:600;cursor:pointer;transition:all 0.15s;}
+.ft:hover,.ft.active{border-color:#00d4ff;color:#00d4ff;background:#00d4ff12;}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem;max-width:1200px;margin:0 auto;}
 .xpc{background:rgba(255,255,255,0.04);border:1px solid var(--acc,#00d4ff)33;border-left:3px solid var(--acc,#00d4ff);border-radius:12px;padding:1.25rem;}
+.xpc.hidden{display:none;}
 .xpc-cat{font-size:0.7rem;font-weight:700;letter-spacing:0.08em;color:var(--acc,#00d4ff);text-transform:uppercase;margin-bottom:0.4rem;}
 .xpc-title{font-size:1.05rem;font-weight:700;margin-bottom:0.5rem;line-height:1.3;}
 .xpc-title a{color:#edf4ff;text-decoration:none;}
@@ -1932,6 +1943,7 @@ body{background:#04080f;color:#edf4ff;font-family:system-ui,sans-serif;padding:2
 .btn-vr{padding:0.45rem 1rem;background:var(--acc,#00d4ff);color:#000;border-radius:8px;font-weight:700;font-size:0.82rem;text-decoration:none;}
 .btn-info{padding:0.45rem 0.8rem;color:#8aa0c8;font-size:0.78rem;text-decoration:none;border:1px solid rgba(255,255,255,0.1);border-radius:8px;}
 .btn-info:hover{color:#edf4ff;}
+.none-msg{display:none;text-align:center;color:#8aa0c8;padding:3rem;grid-column:1/-1;}
 .back{display:block;text-align:center;margin-top:2.5rem;color:#00d4ff;font-size:0.85rem;text-decoration:none;opacity:0.7;}
 .back:hover{opacity:1;}
 </style>
@@ -1942,10 +1954,28 @@ body{background:#04080f;color:#edf4ff;font-family:system-ui,sans-serif;padding:2
   <p>Zero install. Open on any Meta Quest Browser. 9 categories · 48-node lattice · <span style="color:#00d4ff">realaios.com</span></p>
   <span class="count">✓ ${allLive.length} Live Now</span>
 </div>
-<div class="grid">
+<div class="filters">
+${filterBtns}
+</div>
+<div class="grid" id="xp-grid">
 ${xpCards}
+<p class="none-msg" id="none-msg">No experiences in this category yet.</p>
 </div>
 <a class="back" href="/vr-hub">← Full VR Hub</a> &nbsp;&middot;&nbsp; <a class="back" href="/">realaios.com</a>
+<script>
+function filterXP(cat, btn) {
+  document.querySelectorAll('.ft').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const cards = document.querySelectorAll('.xpc');
+  let shown = 0;
+  cards.forEach(c => {
+    const match = cat === 'all' || c.dataset.cat === cat;
+    c.classList.toggle('hidden', !match);
+    if (match) shown++;
+  });
+  document.getElementById('none-msg').style.display = shown === 0 ? 'block' : 'none';
+}
+</script>
 </body>
 </html>`;
       res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "public, max-age=300" });
