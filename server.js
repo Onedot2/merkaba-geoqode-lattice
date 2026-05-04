@@ -830,6 +830,8 @@ const server = createServer(async (req, res) => {
 <meta name="twitter:title" content="${product.name} — AIOS">
 <meta name="twitter:description" content="${product.tagline}">
 <meta name="twitter:image" content="https://realaios.com/public/og-image.svg">
+${GSC_TOKEN?`<meta name="google-site-verification" content="${GSC_TOKEN}"/>`:""}
+<script async src="https://www.googletagmanager.com/gtag/js?id=${GA_ID}"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${GA_ID}',{send_page_view:true,cookie_flags:'SameSite=None;Secure'});</script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#0a0a0f;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;min-height:100vh}
@@ -2056,6 +2058,7 @@ h1{font-size:1.6rem;font-weight:800;margin-bottom:0.75rem;line-height:1.25;}
 .btn-hub{display:block;margin-top:2rem;color:${accent};font-size:0.82rem;text-decoration:none;opacity:0.7;}
 .btn-hub:hover{opacity:1;}
 </style>
+${GSC_TOKEN?`<meta name="google-site-verification" content="${GSC_TOKEN}"/>`:""}${`<script async src="https://www.googletagmanager.com/gtag/js?id=${GA_ID}"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${GA_ID}',{send_page_view:true,cookie_flags:'SameSite=None;Secure'});</script>`}
 </head>
 <body>
 <nav class="xp-nav">
@@ -2063,8 +2066,9 @@ h1{font-size:1.6rem;font-weight:800;margin-bottom:0.75rem;line-height:1.25;}
   <div class="nav-links">
     <a href="/vr-hub">&#x1F97D; VR Hub</a>
     <a href="/experiences">All ${liveCount} XPs</a>
+    <a href="/news">News</a>
     <a href="/start">Start Here</a>
-    <a href="/products">⚡ Products</a>
+    <a href="/claude" style="color:#d97706">Claude &#xD7;</a>
   </div>
 </nav>
 <main>
@@ -2217,6 +2221,7 @@ body{background:#04080f;color:#edf4ff;font-family:system-ui,sans-serif;padding:2
 .top-nav-links a:hover{color:#edf4ff;}
 .top-nav-links a.active{color:#00d4ff;}
 </style>
+${GSC_TOKEN?`<meta name="google-site-verification" content="${GSC_TOKEN}"/>`:""}${`<script async src="https://www.googletagmanager.com/gtag/js?id=${GA_ID}"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${GA_ID}',{send_page_view:true,cookie_flags:'SameSite=None;Secure'});</script>`}
 </head>
 <body>
 <nav class="top-nav">
@@ -2224,7 +2229,9 @@ body{background:#04080f;color:#edf4ff;font-family:system-ui,sans-serif;padding:2
   <div class="top-nav-links">
     <a href="/vr-hub">&#x1F97D; VR Hub</a>
     <a href="/experiences" class="active">All XPs</a>
+    <a href="/news">News</a>
     <a href="/start">Start Here</a>
+    <a href="/claude" style="color:#d97706">Claude &#xD7;</a>
     <a href="/products">&#x26A1; Products</a>
   </div>
 </nav>
@@ -2240,7 +2247,7 @@ ${filterBtns}
 ${xpCards}
 <p class="none-msg" id="none-msg">No experiences in this category yet.</p>
 </div>
-<a class="back" href="/vr-hub">← Full VR Hub</a> &nbsp;&middot;&nbsp; <a class="back" href="/">realaios.com</a> &nbsp;&middot;&nbsp; <a class="back" href="/products">⚡ Products</a>
+<a class="back" href="/vr-hub">← Full VR Hub</a> &nbsp;&middot;&nbsp; <a class="back" href="/">realaios.com</a> &nbsp;&middot;&nbsp; <a class="back" href="/products">⚡ Products</a> &nbsp;&middot;&nbsp; <a class="back" href="/news">News</a> &nbsp;&middot;&nbsp; <a class="back" href="/claude">Claude ×</a>
 <script>
 function filterXP(cat, btn) {
   document.querySelectorAll('.ft').forEach(b => b.classList.remove('active'));
