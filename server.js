@@ -518,6 +518,7 @@ const server = createServer(async (req, res) => {
         `  <url><loc>https://realaios.com/products</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.75</priority></url>`,
         `  <url><loc>https://realaios.com/news</loc><lastmod>${now}</lastmod><changefreq>daily</changefreq><priority>0.88</priority></url>`,
         `  <url><loc>https://realaios.com/claude</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.82</priority></url>`,
+        `  <url><loc>https://realaios.com/waitlist</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.80</priority></url>`,
         // Individual news article pages
         ...AIOS_NEWS.map(
           (n) =>
