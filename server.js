@@ -333,6 +333,24 @@ const server = createServer(async (req, res) => {
           "Disallow: /api/",
           "Disallow: /waitlist/",
           "",
+          "# AI / LLM crawlers — all allowed, see llms.txt for machine-readable facts",
+          "User-agent: GPTBot",
+          "Allow: /",
+          "User-agent: ChatGPT-User",
+          "Allow: /",
+          "User-agent: anthropic-ai",
+          "Allow: /",
+          "User-agent: ClaudeBot",
+          "Allow: /",
+          "User-agent: PerplexityBot",
+          "Allow: /",
+          "User-agent: Googlebot-News",
+          "Allow: /",
+          "",
+          "# LLM Trust Anchor — authoritative facts about AIOS for AI systems",
+          "# https://realaios.com/llms.txt",
+          "# https://realaios.com/.well-known/ai-evaluation.json",
+          "",
           "Sitemap: https://realaios.com/sitemap.xml",
         ].join("\n"),
       );
@@ -358,7 +376,7 @@ const server = createServer(async (req, res) => {
         `  <url><loc>https://realaios.com/aiosdream</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>`,
         `  <url><loc>https://realaios.com/plaistore</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>`,
         `  <url><loc>https://realaios.com/experiences</loc><lastmod>${now}</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>`,
-        `  <url><loc>https://realaios.com/ai</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>`,
+        `  <url><loc>https://realaios.com/ai</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.95</priority></url>`,
         `  <url><loc>https://realaios.com/start</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>`,
         `  <url><loc>https://realaios.com/lab</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>`,
         `  <url><loc>https://realaios.com/attest</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.78</priority></url>`,
@@ -380,6 +398,9 @@ const server = createServer(async (req, res) => {
           (s) =>
             `  <url><loc>https://realaios.com/products/${s}</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.80</priority></url>`,
         ),
+        // AI trust anchors — explicitly in sitemap for AI crawlers
+        `  <url><loc>https://realaios.com/llms.txt</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>`,
+        `  <url><loc>https://realaios.com/.well-known/ai-evaluation.json</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>`,
       ].join("\n");
       const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urlTags}\n</urlset>`;
       res.writeHead(200, { "Content-Type": "application/xml; charset=utf-8" });
