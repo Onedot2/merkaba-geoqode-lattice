@@ -1166,8 +1166,8 @@
       </div>
       <h1 class="hero-title">Enter Any World.<br />Zero Install.</h1>
       <p class="hero-sub">
-        30+ immersive WebXR experiences for Meta Quest 2/3. Cinema, Enterprise,
-        Education, Arcade, Wellness, Social — all delivered through your Quest
+        48+ immersive WebXR experiences for Meta Quest 2/3. Cinema, Enterprise,
+        Education, Arcade, Wellness, Social, Art &amp; Music — all delivered through your Quest
         Browser. Open URL. Dive in.
       </p>
       <div class="hero-ctas">
@@ -1657,9 +1657,6 @@
       </div>
     </div>
 
-    <!-- ── DEVELOPER BANNER ────────────────────────────────────────────────── -->
-    <div class="dev-banner">
-
     <!-- ── EDUCATION ──────────────────────────────────────────────────────── -->
     <div class="cat-section" id="education">
       <div class="cat-section-header">
@@ -1682,7 +1679,7 @@
       <div class="xp-grid" id="art-grid"></div>
     </div>
 
-    <!-- (dev banner) -->
+    <!-- ── DEVELOPER BANNER ────────────────────────────────────────────────── -->
     <div class="dev-banner">
       <div>
         <div class="dev-banner-title">🛠️ Build on the AIOS VR Platform</div>
@@ -2196,12 +2193,15 @@
         return `<div class="well-card" style="--accent:${w.color}">
           <span class="well-icon">${w.emoji}</span>
           <div class="well-title">${w.title}</div>
+        const tag = w.entry ? "a" : "div";
+        const href = w.entry ? `href="${w.entry}"` : "";
+        const liveBadge = w.badge === "live" ? `<span style="font-size:0.65rem;background:#22c55e;color:#000;padding:0.15rem 0.4rem;border-radius:3px;font-weight:700;margin-left:0.4rem;">LIVE</span>` : "";
+        return `<${tag} ${href} class="well-card" style="--accent:${w.color}${w.entry ? ";cursor:pointer;" : ""}">
+          <span class="well-icon">${w.emoji}</span>
+          <div class="well-title">${w.title}${liveBadge}</div>
           <div class="well-freq">${w.freq}</div>
           <div class="well-desc">${w.desc}</div>
-        </div>`;
-      }
-
-      function buildTeaserCard(t) {
+        </${tag}n buildTeaserCard(t) {
         return `<div class="teaser-card">
           <div class="teaser-icon">${t.emoji}</div>
           <div class="teaser-title">${t.title}</div>
