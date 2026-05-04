@@ -339,7 +339,115 @@
     .src-meta { font-size: 11px; color: var(--muted); }
     .src-no-res { grid-column: 1/-1; text-align: center; padding: 60px 20px;
       color: var(--muted); font-size: 15px; }
-        /* ── MOBILE ── */
+        /* ═══════════════════════════════════════════════════════════════
+       NEXGEN VIDEO INFRASTRUCTURE — Theatre
+       PiP · Mini-Player · Speed · Up-Next · Reactions · Share
+    ═══════════════════════════════════════════════════════════════ */
+
+    /* Speed Picker */
+    .speed-wrap { position: relative; }
+    .speed-popup {
+      position: absolute; bottom: 48px; right: 0;
+      background: rgba(8,10,22,0.97); backdrop-filter: blur(24px);
+      border: 1px solid rgba(255,255,255,0.12); border-radius: 12px;
+      padding: 6px 0; min-width: 108px; z-index: 20;
+      transform: scale(0.9) translateY(8px); transform-origin: bottom right;
+      opacity: 0; pointer-events: none;
+      transition: transform 0.18s cubic-bezier(.16,1,.3,1), opacity 0.18s;
+    }
+    .speed-popup.open { transform: scale(1) translateY(0); opacity: 1; pointer-events: all; }
+    .spd-opt { display: block; width: 100%; background: none; border: none;
+      color: rgba(255,255,255,0.62); font-size: 13px; font-weight: 500;
+      padding: 9px 18px; text-align: left; cursor: pointer; transition: all 0.1s; }
+    .spd-opt:hover { background: rgba(255,255,255,0.07); color: #fff; }
+    .spd-opt.cur { color: var(--paccent, var(--cyan)); font-weight: 700; }
+
+    /* Mini Player */
+    #player.mini {
+      position: fixed; inset: auto; bottom: 24px; right: 24px;
+      width: 320px; height: 180px; z-index: 500;
+      border-radius: 14px; overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.09);
+      cursor: pointer; transition: box-shadow 0.2s;
+    }
+    #player.mini:hover { box-shadow: 0 24px 72px rgba(0,0,0,0.85), 0 0 0 1px rgba(255,255,255,0.14); }
+    #player.mini .player-top {
+      padding: 9px 10px 6px;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.88), transparent);
+    }
+    #player.mini .player-bottom { display: none; }
+    #player.mini #player-back, #player.mini .player-titles { display: none; }
+    #player.mini .mini-fab { display: flex !important; }
+    .mini-fab {
+      display: none; position: absolute;
+      background: rgba(0,0,0,0.55); border: none; color: #fff; cursor: pointer;
+      align-items: center; justify-content: center;
+      transition: background 0.15s, transform 0.12s;
+    }
+    .mini-fab:hover { background: rgba(255,255,255,0.18); transform: scale(1.1); }
+    #mini-expand { top: 8px; right: 8px; width: 26px; height: 26px; font-size: 12px; border-radius: 6px; }
+    #mini-close  { top: 8px; right: 38px; width: 26px; height: 26px; font-size: 12px; border-radius: 6px; }
+    #mini-toggle { bottom: 12px; right: 12px; width: 42px; height: 42px; font-size: 20px; border-radius: 50%;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.5); background: rgba(0,0,0,0.65); }
+
+    /* Up Next */
+    #up-next {
+      position: absolute; bottom: 0; right: 0; padding: 32px 40px;
+      background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, transparent 100%);
+      display: none; flex-direction: column; align-items: flex-end; gap: 10px;
+    }
+    #up-next.on { display: flex; }
+    .un-kicker { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.4); }
+    .un-title { font-size: 17px; font-weight: 800; color: #fff; max-width: 280px; text-align: right; line-height: 1.2; }
+    .un-bar { width: 168px; height: 3px; background: rgba(255,255,255,0.15); border-radius: 2px; overflow: hidden; }
+    .un-fill { height: 100%; background: var(--paccent, var(--cyan)); border-radius: 2px; width: 100%; transition: width 1s linear; }
+    .un-row { display: flex; gap: 8px; align-items: center; }
+    .un-count { font-size: 22px; font-weight: 800; color: var(--paccent, var(--cyan)); min-width: 30px; text-align: right; }
+    .un-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff;
+      font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 20px;
+      cursor: pointer; transition: background 0.15s; }
+    .un-btn:hover { background: rgba(255,255,255,0.22); }
+
+    /* Share toast */
+    #share-toast {
+      position: fixed; top: 74px; right: 24px; z-index: 700;
+      background: rgba(6,8,18,0.94); backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.12); border-radius: 10px;
+      padding: 11px 20px; font-size: 13px; color: #fff;
+      opacity: 0; transform: translateY(-10px) scale(0.96);
+      transition: all 0.22s cubic-bezier(.16,1,.3,1); pointer-events: none;
+    }
+    #share-toast.on { opacity: 1; transform: translateY(0) scale(1); }
+
+    /* PiP proxy video */
+    #pip-video { position: absolute; width: 2px; height: 2px; opacity: 0.01; pointer-events: none; top: 0; left: 0; }
+
+    /* Reactions in modal */
+    .reaction-strip { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 18px; }
+    .rxn-btn {
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 20px; padding: 6px 13px;
+      display: inline-flex; align-items: center; gap: 5px;
+      color: rgba(255,255,255,0.55); font-size: 13px; font-weight: 500;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .rxn-btn:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.18); color: #fff; }
+    .rxn-btn.on { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.26); color: #fff; }
+    .rxn-count { font-size: 12px; color: rgba(255,255,255,0.42); }
+
+    /* Card hover live-canvas preview */
+    .card-thumb { position: relative; overflow: hidden; }
+    .card-live-cv { position: absolute; inset: 0; width: 100%; height: 100%;
+      opacity: 0; transition: opacity 0.55s; pointer-events: none; }
+    .card:hover .card-live-cv { opacity: 1; }
+
+    /* Speed button label */
+    #ctrl-speed { font-size: 12px; font-weight: 700; padding: 3px 8px; letter-spacing: 0;
+      border-radius: 5px; border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.05); transition: all 0.15s; }
+    #ctrl-speed:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.3); color: #fff; }
+
+    /* ── MOBILE ── */
     @media (max-width: 768px) {
       nav { padding: 0 20px; }
       .nav-links { display: none; }
@@ -447,20 +555,59 @@
         <span class="tl-time" id="tl-tot">0:00</span>
       </div>
       <div class="ctrl-row">
-        <button class="ctrl-btn" id="ctrl-prev" title="Previous scene">⏮</button>
-        <button class="ctrl-btn xl" id="ctrl-play" title="Play / Pause">▶</button>
-        <button class="ctrl-btn" id="ctrl-next" title="Next scene">⏭</button>
+        <button class="ctrl-btn xl" id="ctrl-play" title="Play / Pause (Space)">▶</button>
+        <button class="ctrl-btn" id="ctrl-skip-back" style="font-size:18px" title="-10s (J)">⏪</button>
+        <button class="ctrl-btn" id="ctrl-skip-fwd" style="font-size:18px" title="+10s (L)">⏩</button>
+        <button class="ctrl-btn" id="ctrl-prev" style="font-size:16px" title="Prev Scene (↑)">⏮</button>
+        <button class="ctrl-btn" id="ctrl-next" style="font-size:16px" title="Next Scene (↓)">⏭</button>
         <div class="ctrl-sp"></div>
         <span class="scene-badge" id="ctrl-badge">Scene 1</span>
         <div class="vol-wrap">
-          <button class="ctrl-btn" id="ctrl-vol-btn" style="font-size:18px">🔊</button>
+          <button class="ctrl-btn" id="ctrl-vol-btn" style="font-size:18px" title="Mute (M)">🔊</button>
           <input type="range" class="vol-slider" id="vol-slider" min="0" max="1" step="0.05" value="0.7" />
         </div>
-        <button class="ctrl-btn" id="ctrl-fs" style="font-size:18px" title="Fullscreen">⛶</button>
+        <div class="speed-wrap">
+          <button class="ctrl-btn" id="ctrl-speed" title="Speed">1×</button>
+          <div class="speed-popup" id="speed-popup">
+            <button class="spd-opt" data-s="0.5" onclick="setPlaybackSpeed(0.5)">0.5×</button>
+            <button class="spd-opt" data-s="0.75" onclick="setPlaybackSpeed(0.75)">0.75×</button>
+            <button class="spd-opt cur" data-s="1" onclick="setPlaybackSpeed(1)">Normal</button>
+            <button class="spd-opt" data-s="1.25" onclick="setPlaybackSpeed(1.25)">1.25×</button>
+            <button class="spd-opt" data-s="1.5" onclick="setPlaybackSpeed(1.5)">1.5×</button>
+            <button class="spd-opt" data-s="2" onclick="setPlaybackSpeed(2)">2×</button>
+          </div>
+        </div>
+        <button class="ctrl-btn" id="ctrl-pip" style="font-size:16px" title="Picture in Picture (P)">⊝</button>
+        <button class="ctrl-btn" id="ctrl-mini" style="font-size:16px" title="Mini Player (B)">⊟</button>
+        <button class="ctrl-btn" id="ctrl-share" style="font-size:16px" title="Share">↗</button>
+        <button class="ctrl-btn" id="ctrl-fs" style="font-size:18px" title="Fullscreen (F)">⛶</button>
       </div>
     </div>
   </div>
+  <!-- ── UP NEXT ── -->
+  <div id="up-next">
+    <div class="un-kicker">Up Next</div>
+    <div class="un-title" id="un-title">—</div>
+    <div class="un-bar"><div class="un-fill" id="un-fill"></div></div>
+    <div class="un-row">
+      <span class="un-count" id="un-count">10</span>
+      <button class="un-btn" onclick="jumpUpNext()">Play Now</button>
+      <button class="un-btn" onclick="cancelUpNext()">Cancel</button>
+    </div>
+  </div>
+
+  <!-- PiP video proxy -->
+  <video id="pip-video" playsinline muted loop></video>
+
+  <!-- Mini-player FABs -->
+  <button class="mini-fab" id="mini-expand" title="Expand">⊝</button>
+  <button class="mini-fab" id="mini-close"  title="Close">✕</button>
+  <button class="mini-fab" id="mini-toggle" title="Play/Pause">▶</button>
+
 </div>
+
+<!-- ── SHARE TOAST ── -->
+<div id="share-toast">🔗 Link copied!</div>
 
 <!-- ── INFO MODAL ── -->
 <div id="info-modal">
@@ -475,6 +622,13 @@
       <div class="modal-acts">
         <button class="btn-play" id="modal-play" style="font-size:14px;padding:12px 26px">▶ Play</button>
         <button class="btn-info" id="modal-list" style="font-size:14px;padding:12px 18px">＋ My List</button>
+      </div>
+      <div class="reaction-strip" id="reaction-strip">
+        <button class="rxn-btn" data-rxn="🔥" onclick="toggleReaction(this)"><span>🔥</span><span class="rxn-count">0</span></button>
+        <button class="rxn-btn" data-rxn="🤯" onclick="toggleReaction(this)"><span>🤯</span><span class="rxn-count">0</span></button>
+        <button class="rxn-btn" data-rxn="✨" onclick="toggleReaction(this)"><span>✨</span><span class="rxn-count">0</span></button>
+        <button class="rxn-btn" data-rxn="💙" onclick="toggleReaction(this)"><span>💙</span><span class="rxn-count">0</span></button>
+        <button class="rxn-btn" data-rxn="🪄" onclick="toggleReaction(this)"><span>🪄</span><span class="rxn-count">0</span></button>
       </div>
       <h2 class="modal-title-h" id="modal-title">—</h2>
       <p class="modal-tagline" id="modal-tagline">—</p>
@@ -1535,6 +1689,7 @@ function buildCard(prog, showProgress) {
   card.className = 'card';
   card.innerHTML = `
     <div class="card-thumb" style="background:${prog.thumb}">
+      <canvas class="card-live-cv" id="cv-${prog.id}"></canvas>
       <span style="z-index:1;position:relative;text-shadow:0 2px 8px rgba(0,0,0,0.8)">${prog.icon}</span>
       <div class="card-label">${prog.title}</div>
       ${hasProgress ? `<div class="card-progress"><div class="card-progress-fill" style="width:${pct}%;background:${prog.accent}"></div></div>` : ''}
@@ -1549,6 +1704,8 @@ function buildCard(prog, showProgress) {
       </div>
     </div>`;
   card.addEventListener('click', () => openPlayer(prog.id, hasProgress ? p.scene : 0));
+  card.addEventListener('mouseenter', () => _startCardPreview(prog.id));
+  card.addEventListener('mouseleave', () => _stopCardPreview(prog.id));
   return card;
 }
 
@@ -1736,12 +1893,20 @@ function startRenderer() {
 function startPlayback() {
   playerPlaying = true;
   document.getElementById('ctrl-play').textContent = '⏸';
+  const mt = document.getElementById('mini-toggle');
+  if (mt) mt.textContent = '⏸';
   if (playerTimer) clearInterval(playerTimer);
   playerTimer = setInterval(() => {
     if (!playerPlaying || !currentProg) return;
-    playerElapsed += 0.25;
+    playerElapsed += 0.25 * (window._AIOS_SPD || 1);
     const sceneDur = currentProg.scenes[currentScene].dur;
+    // Trigger "Up Next" 10 s before scene end (once per scene)
+    const rem = sceneDur - playerElapsed;
+    if (rem <= 10 && rem > 9.74 && currentScene < currentProg.scenes.length - 1) {
+      _showUpNext(currentScene + 1);
+    }
     if (playerElapsed >= sceneDur) {
+      _dismissUpNext();
       if (currentScene < currentProg.scenes.length - 1) {
         jumpToScene(currentScene + 1);
       } else {
@@ -1761,6 +1926,8 @@ function startPlayback() {
 function pausePlayback() {
   playerPlaying = false;
   document.getElementById('ctrl-play').textContent = '▶';
+  const mt = document.getElementById('mini-toggle');
+  if (mt) mt.textContent = '▶';
   if (playerTimer) { clearInterval(playerTimer); playerTimer = null; }
 }
 
@@ -1947,7 +2114,15 @@ document.addEventListener('keydown', (e) => {
     case 'ArrowUp':    e.preventDefault(); jumpToScene(currentScene-1); showPlayerUI(); break;
     case 'ArrowDown':  e.preventDefault(); jumpToScene(currentScene+1); showPlayerUI(); break;
     case 'f': case 'F': document.getElementById('ctrl-fs').click(); break;
-    case 'Escape': if (!document.fullscreenElement) closePlayer(); break;
+    case 'm': case 'M': document.getElementById('ctrl-vol-btn').click(); showPlayerUI(); break;
+    case 'p': case 'P': _togglePiP(); break;
+    case 'b': case 'B': _toggleMiniPlayer(); break;
+    case 'j': case 'J': _skip10(-1); break;
+    case 'l': case 'L': _skip10(1); break;
+    case 'Escape':
+      if (document.getElementById('player').classList.contains('mini')) { _expandMiniPlayer(); }
+      else if (!document.fullscreenElement) closePlayer();
+      break;
   }
 });
 
@@ -2185,6 +2360,207 @@ document.getElementById('vol-slider').addEventListener('input', function(e) {
 })();
 
 
+// ════════════════════════════════════════════════════════════════════════
+// NEXGEN VIDEO INFRASTRUCTURE
+// ════════════════════════════════════════════════════════════════════════
+
+// ── Playback Speed ──────────────────────────────────────────────────────
+window._AIOS_SPD = 1.0;
+function setPlaybackSpeed(s) {
+  window._AIOS_SPD = s;
+  const lbl = s === 1 ? '1×' : s + '×';
+  document.getElementById('ctrl-speed').textContent = lbl;
+  document.querySelectorAll('.spd-opt').forEach(b => {
+    b.classList.toggle('cur', parseFloat(b.dataset.s) === s);
+  });
+  document.getElementById('speed-popup').classList.remove('open');
+  toast('Speed: ' + (s === 1 ? 'Normal' : lbl));
+}
+document.getElementById('ctrl-speed').addEventListener('click', e => {
+  e.stopPropagation();
+  document.getElementById('speed-popup').classList.toggle('open');
+});
+document.addEventListener('click', () =>
+  document.getElementById('speed-popup').classList.remove('open'));
+
+// ── 10-second Skip ──────────────────────────────────────────────────────
+function _skip10(dir) {
+  if (!currentProg) return;
+  const dur = currentProg.scenes[currentScene].dur;
+  playerElapsed = Math.max(0, Math.min(dur - 0.5, playerElapsed + dir * 10));
+  updateTimeline();
+  toast(dir > 0 ? '⏩ +10s' : '⏪ −10s');
+  showPlayerUI();
+}
+document.getElementById('ctrl-skip-back').addEventListener('click', () => _skip10(-1));
+document.getElementById('ctrl-skip-fwd').addEventListener('click',  () => _skip10(1));
+
+// ── Picture in Picture ──────────────────────────────────────────────────
+function _togglePiP() {
+  if (document.pictureInPictureElement) {
+    document.exitPictureInPicture().catch(() => {});
+    return;
+  }
+  const canvas = document.getElementById('player-canvas');
+  if (!canvas || !canvas.captureStream) { toast('PiP not supported here'); return; }
+  const vid = document.getElementById('pip-video');
+  const stream = canvas.captureStream(30);
+  vid.srcObject = stream;
+  vid.play()
+    .then(() => vid.requestPictureInPicture())
+    .catch(() => toast('PiP blocked by browser'));
+  toast('⊝ Now in Picture-in-Picture');
+}
+document.getElementById('ctrl-pip').addEventListener('click', _togglePiP);
+document.addEventListener('leavepictureinpicture', () => {
+  const v = document.getElementById('pip-video');
+  if (v && v.srcObject) { v.srcObject.getTracks().forEach(t => t.stop()); v.srcObject = null; }
+});
+
+// ── Mini Player ─────────────────────────────────────────────────────────
+function _toggleMiniPlayer() {
+  document.getElementById('player').classList.contains('mini')
+    ? _expandMiniPlayer() : _activateMiniPlayer();
+}
+function _activateMiniPlayer() {
+  const el = document.getElementById('player');
+  el.classList.add('mini');
+  document.body.style.overflow = '';
+  el._miniClick = (e) => {
+    if (e.target.classList.contains('mini-fab')) return;
+    _expandMiniPlayer();
+  };
+  el.addEventListener('click', el._miniClick);
+}
+function _expandMiniPlayer() {
+  const el = document.getElementById('player');
+  el.classList.remove('mini');
+  document.body.style.overflow = 'hidden';
+  if (el._miniClick) { el.removeEventListener('click', el._miniClick); el._miniClick = null; }
+}
+document.getElementById('ctrl-mini').addEventListener('click', e => { e.stopPropagation(); _toggleMiniPlayer(); });
+document.getElementById('mini-expand').addEventListener('click', e => { e.stopPropagation(); _expandMiniPlayer(); });
+document.getElementById('mini-close').addEventListener('click', e => { e.stopPropagation(); closePlayer(); });
+document.getElementById('mini-toggle').addEventListener('click', e => { e.stopPropagation(); togglePlay(); });
+
+// ── Up Next ─────────────────────────────────────────────────────────────
+let _unTimer = null, _unActive = false, _unNextIdx = -1;
+function _showUpNext(nextIdx) {
+  if (_unActive || !currentProg) return;
+  const scene = currentProg.scenes[nextIdx];
+  if (!scene) return;
+  _unActive = true; _unNextIdx = nextIdx;
+  document.getElementById('un-title').textContent = scene.title;
+  document.getElementById('up-next').classList.add('on');
+  let t = 10;
+  const fill = document.getElementById('un-fill');
+  const count = document.getElementById('un-count');
+  fill.style.width = '100%';
+  count.textContent = t;
+  if (_unTimer) clearInterval(_unTimer);
+  _unTimer = setInterval(() => {
+    t--;
+    count.textContent = Math.max(0, t);
+    fill.style.width = (t * 10) + '%';
+    if (t <= 0) { clearInterval(_unTimer); _unTimer = null; }
+  }, 1000);
+}
+function _dismissUpNext() {
+  if (_unTimer) { clearInterval(_unTimer); _unTimer = null; }
+  _unActive = false; _unNextIdx = -1;
+  document.getElementById('up-next').classList.remove('on');
+}
+function jumpUpNext() {
+  const idx = _unNextIdx;
+  _dismissUpNext();
+  if (idx >= 0) jumpToScene(idx);
+}
+function cancelUpNext() {
+  _dismissUpNext();
+  pausePlayback();
+  toast('Auto-advance cancelled');
+}
+
+// ── Share Deeplink ───────────────────────────────────────────────────────
+function _sharePlayer() {
+  if (!currentProg) return;
+  const url = location.origin + '/aiosdream#' + currentProg.id + ':' + currentScene;
+  (navigator.clipboard ? navigator.clipboard.writeText(url) : Promise.reject())
+    .then(() => {
+      const t = document.getElementById('share-toast');
+      t.classList.add('on');
+      setTimeout(() => t.classList.remove('on'), 2400);
+    })
+    .catch(() => toast('🔗 ' + url));
+}
+document.getElementById('ctrl-share').addEventListener('click', _sharePlayer);
+
+// ── Reactions ────────────────────────────────────────────────────────────
+let _rxnData = {};
+try { _rxnData = JSON.parse(localStorage.getItem('aios_reactions') || '{}'); } catch(_) {}
+function toggleReaction(btn) {
+  const progId = (typeof modalProg !== 'undefined' && modalProg)
+    ? modalProg.id : (currentProg ? currentProg.id : null);
+  if (!progId) return;
+  if (!_rxnData[progId]) _rxnData[progId] = {};
+  const rxn = btn.dataset.rxn;
+  const wasOn = btn.classList.contains('on');
+  btn.classList.toggle('on', !wasOn);
+  _rxnData[progId][rxn] = Math.max(0, (_rxnData[progId][rxn] || 0) + (wasOn ? -1 : 1));
+  const cEl = btn.querySelector('.rxn-count');
+  if (cEl) cEl.textContent = _rxnData[progId][rxn];
+  try { localStorage.setItem('aios_reactions', JSON.stringify(_rxnData)); } catch(_) {}
+}
+function _loadReactions(progId) {
+  const d = _rxnData[progId] || {};
+  document.querySelectorAll('.rxn-btn').forEach(btn => {
+    const rxn = btn.dataset.rxn;
+    const n = d[rxn] || 0;
+    btn.classList.toggle('on', n > 0);
+    const cEl = btn.querySelector('.rxn-count');
+    if (cEl) cEl.textContent = n;
+  });
+}
+// Hook into openInfo to load reactions
+(function() {
+  const _baseOpenInfo = openInfo;
+  openInfo = function(progId, e) {
+    _baseOpenInfo(progId, e);
+    setTimeout(() => _loadReactions(progId), 60);
+  };
+})();
+
+// ── Card Live-Canvas Preview ─────────────────────────────────────────────
+let _previewActive = {};
+function _startCardPreview(progId) {
+  const canvas = document.getElementById('cv-' + progId);
+  if (!canvas || _previewActive[progId]) return;
+  // Don't steal from active player or hero renderer
+  if (currentProg && currentProg.id === progId) return;
+  if (window._activePlayerRenderer === RENDERERS[progId]) return;
+  if (heroRenderer === RENDERERS[progId]) return;
+  canvas.width  = canvas.offsetWidth  || 220;
+  canvas.height = canvas.offsetHeight || 120;
+  const renderer = RENDERERS[progId];
+  if (!renderer) return;
+  _previewActive[progId] = true;
+  renderer.start(canvas, 0);
+}
+function _stopCardPreview(progId) {
+  if (!_previewActive[progId]) return;
+  _previewActive[progId] = false;
+  const renderer = RENDERERS[progId];
+  if (renderer) { try { renderer.stop(); } catch(_) {} }
+}
+
+// ── Deep-link handler on load ────────────────────────────────────────────
+(function _deepLink() {
+  const hash = location.hash.slice(1);
+  if (!hash) return;
+  const [progId, sceneStr] = hash.split(':');
+  const prog = CATALOGUE.find(p => p.id === progId);
+  if (prog) setTimeout(() => openPlayer(progId, parseInt(sceneStr) || 0), 500);
+})();
 </script>
 </body>
 </html>
