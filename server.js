@@ -2443,6 +2443,7 @@ footer{text-align:center;padding:3rem 1.5rem;color:#334155;font-size:0.8rem;bord
     <a href="/products">Products</a>
     <a href="/start">Start Here</a>
     <a href="/news" style="color:#00d4ff">News</a>
+    <a href="/claude" style="color:#d97706">Claude &times;</a>
     <a href="/ai">For AIs</a>
   </div>
 </nav>
