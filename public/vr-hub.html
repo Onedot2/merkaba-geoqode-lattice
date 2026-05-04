@@ -1234,71 +1234,138 @@
 
       /* Live online count badge */
       .online-badge {
-        display: inline-flex; align-items: center; gap: 5px;
-        background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.2);
-        border-radius: 20px; padding: 4px 11px;
-        font-size: 0.78rem; font-weight: 600; color: var(--cyan);
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background: rgba(0, 212, 255, 0.08);
+        border: 1px solid rgba(0, 212, 255, 0.2);
+        border-radius: 20px;
+        padding: 4px 11px;
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: var(--cyan);
         margin-left: auto;
       }
       .online-dot {
-        width: 6px; height: 6px; border-radius: 50%; background: var(--cyan);
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--cyan);
         animation: live-pulse 1.8s ease-in-out infinite;
       }
       @keyframes live-pulse {
-        0%, 100% { opacity: 1; transform: scale(1); }
-        50% { opacity: 0.4; transform: scale(0.7); }
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.4;
+          transform: scale(0.7);
+        }
       }
 
       /* XP card visit-progress dots */
       .xp-visit-bar {
-        height: 2px; border-radius: 1px;
-        background: rgba(255,255,255,0.1); overflow: hidden; margin-top: 6px;
+        height: 2px;
+        border-radius: 1px;
+        background: rgba(255, 255, 255, 0.1);
+        overflow: hidden;
+        margin-top: 6px;
       }
-      .xp-visit-fill { height: 100%; background: var(--accent); border-radius: 1px; }
+      .xp-visit-fill {
+        height: 100%;
+        background: var(--accent);
+        border-radius: 1px;
+      }
 
       /* Entering VR overlay */
       #enter-vr-overlay {
-        position: fixed; inset: 0; z-index: 9999;
-        background: #000; display: none; align-items: center; justify-content: center;
-        flex-direction: column; gap: 1.5rem;
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        background: #000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 1.5rem;
       }
-      #enter-vr-overlay.on { display: flex; }
+      #enter-vr-overlay.on {
+        display: flex;
+      }
       .evr-ring {
-        width: 120px; height: 120px; border-radius: 50%;
-        border: 3px solid rgba(0,212,255,0.2);
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 3px solid rgba(0, 212, 255, 0.2);
         border-top-color: var(--cyan);
         animation: spin 1.2s linear infinite;
         position: relative;
       }
       .evr-ring::after {
-        content: '🥽'; font-size: 2.5rem;
-        position: absolute; top: 50%; left: 50%;
+        content: "🥽";
+        font-size: 2.5rem;
+        position: absolute;
+        top: 50%;
+        left: 50%;
         transform: translate(-50%, -50%);
         animation: spin-cancel 1.2s linear infinite;
       }
-      @keyframes spin { to { transform: rotate(360deg); } }
-      @keyframes spin-cancel { to { transform: translate(-50%,-50%) rotate(-360deg); } }
-      .evr-label { font-size: 1.1rem; font-weight: 700; color: var(--cyan); letter-spacing: 0.05em; }
-      .evr-sub { font-size: 0.85rem; color: var(--muted); }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      @keyframes spin-cancel {
+        to {
+          transform: translate(-50%, -50%) rotate(-360deg);
+        }
+      }
+      .evr-label {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--cyan);
+        letter-spacing: 0.05em;
+      }
+      .evr-sub {
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
 
       /* Stat bar animated numbers */
-      .stat-num { font-variant-numeric: tabular-nums; }
+      .stat-num {
+        font-variant-numeric: tabular-nums;
+      }
 
       /* XP card canvas mini-preview */
-      .xp-thumb { position: relative; overflow: hidden; }
-      .xp-preview-cv {
-        position: absolute; inset: 0; width: 100%; height: 100%;
-        opacity: 0; transition: opacity 0.5s; pointer-events: none;
+      .xp-thumb {
+        position: relative;
+        overflow: hidden;
       }
-      .xp-card:hover .xp-preview-cv { opacity: 1; }
+      .xp-preview-cv {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 0.5s;
+        pointer-events: none;
+      }
+      .xp-card:hover .xp-preview-cv {
+        opacity: 1;
+      }
 
       /* Section header live indicator */
       .section-live-count {
-        font-size: 0.78rem; color: var(--muted); margin-left: 0.6rem;
-        background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
-        padding: 2px 10px; border-radius: 12px;
+        font-size: 0.78rem;
+        color: var(--muted);
+        margin-left: 0.6rem;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        padding: 2px 10px;
+        border-radius: 12px;
       }
-
     </style>
   </head>
   <body>
@@ -2570,7 +2637,9 @@
           let live = 0;
           d.categories.forEach((c) => {
             total += (c.experiences || []).length;
-            live += (c.experiences || []).filter((e) => e.status === "live").length;
+            live += (c.experiences || []).filter(
+              (e) => e.status === "live",
+            ).length;
           });
           if (total)
             document.getElementById("stat-xp").textContent = total + "+";
@@ -2753,16 +2822,16 @@
       // ── Stat-bar count-up animation ─────────────────────────────────
       (function animateStats() {
         const stats = [
-          { el: document.querySelector('.stat-num'), target: 39, suffix: '' },
+          { el: document.querySelector(".stat-num"), target: 39, suffix: "" },
         ];
-        document.querySelectorAll('.stat-num').forEach((el, i) => {
+        document.querySelectorAll(".stat-num").forEach((el, i) => {
           const target = parseInt(el.textContent) || 0;
           if (!target) return;
           let cur = 0;
           const step = Math.ceil(target / 40);
           const timer = setInterval(() => {
             cur = Math.min(cur + step, target);
-            el.textContent = cur + (el.dataset.suffix || '');
+            el.textContent = cur + (el.dataset.suffix || "");
             if (cur >= target) clearInterval(timer);
           }, 28);
         });
@@ -2770,29 +2839,51 @@
 
       // ── Live-user count simulation ───────────────────────────────────
       var _liveBase = {
-        cinema: 142, enterprise: 88, lab: 217, arcade: 334,
-        wellness: 176, social: 265, creator: 54, education: 123, art: 97
+        cinema: 142,
+        enterprise: 88,
+        lab: 217,
+        arcade: 334,
+        wellness: 176,
+        social: 265,
+        creator: 54,
+        education: 123,
+        art: 97,
       };
       var _liveNow = Object.assign({}, _liveBase);
       function _updateLiveCounts() {
-        Object.keys(_liveNow).forEach(k => {
+        Object.keys(_liveNow).forEach((k) => {
           const delta = Math.floor(Math.random() * 9) - 4;
           _liveNow[k] = Math.max(10, _liveBase[k] + delta * 3);
-          const el = document.getElementById('live-' + k);
+          const el = document.getElementById("live-" + k);
           if (el) el.textContent = _liveNow[k].toLocaleString();
         });
       }
       // Inject live badge into each section header
       (function injectLiveBadges() {
-        const cats = ['cinema','enterprise','lab','arcade','wellness','social','creator','education','art'];
-        cats.forEach(cat => {
+        const cats = [
+          "cinema",
+          "enterprise",
+          "lab",
+          "arcade",
+          "wellness",
+          "social",
+          "creator",
+          "education",
+          "art",
+        ];
+        cats.forEach((cat) => {
           const sec = document.getElementById(cat);
           if (!sec) return;
-          const hdr = sec.querySelector('.section-header');
+          const hdr = sec.querySelector(".section-header");
           if (!hdr) return;
-          const badge = document.createElement('div');
-          badge.className = 'online-badge';
-          badge.innerHTML = '<span class="online-dot"></span><span id="live-' + cat + '">' + (_liveNow[cat] || 0) + '</span> online';
+          const badge = document.createElement("div");
+          badge.className = "online-badge";
+          badge.innerHTML =
+            '<span class="online-dot"></span><span id="live-' +
+            cat +
+            '">' +
+            (_liveNow[cat] || 0) +
+            "</span> online";
           hdr.appendChild(badge);
         });
         _updateLiveCounts();
@@ -2801,28 +2892,32 @@
 
       // ── Entering VR transition ───────────────────────────────────────
       function enterVRWorld(url, name) {
-        const ov = document.getElementById('enter-vr-overlay');
-        const lbl = document.getElementById('evr-label');
-        const sub = document.getElementById('evr-sub');
-        lbl.textContent = 'Entering ' + (name || 'VR') + '…';
-        sub.textContent = 'Launching world — put on your headset';
-        ov.classList.add('on');
+        const ov = document.getElementById("enter-vr-overlay");
+        const lbl = document.getElementById("evr-label");
+        const sub = document.getElementById("evr-sub");
+        lbl.textContent = "Entering " + (name || "VR") + "…";
+        sub.textContent = "Launching world — put on your headset";
+        ov.classList.add("on");
         // Haptic on mobile
         if (navigator.vibrate) navigator.vibrate([40, 60, 80]);
         setTimeout(() => {
           window.location.href = url;
         }, 1400);
         // Fallback dismiss
-        setTimeout(() => ov.classList.remove('on'), 5000);
+        setTimeout(() => ov.classList.remove("on"), 5000);
       }
       // Intercept all VR enter links
-      document.addEventListener('click', function(e) {
+      document.addEventListener("click", function (e) {
         const a = e.target.closest('a[href^="/vr"]');
         if (!a) return;
-        const card = a.closest('[data-xp-id]');
-        const name = card ? (card.querySelector('.xp-name') || card.querySelector('.well-title'))
-          ?.textContent?.trim() : null;
-        if (a.href && a.href.includes('/vr')) {
+        const card = a.closest("[data-xp-id]");
+        const name = card
+          ? (
+              card.querySelector(".xp-name") ||
+              card.querySelector(".well-title")
+            )?.textContent?.trim()
+          : null;
+        if (a.href && a.href.includes("/vr")) {
           e.preventDefault();
           enterVRWorld(a.href, name);
         }
@@ -2830,29 +2925,34 @@
 
       // ── XP Visit tracking ────────────────────────────────────────────
       var _xpVisits = {};
-      try { _xpVisits = JSON.parse(localStorage.getItem('aios_xp_visits') || '{}'); } catch(_) {}
+      try {
+        _xpVisits = JSON.parse(localStorage.getItem("aios_xp_visits") || "{}");
+      } catch (_) {}
       function trackXPVisit(xpId) {
         _xpVisits[xpId] = (_xpVisits[xpId] || 0) + 1;
-        try { localStorage.setItem('aios_xp_visits', JSON.stringify(_xpVisits)); } catch(_) {}
+        try {
+          localStorage.setItem("aios_xp_visits", JSON.stringify(_xpVisits));
+        } catch (_) {}
       }
       // Add visit bars to cards that have been visited
       (function showVisitProgress() {
-        Object.keys(_xpVisits).forEach(id => {
+        Object.keys(_xpVisits).forEach((id) => {
           const card = document.querySelector('[data-xp-id="' + id + '"]');
           if (!card) return;
-          const body = card.querySelector('.xp-body');
-          if (!body || body.querySelector('.xp-visit-bar')) return;
+          const body = card.querySelector(".xp-body");
+          if (!body || body.querySelector(".xp-visit-bar")) return;
           const visits = _xpVisits[id];
           const pct = Math.min(100, visits * 20); // 5 visits = 100%
-          const bar = document.createElement('div');
-          bar.className = 'xp-visit-bar';
-          bar.innerHTML = '<div class="xp-visit-fill" style="width:' + pct + '%"></div>';
+          const bar = document.createElement("div");
+          bar.className = "xp-visit-bar";
+          bar.innerHTML =
+            '<div class="xp-visit-fill" style="width:' + pct + '%"></div>';
           body.appendChild(bar);
         });
       })();
       // Track visits when entering VR
       const _baseEnterVR = enterVRWorld;
-      enterVRWorld = function(url, name) {
+      enterVRWorld = function (url, name) {
         const m = url.match(/prog=([^&]+)/);
         if (m) trackXPVisit(m[1]);
         _baseEnterVR(url, name);
@@ -2861,41 +2961,67 @@
       // ── XP Card canvas mini-preview ──────────────────────────────────
       var _xpCanvasActive = {};
       function _getXpColor(card) {
-        return getComputedStyle(card).getPropertyValue('--accent').trim() || '#00d4ff';
+        return (
+          getComputedStyle(card).getPropertyValue("--accent").trim() ||
+          "#00d4ff"
+        );
       }
       function _startXpPreview(card) {
-        const cv = card.querySelector('.xp-preview-cv');
+        const cv = card.querySelector(".xp-preview-cv");
         if (!cv || _xpCanvasActive[cv]) return;
         _xpCanvasActive[cv] = true;
-        cv.width  = cv.offsetWidth  || 160;
+        cv.width = cv.offsetWidth || 160;
         cv.height = cv.offsetHeight || 100;
-        const ctx = cv.getContext('2d');
+        const ctx = cv.getContext("2d");
         const color = _getXpColor(card);
-        let t = 0, raf;
-        const W = cv.width, H = cv.height, cx = W/2, cy = H/2;
-        const pts = Array.from({length: 60}, () => ({
-          x: Math.random() * W, y: Math.random() * H,
-          vx: (Math.random() - 0.5) * 1.2, vy: (Math.random() - 0.5) * 1.2,
-          r: Math.random() * 1.8 + 0.5, a: Math.random()
+        let t = 0,
+          raf;
+        const W = cv.width,
+          H = cv.height,
+          cx = W / 2,
+          cy = H / 2;
+        const pts = Array.from({ length: 60 }, () => ({
+          x: Math.random() * W,
+          y: Math.random() * H,
+          vx: (Math.random() - 0.5) * 1.2,
+          vy: (Math.random() - 0.5) * 1.2,
+          r: Math.random() * 1.8 + 0.5,
+          a: Math.random(),
         }));
         const loop = () => {
           if (!_xpCanvasActive[cv]) return;
-          ctx.fillStyle = 'rgba(0,0,0,0.18)';
+          ctx.fillStyle = "rgba(0,0,0,0.18)";
           ctx.fillRect(0, 0, W, H);
-          pts.forEach(p => {
-            p.x += p.vx; p.y += p.vy;
+          pts.forEach((p) => {
+            p.x += p.vx;
+            p.y += p.vy;
             if (p.x < 0 || p.x > W) p.vx *= -1;
             if (p.y < 0 || p.y > H) p.vy *= -1;
             const pulse = 0.5 + 0.5 * Math.sin(t * 0.04 + p.a * 6);
-            ctx.beginPath(); ctx.arc(p.x, p.y, p.r * pulse, 0, Math.PI * 2);
-            ctx.fillStyle = color.replace(')', ',' + (pulse * 0.8) + ')').replace('rgb', 'rgba');
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r * pulse, 0, Math.PI * 2);
+            ctx.fillStyle = color
+              .replace(")", "," + pulse * 0.8 + ")")
+              .replace("rgb", "rgba");
             ctx.fill();
           });
           // Central glow
-          const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.min(W,H) * 0.4);
-          g.addColorStop(0, color.replace('rgb(','rgba(').replace(')',',0.12)') || 'rgba(0,212,255,0.12)');
-          g.addColorStop(1, 'transparent');
-          ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+          const g = ctx.createRadialGradient(
+            cx,
+            cy,
+            0,
+            cx,
+            cy,
+            Math.min(W, H) * 0.4,
+          );
+          g.addColorStop(
+            0,
+            color.replace("rgb(", "rgba(").replace(")", ",0.12)") ||
+              "rgba(0,212,255,0.12)",
+          );
+          g.addColorStop(1, "transparent");
+          ctx.fillStyle = g;
+          ctx.fillRect(0, 0, W, H);
           t++;
           raf = requestAnimationFrame(loop);
           cv._raf = raf;
@@ -2903,30 +3029,32 @@
         loop();
       }
       function _stopXpPreview(card) {
-        const cv = card.querySelector('.xp-preview-cv');
+        const cv = card.querySelector(".xp-preview-cv");
         if (!cv) return;
         _xpCanvasActive[cv] = false;
         if (cv._raf) cancelAnimationFrame(cv._raf);
       }
       // Inject canvas into every xp-thumb + attach hover
       (function attachXpPreviews() {
-        document.querySelectorAll('.xp-card, .well-card').forEach(card => {
-          const thumb = card.querySelector('.xp-thumb, .well-card');
-          if (!thumb || thumb.querySelector('.xp-preview-cv')) return;
-          const cv = document.createElement('canvas');
-          cv.className = 'xp-preview-cv';
-          thumb.style.position = 'relative';
+        document.querySelectorAll(".xp-card, .well-card").forEach((card) => {
+          const thumb = card.querySelector(".xp-thumb, .well-card");
+          if (!thumb || thumb.querySelector(".xp-preview-cv")) return;
+          const cv = document.createElement("canvas");
+          cv.className = "xp-preview-cv";
+          thumb.style.position = "relative";
           thumb.appendChild(cv);
-          card.addEventListener('mouseenter', () => _startXpPreview(card));
-          card.addEventListener('mouseleave', () => _stopXpPreview(card));
+          card.addEventListener("mouseenter", () => _startXpPreview(card));
+          card.addEventListener("mouseleave", () => _stopXpPreview(card));
         });
       })();
     </script>
-  <!-- ── ENTERING VR OVERLAY ── -->
-  <div id="enter-vr-overlay">
-    <div class="evr-ring"></div>
-    <div class="evr-label" id="evr-label">Entering VR…</div>
-    <div class="evr-sub" id="evr-sub">Launching world — put on your headset</div>
-  </div>
+    <!-- ── ENTERING VR OVERLAY ── -->
+    <div id="enter-vr-overlay">
+      <div class="evr-ring"></div>
+      <div class="evr-label" id="evr-label">Entering VR…</div>
+      <div class="evr-sub" id="evr-sub">
+        Launching world — put on your headset
+      </div>
+    </div>
   </body>
 </html>
