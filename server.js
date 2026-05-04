@@ -1786,6 +1786,7 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="${title}"/>
 <meta name="twitter:description" content="${desc.slice(0, 200)}"/>
+<meta name="twitter:image" content="https://realaios.com/public/og-image.svg"/>
 <!-- Structured Data -->
 <script type="application/ld+json">${JSON.stringify({
         "@context": "https://schema.org",
@@ -1806,7 +1807,13 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       })}</script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#04080f;color:#edf4ff;font-family:system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;}
+body{background:#04080f;color:#edf4ff;font-family:system-ui,sans-serif;display:flex;flex-direction:column;min-height:100vh;}
+.xp-nav{display:flex;align-items:center;justify-content:space-between;padding:0.75rem 1.5rem;border-bottom:1px solid rgba(255,255,255,0.07);background:rgba(4,8,15,0.95);backdrop-filter:blur(8px);position:sticky;top:0;z-index:100;flex-shrink:0;}
+.xp-nav a{color:rgba(237,244,255,0.55);font-size:0.82rem;text-decoration:none;font-weight:500;}
+.xp-nav a:hover{color:#edf4ff;}
+.xp-nav .nav-brand{color:#00d4ff;font-weight:800;font-size:1rem;letter-spacing:-0.01em;}
+.xp-nav .nav-links{display:flex;gap:1.25rem;}
+main{flex:1;display:flex;align-items:center;justify-content:center;padding:2.5rem 1.5rem;}
 .card{max-width:560px;width:100%;background:rgba(255,255,255,0.04);border:1px solid ${accent}44;border-radius:16px;padding:2.5rem 2rem;text-align:center;}
 .icon{font-size:3.5rem;margin-bottom:1rem;}
 .cat{font-size:0.78rem;font-weight:700;letter-spacing:0.1em;color:${accent};margin-bottom:0.5rem;text-transform:uppercase;}
@@ -1822,6 +1829,15 @@ h1{font-size:1.6rem;font-weight:800;margin-bottom:0.75rem;line-height:1.25;}
 </style>
 </head>
 <body>
+<nav class="xp-nav">
+  <a href="/" class="nav-brand">&#x2B21; AIOS</a>
+  <div class="nav-links">
+    <a href="/vr-hub">&#x1F97D; VR Hub</a>
+    <a href="/experiences">All 23 XPs</a>
+    <a href="/start">Start Here</a>
+  </div>
+</nav>
+<main>
 <div class="card">
   <div class="icon">${icon}</div>
   <div class="cat">${foundCat.display} · ${found.semanticType} · ${found.frequencyHz} Hz</div>
@@ -1840,6 +1856,7 @@ h1{font-size:1.6rem;font-weight:800;margin-bottom:0.75rem;line-height:1.25;}
   </div>
   <a class="btn-hub" href="/vr-hub">← All 23 Live Experiences</a>
 </div>
+</main>
 </body>
 </html>`;
       res.writeHead(200, {
@@ -1910,6 +1927,10 @@ h1{font-size:1.6rem;font-weight:800;margin-bottom:0.75rem;line-height:1.25;}
 <meta property="og:description" content="Browse every live WebXR experience. Zero install — open on Meta Quest Browser."/>
 <meta property="og:url" content="https://realaios.com/experiences"/>
 <meta property="og:image" content="https://realaios.com/public/og-image.svg"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="All ${allLive.length} Live VR Experiences — AIOS VR"/>
+<meta name="twitter:description" content="Browse every live WebXR experience. Zero install — open on Meta Quest Browser."/>
+<meta name="twitter:image" content="https://realaios.com/public/og-image.svg"/>
 <script type="application/ld+json">${JSON.stringify({
   "@context": "https://schema.org",
   "@type": "ItemList",
