@@ -397,6 +397,16 @@ const server = createServer(async (req, res) => {
     "X-MERKABA-Architecture, X-MERKABA-Dimensions, X-MERKABA-Spectrum-Nodes, X-Service",
   );
 
+  // ── Security headers (global) ─────────────────────────────────────────
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-Frame-Options", "SAMEORIGIN");
+  res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+  res.setHeader("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+  res.setHeader(
+    "Content-Security-Policy",
+    "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; img-src 'self' data: https://www.google-analytics.com; connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://api.getbrains4ai.com; style-src 'self' 'unsafe-inline'; frame-src 'none'; object-src 'none'; base-uri 'self'",
+  );
+
   if (req.method === "OPTIONS") {
     res.writeHead(204);
     res.end();
@@ -961,7 +971,16 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       if (existsSync(filePath)) {
         const ext = extname(filePath);
         const mime = MIME_TYPES[ext] || "application/octet-stream";
-        res.writeHead(200, { "Content-Type": mime });
+        // Cache immutable assets long; text assets shorter
+        const isImmutable = /\.(png|jpg|jpeg|gif|webp|ico|woff2?|ttf|eot)$/i.test(ext);
+        const cacheValue = isImmutable
+          ? "public, max-age=31536000, immutable"   // 1 year for binary assets
+          : "public, max-age=86400, stale-while-revalidate=3600"; // 1 day for SVG/JSON/txt
+        res.writeHead(200, {
+          "Content-Type": mime,
+          "Cache-Control": cacheValue,
+          "X-Content-Type-Options": "nosniff",
+        });
         res.end(readFileSync(filePath));
         return;
       }
