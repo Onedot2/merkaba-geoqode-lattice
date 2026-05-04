@@ -92,7 +92,7 @@ PHI/PSI lattice in-browser, with:
 - Dimensional layer progress (D8 → D26 → D48 → D480)
 - Interactive scene navigation and depth control
 
-Content programmes: Matrix, Inception, Star Wars, Apollo 11, Governance, Investor Deck.
+Content programmes (8 total): Matrix, Inception, Star Wars, Apollo 11, Governance, Investor Deck, Breathwork, Molecular Chemistry.
 Each programme is authored as a string of geometric narrative scenes with:
 - Resonance frequency (Hz)
 - Semantic type (from GeoQode map)
@@ -136,7 +136,7 @@ GET  https://realaios.com/vr-hub              → VR Experience Hub (48 listed, 
 GET  https://realaios.com/experiences         → SEO catalogue — all 23 live XPs with JSON-LD
 GET  https://realaios.com/vr-experience/:id   → per-XP SEO landing page (23 live, e.g. /vr-experience/matrix)
 GET  https://realaios.com/vr                  → VR Viewer (23 live programmes)
-GET  https://realaios.com/aiosdream           → Cinematic flat-mode player (23 programmes)
+GET  https://realaios.com/aiosdream           → Cinematic flat-mode player (8 programmes)
 GET  https://realaios.com/vr-developer        → Developer portal + WebXR SDK docs
 GET  https://realaios.com/plaistore           → PLAIstore creator marketplace
 GET  https://realaios.com/lab                 → Merkaba Lattice lab (live experiments)
@@ -176,7 +176,7 @@ GET  https://realaios.com/vr?prog=phi-breaker     → PHI Breaker arcade (VR hea
 GET  https://realaios.com/vr?prog=lattice-lounge  → Lattice Lounge social hub (VR headset)
 GET  https://realaios.com/aiosdream?prog=matrix   → The Matrix (flat cinematic mode)
 ```
-(All 23 live programmes accept the ?prog= parameter)
+(All 23 live VR experiences accept the ?prog= parameter; AIOSdream accepts 8 programme keys)
 
 Source code (MIT-licensed public packages):
 - `merkaba-geoqode-lattice` (realaios.com server + VR theatre engine + GeoQode)

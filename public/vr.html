@@ -598,7 +598,7 @@
       <!-- Stats bar -->
       <div class="vr-stats">
         <div class="vr-stat">
-          <span class="vr-stat-n">23</span
+          <span class="vr-stat-n" id="vr-stat-live">23</span
           ><span class="vr-stat-l">Live Experiences</span>
         </div>
         <div class="vr-stat">
@@ -606,11 +606,11 @@
           ><span class="vr-stat-l">Downloads Required</span>
         </div>
         <div class="vr-stat">
-          <span class="vr-stat-n">9</span
+          <span class="vr-stat-n" id="vr-stat-cats">9</span
           ><span class="vr-stat-l">Categories</span>
         </div>
         <div class="vr-stat">
-          <span class="vr-stat-n">48</span
+          <span class="vr-stat-n" id="vr-stat-total">48</span
           ><span class="vr-stat-l">In Catalogue</span>
         </div>
       </div>
@@ -1074,6 +1074,26 @@
       const grid = document.getElementById("prog-grid");
       const progCountEl = document.getElementById("vr-prog-count");
       if (progCountEl) progCountEl.textContent = PROGRAMMES.length;
+
+      // ── Sync stats bar from live taxonomy ───────────────────────────────
+      fetch("/api/aios/vr/taxonomy")
+        .then((r) => (r.ok ? r.json() : null))
+        .then((d) => {
+          if (!d || !d.categories) return;
+          let total = 0, live = 0, cats = 0;
+          d.categories.forEach((c) => {
+            const exp = c.experiences || [];
+            const liveN = exp.filter((e) => e.status === "live").length;
+            total += exp.length;
+            live += liveN;
+            if (liveN > 0) cats++;
+          });
+          if (total) { const el = document.getElementById("vr-stat-total"); if (el) el.textContent = total; }
+          if (live) { const el = document.getElementById("vr-stat-live"); if (el) el.textContent = live; if (progCountEl) progCountEl.textContent = live; }
+          if (cats) { const el = document.getElementById("vr-stat-cats"); if (el) el.textContent = cats; }
+        })
+        .catch(() => {});
+
       for (const prog of PROGRAMMES) {
         const sem = SEMANTIC[prog.sem] || SEMANTIC.HOLOGRAPHIC;
         const card = document.createElement("div");
