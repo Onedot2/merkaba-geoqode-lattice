@@ -611,6 +611,102 @@
       .toast.error {
         border-color: #ef4444;
       }
+
+      /* ── Auth modal ── */
+      .auth-tabs {
+        display: flex;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 20px;
+      }
+      .auth-tab {
+        flex: 1;
+        padding: 10px;
+        background: none;
+        border: none;
+        border-bottom: 2px solid transparent;
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .auth-tab.active {
+        color: var(--accent2);
+        border-bottom-color: var(--accent2);
+      }
+      .auth-field {
+        margin-bottom: 14px;
+      }
+      .auth-field label {
+        display: block;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 5px;
+      }
+      .auth-field input {
+        width: 100%;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        color: var(--text);
+        font-size: 14px;
+        padding: 10px 14px;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      .auth-field input:focus {
+        border-color: var(--accent2);
+      }
+      .auth-error {
+        color: #ef4444;
+        font-size: 13px;
+        margin-bottom: 12px;
+        display: none;
+      }
+      .auth-error.show {
+        display: block;
+      }
+      .btn-full {
+        width: 100%;
+        justify-content: center;
+        padding: 12px;
+        font-size: 15px;
+      }
+      .nav-auth {
+        flex-shrink: 0;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text);
+        padding: 6px 14px;
+        border: 1px solid var(--accent);
+        border-radius: 8px;
+        cursor: pointer;
+        background: rgba(124,58,237,0.1);
+        transition: all 0.2s;
+      }
+      .nav-auth:hover {
+        background: rgba(124,58,237,0.2);
+        border-color: var(--accent2);
+      }
+      .user-chip {
+        flex-shrink: 0;
+        display: none;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        color: var(--accent2);
+        padding: 5px 12px;
+        border: 1px solid rgba(168,85,247,0.3);
+        border-radius: 20px;
+        cursor: pointer;
+        background: rgba(124,58,237,0.1);
+      }
+      .user-chip:hover {
+        background: rgba(124,58,237,0.18);
+      }
     </style>
   </head>
   <body>
@@ -632,6 +728,8 @@
             />
           </div>
         </div>
+        <button class="nav-auth" id="nav-auth-btn" onclick="openAuthModal()">Sign In</button>
+        <div class="user-chip" id="nav-user-chip" onclick="signOut()" title="Click to sign out">👤 <span id="nav-user-label"></span></div>
         <a
           href="https://realaios.com"
           class="aios-link"
@@ -711,6 +809,17 @@
         <div class="loading"><div class="spinner"></div></div>
       </div>
 
+      <!-- My Library (shown when signed in) -->
+      <div id="library-section" style="display:none">
+        <div class="section-header">
+          <h2 class="section-title">📚 My Library</h2>
+          <button class="btn btn-outline" onclick="signOut()" style="font-size:12px;padding:5px 12px">Sign Out</button>
+        </div>
+        <div class="app-grid" id="library-grid">
+          <div class="loading"><div class="spinner"></div></div>
+        </div>
+      </div>
+
       <!-- How to install -->
       <div class="install-steps">
         <h3>How to install</h3>
@@ -747,6 +856,49 @@
       <div class="modal" id="modal-content">
         <button class="modal-close" id="modal-close">✕</button>
         <div id="modal-body"></div>
+      </div>
+    </div>
+
+    <!-- Auth modal -->
+    <div class="modal-overlay" id="auth-modal">
+      <div class="modal" style="max-width:420px">
+        <button class="modal-close" id="auth-modal-close">✕</button>
+        <h2 style="margin-bottom:20px;font-size:20px;font-weight:700">Your AIOS Account</h2>
+        <div class="auth-tabs">
+          <button class="auth-tab active" id="tab-signin" onclick="switchAuthTab('signin')">Sign In</button>
+          <button class="auth-tab" id="tab-register" onclick="switchAuthTab('register')">Create Account</button>
+        </div>
+        <!-- Sign In -->
+        <div id="auth-signin-form">
+          <div class="auth-field">
+            <label>Email</label>
+            <input type="email" id="auth-email" placeholder="you@example.com" autocomplete="email" />
+          </div>
+          <div class="auth-field">
+            <label>Password</label>
+            <input type="password" id="auth-password" placeholder="Your password" autocomplete="current-password" />
+          </div>
+          <div class="auth-error" id="auth-error"></div>
+          <button class="btn btn-primary btn-full" id="auth-signin-btn" onclick="doSignIn()">Sign In</button>
+        </div>
+        <!-- Register -->
+        <div id="auth-register-form" style="display:none">
+          <div class="auth-field">
+            <label>Name</label>
+            <input type="text" id="reg-name" placeholder="Your name" autocomplete="name" />
+          </div>
+          <div class="auth-field">
+            <label>Email</label>
+            <input type="email" id="reg-email" placeholder="you@example.com" autocomplete="email" />
+          </div>
+          <div class="auth-field">
+            <label>Password (min 8 chars)</label>
+            <input type="password" id="reg-password" placeholder="Choose a password" autocomplete="new-password" />
+          </div>
+          <div class="auth-error" id="reg-error"></div>
+          <button class="btn btn-primary btn-full" id="auth-register-btn" onclick="doRegister()">Create Free Account</button>
+        </div>
+        <p style="text-align:center;color:var(--muted);font-size:12px;margin-top:16px">Free account — no credit card required</p>
       </div>
     </div>
 
@@ -937,21 +1089,20 @@
 
       async function installApp(id, name) {
         if (!jwt) {
-          showToast("Sign in to install apps", "error");
-          window.open(
-            "https://admin.getbrains4ai.com/PublicAdmin/login",
-            "_blank",
-          );
+          _pendingInstall = { id, name };
+          openAuthModal();
           return;
         }
         try {
-          await fetch(`${API}/api/plai/apps/${id}/install`, {
+          const r = await fetch(`${API}/api/plai/apps/${id}/install`, {
             method: "POST",
             headers: { Authorization: "Bearer " + jwt },
           });
-          showToast(`✓ ${name} installed`, "success");
+          if (r.status === 401) { jwt = null; localStorage.removeItem("plai_jwt"); _pendingInstall = { id, name }; openAuthModal(); return; }
+          showToast(`✓ ${name} installed — check My Library`, "success");
+          loadLibrary();
         } catch {
-          showToast("Install failed — please sign in", "error");
+          showToast("Install failed — please try again", "error");
         }
       }
 
@@ -1007,6 +1158,111 @@
         if (e.target === document.getElementById("modal"))
           document.getElementById("modal").classList.remove("open");
       });
+      document.getElementById("auth-modal-close").addEventListener("click", closeAuthModal);
+      document.getElementById("auth-modal").addEventListener("click", (e) => {
+        if (e.target === document.getElementById("auth-modal")) closeAuthModal();
+      });
+      // Enter key in auth inputs
+      ["auth-email","auth-password"].forEach(id => document.getElementById(id).addEventListener("keydown", e => { if (e.key === "Enter") doSignIn(); }));
+      ["reg-email","reg-password","reg-name"].forEach(id => document.getElementById(id).addEventListener("keydown", e => { if (e.key === "Enter") doRegister(); }));
+
+      // ── Auth ──────────────────────────────────────────────────────────────────
+      let _pendingInstall = null;
+
+      function openAuthModal() {
+        document.getElementById("auth-modal").classList.add("open");
+        setTimeout(() => document.getElementById("auth-email").focus(), 50);
+      }
+      function closeAuthModal() {
+        document.getElementById("auth-modal").classList.remove("open");
+        document.getElementById("auth-error").className = "auth-error";
+        document.getElementById("reg-error").className = "auth-error";
+        document.getElementById("auth-signin-btn").disabled = false;
+        document.getElementById("auth-signin-btn").textContent = "Sign In";
+        document.getElementById("auth-register-btn").disabled = false;
+        document.getElementById("auth-register-btn").textContent = "Create Free Account";
+      }
+      function switchAuthTab(tab) {
+        document.getElementById("auth-signin-form").style.display = tab === "signin" ? "" : "none";
+        document.getElementById("auth-register-form").style.display = tab === "register" ? "" : "none";
+        document.getElementById("tab-signin").className = "auth-tab" + (tab === "signin" ? " active" : "");
+        document.getElementById("tab-register").className = "auth-tab" + (tab === "register" ? " active" : "");
+      }
+      async function doSignIn() {
+        const email = document.getElementById("auth-email").value.trim();
+        const password = document.getElementById("auth-password").value;
+        const errEl = document.getElementById("auth-error");
+        const btn = document.getElementById("auth-signin-btn");
+        errEl.className = "auth-error";
+        if (!email || !password) { errEl.textContent = "Email and password required"; errEl.className = "auth-error show"; return; }
+        btn.disabled = true; btn.textContent = "Signing in...";
+        try {
+          const r = await fetch(API + "/api/auth/login", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, password }) });
+          const data = await r.json();
+          if (!r.ok) { errEl.textContent = data.error || "Sign in failed"; errEl.className = "auth-error show"; btn.disabled = false; btn.textContent = "Sign In"; return; }
+          onAuthSuccess(data.token, data.user);
+        } catch { errEl.textContent = "Network error — please try again"; errEl.className = "auth-error show"; btn.disabled = false; btn.textContent = "Sign In"; }
+      }
+      async function doRegister() {
+        const name = document.getElementById("reg-name").value.trim();
+        const email = document.getElementById("reg-email").value.trim();
+        const password = document.getElementById("reg-password").value;
+        const errEl = document.getElementById("reg-error");
+        const btn = document.getElementById("auth-register-btn");
+        errEl.className = "auth-error";
+        if (!email || !password || password.length < 8) { errEl.textContent = "Email and password (min 8 chars) required"; errEl.className = "auth-error show"; return; }
+        btn.disabled = true; btn.textContent = "Creating account...";
+        try {
+          const r = await fetch(API + "/api/auth/register", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, password, full_name: name }) });
+          const data = await r.json();
+          if (!r.ok) { errEl.textContent = data.error || data.message || "Registration failed"; errEl.className = "auth-error show"; btn.disabled = false; btn.textContent = "Create Free Account"; return; }
+          onAuthSuccess(data.token, data.user);
+        } catch { errEl.textContent = "Network error — please try again"; errEl.className = "auth-error show"; btn.disabled = false; btn.textContent = "Create Free Account"; }
+      }
+      function onAuthSuccess(token, user) {
+        jwt = token;
+        localStorage.setItem("plai_jwt", token);
+        closeAuthModal();
+        updateAuthUI(user);
+        if (_pendingInstall) { const pi = _pendingInstall; _pendingInstall = null; installApp(pi.id, pi.name); }
+        loadLibrary();
+      }
+      function signOut() {
+        jwt = null;
+        localStorage.removeItem("plai_jwt");
+        updateAuthUI(null);
+        document.getElementById("library-section").style.display = "none";
+        showToast("Signed out", "");
+      }
+      function updateAuthUI(user) {
+        const btn = document.getElementById("nav-auth-btn");
+        const chip = document.getElementById("nav-user-chip");
+        if (jwt && user) {
+          btn.style.display = "none";
+          chip.style.display = "flex";
+          const label = (user.full_name || "").split(" ")[0] || (user.email || "").split("@")[0] || "Account";
+          document.getElementById("nav-user-label").textContent = label;
+        } else {
+          btn.style.display = "";
+          chip.style.display = "none";
+        }
+      }
+      async function loadLibrary() {
+        if (!jwt) return;
+        document.getElementById("library-section").style.display = "";
+        document.getElementById("library-grid").innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+        try {
+          const data = await fetchJSON("/api/plai/library");
+          const apps = data.apps || [];
+          if (!apps.length) {
+            document.getElementById("library-grid").innerHTML = '<div class="empty"><div class="empty-icon">📭</div><p>No installed apps yet — browse and click Install!</p></div>';
+          } else {
+            renderGrid("library-grid", apps);
+          }
+        } catch {
+          document.getElementById("library-grid").innerHTML = '<div class="empty"><p>Failed to load library</p></div>';
+        }
+      }
 
       // ── Toast ──────────────────────────────────────────────────────────────────
       function showToast(msg, type = "") {
@@ -1026,6 +1282,24 @@
       }
 
       // ── Boot ───────────────────────────────────────────────────────────────────
+      // Check URL token (post-auth redirect)
+      const _urlToken = new URLSearchParams(location.search).get("token");
+      if (_urlToken) { jwt = _urlToken; localStorage.setItem("plai_jwt", _urlToken); history.replaceState({}, "", location.pathname); }
+      // Restore session from stored JWT
+      if (jwt) {
+        try {
+          const parts = jwt.split(".");
+          if (parts.length === 3) {
+            const payload = JSON.parse(atob(parts[1].replace(/-/g, "+").replace(/_/g, "/")));
+            if (payload.exp && payload.exp * 1000 > Date.now()) {
+              updateAuthUI({ email: payload.email, full_name: payload.full_name });
+              loadLibrary();
+            } else {
+              jwt = null; localStorage.removeItem("plai_jwt");
+            }
+          }
+        } catch { jwt = null; localStorage.removeItem("plai_jwt"); }
+      }
       loadFeatured();
       loadAllApps();
       loadCategories();
