@@ -2,18 +2,30 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    />
     <title>AIOS VR Hub — Immersive Worlds, Zero Install</title>
-    <meta name="description" content="Browse 30+ WebXR experiences for Meta Quest 2/3. Cinema, Enterprise, Lab, Arcade, Wellness, Social — all delivered via browser. No download. Enter any world instantly." />
-    <meta property="og:title" content="AIOS VR Hub — Immersive Worlds for Meta Quest" />
-    <meta property="og:description" content="Zero-install WebXR experiences. Open in Meta Quest Browser and dive in." />
+    <meta
+      name="description"
+      content="Browse 30+ WebXR experiences for Meta Quest 2/3. Cinema, Enterprise, Lab, Arcade, Wellness, Social — all delivered via browser. No download. Enter any world instantly."
+    />
+    <meta
+      property="og:title"
+      content="AIOS VR Hub — Immersive Worlds for Meta Quest"
+    />
+    <meta
+      property="og:description"
+      content="Zero-install WebXR experiences. Open in Meta Quest Browser and dive in."
+    />
     <meta property="og:type" content="website" />
     <style>
       :root {
         --bg: #050a14;
         --bg2: #080f1e;
-        --surface: rgba(255,255,255,0.04);
-        --border: rgba(0,212,255,0.12);
+        --surface: rgba(255, 255, 255, 0.04);
+        --border: rgba(0, 212, 255, 0.12);
         --cyan: #00d4ff;
         --purple: #9b5cff;
         --gold: #f59e0b;
@@ -33,8 +45,16 @@
         --social: #00d4ff;
         --creator: #f8fafc;
       }
-      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-      html { scroll-behavior: smooth; }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
       body {
         background: var(--bg);
         color: var(--text);
@@ -52,7 +72,7 @@
         align-items: center;
         gap: 1rem;
         padding: 0.85rem 2rem;
-        background: rgba(5,10,20,0.94);
+        background: rgba(5, 10, 20, 0.94);
         backdrop-filter: blur(16px);
         border-bottom: 1px solid var(--border);
       }
@@ -66,7 +86,13 @@
         text-decoration: none;
         white-space: nowrap;
       }
-      .nav-links { display: flex; gap: 0.5rem; flex: 1; flex-wrap: wrap; align-items: center; }
+      .nav-links {
+        display: flex;
+        gap: 0.5rem;
+        flex: 1;
+        flex-wrap: wrap;
+        align-items: center;
+      }
       .nav-links a {
         color: var(--muted);
         text-decoration: none;
@@ -76,8 +102,13 @@
         transition: all 0.2s;
         white-space: nowrap;
       }
-      .nav-links a:hover { color: var(--text); background: var(--surface); }
-      .nav-links a.active { color: var(--cyan); }
+      .nav-links a:hover {
+        color: var(--text);
+        background: var(--surface);
+      }
+      .nav-links a.active {
+        color: var(--cyan);
+      }
       .nav-vr-badge {
         display: none;
         background: linear-gradient(135deg, #7c3aed, var(--purple));
@@ -90,8 +121,13 @@
         animation: pulse-glow 2s ease-in-out infinite;
       }
       @keyframes pulse-glow {
-        0%, 100% { box-shadow: 0 0 12px rgba(155,92,255,0.4); }
-        50% { box-shadow: 0 0 28px rgba(155,92,255,0.8); }
+        0%,
+        100% {
+          box-shadow: 0 0 12px rgba(155, 92, 255, 0.4);
+        }
+        50% {
+          box-shadow: 0 0 28px rgba(155, 92, 255, 0.8);
+        }
       }
 
       /* ── HERO ───────────────────────────────────────────────────────── */
@@ -105,10 +141,17 @@
         content: "";
         position: absolute;
         inset: 0;
-        background: radial-gradient(ellipse 80% 60% at 50% 40%,
-          rgba(155,92,255,0.12) 0%, transparent 70%),
-          radial-gradient(ellipse 50% 40% at 50% 20%,
-          rgba(0,212,255,0.08) 0%, transparent 60%);
+        background:
+          radial-gradient(
+            ellipse 80% 60% at 50% 40%,
+            rgba(155, 92, 255, 0.12) 0%,
+            transparent 70%
+          ),
+          radial-gradient(
+            ellipse 50% 40% at 50% 20%,
+            rgba(0, 212, 255, 0.08) 0%,
+            transparent 60%
+          );
         pointer-events: none;
       }
       .hero-kicker {
@@ -136,22 +179,37 @@
         margin: 0 auto 2.5rem;
         line-height: 1.6;
       }
-      .hero-ctas { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+      .hero-ctas {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
       .btn-primary {
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
         padding: 0.85rem 2rem;
-        background: linear-gradient(135deg, #7c3aed, var(--purple), var(--cyan));
+        background: linear-gradient(
+          135deg,
+          #7c3aed,
+          var(--purple),
+          var(--cyan)
+        );
         color: #fff;
         font-weight: 700;
         font-size: 1rem;
         border-radius: 50px;
         text-decoration: none;
-        box-shadow: 0 0 28px rgba(155,92,255,0.4);
-        transition: transform 0.2s, box-shadow 0.2s;
+        box-shadow: 0 0 28px rgba(155, 92, 255, 0.4);
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
       }
-      .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(155,92,255,0.6); }
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0 40px rgba(155, 92, 255, 0.6);
+      }
       .btn-secondary {
         display: inline-flex;
         align-items: center;
@@ -166,30 +224,51 @@
         text-decoration: none;
         transition: all 0.2s;
       }
-      .btn-secondary:hover { border-color: var(--cyan); color: var(--cyan); }
+      .btn-secondary:hover {
+        border-color: var(--cyan);
+        color: var(--cyan);
+      }
       .hero-tech {
         margin-top: 2.5rem;
         font-size: 0.78rem;
         color: #3d5478;
         letter-spacing: 0.05em;
       }
-      .hero-tech span { color: var(--muted); }
+      .hero-tech span {
+        color: var(--muted);
+      }
 
       /* Quest-detected CTA */
       #quest-hero-cta {
         display: none;
         margin-top: 1.5rem;
         padding: 1rem 2rem;
-        background: linear-gradient(135deg,rgba(124,58,237,0.15),rgba(0,212,255,0.08));
-        border: 1px solid rgba(155,92,255,0.3);
+        background: linear-gradient(
+          135deg,
+          rgba(124, 58, 237, 0.15),
+          rgba(0, 212, 255, 0.08)
+        );
+        border: 1px solid rgba(155, 92, 255, 0.3);
         border-radius: 16px;
         max-width: 480px;
         margin-left: auto;
         margin-right: auto;
       }
-      #quest-hero-cta .quest-label { font-size: 0.8rem; color: var(--purple); font-weight: 600; margin-bottom: 0.5rem; }
-      #quest-hero-cta .quest-action { font-size: 1rem; color: var(--text); }
-      #quest-hero-cta a { color: var(--cyan); font-weight: 700; text-decoration: none; }
+      #quest-hero-cta .quest-label {
+        font-size: 0.8rem;
+        color: var(--purple);
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+      #quest-hero-cta .quest-action {
+        font-size: 1rem;
+        color: var(--text);
+      }
+      #quest-hero-cta a {
+        color: var(--cyan);
+        font-weight: 700;
+        text-decoration: none;
+      }
 
       /* ── STATS BAR ───────────────────────────────────────────────────── */
       .stats-bar {
@@ -202,12 +281,28 @@
         background: var(--bg2);
         flex-wrap: wrap;
       }
-      .stat { text-align: center; }
-      .stat-num { font-size: 1.8rem; font-weight: 800; color: var(--cyan); display: block; }
-      .stat-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+      .stat {
+        text-align: center;
+      }
+      .stat-num {
+        font-size: 1.8rem;
+        font-weight: 800;
+        color: var(--cyan);
+        display: block;
+      }
+      .stat-label {
+        font-size: 0.75rem;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
 
       /* ── SECTION SCAFFOLD ────────────────────────────────────────────── */
-      .section { padding: 4rem 2rem; max-width: 1200px; margin: 0 auto; }
+      .section {
+        padding: 4rem 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
       .section-header {
         display: flex;
         align-items: baseline;
@@ -222,9 +317,19 @@
         align-items: center;
         gap: 0.6rem;
       }
-      .section-subtitle { font-size: 0.9rem; color: var(--muted); }
-      .see-all { margin-left: auto; font-size: 0.85rem; color: var(--cyan); text-decoration: none; }
-      .see-all:hover { text-decoration: underline; }
+      .section-subtitle {
+        font-size: 0.9rem;
+        color: var(--muted);
+      }
+      .see-all {
+        margin-left: auto;
+        font-size: 0.85rem;
+        color: var(--cyan);
+        text-decoration: none;
+      }
+      .see-all:hover {
+        text-decoration: underline;
+      }
 
       /* ── CATEGORY PILLS NAV ──────────────────────────────────────────── */
       .cat-nav {
@@ -239,7 +344,9 @@
         top: 62px;
         z-index: 100;
       }
-      .cat-nav::-webkit-scrollbar { display: none; }
+      .cat-nav::-webkit-scrollbar {
+        display: none;
+      }
       .cat-pill {
         display: inline-flex;
         align-items: center;
@@ -256,16 +363,42 @@
         text-decoration: none;
         transition: all 0.2s;
       }
-      .cat-pill:hover, .cat-pill.active { color: var(--text); border-color: currentColor; }
-      .cat-pill[data-cat="cinema"] { --cat-color: var(--cinema); }
-      .cat-pill[data-cat="enterprise"] { --cat-color: var(--enterprise); }
-      .cat-pill[data-cat="lab"] { --cat-color: var(--lab); }
-      .cat-pill[data-cat="arcade"] { --cat-color: var(--arcade); }
-      .cat-pill[data-cat="wellness"] { --cat-color: var(--wellness); }
-      .cat-pill[data-cat="social"] { --cat-color: var(--social); }
-      .cat-pill[data-cat="creator"] { --cat-color: var(--creator); }
-      .cat-pill:hover { color: var(--cat-color); border-color: var(--cat-color); background: rgba(255,255,255,0.03); }
-      .cat-pill.active { color: var(--cat-color); border-color: var(--cat-color); background: rgba(255,255,255,0.05); }
+      .cat-pill:hover,
+      .cat-pill.active {
+        color: var(--text);
+        border-color: currentColor;
+      }
+      .cat-pill[data-cat="cinema"] {
+        --cat-color: var(--cinema);
+      }
+      .cat-pill[data-cat="enterprise"] {
+        --cat-color: var(--enterprise);
+      }
+      .cat-pill[data-cat="lab"] {
+        --cat-color: var(--lab);
+      }
+      .cat-pill[data-cat="arcade"] {
+        --cat-color: var(--arcade);
+      }
+      .cat-pill[data-cat="wellness"] {
+        --cat-color: var(--wellness);
+      }
+      .cat-pill[data-cat="social"] {
+        --cat-color: var(--social);
+      }
+      .cat-pill[data-cat="creator"] {
+        --cat-color: var(--creator);
+      }
+      .cat-pill:hover {
+        color: var(--cat-color);
+        border-color: var(--cat-color);
+        background: rgba(255, 255, 255, 0.03);
+      }
+      .cat-pill.active {
+        color: var(--cat-color);
+        border-color: var(--cat-color);
+        background: rgba(255, 255, 255, 0.05);
+      }
 
       /* ── EXPERIENCE CARDS ────────────────────────────────────────────── */
       .xp-grid {
@@ -283,12 +416,15 @@
         color: inherit;
         display: flex;
         flex-direction: column;
-        transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+        transition:
+          transform 0.2s,
+          border-color 0.2s,
+          box-shadow 0.2s;
       }
       .xp-card:hover {
         transform: translateY(-3px);
         border-color: var(--accent, var(--cyan));
-        box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
       }
       .xp-thumb {
         height: 160px;
@@ -303,7 +439,11 @@
         position: absolute;
         inset: 0;
         opacity: 0.18;
-        background: radial-gradient(ellipse at center, var(--accent, #00d4ff), transparent 70%);
+        background: radial-gradient(
+          ellipse at center,
+          var(--accent, #00d4ff),
+          transparent 70%
+        );
       }
       .xp-badge {
         position: absolute;
@@ -316,11 +456,32 @@
         text-transform: uppercase;
         letter-spacing: 0.06em;
       }
-      .badge-live { background: rgba(34,197,94,0.2); color: #22c55e; border: 1px solid rgba(34,197,94,0.3); }
-      .badge-coming { background: rgba(245,158,11,0.2); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
-      .badge-new { background: rgba(0,212,255,0.2); color: var(--cyan); border: 1px solid rgba(0,212,255,0.3); }
-      .badge-free { background: rgba(34,197,94,0.15); color: #22c55e; border: 1px solid rgba(34,197,94,0.2); }
-      .xp-body { padding: 1rem 1.1rem 1.2rem; flex: 1; display: flex; flex-direction: column; }
+      .badge-live {
+        background: rgba(34, 197, 94, 0.2);
+        color: #22c55e;
+        border: 1px solid rgba(34, 197, 94, 0.3);
+      }
+      .badge-coming {
+        background: rgba(245, 158, 11, 0.2);
+        color: #f59e0b;
+        border: 1px solid rgba(245, 158, 11, 0.3);
+      }
+      .badge-new {
+        background: rgba(0, 212, 255, 0.2);
+        color: var(--cyan);
+        border: 1px solid rgba(0, 212, 255, 0.3);
+      }
+      .badge-free {
+        background: rgba(34, 197, 94, 0.15);
+        color: #22c55e;
+        border: 1px solid rgba(34, 197, 94, 0.2);
+      }
+      .xp-body {
+        padding: 1rem 1.1rem 1.2rem;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
       .xp-cat {
         font-size: 0.68rem;
         font-weight: 700;
@@ -329,17 +490,30 @@
         color: var(--accent, var(--cyan));
         margin-bottom: 0.4rem;
       }
-      .xp-name { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; line-height: 1.3; }
-      .xp-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.55; flex: 1; }
+      .xp-name {
+        font-size: 1rem;
+        font-weight: 700;
+        margin-bottom: 0.4rem;
+        line-height: 1.3;
+      }
+      .xp-desc {
+        font-size: 0.82rem;
+        color: var(--muted);
+        line-height: 1.55;
+        flex: 1;
+      }
       .xp-footer {
         display: flex;
         align-items: center;
         justify-content: space-between;
         padding: 0.65rem 1.1rem;
         border-top: 1px solid var(--border);
-        background: rgba(0,0,0,0.15);
+        background: rgba(0, 0, 0, 0.15);
       }
-      .xp-freq { font-size: 0.72rem; color: var(--muted); }
+      .xp-freq {
+        font-size: 0.72rem;
+        color: var(--muted);
+      }
       .xp-enter {
         font-size: 0.78rem;
         font-weight: 700;
@@ -362,9 +536,14 @@
         min-height: 240px;
         text-decoration: none;
         color: inherit;
-        transition: transform 0.2s, border-color 0.2s;
+        transition:
+          transform 0.2s,
+          border-color 0.2s;
       }
-      .featured-card:hover { transform: translateY(-2px); border-color: var(--purple); }
+      .featured-card:hover {
+        transform: translateY(-2px);
+        border-color: var(--purple);
+      }
       .featured-visual {
         display: flex;
         align-items: center;
@@ -372,13 +551,43 @@
         font-size: 5rem;
         position: relative;
         overflow: hidden;
-        background: linear-gradient(135deg, rgba(124,58,237,0.2), rgba(0,212,255,0.08));
+        background: linear-gradient(
+          135deg,
+          rgba(124, 58, 237, 0.2),
+          rgba(0, 212, 255, 0.08)
+        );
       }
-      .featured-content { padding: 2rem 2rem 2rem 1.5rem; display: flex; flex-direction: column; justify-content: center; }
-      .featured-kicker { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--purple); text-transform: uppercase; margin-bottom: 0.7rem; }
-      .featured-title { font-size: 1.6rem; font-weight: 800; margin-bottom: 0.8rem; line-height: 1.2; }
-      .featured-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.6; margin-bottom: 1.5rem; }
-      .featured-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+      .featured-content {
+        padding: 2rem 2rem 2rem 1.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .featured-kicker {
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        color: var(--purple);
+        text-transform: uppercase;
+        margin-bottom: 0.7rem;
+      }
+      .featured-title {
+        font-size: 1.6rem;
+        font-weight: 800;
+        margin-bottom: 0.8rem;
+        line-height: 1.2;
+      }
+      .featured-desc {
+        font-size: 0.9rem;
+        color: var(--muted);
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+      }
+      .featured-actions {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+      }
       .feat-btn {
         display: inline-flex;
         align-items: center;
@@ -393,15 +602,21 @@
       .feat-btn-primary {
         background: linear-gradient(135deg, #7c3aed, var(--purple));
         color: #fff;
-        box-shadow: 0 0 20px rgba(155,92,255,0.35);
+        box-shadow: 0 0 20px rgba(155, 92, 255, 0.35);
       }
-      .feat-btn-primary:hover { box-shadow: 0 0 32px rgba(155,92,255,0.6); transform: translateY(-1px); }
+      .feat-btn-primary:hover {
+        box-shadow: 0 0 32px rgba(155, 92, 255, 0.6);
+        transform: translateY(-1px);
+      }
       .feat-btn-secondary {
         background: var(--surface);
         border: 1px solid var(--border);
         color: var(--text);
       }
-      .feat-btn-secondary:hover { border-color: var(--cyan); color: var(--cyan); }
+      .feat-btn-secondary:hover {
+        border-color: var(--cyan);
+        color: var(--cyan);
+      }
 
       /* ── CATEGORY SECTIONS ───────────────────────────────────────────── */
       .cat-section {
@@ -426,7 +641,11 @@
         align-items: center;
         gap: 0.5rem;
       }
-      .cat-section-desc { font-size: 0.88rem; color: var(--muted); margin-top: 0.3rem; }
+      .cat-section-desc {
+        font-size: 0.88rem;
+        color: var(--muted);
+        margin-top: 0.3rem;
+      }
 
       /* ── ENTERPRISE HIGHLIGHT ────────────────────────────────────────── */
       .enterprise-grid {
@@ -435,8 +654,12 @@
         gap: 1rem;
       }
       .ent-card {
-        background: linear-gradient(135deg, rgba(59,130,246,0.06), rgba(5,10,20,0));
-        border: 1px solid rgba(59,130,246,0.2);
+        background: linear-gradient(
+          135deg,
+          rgba(59, 130, 246, 0.06),
+          rgba(5, 10, 20, 0)
+        );
+        border: 1px solid rgba(59, 130, 246, 0.2);
         border-radius: 14px;
         padding: 1.5rem;
         text-decoration: none;
@@ -446,30 +669,79 @@
         gap: 0.6rem;
         transition: all 0.2s;
       }
-      .ent-card:hover { border-color: var(--enterprise); transform: translateY(-2px); }
-      .ent-icon { font-size: 2rem; }
-      .ent-title { font-weight: 700; font-size: 1rem; }
-      .ent-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.5; flex: 1; }
-      .ent-price { font-size: 0.75rem; color: var(--enterprise); font-weight: 600; }
+      .ent-card:hover {
+        border-color: var(--enterprise);
+        transform: translateY(-2px);
+      }
+      .ent-icon {
+        font-size: 2rem;
+      }
+      .ent-title {
+        font-weight: 700;
+        font-size: 1rem;
+      }
+      .ent-desc {
+        font-size: 0.8rem;
+        color: var(--muted);
+        line-height: 1.5;
+        flex: 1;
+      }
+      .ent-price {
+        font-size: 0.75rem;
+        color: var(--enterprise);
+        font-weight: 600;
+      }
 
       /* ── WELLNESS AMBIENT ────────────────────────────────────────────── */
-      .wellness-row { display: flex; gap: 1rem; overflow-x: auto; padding-bottom: 0.5rem; scrollbar-width: none; }
-      .wellness-row::-webkit-scrollbar { display: none; }
+      .wellness-row {
+        display: flex;
+        gap: 1rem;
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+        scrollbar-width: none;
+      }
+      .wellness-row::-webkit-scrollbar {
+        display: none;
+      }
       .well-card {
         flex: 0 0 220px;
-        background: linear-gradient(135deg, rgba(168,85,247,0.08), rgba(5,10,20,0));
-        border: 1px solid rgba(168,85,247,0.2);
+        background: linear-gradient(
+          135deg,
+          rgba(168, 85, 247, 0.08),
+          rgba(5, 10, 20, 0)
+        );
+        border: 1px solid rgba(168, 85, 247, 0.2);
         border-radius: 14px;
         padding: 1.4rem 1.2rem;
         text-decoration: none;
         color: inherit;
         transition: all 0.2s;
       }
-      .well-card:hover { border-color: var(--wellness); transform: translateY(-2px); }
-      .well-icon { font-size: 1.8rem; margin-bottom: 0.6rem; display: block; }
-      .well-title { font-weight: 700; margin-bottom: 0.35rem; font-size: 0.95rem; }
-      .well-freq { font-size: 0.72rem; color: var(--wellness); font-weight: 600; margin-bottom: 0.4rem; }
-      .well-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.5; }
+      .well-card:hover {
+        border-color: var(--wellness);
+        transform: translateY(-2px);
+      }
+      .well-icon {
+        font-size: 1.8rem;
+        margin-bottom: 0.6rem;
+        display: block;
+      }
+      .well-title {
+        font-weight: 700;
+        margin-bottom: 0.35rem;
+        font-size: 0.95rem;
+      }
+      .well-freq {
+        font-size: 0.72rem;
+        color: var(--wellness);
+        font-weight: 600;
+        margin-bottom: 0.4rem;
+      }
+      .well-desc {
+        font-size: 0.78rem;
+        color: var(--muted);
+        line-height: 1.5;
+      }
 
       /* ── COMING SOON TEASER ──────────────────────────────────────────── */
       .teaser-grid {
@@ -478,8 +750,8 @@
         gap: 0.75rem;
       }
       .teaser-card {
-        background: rgba(255,255,255,0.02);
-        border: 1px dashed rgba(255,255,255,0.08);
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px dashed rgba(255, 255, 255, 0.08);
         border-radius: 12px;
         padding: 1.2rem;
         display: flex;
@@ -487,16 +759,32 @@
         gap: 0.4rem;
         opacity: 0.65;
       }
-      .teaser-icon { font-size: 1.5rem; }
-      .teaser-title { font-size: 0.9rem; font-weight: 700; }
-      .teaser-cat { font-size: 0.7rem; color: var(--muted); }
-      .teaser-eta { font-size: 0.7rem; color: var(--gold); font-weight: 600; }
+      .teaser-icon {
+        font-size: 1.5rem;
+      }
+      .teaser-title {
+        font-size: 0.9rem;
+        font-weight: 700;
+      }
+      .teaser-cat {
+        font-size: 0.7rem;
+        color: var(--muted);
+      }
+      .teaser-eta {
+        font-size: 0.7rem;
+        color: var(--gold);
+        font-weight: 600;
+      }
 
       /* ── DEVELOPER CTA BANNER ────────────────────────────────────────── */
       .dev-banner {
         margin: 2rem;
         padding: 2.5rem;
-        background: linear-gradient(135deg, rgba(0,212,255,0.06), rgba(155,92,255,0.06));
+        background: linear-gradient(
+          135deg,
+          rgba(0, 212, 255, 0.06),
+          rgba(155, 92, 255, 0.06)
+        );
         border: 1px solid var(--border);
         border-radius: 20px;
         display: grid;
@@ -507,9 +795,23 @@
         margin-left: auto;
         margin-right: auto;
       }
-      .dev-banner-title { font-size: 1.4rem; font-weight: 800; margin-bottom: 0.5rem; }
-      .dev-banner-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
-      .dev-banner-actions { display: flex; flex-direction: column; gap: 0.6rem; align-items: flex-start; white-space: nowrap; }
+      .dev-banner-title {
+        font-size: 1.4rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+      }
+      .dev-banner-desc {
+        font-size: 0.9rem;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+      .dev-banner-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+        align-items: flex-start;
+        white-space: nowrap;
+      }
 
       /* ── FOOTER ──────────────────────────────────────────────────────── */
       footer {
@@ -533,10 +835,31 @@
         -webkit-text-fill-color: transparent;
         background-clip: text;
       }
-      .footer-brand p { font-size: 0.82rem; color: var(--muted); line-height: 1.6; margin-top: 0.6rem; }
-      .footer-col h4 { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 1rem; }
-      .footer-col a { display: block; color: #4a6494; font-size: 0.85rem; text-decoration: none; margin-bottom: 0.55rem; transition: color 0.2s; }
-      .footer-col a:hover { color: var(--text); }
+      .footer-brand p {
+        font-size: 0.82rem;
+        color: var(--muted);
+        line-height: 1.6;
+        margin-top: 0.6rem;
+      }
+      .footer-col h4 {
+        font-size: 0.78rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--muted);
+        margin-bottom: 1rem;
+      }
+      .footer-col a {
+        display: block;
+        color: #4a6494;
+        font-size: 0.85rem;
+        text-decoration: none;
+        margin-bottom: 0.55rem;
+        transition: color 0.2s;
+      }
+      .footer-col a:hover {
+        color: var(--text);
+      }
       .footer-bottom {
         max-width: 1200px;
         margin: 2rem auto 0;
@@ -553,18 +876,39 @@
 
       /* ── RESPONSIVE ──────────────────────────────────────────────────── */
       @media (max-width: 900px) {
-        .featured-card { grid-template-columns: 1fr; }
-        .featured-visual { height: 180px; }
-        .footer-grid { grid-template-columns: 1fr 1fr; }
-        .dev-banner { grid-template-columns: 1fr; }
+        .featured-card {
+          grid-template-columns: 1fr;
+        }
+        .featured-visual {
+          height: 180px;
+        }
+        .footer-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .dev-banner {
+          grid-template-columns: 1fr;
+        }
       }
       @media (max-width: 600px) {
-        .hero { padding: 3rem 1.2rem 2.5rem; }
-        nav { padding: 0.75rem 1rem; }
-        .cat-nav { padding: 0.5rem 1rem 0.75rem; }
-        .section, .cat-section { padding: 2.5rem 1.2rem; }
-        .footer-grid { grid-template-columns: 1fr; }
-        .stats-bar { gap: 1.5rem; }
+        .hero {
+          padding: 3rem 1.2rem 2.5rem;
+        }
+        nav {
+          padding: 0.75rem 1rem;
+        }
+        .cat-nav {
+          padding: 0.5rem 1rem 0.75rem;
+        }
+        .section,
+        .cat-section {
+          padding: 2.5rem 1.2rem;
+        }
+        .footer-grid {
+          grid-template-columns: 1fr;
+        }
+        .stats-bar {
+          gap: 1.5rem;
+        }
       }
 
       /* ── EVENTS SECTION ──────────────────────────────────────────────── */
@@ -574,100 +918,221 @@
         margin: 0 auto;
       }
       .events-header {
-        display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.25rem;
         flex-wrap: wrap;
       }
       .events-title {
-        font-size: 1.2rem; font-weight: 800;
+        font-size: 1.2rem;
+        font-weight: 800;
       }
       .live-badge {
-        background: #ef4444; color: #fff; font-size: 0.7rem; font-weight: 800;
-        padding: 0.15rem 0.5rem; border-radius: 4px; letter-spacing: 0.08em;
+        background: #ef4444;
+        color: #fff;
+        font-size: 0.7rem;
+        font-weight: 800;
+        padding: 0.15rem 0.5rem;
+        border-radius: 4px;
+        letter-spacing: 0.08em;
         animation: pulse-red 1.5s ease-in-out infinite;
       }
       @keyframes pulse-red {
-        0%, 100% { opacity: 1; }
-        50%       { opacity: 0.6; }
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.6;
+        }
       }
       .events-scroll {
-        display: flex; gap: 1rem; overflow-x: auto; padding-bottom: 0.5rem;
-        scrollbar-width: thin; scrollbar-color: rgba(0,212,255,0.2) transparent;
+        display: flex;
+        gap: 1rem;
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(0, 212, 255, 0.2) transparent;
       }
       .event-card {
-        flex: 0 0 300px; min-width: 280px;
-        background: var(--bg2); border: 1px solid var(--border); border-radius: 12px;
+        flex: 0 0 300px;
+        min-width: 280px;
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        border-radius: 12px;
         border-left: 4px solid var(--cyan);
-        padding: 1.25rem; display: flex; flex-direction: column; gap: 0.6rem;
-        text-decoration: none; color: inherit; transition: border-color 0.2s, transform 0.15s;
+        padding: 1.25rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+        text-decoration: none;
+        color: inherit;
+        transition:
+          border-color 0.2s,
+          transform 0.15s;
       }
-      .event-card:hover { transform: translateY(-2px); border-left-color: #fff; }
-      .event-card-top { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+      .event-card:hover {
+        transform: translateY(-2px);
+        border-left-color: #fff;
+      }
+      .event-card-top {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+      }
       .event-type {
-        font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em;
-        color: var(--muted); font-weight: 600;
+        font-size: 0.68rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--muted);
+        font-weight: 600;
       }
       .event-status {
-        font-size: 0.68rem; font-weight: 700; padding: 0.1rem 0.4rem;
-        border-radius: 4px; text-transform: uppercase;
+        font-size: 0.68rem;
+        font-weight: 700;
+        padding: 0.1rem 0.4rem;
+        border-radius: 4px;
+        text-transform: uppercase;
       }
-      .event-status.live { background: rgba(239,68,68,0.2); color: #ef4444; }
-      .event-status.upcoming { background: rgba(0,212,255,0.1); color: var(--cyan); }
-      .event-title { font-size: 0.98rem; font-weight: 700; line-height: 1.3; }
-      .event-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.5; flex: 1; }
+      .event-status.live {
+        background: rgba(239, 68, 68, 0.2);
+        color: #ef4444;
+      }
+      .event-status.upcoming {
+        background: rgba(0, 212, 255, 0.1);
+        color: var(--cyan);
+      }
+      .event-title {
+        font-size: 0.98rem;
+        font-weight: 700;
+        line-height: 1.3;
+      }
+      .event-desc {
+        font-size: 0.8rem;
+        color: var(--muted);
+        line-height: 1.5;
+        flex: 1;
+      }
       .event-countdown {
-        font-size: 0.78rem; font-family: monospace;
-        color: var(--cyan); font-weight: 700; background: rgba(0,212,255,0.08);
-        border-radius: 5px; padding: 0.3rem 0.6rem; display: inline-block;
+        font-size: 0.78rem;
+        font-family: monospace;
+        color: var(--cyan);
+        font-weight: 700;
+        background: rgba(0, 212, 255, 0.08);
+        border-radius: 5px;
+        padding: 0.3rem 0.6rem;
+        display: inline-block;
       }
-      .event-meta { display: flex; gap: 0.75rem; font-size: 0.75rem; color: var(--muted); flex-wrap: wrap; }
+      .event-meta {
+        display: flex;
+        gap: 0.75rem;
+        font-size: 0.75rem;
+        color: var(--muted);
+        flex-wrap: wrap;
+      }
       .event-enter-btn {
-        display: inline-block; padding: 0.4rem 0.9rem; border-radius: 6px;
-        background: var(--cyan); color: #000; font-weight: 700; font-size: 0.78rem;
-        text-decoration: none; align-self: flex-start; margin-top: 0.25rem;
+        display: inline-block;
+        padding: 0.4rem 0.9rem;
+        border-radius: 6px;
+        background: var(--cyan);
+        color: #000;
+        font-weight: 700;
+        font-size: 0.78rem;
+        text-decoration: none;
+        align-self: flex-start;
+        margin-top: 0.25rem;
       }
 
       /* ── SEARCH BAR ─────────────────────────────────────────────────── */
       .search-bar-wrap {
         padding: 0.5rem 2rem 0;
-        max-width: 1200px; margin: 0 auto;
+        max-width: 1200px;
+        margin: 0 auto;
       }
       .search-bar {
-        display: flex; gap: 0.75rem; align-items: center;
-        background: var(--bg2); border: 1px solid var(--border); border-radius: 10px;
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        border-radius: 10px;
         padding: 0.5rem 0.75rem;
       }
       .search-bar input {
-        flex: 1; background: none; border: none; outline: none;
-        color: var(--text); font-size: 0.9rem; font-family: inherit;
+        flex: 1;
+        background: none;
+        border: none;
+        outline: none;
+        color: var(--text);
+        font-size: 0.9rem;
+        font-family: inherit;
       }
-      .search-bar input::placeholder { color: rgba(248,250,252,0.25); }
+      .search-bar input::placeholder {
+        color: rgba(248, 250, 252, 0.25);
+      }
       .search-clear {
-        background: none; border: none; color: var(--muted); cursor: pointer;
-        font-size: 1rem; padding: 0; line-height: 1;
+        background: none;
+        border: none;
+        color: var(--muted);
+        cursor: pointer;
+        font-size: 1rem;
+        padding: 0;
+        line-height: 1;
       }
-      .search-count { font-size: 0.75rem; color: var(--muted); white-space: nowrap; }
+      .search-count {
+        font-size: 0.75rem;
+        color: var(--muted);
+        white-space: nowrap;
+      }
 
       /* ── QUEST-SPECIFIC OVERRIDES ────────────────────────────────────── */
       /* Larger tap targets in Quest Browser (pointer = coarse or VR) */
       @media (pointer: coarse), (hover: none) {
-        .xp-card, .ent-card, .well-card { min-height: 120px; }
-        .btn-primary, .btn-secondary { padding: 1.1rem 2.2rem; font-size: 1.1rem; }
-        .cat-pill { padding: 0.65rem 1.4rem; font-size: 0.95rem; }
-        .nav-links a { padding: 0.5rem 0.8rem; font-size: 0.95rem; }
+        .xp-card,
+        .ent-card,
+        .well-card {
+          min-height: 120px;
+        }
+        .btn-primary,
+        .btn-secondary {
+          padding: 1.1rem 2.2rem;
+          font-size: 1.1rem;
+        }
+        .cat-pill {
+          padding: 0.65rem 1.4rem;
+          font-size: 0.95rem;
+        }
+        .nav-links a {
+          padding: 0.5rem 0.8rem;
+          font-size: 0.95rem;
+        }
       }
 
       /* ── LOADING SHIMMER ─────────────────────────────────────────────── */
       .shimmer {
-        background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.07) 50%, rgba(255,255,255,0.03) 75%);
+        background: linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.03) 25%,
+          rgba(255, 255, 255, 0.07) 50%,
+          rgba(255, 255, 255, 0.03) 75%
+        );
         background-size: 200% 100%;
         animation: shimmer 1.5s infinite;
         border-radius: 8px;
       }
-      @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+      @keyframes shimmer {
+        0% {
+          background-position: -200% 0;
+        }
+        100% {
+          background-position: 200% 0;
+        }
+      }
     </style>
   </head>
   <body>
-
     <!-- ── NAV ─────────────────────────────────────────────────────────── -->
     <nav>
       <a href="/" class="nav-logo">AIOS VR</a>
@@ -677,19 +1142,33 @@
         <a href="/plaistore">PLAIstore</a>
         <a href="/lab">GeoQode Lab</a>
         <a href="/">AIOS Home</a>
-        <a href="/vr-developer" style="margin-left:8px;border:1px solid rgba(245,158,11,0.4);border-radius:4px;padding:0.2rem 0.5rem;color:#f59e0b;font-size:0.78rem;font-weight:700;">🛠 Dev Portal</a>
+        <a
+          href="/vr-developer"
+          style="
+            margin-left: 8px;
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            border-radius: 4px;
+            padding: 0.2rem 0.5rem;
+            color: #f59e0b;
+            font-size: 0.78rem;
+            font-weight: 700;
+          "
+          >🛠 Dev Portal</a
+        >
       </div>
       <a href="/vr" class="nav-vr-badge" id="enter-vr-nav">🥽 Enter VR</a>
     </nav>
 
     <!-- ── HERO ─────────────────────────────────────────────────────────── -->
     <section class="hero">
-      <div class="hero-kicker">AIOS VR Platform · Powered by Merkaba 8→26→48:480</div>
-      <h1 class="hero-title">Enter Any World.<br>Zero Install.</h1>
+      <div class="hero-kicker">
+        AIOS VR Platform · Powered by Merkaba 8→26→48:480
+      </div>
+      <h1 class="hero-title">Enter Any World.<br />Zero Install.</h1>
       <p class="hero-sub">
         30+ immersive WebXR experiences for Meta Quest 2/3. Cinema, Enterprise,
-        Education, Arcade, Wellness, Social — all delivered through your Quest Browser.
-        Open URL. Dive in.
+        Education, Arcade, Wellness, Social — all delivered through your Quest
+        Browser. Open URL. Dive in.
       </p>
       <div class="hero-ctas">
         <a href="/vr" class="btn-primary">🥽 Launch VR Theatre</a>
@@ -704,52 +1183,95 @@
         </div>
       </div>
       <div class="hero-tech">
-        <span>WebXR Device API</span> · <span>A-Frame 1.5</span> · <span>Hand Tracking</span>
-        · <span>Spatial Audio</span> · <span>PHI=1.618 · PSI=1.414</span>
-        · <span>72 Hz GeoQode Base</span>
+        <span>WebXR Device API</span> · <span>A-Frame 1.5</span> ·
+        <span>Hand Tracking</span> · <span>Spatial Audio</span> ·
+        <span>PHI=1.618 · PSI=1.414</span> · <span>72 Hz GeoQode Base</span>
       </div>
     </section>
 
     <!-- ── STATS ─────────────────────────────────────────────────────────── -->
     <div class="stats-bar">
-      <div class="stat"><span class="stat-num" id="stat-xp">30+</span><span class="stat-label">VR Experiences</span></div>
-      <div class="stat"><span class="stat-num">7</span><span class="stat-label">Categories</span></div>
-      <div class="stat"><span class="stat-num">0</span><span class="stat-label">Downloads Required</span></div>
-      <div class="stat"><span class="stat-num">2</span><span class="stat-label">Quest Generations</span></div>
-      <div class="stat"><span class="stat-num">24/7</span><span class="stat-label">AI Content Generation</span></div>
+      <div class="stat">
+        <span class="stat-num" id="stat-xp">48+</span
+        ><span class="stat-label">VR Experiences</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">9</span
+        ><span class="stat-label">Categories</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">0</span
+        ><span class="stat-label">Downloads Required</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">2</span
+        ><span class="stat-label">Quest Generations</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">24/7</span
+        ><span class="stat-label">AI Content Generation</span>
+      </div>
     </div>
 
     <!-- ── UPCOMING EVENTS ──────────────────────────────────────────────── -->
     <div class="events-section" id="events">
       <div class="events-header">
         <div class="events-title">📅 Upcoming Events</div>
-        <span class="live-badge" id="live-now-badge" style="display:none;">🔴 LIVE NOW</span>
+        <span class="live-badge" id="live-now-badge" style="display: none"
+          >🔴 LIVE NOW</span
+        >
       </div>
       <div class="events-scroll" id="events-scroll">
         <!-- JS-rendered from /api/aios/vr/taxonomy events -->
-        <div style="color:rgba(248,250,252,0.3);font-size:0.85rem;padding:1rem 0;">Loading events…</div>
+        <div
+          style="
+            color: rgba(248, 250, 252, 0.3);
+            font-size: 0.85rem;
+            padding: 1rem 0;
+          "
+        >
+          Loading events…
+        </div>
       </div>
     </div>
 
     <!-- ── SEARCH BAR ────────────────────────────────────────────────────── -->
     <div class="search-bar-wrap">
       <div class="search-bar">
-        <span style="color:rgba(248,250,252,0.3);font-size:0.95rem;">🔍</span>
-        <input type="text" id="xp-search" placeholder="Search experiences, categories, frequencies…" autocomplete="off" />
+        <span style="color: rgba(248, 250, 252, 0.3); font-size: 0.95rem"
+          >🔍</span
+        >
+        <input
+          type="text"
+          id="xp-search"
+          placeholder="Search experiences, categories, frequencies…"
+          autocomplete="off"
+        />
         <span class="search-count" id="search-count"></span>
-        <button class="search-clear" id="search-clear" title="Clear search" style="display:none;">✕</button>
+        <button
+          class="search-clear"
+          id="search-clear"
+          title="Clear search"
+          style="display: none"
+        >
+          ✕
+        </button>
       </div>
     </div>
 
     <!-- ── CATEGORY NAV PILLS ─────────────────────────────────────────────── -->
     <div class="cat-nav" id="browse">
       <a href="#cinema" class="cat-pill active" data-cat="cinema">🎬 Cinema</a>
-      <a href="#enterprise" class="cat-pill" data-cat="enterprise">🏢 Enterprise</a>
+      <a href="#enterprise" class="cat-pill" data-cat="enterprise"
+        >🏢 Enterprise</a
+      >
       <a href="#lab" class="cat-pill" data-cat="lab">🔬 Lab</a>
       <a href="#arcade" class="cat-pill" data-cat="arcade">🎮 Arcade</a>
       <a href="#wellness" class="cat-pill" data-cat="wellness">🧘 Wellness</a>
       <a href="#social" class="cat-pill" data-cat="social">👥 Social</a>
       <a href="#creator" class="cat-pill" data-cat="creator">🛠️ Creator</a>
+      <a href="#education" class="cat-pill" data-cat="education">📚 Education</a>
+      <a href="#art" class="cat-pill" data-cat="art">🎨 Art & Music</a>
     </div>
 
     <!-- ── FEATURED EXPERIENCE ────────────────────────────────────────────── -->
@@ -758,21 +1280,42 @@
         <div class="section-title">⭐ Featured Experience</div>
       </div>
       <a href="/vr?prog=matrix" class="featured-card">
-        <div class="featured-visual" style="background:linear-gradient(135deg,rgba(0,255,65,0.15),rgba(0,20,0,0.8));">
+        <div
+          class="featured-visual"
+          style="
+            background: linear-gradient(
+              135deg,
+              rgba(0, 255, 65, 0.15),
+              rgba(0, 20, 0, 0.8)
+            );
+          "
+        >
           🖥️
         </div>
         <div class="featured-content">
-          <div class="featured-kicker">🎬 Cinema · PHYSICS 852Hz · Lattice Node 0</div>
+          <div class="featured-kicker">
+            🎬 Cinema · PHYSICS 852Hz · Lattice Node 0
+          </div>
           <div class="featured-title">The Matrix — Dimensional Simulation</div>
           <div class="featured-desc">
-            Step inside the most iconic digital reality ever conceived. PHI-scaled
-            code rain, D48 lattice geometry visualised as the matrix grid,
-            and 852 Hz structural-law resonance as your ambient field.
+            Step inside the most iconic digital reality ever conceived.
+            PHI-scaled code rain, D48 lattice geometry visualised as the matrix
+            grid, and 852 Hz structural-law resonance as your ambient field.
             Navigate the simulation in full 6DoF with hand tracking.
           </div>
           <div class="featured-actions">
-            <a href="/vr?prog=matrix" class="feat-btn feat-btn-primary" onclick="event.stopPropagation()">🥽 Enter in VR</a>
-            <a href="/aiosdream?prog=matrix" class="feat-btn feat-btn-secondary" onclick="event.stopPropagation()">▶ Watch in Theatre</a>
+            <a
+              href="/vr?prog=matrix"
+              class="feat-btn feat-btn-primary"
+              onclick="event.stopPropagation()"
+              >🥽 Enter in VR</a
+            >
+            <a
+              href="/aiosdream?prog=matrix"
+              class="feat-btn feat-btn-secondary"
+              onclick="event.stopPropagation()"
+              >▶ Watch in Theatre</a
+            >
           </div>
         </div>
       </a>
@@ -782,8 +1325,13 @@
     <div class="cat-section" id="cinema">
       <div class="cat-section-header">
         <div>
-          <div class="cat-section-title" style="color:var(--cinema);">🎬 Cinema</div>
-          <div class="cat-section-desc">Iconic narrative universes reimagined as immersive dimensional spaces</div>
+          <div class="cat-section-title" style="color: var(--cinema)">
+            🎬 Cinema
+          </div>
+          <div class="cat-section-desc">
+            Iconic narrative universes reimagined as immersive dimensional
+            spaces
+          </div>
         </div>
         <a href="/aiosdream" class="see-all">All Programmes →</a>
       </div>
@@ -794,46 +1342,88 @@
     <div class="cat-section" id="enterprise">
       <div class="cat-section-header">
         <div>
-          <div class="cat-section-title" style="color:var(--enterprise);">🏢 Enterprise</div>
-          <div class="cat-section-desc">Boardrooms, investor decks, training — production VR for business</div>
+          <div class="cat-section-title" style="color: var(--enterprise)">
+            🏢 Enterprise
+          </div>
+          <div class="cat-section-desc">
+            Boardrooms, investor decks, training — production VR for business
+          </div>
         </div>
         <a href="/plaistore" class="see-all">Enterprise Plans →</a>
       </div>
       <div class="enterprise-grid">
-        <a href="/vr?prog=investordeck" class="ent-card" style="--accent:var(--enterprise);">
+        <a
+          href="/vr?prog=investordeck"
+          class="ent-card"
+          style="--accent: var(--enterprise)"
+        >
           <div class="ent-icon">📊</div>
           <div class="ent-title">Investor Deck VR</div>
-          <div class="ent-desc">3D spatial pitch deck. Data visualisations as floating holographic panels. Walk investors through financials in VR space.</div>
+          <div class="ent-desc">
+            3D spatial pitch deck. Data visualisations as floating holographic
+            panels. Walk investors through financials in VR space.
+          </div>
           <div class="ent-price">🟢 Live · Free to enter</div>
         </a>
-        <a href="/vr?prog=governance" class="ent-card" style="--accent:var(--enterprise);">
+        <a
+          href="/vr?prog=governance"
+          class="ent-card"
+          style="--accent: var(--enterprise)"
+        >
           <div class="ent-icon">⚖️</div>
           <div class="ent-title">Governance Council</div>
-          <div class="ent-desc">Decision boards and leadership councils in immersive 3D. Spatial voting, agenda navigation, and DIALOGUE-frequency resonance.</div>
+          <div class="ent-desc">
+            Decision boards and leadership councils in immersive 3D. Spatial
+            voting, agenda navigation, and DIALOGUE-frequency resonance.
+          </div>
           <div class="ent-price">🟢 Live · Free to enter</div>
         </a>
-        <a class="ent-card" style="--accent:var(--enterprise);opacity:0.65;cursor:default;">
+        <a
+          class="ent-card"
+          style="--accent: var(--enterprise); opacity: 0.65; cursor: default"
+        >
           <div class="ent-icon">🧑‍💼</div>
           <div class="ent-title">Training Simulator</div>
-          <div class="ent-desc">Onboarding, compliance, and safety training — spatial, interactive, retainable. Replace slide decks permanently.</div>
+          <div class="ent-desc">
+            Onboarding, compliance, and safety training — spatial, interactive,
+            retainable. Replace slide decks permanently.
+          </div>
           <div class="ent-price">⏳ Coming Q3 2026 · From $99/mo</div>
         </a>
-        <a class="ent-card" style="--accent:var(--enterprise);opacity:0.65;cursor:default;">
+        <a
+          class="ent-card"
+          style="--accent: var(--enterprise); opacity: 0.65; cursor: default"
+        >
           <div class="ent-icon">🏗️</div>
           <div class="ent-title">Product Launch Room</div>
-          <div class="ent-desc">Immersive product demo environments. Let customers explore, interact, and convert — all in browser VR.</div>
+          <div class="ent-desc">
+            Immersive product demo environments. Let customers explore,
+            interact, and convert — all in browser VR.
+          </div>
           <div class="ent-price">⏳ Coming Q3 2026 · From $199/mo</div>
         </a>
-        <a class="ent-card" style="--accent:var(--enterprise);opacity:0.65;cursor:default;">
+        <a
+          class="ent-card"
+          style="--accent: var(--enterprise); opacity: 0.65; cursor: default"
+        >
           <div class="ent-icon">🌐</div>
           <div class="ent-title">Remote HQ</div>
-          <div class="ent-desc">Persistent virtual office — spatial collaboration for distributed teams. Daily standups, war rooms, whiteboarding in VR.</div>
+          <div class="ent-desc">
+            Persistent virtual office — spatial collaboration for distributed
+            teams. Daily standups, war rooms, whiteboarding in VR.
+          </div>
           <div class="ent-price">⏳ Coming Q4 2026 · From $499/mo</div>
         </a>
-        <a class="ent-card" style="--accent:var(--enterprise);opacity:0.65;cursor:default;">
+        <a
+          class="ent-card"
+          style="--accent: var(--enterprise); opacity: 0.65; cursor: default"
+        >
           <div class="ent-icon">🧪</div>
           <div class="ent-title">QA & Testing Lab</div>
-          <div class="ent-desc">Test software UX in VR space. Catch issues no 2D screen review reveals. Spatial bug reports with 3D annotation.</div>
+          <div class="ent-desc">
+            Test software UX in VR space. Catch issues no 2D screen review
+            reveals. Spatial bug reports with 3D annotation.
+          </div>
           <div class="ent-price">⏳ Coming Q4 2026 · Contact</div>
         </a>
       </div>
@@ -843,8 +1433,10 @@
     <div class="cat-section" id="lab">
       <div class="cat-section-header">
         <div>
-          <div class="cat-section-title" style="color:var(--lab);">🔬 Lab</div>
-          <div class="cat-section-desc">Educational and scientific visualisation — reality as data</div>
+          <div class="cat-section-title" style="color: var(--lab)">🔬 Lab</div>
+          <div class="cat-section-desc">
+            Educational and scientific visualisation — reality as data
+          </div>
         </div>
         <a href="/lab" class="see-all">GeoQode Lab →</a>
       </div>
@@ -855,21 +1447,34 @@
     <div class="cat-section" id="arcade">
       <div class="cat-section-header">
         <div>
-          <div class="cat-section-title" style="color:var(--arcade);">🎮 Arcade</div>
-          <div class="cat-section-desc">Instant-play XR games. Open URL. Score. Zero friction.</div>
+          <div class="cat-section-title" style="color: var(--arcade)">
+            🎮 Arcade
+          </div>
+          <div class="cat-section-desc">
+            Instant-play XR games. Open URL. Score. Zero friction.
+          </div>
         </div>
       </div>
       <div class="xp-grid" id="arcade-grid"></div>
       <!-- Coming soon teasers -->
-      <div class="teaser-grid" style="margin-top:1rem;" id="arcade-teaser"></div>
+      <div
+        class="teaser-grid"
+        style="margin-top: 1rem"
+        id="arcade-teaser"
+      ></div>
     </div>
 
     <!-- ── WELLNESS ────────────────────────────────────────────────────────── -->
     <div class="cat-section" id="wellness">
       <div class="cat-section-header">
         <div>
-          <div class="cat-section-title" style="color:var(--wellness);">🧘 Wellness</div>
-          <div class="cat-section-desc">Solfeggio frequency chambers, breathwork, presence — science-backed VR therapy</div>
+          <div class="cat-section-title" style="color: var(--wellness)">
+            🧘 Wellness
+          </div>
+          <div class="cat-section-desc">
+            Solfeggio frequency chambers, breathwork, presence — science-backed
+            VR therapy
+          </div>
         </div>
       </div>
       <div class="wellness-row" id="wellness-row"></div>
@@ -879,26 +1484,95 @@
     <div class="cat-section" id="social">
       <div class="cat-section-header">
         <div>
-          <div class="cat-section-title" style="color:var(--social);">👥 Social</div>
-          <div class="cat-section-desc">Shared spaces, live events, community — VR without isolation</div>
+          <div class="cat-section-title" style="color: var(--social)">
+            👥 Social
+          </div>
+          <div class="cat-section-desc">
+            Shared spaces, live events, community — VR without isolation
+          </div>
         </div>
       </div>
       <div class="xp-grid" id="social-grid"></div>
       <!-- Lattice Lounge waitlist -->
-      <div style="margin-top:2rem;padding:1.75rem 2rem;background:linear-gradient(135deg,rgba(0,212,255,0.05),rgba(168,85,247,0.05));border:1px solid rgba(0,212,255,0.15);border-radius:14px;max-width:680px;">
-        <div style="font-size:1.05rem;font-weight:800;margin-bottom:0.4rem;">🏛️ Lattice Lounge — Grand Opening</div>
-        <div style="font-size:0.85rem;color:rgba(248,250,252,0.55);margin-bottom:1.1rem;line-height:1.5;">
-          The first persistent social VR space on realaios.com. Real-time presence, spatial voice, PHI-resonant architecture.
-          Opening June 1, 2026 — limited to 26 simultaneous visitors on launch night.
+      <div
+        style="
+          margin-top: 2rem;
+          padding: 1.75rem 2rem;
+          background: linear-gradient(
+            135deg,
+            rgba(0, 212, 255, 0.05),
+            rgba(168, 85, 247, 0.05)
+          );
+          border: 1px solid rgba(0, 212, 255, 0.15);
+          border-radius: 14px;
+          max-width: 680px;
+        "
+      >
+        <div
+          style="font-size: 1.05rem; font-weight: 800; margin-bottom: 0.4rem"
+        >
+          🏛️ Lattice Lounge — Grand Opening
         </div>
-        <div id="waitlist-form" style="display:flex;gap:0.75rem;flex-wrap:wrap;">
-          <input id="waitlist-email" type="email" placeholder="your@email.com"
-            style="flex:1;min-width:200px;background:rgba(0,0,0,0.3);border:1px solid rgba(0,212,255,0.25);border-radius:7px;padding:0.6rem 0.9rem;color:#f8fafc;font-size:0.88rem;font-family:inherit;outline:none;" />
-          <button onclick="joinWaitlist()" style="background:#00d4ff;color:#000;border:none;border-radius:7px;padding:0.6rem 1.25rem;font-weight:700;font-size:0.88rem;cursor:pointer;white-space:nowrap;">
+        <div
+          style="
+            font-size: 0.85rem;
+            color: rgba(248, 250, 252, 0.55);
+            margin-bottom: 1.1rem;
+            line-height: 1.5;
+          "
+        >
+          The first persistent social VR space on realaios.com. Real-time
+          presence, spatial voice, PHI-resonant architecture. Opening June 1,
+          2026 — limited to 26 simultaneous visitors on launch night.
+        </div>
+        <div
+          id="waitlist-form"
+          style="display: flex; gap: 0.75rem; flex-wrap: wrap"
+        >
+          <input
+            id="waitlist-email"
+            type="email"
+            placeholder="your@email.com"
+            style="
+              flex: 1;
+              min-width: 200px;
+              background: rgba(0, 0, 0, 0.3);
+              border: 1px solid rgba(0, 212, 255, 0.25);
+              border-radius: 7px;
+              padding: 0.6rem 0.9rem;
+              color: #f8fafc;
+              font-size: 0.88rem;
+              font-family: inherit;
+              outline: none;
+            "
+          />
+          <button
+            onclick="joinWaitlist()"
+            style="
+              background: #00d4ff;
+              color: #000;
+              border: none;
+              border-radius: 7px;
+              padding: 0.6rem 1.25rem;
+              font-weight: 700;
+              font-size: 0.88rem;
+              cursor: pointer;
+              white-space: nowrap;
+            "
+          >
             Join Waitlist →
           </button>
         </div>
-        <div id="waitlist-msg" style="display:none;font-size:0.82rem;color:#22c55e;margin-top:0.5rem;font-weight:600;"></div>
+        <div
+          id="waitlist-msg"
+          style="
+            display: none;
+            font-size: 0.82rem;
+            color: #22c55e;
+            margin-top: 0.5rem;
+            font-weight: 600;
+          "
+        ></div>
       </div>
     </div>
 
@@ -906,14 +1580,18 @@
     <div class="cat-section" id="creator">
       <div class="cat-section-header">
         <div>
-          <div class="cat-section-title" style="color:var(--creator);">🛠️ Creator</div>
-          <div class="cat-section-desc">Build and publish VR experiences to PLAIstore — 70/30 revenue share</div>
+          <div class="cat-section-title" style="color: var(--creator)">
+            🛠️ Creator
+          </div>
+          <div class="cat-section-desc">
+            Build and publish VR experiences to PLAIstore — 70/30 revenue share
+          </div>
         </div>
         <a href="/vr-developer" class="see-all">Developer Portal →</a>
       </div>
       <div class="xp-grid">
-        <a href="/lab" class="xp-card" style="--accent:var(--creator);">
-          <div class="xp-thumb" style="background:rgba(248,250,252,0.05);">
+        <a href="/lab" class="xp-card" style="--accent: var(--creator)">
+          <div class="xp-thumb" style="background: rgba(248, 250, 252, 0.05)">
             <div class="xp-thumb-bg"></div>
             🧪
             <div class="xp-badge badge-live">Live</div>
@@ -921,12 +1599,22 @@
           <div class="xp-body">
             <div class="xp-cat">GeoQode Studio</div>
             <div class="xp-name">Lattice Coordinate Editor</div>
-            <div class="xp-desc">Assign PHI/PSI lattice coordinates and GeoQode frequencies to any A-Frame scene. Export as PLAIstore package.</div>
+            <div class="xp-desc">
+              Assign PHI/PSI lattice coordinates and GeoQode frequencies to any
+              A-Frame scene. Export as PLAIstore package.
+            </div>
           </div>
-          <div class="xp-footer"><span class="xp-freq">72 Hz base</span><span class="xp-enter">Open Lab →</span></div>
+          <div class="xp-footer">
+            <span class="xp-freq">72 Hz base</span
+            ><span class="xp-enter">Open Lab →</span>
+          </div>
         </a>
-        <a href="/vr-developer" class="xp-card" style="--accent:var(--creator);">
-          <div class="xp-thumb" style="background:rgba(248,250,252,0.05);">
+        <a
+          href="/vr-developer"
+          class="xp-card"
+          style="--accent: var(--creator)"
+        >
+          <div class="xp-thumb" style="background: rgba(248, 250, 252, 0.05)">
             <div class="xp-thumb-bg"></div>
             📦
             <div class="xp-badge badge-live">Live</div>
@@ -934,12 +1622,21 @@
           <div class="xp-body">
             <div class="xp-cat">PLAIstore</div>
             <div class="xp-name">Submit Your VR App</div>
-            <div class="xp-desc">Publish WebXR experiences to PLAIstore. Reach every Meta Quest user on realaios.com. 70% revenue share, zero gatekeeping.</div>
+            <div class="xp-desc">
+              Publish WebXR experiences to PLAIstore. Reach every Meta Quest
+              user on realaios.com. 70% revenue share, zero gatekeeping.
+            </div>
           </div>
-          <div class="xp-footer"><span class="xp-freq">Developer Portal</span><span class="xp-enter">Submit App →</span></div>
+          <div class="xp-footer">
+            <span class="xp-freq">Developer Portal</span
+            ><span class="xp-enter">Submit App →</span>
+          </div>
         </a>
-        <div class="xp-card" style="--accent:var(--creator);opacity:0.6;cursor:default;">
-          <div class="xp-thumb" style="background:rgba(248,250,252,0.03);">
+        <div
+          class="xp-card"
+          style="--accent: var(--creator); opacity: 0.6; cursor: default"
+        >
+          <div class="xp-thumb" style="background: rgba(248, 250, 252, 0.03)">
             <div class="xp-thumb-bg"></div>
             🎨
             <div class="xp-badge badge-coming">Q3 2026</div>
@@ -947,27 +1644,63 @@
           <div class="xp-body">
             <div class="xp-cat">Creator Tools</div>
             <div class="xp-name">No-Code VR Scene Builder</div>
-            <div class="xp-desc">Drag-and-drop A-Frame scene editor with GeoQode frequency palette. Preview on Quest without writing code.</div>
+            <div class="xp-desc">
+              Drag-and-drop A-Frame scene editor with GeoQode frequency palette.
+              Preview on Quest without writing code.
+            </div>
           </div>
-          <div class="xp-footer"><span class="xp-freq">Coming Q3 2026</span><span class="xp-enter">Join Waitlist →</span></div>
+          <div class="xp-footer">
+            <span class="xp-freq">Coming Q3 2026</span
+            ><span class="xp-enter">Join Waitlist →</span>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- ── DEVELOPER BANNER ────────────────────────────────────────────────── -->
     <div class="dev-banner">
+
+    <!-- ── EDUCATION ──────────────────────────────────────────────────────── -->
+    <div class="cat-section" id="education">
+      <div class="cat-section-header">
+        <div>
+          <div class="cat-section-title" style="color:#f97316;">📚 Education</div>
+          <div class="cat-section-desc">History, science, maths and language — learn by being there</div>
+        </div>
+      </div>
+      <div class="xp-grid" id="education-grid"></div>
+    </div>
+
+    <!-- ── ART & MUSIC ─────────────────────────────────────────────────────── -->
+    <div class="cat-section" id="art">
+      <div class="cat-section-header">
+        <div>
+          <div class="cat-section-title" style="color:#ec4899;">🎨 Art & Music</div>
+          <div class="cat-section-desc">Create at 741 Hz resonance — spatial canvas, frequency composition, AI galleries</div>
+        </div>
+      </div>
+      <div class="xp-grid" id="art-grid"></div>
+    </div>
+
+    <!-- (dev banner) -->
+    <div class="dev-banner">
       <div>
         <div class="dev-banner-title">🛠️ Build on the AIOS VR Platform</div>
         <div class="dev-banner-desc">
-          Submit WebXR experiences to PLAIstore, reach 20M+ Meta Quest users through
-          realaios.com, and earn 70% of every sale. No app store approval. No gatekeeping.
-          The GeoQode SDK gives your experience PHI/PSI lattice coordinates, semantic
-          frequencies, and 24/7 SWARM promotion automatically.
+          Submit WebXR experiences to PLAIstore, reach 20M+ Meta Quest users
+          through realaios.com, and earn 70% of every sale. No app store
+          approval. No gatekeeping. The GeoQode SDK gives your experience
+          PHI/PSI lattice coordinates, semantic frequencies, and 24/7 SWARM
+          promotion automatically.
         </div>
       </div>
       <div class="dev-banner-actions">
-        <a href="/vr-developer" class="btn-primary" style="font-size:0.9rem;">🛠 Developer Portal →</a>
-        <a href="/lab" class="btn-secondary" style="font-size:0.85rem;">GeoQode SDK →</a>
+        <a href="/vr-developer" class="btn-primary" style="font-size: 0.9rem"
+          >🛠 Developer Portal →</a
+        >
+        <a href="/lab" class="btn-secondary" style="font-size: 0.85rem"
+          >GeoQode SDK →</a
+        >
       </div>
     </div>
 
@@ -976,8 +1709,13 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <div class="brand-name">AIOS VR Platform</div>
-          <p>Autonomous AI-generated WebXR experiences for Meta Quest 2/3. Built by Storm — the private AI innovation engine of Brains4Ai.</p>
-          <p style="margin-top:0.75rem;font-size:0.75rem;color:#2a3a5c;">Merkaba 8→26→48:480 · PHI=1.618 · PSI=1.414</p>
+          <p>
+            Autonomous AI-generated WebXR experiences for Meta Quest 2/3. Built
+            by Storm — the private AI innovation engine of Brains4Ai.
+          </p>
+          <p style="margin-top: 0.75rem; font-size: 0.75rem; color: #2a3a5c">
+            Merkaba 8→26→48:480 · PHI=1.618 · PSI=1.414
+          </p>
         </div>
         <div class="footer-col">
           <h4>Cinema</h4>
@@ -1020,73 +1758,436 @@
     <script>
       // ── Data ─────────────────────────────────────────────────────────────
       const AIOS_BASE = "https://realaios.com";
-      const API_BASE  = "https://api.getbrains4ai.com/api";
+      const API_BASE = "https://api.getbrains4ai.com/api";
 
       const CINEMA_XP = [
-        { name:"matrix",      emoji:"🖥️",  title:"The Matrix",           desc:"Digital rain, code cascades, D48 lattice as grid. Reality deconstruction in 6DoF.", freq:"852 Hz · PHYSICS",   color:"#00ff41",  badge:"live",  entry:"/vr?prog=matrix" },
-        { name:"inception",   emoji:"🏙️",  title:"Inception Dream Arch", desc:"Folding cities, layered dream states, time dilation. Navigate the subconscious.",   freq:"963 Hz · NARRATIVE", color:"#f59e0b",  badge:"live",  entry:"/vr?prog=inception" },
-        { name:"starwars",    emoji:"🚀",  title:"Star Wars Galactic",   desc:"Hyperspace jump, orbital battles, Force resonance across the galactic void.",        freq:"528 Hz · ACTION",    color:"#3b82f6",  badge:"live",  entry:"/vr?prog=starwars" },
-        { name:"apollo11",    emoji:"🌙",  title:"Apollo 11 Mission",    desc:"Lunar surface walk, Mission Control, Earth from space. 417 Hz spatial anchoring.",   freq:"417 Hz · LOCATION",  color:"#22c55e",  badge:"live",  entry:"/vr?prog=apollo11" },
-        { name:"investordeck",emoji:"📊",  title:"Investor Deck",        desc:"Float through your pitch as holographic data panels. Close deals in VR.",            freq:"396 Hz · ENTITY",    color:"#ef4444",  badge:"live",  entry:"/vr?prog=investordeck" },
-        { name:"governance",  emoji:"⚖️",  title:"Governance Council",   desc:"Decision rooms, DAO voting, leadership councils with DIALOGUE-frequency fields.",    freq:"639 Hz · DIALOGUE",  color:"#eab308",  badge:"live",  entry:"/vr?prog=governance" },
+        {
+          name: "matrix",
+          emoji: "🖥️",
+          title: "The Matrix",
+          desc: "Digital rain, code cascades, D48 lattice as grid. Reality deconstruction in 6DoF.",
+          freq: "852 Hz · PHYSICS",
+          color: "#00ff41",
+          badge: "live",
+          entry: "/vr?prog=matrix",
+        },
+        {
+          name: "inception",
+          emoji: "🏙️",
+          title: "Inception Dream Arch",
+          desc: "Folding cities, layered dream states, time dilation. Navigate the subconscious.",
+          freq: "963 Hz · NARRATIVE",
+          color: "#f59e0b",
+          badge: "live",
+          entry: "/vr?prog=inception",
+        },
+        {
+          name: "starwars",
+          emoji: "🚀",
+          title: "Star Wars Galactic",
+          desc: "Hyperspace jump, orbital battles, Force resonance across the galactic void.",
+          freq: "528 Hz · ACTION",
+          color: "#3b82f6",
+          badge: "live",
+          entry: "/vr?prog=starwars",
+        },
+        {
+          name: "apollo11",
+          emoji: "🌙",
+          title: "Apollo 11 Mission",
+          desc: "Lunar surface walk, Mission Control, Earth from space. 417 Hz spatial anchoring.",
+          freq: "417 Hz · LOCATION",
+          color: "#22c55e",
+          badge: "live",
+          entry: "/vr?prog=apollo11",
+        },
+        {
+          name: "investordeck",
+          emoji: "📊",
+          title: "Investor Deck",
+          desc: "Float through your pitch as holographic data panels. Close deals in VR.",
+          freq: "396 Hz · ENTITY",
+          color: "#ef4444",
+          badge: "live",
+          entry: "/vr?prog=investordeck",
+        },
+        {
+          name: "governance",
+          emoji: "⚖️",
+          title: "Governance Council",
+          desc: "Decision rooms, DAO voting, leadership councils with DIALOGUE-frequency fields.",
+          freq: "639 Hz · DIALOGUE",
+          color: "#eab308",
+          badge: "live",
+          entry: "/vr?prog=governance",
+        },
       ];
 
       const LAB_XP = [
-        { emoji:"🔯", title:"Merkaba Lattice",     desc:"Walk through the live 8→26→48:480 lattice. PHI cube corners, D480 particle field, 72 Hz base tone.", freq:"72 Hz · HOLOGRAPHIC",  color:"#00d4ff", badge:"live",  entry:"/vr" },
-        { emoji:"⚛️", title:"Quantum Field Sim",   desc:"Visualise quantum probability fields, particle interference, and wave-function collapse in 3D space.", freq:"852 Hz · PHYSICS",    color:"#f8fafc", badge:"coming", entry:"" },
-        { emoji:"🧬", title:"Molecular Structure",  desc:"Walk through DNA helices, protein folds, and molecular bonds at nanoscale.", freq:"396 Hz · ENTITY",    color:"#22c55e", badge:"coming", entry:"" },
-        { emoji:"🌌", title:"Solar System VR",      desc:"Orbital mechanics at true scale. Walk Jupiter's surface, orbit Saturn's rings.", freq:"417 Hz · LOCATION",  color:"#3b82f6", badge:"coming", entry:"" },
-        { emoji:"🌀", title:"Fractal Space",        desc:"Infinite zoom through Mandelbrot and Julia sets rendered as navigable 3D caverns.", freq:"963 Hz · NARRATIVE",  color:"#f59e0b", badge:"coming", entry:"" },
-        { emoji:"🎵", title:"Solfeggio Frequency Map", desc:"Walk the full 396–963 Hz solfeggio spectrum as colour-coded spatial chambers.", freq:"All Frequencies",    color:"#a855f7", badge:"coming", entry:"" },
+        {
+          emoji: "🔯",
+          title: "Merkaba Lattice",
+          desc: "Walk through the live 8→26→48:480 lattice. PHI cube corners, D480 particle field, 72 Hz base tone.",
+          freq: "72 Hz · HOLOGRAPHIC",
+          color: "#00d4ff",
+          badge: "live",
+          entry: "/vr",
+        },
+        {
+          emoji: "⚛️",
+          title: "Quantum Field Sim",
+          desc: "Visualise quantum probability fields, particle interference, and wave-function collapse in 3D space.",
+          freq: "852 Hz · PHYSICS",
+          color: "#f8fafc",
+          badge: "live",
+          entry: "/vr?prog=quantum-field",
+        },
+        {
+          emoji: "🧬",
+          title: "Molecular Structure",
+          desc: "Walk through DNA helices, protein folds, and molecular bonds at nanoscale.",
+          freq: "396 Hz · ENTITY",
+          color: "#22c55e",
+          badge: "coming",
+          entry: "",
+        },
+        {
+          emoji: "🌌",
+          title: "Solar System VR",
+          desc: "Orbital mechanics at true scale. Walk Jupiter's surface, orbit Saturn's rings.",
+          freq: "417 Hz · LOCATION",
+          color: "#3b82f6",
+          badge: "coming",
+          entry: "",
+        },
+        {
+          emoji: "🌀",
+          title: "Fractal Space",
+          desc: "Infinite zoom through Mandelbrot and Julia sets rendered as navigable 3D caverns.",
+          freq: "963 Hz · NARRATIVE",
+          color: "#f59e0b",
+          badge: "coming",
+          entry: "",
+        },
+        {
+          emoji: "🎵",
+          title: "Solfeggio Frequency Map",
+          desc: "Walk the full 396–963 Hz solfeggio spectrum as colour-coded spatial chambers.",
+          freq: "All Frequencies",
+          color: "#a855f7",
+          badge: "coming",
+          entry: "",
+        },
       ];
 
-      const ARCADE_LIVE = [];
+      const ARCADE_LIVE = [
+        {
+          emoji: "⚡",
+          title: "PHI Breaker",
+          desc: "Defend the 48-node lattice from entropy waves. Shoot frequency disruptors across D480 harmonic space.",
+          freq: "528 Hz · ACTION",
+          color: "#ef4444",
+          badge: "live",
+          entry: "/vr?prog=phi-breaker",
+        },
+        {
+          emoji: "🧩",
+          title: "Lattice Builder",
+          desc: "Rebuild damaged lattice nodes with hand tracking. Physics puzzles anchored to PHI geometry.",
+          freq: "852 Hz · PHYSICS",
+          color: "#f97316",
+          badge: "live",
+          entry: "/vr?prog=lattice-builder",
+        },
+      ];
       const ARCADE_TEASER = [
-        { emoji:"⚡", title:"Lattice Dodge",    cat:"Arcade", eta:"Q3 2026" },
-        { emoji:"📐", title:"PHI Architect",   cat:"Arcade", eta:"Q3 2026" },
-        { emoji:"🐝", title:"Swarm Defender",  cat:"Arcade", eta:"Q3 2026" },
-        { emoji:"🔮", title:"GeoQode Puzzle",  cat:"Arcade", eta:"Q4 2026" },
-        { emoji:"🌀", title:"Zero Gravity",    cat:"Arcade", eta:"Q4 2026" },
-        { emoji:"⚔️", title:"Drone Wars",      cat:"Arcade", eta:"Q4 2026" },
-        { emoji:"🧩", title:"Merkaba Build",   cat:"Arcade", eta:"Q1 2027" },
-        { emoji:"🏃", title:"PHI Runner",      cat:"Arcade", eta:"Q1 2027" },
+        { emoji: "⚡", title: "Lattice Dodge", cat: "Arcade", eta: "Q3 2026" },
+        { emoji: "📐", title: "PHI Architect", cat: "Arcade", eta: "Q3 2026" },
+        { emoji: "🐝", title: "Swarm Defender", cat: "Arcade", eta: "Q3 2026" },
+        { emoji: "🔮", title: "GeoQode Puzzle", cat: "Arcade", eta: "Q4 2026" },
+        { emoji: "🌀", title: "Zero Gravity", cat: "Arcade", eta: "Q4 2026" },
+        { emoji: "⚔️", title: "Drone Wars", cat: "Arcade", eta: "Q4 2026" },
+        { emoji: "🧩", title: "Merkaba Build", cat: "Arcade", eta: "Q1 2027" },
+        { emoji: "🏃", title: "PHI Runner", cat: "Arcade", eta: "Q1 2027" },
       ];
 
       const WELLNESS_XP = [
-        { emoji:"🔮", title:"Merkaba Meditate", freq:"72 Hz · Base",       desc:"Rotating Merkaba star, 72 Hz ambient tone, infinite particle horizon.",        color:"#a855f7" },
-        { emoji:"🌿", title:"528 Hz Forest",    freq:"528 Hz · Heart",     desc:"Photorealistic forest with 528 Hz binaural audio. Heart chakra entrainment.",  color:"#22c55e" },
-        { emoji:"💨", title:"Breathwork Space", freq:"396 Hz · Root",      desc:"Visual rhythm guide synced to your breath. 4-7-8 pattern with spatial cues.",  color:"#3b82f6" },
-        { emoji:"🌊", title:"Ocean Presence",   freq:"417 Hz · Sacral",    desc:"Infinite ocean horizon. 417 Hz spatial anchor tone. Pure presence.",           color:"#00d4ff" },
-        { emoji:"🌌", title:"963 Hz Cosmos",    freq:"963 Hz · Crown",     desc:"Cosmic void with 963 Hz crown frequency. Universal consciousness field.",      color:"#f59e0b" },
-        { emoji:"🏔️", title:"Mountain Silence", freq:"741 Hz · Throat",    desc:"Alpine panorama with 741 Hz expression tone. Clarity and elevation.",         color:"#ef4444" },
+        {
+          emoji: "🔮",
+          title: "Merkaba Meditate",
+          freq: "72 Hz · Base",
+          desc: "Rotating Merkaba star, 72 Hz ambient tone, infinite particle horizon.",
+          color: "#a855f7",
+          badge: "live",
+          entry: "/vr?prog=merkaba-meditate",
+        },
+        {
+          emoji: "🌿",
+          title: "528 Hz Forest",
+          freq: "528 Hz · Heart",
+          desc: "Photorealistic forest with 528 Hz binaural audio. Heart chakra entrainment.",
+          color: "#22c55e",
+          badge: "live",
+          entry: "/vr?prog=forest-528",
+        },
+        {
+          emoji: "💨",
+          title: "Breathwork Space",
+          freq: "396 Hz · Root",
+          desc: "Visual rhythm guide synced to your breath. 4-7-8 pattern with spatial cues.",
+          color: "#3b82f6",
+          badge: "live",
+          entry: "/vr?prog=breathwork",
+        },
+        {
+          emoji: "🌊",
+          title: "Ocean Presence",
+          freq: "417 Hz · Sacral",
+          desc: "Infinite ocean horizon. 417 Hz spatial anchor tone. Pure presence.",
+          color: "#00d4ff",
+        },
+        {
+          emoji: "🌌",
+          title: "963 Hz Cosmos",
+          freq: "963 Hz · Crown",
+          desc: "Cosmic void with 963 Hz crown frequency. Universal consciousness field.",
+          color: "#f59e0b",
+        },
+        {
+          emoji: "🏔️",
+          title: "Mountain Silence",
+          freq: "741 Hz · Throat",
+          desc: "Alpine panorama with 741 Hz expression tone. Clarity and elevation.",
+          color: "#ef4444",
+        },
+      ];
+
+      const EDUCATION_XP = [
+        {
+          emoji: "🏛️",
+          title: "Ancient Rome — 100 AD",
+          desc: "Walk the Roman Forum, enter the Colosseum, witness the height of the Empire reconstructed at scale.",
+          freq: "417 Hz · LOCATION",
+          color: "#f97316",
+          badge: "live",
+          entry: "/vr?prog=ancient-rome",
+        },
+        {
+          emoji: "🧬",
+          title: "Inside the Human Body",
+          desc: "Shrink to cellular scale. Navigate the bloodstream, neural pathways, and DNA double helix.",
+          freq: "396 Hz · ENTITY",
+          color: "#ef4444",
+          badge: "live",
+          entry: "/vr?prog=human-body",
+        },
+        {
+          emoji: "🔢",
+          title: "Mathematical Dimensions",
+          desc: "Walk through 4D hypercubes, Klein bottles, and PHI spirals as physical places.",
+          freq: "852 Hz · PHYSICS",
+          color: "#f59e0b",
+          badge: "coming",
+          entry: "",
+        },
+        {
+          emoji: "🗣️",
+          title: "Language Immersion Worlds",
+          desc: "Learn Mandarin in Beijing, Spanish in Barcelona — AI conversation partners at every turn.",
+          freq: "639 Hz · DIALOGUE",
+          color: "#22c55e",
+          badge: "coming",
+          entry: "",
+        },
+      ];
+
+      const ART_XP = [
+        {
+          emoji: "🎨",
+          title: "Spatial Canvas",
+          desc: "Paint in full 3D space with hand tracking. PHI-golden spiral brush guides. Export as VR scene.",
+          freq: "741 Hz · EMOTION",
+          color: "#ec4899",
+          badge: "live",
+          entry: "/vr?prog=spatial-canvas",
+        },
+        {
+          emoji: "🎵",
+          title: "Frequency Composer",
+          desc: "Compose music by positioning sound orbs in 3D. Solfeggio 396→741→963 Hz harmonic layers.",
+          freq: "741 Hz · EMOTION",
+          color: "#a855f7",
+          badge: "live",
+          entry: "/vr?prog=frequency-composer",
+        },
+        {
+          emoji: "🖼️",
+          title: "Infinite AI Gallery",
+          desc: "Infinitely expanding AI-generated art museum. PHI-spiral wings. New exhibits daily.",
+          freq: "963 Hz · NARRATIVE",
+          color: "#f59e0b",
+          badge: "coming",
+          entry: "",
+        },
+        {
+          emoji: "🎭",
+          title: "Generative Theatre",
+          desc: "AI-written plays performed by spatial avatars. Every show is unique. 639 Hz dialogue field.",
+          freq: "639 Hz · DIALOGUE",
+          color: "#00d4ff",
+          badge: "coming",
+          entry: "",
+        },
+      ];
+
+      const EDUCATION_XP = [
+        {
+          emoji: "🏛️",
+          title: "Ancient Rome — 100 AD",
+          desc: "Walk the Roman Forum, enter the Colosseum, witness the height of the Empire reconstructed at scale.",
+          freq: "417 Hz · LOCATION",
+          color: "#f97316",
+          badge: "live",
+          entry: "/vr?prog=ancient-rome",
+        },
+        {
+          emoji: "🧬",
+          title: "Inside the Human Body",
+          desc: "Shrink to cellular scale. Navigate the bloodstream, neural pathways, and DNA double helix.",
+          freq: "396 Hz · ENTITY",
+          color: "#ef4444",
+          badge: "live",
+          entry: "/vr?prog=human-body",
+        },
+        {
+          emoji: "🔢",
+          title: "Mathematical Dimensions",
+          desc: "Walk through 4D hypercubes, Klein bottles, and PHI spirals as physical places you inhabit.",
+          freq: "852 Hz · PHYSICS",
+          color: "#f59e0b",
+          badge: "coming",
+          entry: "",
+        },
+        {
+          emoji: "🗣️",
+          title: "Language Immersion Worlds",
+          desc: "Learn Mandarin in Beijing, Spanish in Barcelona — AI conversation partners at every turn.",
+          freq: "639 Hz · DIALOGUE",
+          color: "#22c55e",
+          badge: "coming",
+          entry: "",
+        },
+      ];
+
+      const ART_XP = [
+        {
+          emoji: "🎨",
+          title: "Spatial Canvas",
+          desc: "Paint in full 3D space with hand tracking. PHI-golden spiral brush guides. Export as VR scene.",
+          freq: "741 Hz · EMOTION",
+          color: "#ec4899",
+          badge: "live",
+          entry: "/vr?prog=spatial-canvas",
+        },
+        {
+          emoji: "🎵",
+          title: "Frequency Composer",
+          desc: "Compose music by positioning sound orbs in 3D. Solfeggio 396→741→963 Hz harmonic layers.",
+          freq: "741 Hz · EMOTION",
+          color: "#a855f7",
+          badge: "live",
+          entry: "/vr?prog=frequency-composer",
+        },
+        {
+          emoji: "🖼️",
+          title: "Infinite AI Gallery",
+          desc: "Infinitely expanding AI-generated art museum. PHI-spiral wings. New exhibits daily.",
+          freq: "963 Hz · NARRATIVE",
+          color: "#f59e0b",
+          badge: "coming",
+          entry: "",
+        },
+        {
+          emoji: "🎭",
+          title: "Generative Theatre",
+          desc: "AI-written plays performed by spatial avatars. Every show unique. 639 Hz dialogue field.",
+          freq: "639 Hz · DIALOGUE",
+          color: "#00d4ff",
+          badge: "coming",
+          entry: "",
+        },
       ];
 
       const SOCIAL_XP = [
-        { emoji:"🛋️", title:"Lattice Lounge",  desc:"Ambient shared space — meet others in the PHI lattice. Spatial voice, presence indicators, 639 Hz field.", freq:"639 Hz · DIALOGUE", color:"#00d4ff", badge:"coming", entry:"" },
-        { emoji:"🎤", title:"AIOS Live Events", desc:"VR broadcasts — concerts, keynotes, launches. Real-time spatial audio, 6DoF movement.", freq:"528 Hz · ACTION",    color:"#22c55e", badge:"coming", entry:"" },
-        { emoji:"🎨", title:"Creator Studio",   desc:"Build, remix, share VR scenes. Collaborative A-Frame editing with GeoQode coordinate assignment.", freq:"963 Hz · NARRATIVE", color:"#f59e0b", badge:"coming", entry:"" },
-        { emoji:"🏛️", title:"AIOS Academy",    desc:"Cohort-based spatial learning. Live instructor in VR, spatial whiteboards, group exploration.", freq:"417 Hz · LOCATION",  color:"#a855f7", badge:"coming", entry:"" },
+        {
+          emoji: "🛋️",
+          title: "Lattice Lounge",
+          desc: "Ambient shared space — meet others in the PHI lattice. Spatial voice, presence indicators, 639 Hz field.",
+          freq: "639 Hz · DIALOGUE",
+          color: "#00d4ff",
+          badge: "coming",
+          entry: "",
+        },
+        {
+          emoji: "🎤",
+          title: "AIOS Live Events",
+          desc: "VR broadcasts — concerts, keynotes, launches. Real-time spatial audio, 6DoF movement.",
+          freq: "528 Hz · ACTION",
+          color: "#22c55e",
+          badge: "coming",
+          entry: "",
+        },
+        {
+          emoji: "🎨",
+          title: "Creator Studio",
+          desc: "Build, remix, share VR scenes. Collaborative A-Frame editing with GeoQode coordinate assignment.",
+          freq: "963 Hz · NARRATIVE",
+          color: "#f59e0b",
+          badge: "coming",
+          entry: "",
+        },
+        {
+          emoji: "🏛️",
+          title: "AIOS Academy",
+          desc: "Cohort-based spatial learning. Live instructor in VR, spatial whiteboards, group exploration.",
+          freq: "417 Hz · LOCATION",
+          color: "#a855f7",
+          badge: "coming",
+          entry: "",
+        },
       ];
 
       // ── Card Builders ────────────────────────────────────────────────────
       function buildXpCard(xp, accent) {
-        const badgeMap = { live:"badge-live", new:"badge-new", coming:"badge-coming", free:"badge-free" };
-        const href = xp.entry ? `href="${xp.entry}"` : '';
-        const tag = xp.entry ? 'a' : 'div';
-        return `<${tag} ${href} class="xp-card" style="--accent:${xp.color || accent}">
+        const badgeMap = {
+          live: "badge-live",
+          new: "badge-new",
+          coming: "badge-coming",
+          free: "badge-free",
+        };
+        const href = xp.entry ? `href="${xp.entry}"` : "";
+        const tag = xp.entry ? "a" : "div";
+        const xpId =
+          xp.id ||
+          xp.title
+            .toLowerCase()
+            .replace(/\s+/g, "-")
+            .replace(/[^a-z0-9-]/g, "");
+        return `<${tag} ${href} class="xp-card" style="--accent:${xp.color || accent}" data-xp-id="${xpId}">
           <div class="xp-thumb" style="background:rgba(0,0,0,0.3);">
             <div class="xp-thumb-bg"></div>
             ${xp.emoji}
-            ${xp.badge ? `<div class="xp-badge ${badgeMap[xp.badge]||'badge-coming'}">${xp.badge==='live'?'Live':xp.badge==='new'?'New':xp.badge==='free'?'Free':'Coming'}</div>` : ''}
+            ${xp.badge ? `<div class="xp-badge ${badgeMap[xp.badge] || "badge-coming"}">${xp.badge === "live" ? "Live" : xp.badge === "new" ? "New" : xp.badge === "free" ? "Free" : "Coming"}</div>` : ""}
           </div>
           <div class="xp-body">
-            <div class="xp-cat">${xp.freq||''}</div>
+            <div class="xp-cat">${xp.freq || ""}</div>
             <div class="xp-name">${xp.title}</div>
             <div class="xp-desc">${xp.desc}</div>
           </div>
           <div class="xp-footer">
-            <span class="xp-freq">${xp.badge==='coming'?'Coming Soon':''}</span>
-            <span class="xp-enter">${xp.entry ? (xp.badge==='coming'?'Coming →':'Enter →') : 'Coming →'}</span>
+            <span class="xp-freq">${xp.badge === "coming" ? "Coming Soon" : ""}</span>
+            <button id="share-${xpId}" onclick="event.preventDefault();event.stopPropagation();shareXP('${xpId}','${xp.title.replace(/'/g, "\\'")}')" style="background:none;border:none;cursor:pointer;color:rgba(248,250,252,0.35);font-size:0.78rem;padding:0;line-height:1;" title="Share">🔗 Share</button>
+            <span class="xp-enter">${xp.entry ? (xp.badge === "coming" ? "Coming →" : "Enter →") : "Coming →"}</span>
           </div>
         </${tag}>`;
       }
@@ -1108,15 +2209,31 @@
           <div class="teaser-eta">ETA ${t.eta}</div>
         </div>`;
       }
+      document.getElementById("education-grid").innerHTML = EDUCATION_XP.map((x) =>
+        buildXpCard(x, "#f97316"),
+      ).join("");
+      document.getElementById("art-grid").innerHTML = ART_XP.map((x) =>
+        buildXpCard(x, "#ec4899"),
+      ).join("");
 
       // ── Render ───────────────────────────────────────────────────────────
-      document.getElementById("cinema-grid").innerHTML    = CINEMA_XP.map(x => buildXpCard(x, "#f59e0b")).join("");
-      document.getElementById("lab-grid").innerHTML       = LAB_XP.map(x => buildXpCard(x, "#22c55e")).join("");
-      document.getElementById("social-grid").innerHTML    = SOCIAL_XP.map(x => buildXpCard(x, "#00d4ff")).join("");
-      document.getElementById("wellness-row").innerHTML   = WELLNESS_XP.map(buildWellCard).join("");
-      document.getElementById("arcade-teaser").innerHTML  = ARCADE_TEASER.map(buildTeaserCard).join("");
+      document.getElementById("cinema-grid").innerHTML = CINEMA_XP.map((x) =>
+        buildXpCard(x, "#f59e0b"),
+      ).join("");
+      document.getElementById("lab-grid").innerHTML = LAB_XP.map((x) =>
+        buildXpCard(x, "#22c55e"),
+      ).join("");
+      document.getElementById("social-grid").innerHTML = SOCIAL_XP.map((x) =>
+        buildXpCard(x, "#00d4ff"),
+      ).join("");
+      document.getElementById("wellness-row").innerHTML =
+        WELLNESS_XP.map(buildWellCard).join("");
+      document.getElementById("arcade-teaser").innerHTML =
+        ARCADE_TEASER.map(buildTeaserCard).join("");
       if (ARCADE_LIVE.length) {
-        document.getElementById("arcade-grid").innerHTML = ARCADE_LIVE.map(x => buildXpCard(x, "#ef4444")).join("");
+        document.getElementById("arcade-grid").innerHTML = ARCADE_LIVE.map(
+          (x) => buildXpCard(x, "#ef4444"),
+        ).join("");
       } else {
         document.getElementById("arcade-grid").innerHTML =
           `<div style="padding:1.5rem;color:var(--muted);font-size:0.9rem;grid-column:1/-1;">
@@ -1124,101 +2241,178 @@
           </div>`;
       }
 
+      // ── Share sheet ───────────────────────────────────────────────────────
+      window.shareXP = function (id, title) {
+        const url = `https://realaios.com/vr-hub?xp=${encodeURIComponent(id)}`;
+        if (navigator.share) {
+          navigator
+            .share({ title: title || "AIOS VR Experience", url })
+            .catch(() => {});
+        } else {
+          navigator.clipboard
+            .writeText(url)
+            .then(() => {
+              const btn = document.getElementById("share-" + id);
+              if (btn) {
+                btn.textContent = "✅ Copied!";
+                setTimeout(() => {
+                  btn.textContent = "🔗 Share";
+                }, 2000);
+              }
+            })
+            .catch(() => {
+              prompt("Copy link:", url);
+            });
+        }
+      };
+
+      // ── Deep-link: ?xp= scrolls to + highlights the card ─────────────────
+      (function handleDeepLink() {
+        const params = new URLSearchParams(location.search);
+        const xpId = params.get("xp");
+        if (!xpId) return;
+        // Wait for cards to render (taxonomy fetch) then scroll
+        setTimeout(function () {
+          const card = document.querySelector(`[data-xp-id="${xpId}"]`);
+          if (!card) return;
+          card.scrollIntoView({ behavior: "smooth", block: "center" });
+          card.style.boxShadow =
+            "0 0 0 3px #00d4ff, 0 0 32px rgba(0,212,255,0.3)";
+          setTimeout(() => {
+            card.style.boxShadow = "";
+          }, 3000);
+        }, 1800);
+      })();
+
       // ── Lattice Lounge waitlist ───────────────────────────────────────────
-      window.joinWaitlist = function() {
-        const email = (document.getElementById("waitlist-email").value || "").trim();
+      window.joinWaitlist = function () {
+        const email = (
+          document.getElementById("waitlist-email").value || ""
+        ).trim();
         if (!email || !email.includes("@")) {
-          document.getElementById("waitlist-email").style.borderColor = "#ef4444";
+          document.getElementById("waitlist-email").style.borderColor =
+            "#ef4444";
           return;
         }
         document.getElementById("waitlist-email").style.borderColor = "";
         fetch(`${API_BASE}/api/waitlist`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, source: "lattice-lounge-vr-hub", tags: ["social-vr","lattice-lounge"] })
+          body: JSON.stringify({
+            email,
+            source: "lattice-lounge-vr-hub",
+            tags: ["social-vr", "lattice-lounge"],
+          }),
         })
-        .then(r => r.json())
-        .then(() => {
-          document.getElementById("waitlist-form").style.display = "none";
-          const msg = document.getElementById("waitlist-msg");
-          msg.style.display = "block";
-          msg.textContent = "✅ You're on the list! We'll email you 24h before launch.";
-        })
-        .catch(() => {
-          // Degrade gracefully — still show confirmation
-          document.getElementById("waitlist-form").style.display = "none";
-          const msg = document.getElementById("waitlist-msg");
-          msg.style.display = "block";
-          msg.textContent = "✅ Thanks! We'll be in touch before launch.";
-        });
+          .then((r) => r.json())
+          .then(() => {
+            document.getElementById("waitlist-form").style.display = "none";
+            const msg = document.getElementById("waitlist-msg");
+            msg.style.display = "block";
+            msg.textContent =
+              "✅ You're on the list! We'll email you 24h before launch.";
+          })
+          .catch(() => {
+            // Degrade gracefully — still show confirmation
+            document.getElementById("waitlist-form").style.display = "none";
+            const msg = document.getElementById("waitlist-msg");
+            msg.style.display = "block";
+            msg.textContent = "✅ Thanks! We'll be in touch before launch.";
+          });
       };
 
       // ── VR experience analytics ──────────────────────────────────────────
       // Fires when user clicks "Enter VR" on any card
-      document.addEventListener("click", function(e) {
-        const link = e.target.closest("a[href]");
-        if (!link) return;
-        const href = link.getAttribute("href") || "";
-        if (!href.startsWith("/vr?prog=") && !href.startsWith("/aiosdream?prog=")) return;
-        const prog = new URLSearchParams(href.split("?")[1] || "").get("prog") || "unknown";
-        const mode = href.startsWith("/vr?") ? "vr" : "theatre";
-        // Fire-and-forget — no await, doesn't block navigation
-        fetch(`${API_BASE}/api/knowledge/aios-vr-analytics`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            data: {
-              event: "xp_enter",
-              prog,
-              mode,
-              ts: Date.now(),
-              ua: navigator.userAgent.substring(0, 80),
-              phi: 1.618,
-              architecture: "8,26,48:480"
-            }
-          })
-        }).catch(() => {});
-      }, { passive: true });
+      document.addEventListener(
+        "click",
+        function (e) {
+          const link = e.target.closest("a[href]");
+          if (!link) return;
+          const href = link.getAttribute("href") || "";
+          if (
+            !href.startsWith("/vr?prog=") &&
+            !href.startsWith("/aiosdream?prog=")
+          )
+            return;
+          const prog =
+            new URLSearchParams(href.split("?")[1] || "").get("prog") ||
+            "unknown";
+          const mode = href.startsWith("/vr?") ? "vr" : "theatre";
+          // Fire-and-forget — no await, doesn't block navigation
+          fetch(`${API_BASE}/api/knowledge/aios-vr-analytics`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              data: {
+                event: "xp_enter",
+                prog,
+                mode,
+                ts: Date.now(),
+                ua: navigator.userAgent.substring(0, 80),
+                phi: 1.618,
+                architecture: "8,26,48:480",
+              },
+            }),
+          }).catch(() => {});
+        },
+        { passive: true },
+      );
 
       // ── Stat: live XP count from taxonomy (canonical) + PLAIstore ───────
       fetch("/api/aios/vr/taxonomy")
-        .then(r => r.ok ? r.json() : null)
-        .then(d => {
+        .then((r) => (r.ok ? r.json() : null))
+        .then((d) => {
           if (!d || !d.categories) return;
           let total = 0;
-          d.categories.forEach(c => { total += (c.experiences || []).length; });
-          if (total) document.getElementById("stat-xp").textContent = total + "+";
+          d.categories.forEach((c) => {
+            total += (c.experiences || []).length;
+          });
+          if (total)
+            document.getElementById("stat-xp").textContent = total + "+";
         })
         .catch(() => {
           // Fallback to PLAIstore
           fetch(`${API_BASE}/plai/apps?category=VR&limit=100&sort=downloads`)
-            .then(r => r.ok ? r.json() : null)
-            .then(d => { if (d && d.total) document.getElementById("stat-xp").textContent = d.total + "+"; })
+            .then((r) => (r.ok ? r.json() : null))
+            .then((d) => {
+              if (d && d.total)
+                document.getElementById("stat-xp").textContent = d.total + "+";
+            })
             .catch(() => {});
         });
 
       // ── Events renderer ──────────────────────────────────────────────────
       (function renderEvents() {
         fetch("/api/aios/vr/events")
-          .then(r => r.ok ? r.json() : null)
-          .then(d => {
+          .then((r) => (r.ok ? r.json() : null))
+          .then((d) => {
             if (!d || !d.events || d.events.length === 0) {
               document.getElementById("events-scroll").innerHTML =
                 '<p style="color:rgba(248,250,252,0.3);font-size:0.85rem;">No upcoming events — check back soon.</p>';
               return;
             }
             if (d.live > 0) {
-              document.getElementById("live-now-badge").style.display = "inline-block";
+              document.getElementById("live-now-badge").style.display =
+                "inline-block";
             }
             const scroll = document.getElementById("events-scroll");
             scroll.innerHTML = "";
-            d.events.forEach(ev => {
+            d.events.forEach((ev) => {
               const card = document.createElement("div");
               card.className = "event-card";
               card.style.borderLeftColor = ev.accent || "#00d4ff";
               const statusLabel = ev.isLive ? "🔴 LIVE" : "upcoming";
               const statusClass = ev.isLive ? "live" : "upcoming";
-              const dateStr = new Date(ev.startISO).toLocaleDateString("en-US", { weekday:"short", month:"short", day:"numeric", hour:"2-digit", minute:"2-digit" });
+              const dateStr = new Date(ev.startISO).toLocaleDateString(
+                "en-US",
+                {
+                  weekday: "short",
+                  month: "short",
+                  day: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                },
+              );
               card.innerHTML = `
                 <div class="event-card-top">
                   <span class="event-type">${ev.type || "event"}</span>
@@ -1239,7 +2433,7 @@
             // Countdown timers
             function tickCountdowns() {
               const now = Date.now();
-              d.events.forEach(ev => {
+              d.events.forEach((ev) => {
                 const el = document.getElementById("cd-" + ev.id);
                 if (!el) return;
                 const start = new Date(ev.startISO).getTime();
@@ -1251,7 +2445,8 @@
                   const d2 = Math.floor(diff / 86400000);
                   const h = Math.floor((diff % 86400000) / 3600000);
                   const m = Math.floor((diff % 3600000) / 60000);
-                  el.textContent = d2 > 0 ? `⏳ ${d2}d ${h}h ${m}m` : `⏳ ${h}h ${m}m`;
+                  el.textContent =
+                    d2 > 0 ? `⏳ ${d2}d ${h}h ${m}m` : `⏳ ${h}h ${m}m`;
                 } else {
                   el.textContent = "✅ Complete";
                 }
@@ -1275,18 +2470,22 @@
 
         // Collect all searchable XP cards after render
         function getCards() {
-          return Array.from(document.querySelectorAll(".xp-card, .ent-card, .well-card"));
+          return Array.from(
+            document.querySelectorAll(".xp-card, .ent-card, .well-card"),
+          );
         }
         function doSearch(q) {
           const term = q.trim().toLowerCase();
           clearBtn.style.display = term ? "inline" : "none";
           if (!term) {
             countEl.textContent = "";
-            getCards().forEach(c => { c.style.display = ""; });
+            getCards().forEach((c) => {
+              c.style.display = "";
+            });
             return;
           }
           let shown = 0;
-          getCards().forEach(c => {
+          getCards().forEach((c) => {
             const text = (c.textContent || "").toLowerCase();
             const visible = text.includes(term);
             c.style.display = visible ? "" : "none";
@@ -1295,17 +2494,31 @@
           countEl.textContent = shown + " result" + (shown !== 1 ? "s" : "");
         }
         input.addEventListener("input", () => doSearch(input.value));
-        clearBtn.addEventListener("click", () => { input.value = ""; doSearch(""); input.focus(); });
+        clearBtn.addEventListener("click", () => {
+          input.value = "";
+          doSearch("");
+          input.focus();
+        });
       })();
 
       // ── Category pill active state on scroll ─────────────────────────────
       const pills = document.querySelectorAll(".cat-pill");
-      const catSections = ["cinema","enterprise","lab","arcade","wellness","social","creator"].map(id => document.getElementById(id));
+      const catSections = [
+        "cinema",
+        "enterprise",
+        "lab",
+        "arcade",
+        "wellness",
+        "social",
+        "creator",
+      ].map((id) => document.getElementById(id));
       function onScroll() {
         const scrollY = window.scrollY + 180;
         let active = "";
-        catSections.forEach(s => { if (s && s.offsetTop <= scrollY) active = s.id; });
-        pills.forEach(p => {
+        catSections.forEach((s) => {
+          if (s && s.offsetTop <= scrollY) active = s.id;
+        });
+        pills.forEach((p) => {
           p.classList.toggle("active", p.getAttribute("href") === `#${active}`);
         });
       }
@@ -1313,11 +2526,15 @@
 
       // ── WebXR / Quest detection ───────────────────────────────────────────
       if (navigator.xr) {
-        navigator.xr.isSessionSupported("immersive-vr").then(function(ok) {
-          if (!ok) return;
-          document.getElementById("quest-hero-cta").style.display = "block";
-          document.getElementById("enter-vr-nav").style.display = "inline-flex";
-        }).catch(function(){});
+        navigator.xr
+          .isSessionSupported("immersive-vr")
+          .then(function (ok) {
+            if (!ok) return;
+            document.getElementById("quest-hero-cta").style.display = "block";
+            document.getElementById("enter-vr-nav").style.display =
+              "inline-flex";
+          })
+          .catch(function () {});
       }
     </script>
   </body>

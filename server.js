@@ -110,7 +110,9 @@ const VR_TAXONOMY_JSON = existsSync(VR_TAXONOMY_PATH)
   ? readFileSync(VR_TAXONOMY_PATH, "utf-8")
   : null;
 let VR_TAXONOMY = null;
-try { VR_TAXONOMY = VR_TAXONOMY_JSON ? JSON.parse(VR_TAXONOMY_JSON) : null; } catch (_) {}
+try {
+  VR_TAXONOMY = VR_TAXONOMY_JSON ? JSON.parse(VR_TAXONOMY_JSON) : null;
+} catch (_) {}
 
 const AI_EVAL_JSON_PATH = join(PUBLIC_DIR, ".well-known", "ai-evaluation.json");
 const AI_EVAL_JSON = existsSync(AI_EVAL_JSON_PATH)
@@ -345,10 +347,15 @@ const server = createServer(async (req, res) => {
       ];
       const urlTags = [
         `  <url><loc>https://realaios.com/</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>`,
-        `  <url><loc>https://realaios.com/products</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>`,
+        `  <url><loc>https://realaios.com/vr-hub</loc><lastmod>${now}</lastmod><changefreq>daily</changefreq><priority>0.95</priority></url>`,
+        `  <url><loc>https://realaios.com/vr-developer</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>`,
+        `  <url><loc>https://realaios.com/aiosdream</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>`,
+        `  <url><loc>https://realaios.com/plaistore</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>`,
+        `  <url><loc>https://realaios.com/lab</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>`,
+        `  <url><loc>https://realaios.com/products</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.75</priority></url>`,
         ...slugs.map(
           (s) =>
-            `  <url><loc>https://realaios.com/products/${s}</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>`,
+            `  <url><loc>https://realaios.com/products/${s}</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.65</priority></url>`,
         ),
       ].join("\n");
       const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urlTags}\n</urlset>`;
@@ -1507,10 +1514,7 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
     }
 
     // ── GET /vr — Meta Quest / WebXR Immersive Theatre ────────────────────
-    if (
-      req.method === "GET" &&
-      (pathname === "/vr" || pathname === "/vr/")
-    ) {
+    if (req.method === "GET" && (pathname === "/vr" || pathname === "/vr/")) {
       if (!VR_HTML)
         return json(res, 404, { ok: false, error: "VR page not found" });
       res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
@@ -1536,7 +1540,10 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       (pathname === "/vr-developer" || pathname === "/vr-developer/")
     ) {
       if (!VR_DEV_HTML)
-        return json(res, 404, { ok: false, error: "VR Developer portal not found" });
+        return json(res, 404, {
+          ok: false,
+          error: "VR Developer portal not found",
+        });
       res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
       res.end(VR_DEV_HTML);
       return;
@@ -1545,7 +1552,8 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
     // ── GET /api/aios/vr/taxonomy — Full VR experience taxonomy (CI/CD) ──
     if (
       req.method === "GET" &&
-      (pathname === "/api/aios/vr/taxonomy" || pathname === "/api/aios/vr/taxonomy/")
+      (pathname === "/api/aios/vr/taxonomy" ||
+        pathname === "/api/aios/vr/taxonomy/")
     ) {
       if (!VR_TAXONOMY)
         return json(res, 404, { ok: false, error: "VR taxonomy not found" });
@@ -1561,17 +1569,19 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
     // ── GET /api/aios/vr/categories — Category list (lightweight) ────────
     if (
       req.method === "GET" &&
-      (pathname === "/api/aios/vr/categories" || pathname === "/api/aios/vr/categories/")
+      (pathname === "/api/aios/vr/categories" ||
+        pathname === "/api/aios/vr/categories/")
     ) {
       if (!VR_TAXONOMY)
         return json(res, 404, { ok: false, error: "VR taxonomy not found" });
-      const cats = VR_TAXONOMY.categories.map(c => ({
+      const cats = VR_TAXONOMY.categories.map((c) => ({
         id: c.id,
         display: c.display,
         icon: c.icon,
         accent: c.accent,
         tagline: c.tagline,
-        liveCount: (c.experiences || []).filter(e => e.status === "live").length,
+        liveCount: (c.experiences || []).filter((e) => e.status === "live")
+          .length,
         totalCount: (c.experiences || []).length,
         frequencyHz: c.frequencyHz,
         latticeRing: c.latticeRing,
@@ -1582,7 +1592,8 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
     // ── GET /api/aios/vr/experiences — All experiences flat list ─────────
     if (
       req.method === "GET" &&
-      (pathname === "/api/aios/vr/experiences" || pathname === "/api/aios/vr/experiences/")
+      (pathname === "/api/aios/vr/experiences" ||
+        pathname === "/api/aios/vr/experiences/")
     ) {
       if (!VR_TAXONOMY)
         return json(res, 404, { ok: false, error: "VR taxonomy not found" });
@@ -1591,24 +1602,32 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       const filterStatus = qs.get("status");
       let all = [];
       for (const cat of VR_TAXONOMY.categories) {
-        for (const xp of (cat.experiences || [])) {
-          all.push({ ...xp, category: cat.id, categoryDisplay: cat.display, categoryAccent: cat.accent });
+        for (const xp of cat.experiences || []) {
+          all.push({
+            ...xp,
+            category: cat.id,
+            categoryDisplay: cat.display,
+            categoryAccent: cat.accent,
+          });
         }
       }
-      if (filterCat) all = all.filter(x => x.category === filterCat.toLowerCase());
-      if (filterStatus) all = all.filter(x => x.status === filterStatus.toLowerCase());
+      if (filterCat)
+        all = all.filter((x) => x.category === filterCat.toLowerCase());
+      if (filterStatus)
+        all = all.filter((x) => x.status === filterStatus.toLowerCase());
       return json(res, 200, {
         ok: true,
         experiences: all,
         total: all.length,
-        live: all.filter(x => x.status === "live").length,
+        live: all.filter((x) => x.status === "live").length,
       });
     }
 
     // ── GET /api/aios/vr/events — Upcoming + live VR events ─────────────
     if (
       req.method === "GET" &&
-      (pathname === "/api/aios/vr/events" || pathname === "/api/aios/vr/events/")
+      (pathname === "/api/aios/vr/events" ||
+        pathname === "/api/aios/vr/events/")
     ) {
       if (!VR_TAXONOMY)
         return json(res, 404, { ok: false, error: "VR taxonomy not found" });
@@ -1616,20 +1635,27 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       const filterCat = qs.get("category");
       const filterStatus = qs.get("status"); // upcoming|live|past
       const now = Date.now();
-      let events = (VR_TAXONOMY.events || []).map(ev => ({
+      let events = (VR_TAXONOMY.events || []).map((ev) => ({
         ...ev,
         msUntil: new Date(ev.startISO).getTime() - now,
-        isPast: new Date(ev.startISO).getTime() + (ev.durationMinutes || 60) * 60000 < now,
-        isLive: new Date(ev.startISO).getTime() <= now &&
-                new Date(ev.startISO).getTime() + (ev.durationMinutes || 60) * 60000 >= now,
+        isPast:
+          new Date(ev.startISO).getTime() + (ev.durationMinutes || 60) * 60000 <
+          now,
+        isLive:
+          new Date(ev.startISO).getTime() <= now &&
+          new Date(ev.startISO).getTime() +
+            (ev.durationMinutes || 60) * 60000 >=
+            now,
       }));
-      if (filterCat)    events = events.filter(e => e.category === filterCat.toLowerCase());
-      if (filterStatus) events = events.filter(e => {
-        if (filterStatus === "live")     return e.isLive;
-        if (filterStatus === "past")     return e.isPast;
-        if (filterStatus === "upcoming") return !e.isLive && !e.isPast;
-        return true;
-      });
+      if (filterCat)
+        events = events.filter((e) => e.category === filterCat.toLowerCase());
+      if (filterStatus)
+        events = events.filter((e) => {
+          if (filterStatus === "live") return e.isLive;
+          if (filterStatus === "past") return e.isPast;
+          if (filterStatus === "upcoming") return !e.isLive && !e.isPast;
+          return true;
+        });
       events.sort((a, b) => new Date(a.startISO) - new Date(b.startISO));
       res.setHeader("Access-Control-Allow-Origin", "*");
       res.setHeader("Cache-Control", "public, max-age=60");
@@ -1637,11 +1663,53 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
         ok: true,
         events,
         total: events.length,
-        live: events.filter(e => e.isLive).length,
-        upcoming: events.filter(e => !e.isLive && !e.isPast).length,
+        live: events.filter((e) => e.isLive).length,
+        upcoming: events.filter((e) => !e.isLive && !e.isPast).length,
         generatedAt: new Date().toISOString(),
         phi: 1.618,
         architecture: "8,26,48:480",
+      });
+    }
+
+    // ── GET /api/aios/vr/experience/:id — Single experience deep-link ────
+    if (
+      req.method === "GET" &&
+      pathname.startsWith("/api/aios/vr/experience/")
+    ) {
+      const xpId = pathname
+        .replace("/api/aios/vr/experience/", "")
+        .split("/")[0];
+      if (!VR_TAXONOMY || !xpId)
+        return json(res, 404, { ok: false, error: "Not found" });
+      let found = null;
+      let foundCat = null;
+      for (const cat of VR_TAXONOMY.categories || []) {
+        const xp = (cat.experiences || []).find((e) => e.id === xpId);
+        if (xp) {
+          found = xp;
+          foundCat = cat;
+          break;
+        }
+      }
+      if (!found)
+        return json(res, 404, {
+          ok: false,
+          error: "Experience not found",
+          id: xpId,
+        });
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.setHeader("Cache-Control", "public, max-age=300");
+      return json(res, 200, {
+        ok: true,
+        experience: {
+          ...found,
+          category: foundCat.id,
+          categoryLabel: foundCat.label,
+          shareUrl: `https://realaios.com/vr-hub?xp=${xpId}`,
+          vrEntryUrl: found.entry || null,
+        },
+        architecture: "8,26,48:480",
+        phi: 1.618,
       });
     }
 
@@ -1796,6 +1864,7 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
         "GET  /api/aios/vr/categories",
         "GET  /api/aios/vr/experiences",
         "GET  /api/aios/vr/events",
+        "GET  /api/aios/vr/experience/:id",
         "GET  /audio/status",
         "GET  /audio/frequencies",
         "POST /audio/score",

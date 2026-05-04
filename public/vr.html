@@ -4,15 +4,28 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AIOS VR Theatre — Meta Quest · realaios.com</title>
-    <meta name="description" content="Enter the Merkaba 8→26→48:480 lattice in full VR. 6 dimensional Theatre programmes + 7 category hub. Zero install — works on Meta Quest 2/3 via browser." />
+    <meta
+      name="description"
+      content="Enter the Merkaba 8→26→48:480 lattice in full VR. 6 dimensional Theatre programmes + 7 category hub. Zero install — works on Meta Quest 2/3 via browser."
+    />
     <meta name="theme-color" content="#050a14" />
-    <meta property="og:title" content="AIOS VR Theatre — Merkaba Dimensional Worlds" />
-    <meta property="og:description" content="6 immersive WebXR experiences on Meta Quest. Zero install. Enter any world instantly." />
+    <meta
+      property="og:title"
+      content="AIOS VR Theatre — Merkaba Dimensional Worlds"
+    />
+    <meta
+      property="og:description"
+      content="6 immersive WebXR experiences on Meta Quest. Zero install. Enter any world instantly."
+    />
     <meta property="og:type" content="website" />
     <!-- A-Frame 1.5.0 — WebXR foundation -->
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <style>
-      * { box-sizing: border-box; margin: 0; padding: 0; }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
       :root {
         --bg: #050a14;
         --cyan: #00d4ff;
@@ -73,22 +86,29 @@
         font-size: 0.88rem;
         transition: color 0.2s;
       }
-      nav .nav-links a:hover { color: var(--text); }
-      nav .nav-links a.active { color: var(--cyan); }
+      nav .nav-links a:hover {
+        color: var(--text);
+      }
+      nav .nav-links a.active {
+        color: var(--cyan);
+      }
       .nav-hub-link {
         display: inline-flex;
         align-items: center;
         gap: 0.35rem;
         padding: 0.3rem 0.75rem;
         border-radius: 20px;
-        border: 1px solid rgba(0,212,255,0.25);
+        border: 1px solid rgba(0, 212, 255, 0.25);
         color: var(--cyan) !important;
         font-size: 0.8rem;
         font-weight: 600;
         transition: all 0.2s;
         white-space: nowrap;
       }
-      .nav-hub-link:hover { background: rgba(0,212,255,0.08); border-color: var(--cyan); }
+      .nav-hub-link:hover {
+        background: rgba(0, 212, 255, 0.08);
+        border-color: var(--cyan);
+      }
       nav .nav-badge {
         background: linear-gradient(135deg, #7c3aed, #a855f7);
         color: #fff;
@@ -108,13 +128,22 @@
         content: "";
         position: absolute;
         inset: 0;
-        background: radial-gradient(ellipse at 50% 0%, rgba(155, 92, 255, 0.15) 0%, transparent 60%);
+        background: radial-gradient(
+          ellipse at 50% 0%,
+          rgba(155, 92, 255, 0.15) 0%,
+          transparent 60%
+        );
         pointer-events: none;
       }
       .vr-hero h1 {
         font-size: clamp(2rem, 5vw, 3.5rem);
         font-weight: 800;
-        background: linear-gradient(135deg, var(--cyan) 0%, var(--purple) 50%, var(--gold) 100%);
+        background: linear-gradient(
+          135deg,
+          var(--cyan) 0%,
+          var(--purple) 50%,
+          var(--gold) 100%
+        );
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -154,7 +183,9 @@
         font-weight: 700;
         cursor: pointer;
         margin: 0 auto 1.5rem;
-        transition: transform 0.2s, box-shadow 0.2s;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
         box-shadow: 0 0 30px rgba(155, 92, 255, 0.4);
       }
       #enter-vr-btn:hover {
@@ -176,7 +207,10 @@
         color: var(--muted);
         margin-top: 0.5rem;
       }
-      .vr-quest-hint a { color: var(--cyan); text-decoration: none; }
+      .vr-quest-hint a {
+        color: var(--cyan);
+        text-decoration: none;
+      }
 
       /* ── Programme Grid ── */
       .section-title {
@@ -186,7 +220,9 @@
         color: var(--text);
         margin: 3rem 0 1.5rem;
       }
-      .section-title span { color: var(--cyan); }
+      .section-title span {
+        color: var(--cyan);
+      }
       .programme-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -200,7 +236,10 @@
         border: 1px solid rgba(255, 255, 255, 0.08);
         border-radius: 16px;
         padding: 1.5rem;
-        transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+        transition:
+          border-color 0.2s,
+          transform 0.2s,
+          box-shadow 0.2s;
         position: relative;
         overflow: hidden;
         cursor: pointer;
@@ -211,7 +250,9 @@
       .prog-card::before {
         content: "";
         position: absolute;
-        top: 0; left: 0; right: 0;
+        top: 0;
+        left: 0;
+        right: 0;
         height: 2px;
         background: var(--card-color, var(--cyan));
         opacity: 0.8;
@@ -260,7 +301,7 @@
         align-items: center;
         gap: 0.5rem;
         background: transparent;
-        border: 1px solid rgba(0,212,255,0.25);
+        border: 1px solid rgba(0, 212, 255, 0.25);
         color: var(--cyan);
         padding: 0.45rem 1.1rem;
         border-radius: 20px;
@@ -271,8 +312,16 @@
         transition: all 0.2s;
         margin-top: 0.75rem;
       }
-      #share-btn:hover { border-color: var(--cyan); background: rgba(0,212,255,0.06); }
-      #share-confirm { display:none; color:var(--green); font-size:0.78rem; margin-top:0.4rem; }
+      #share-btn:hover {
+        border-color: var(--cyan);
+        background: rgba(0, 212, 255, 0.06);
+      }
+      #share-confirm {
+        display: none;
+        color: var(--green);
+        font-size: 0.78rem;
+        margin-top: 0.4rem;
+      }
 
       /* ── Category tab strip ── */
       .cat-strip {
@@ -290,7 +339,7 @@
         gap: 0.35rem;
         padding: 0.4rem 1rem;
         border-radius: 20px;
-        border: 1px solid rgba(255,255,255,0.08);
+        border: 1px solid rgba(255, 255, 255, 0.08);
         color: var(--muted);
         font-size: 0.82rem;
         font-weight: 600;
@@ -301,8 +350,15 @@
         background: transparent;
         font-family: inherit;
       }
-      .cat-tab:hover { color: var(--text); background: rgba(255,255,255,0.04); }
-      .cat-tab.active { color: var(--cyan); border-color: rgba(0,212,255,0.4); background: rgba(0,212,255,0.06); }
+      .cat-tab:hover {
+        color: var(--text);
+        background: rgba(255, 255, 255, 0.04);
+      }
+      .cat-tab.active {
+        color: var(--cyan);
+        border-color: rgba(0, 212, 255, 0.4);
+        background: rgba(0, 212, 255, 0.06);
+      }
 
       /* ── Stat bar under hero ── */
       .vr-stats {
@@ -311,14 +367,26 @@
         justify-content: center;
         flex-wrap: wrap;
         padding: 1.5rem 2rem;
-        border-top: 1px solid rgba(0,212,255,0.08);
-        border-bottom: 1px solid rgba(0,212,255,0.08);
-        background: rgba(8,15,30,0.6);
+        border-top: 1px solid rgba(0, 212, 255, 0.08);
+        border-bottom: 1px solid rgba(0, 212, 255, 0.08);
+        background: rgba(8, 15, 30, 0.6);
         margin-bottom: 2rem;
       }
-      .vr-stat { text-align: center; }
-      .vr-stat-n { font-size: 1.5rem; font-weight: 800; color: var(--cyan); display: block; }
-      .vr-stat-l { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; }
+      .vr-stat {
+        text-align: center;
+      }
+      .vr-stat-n {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--cyan);
+        display: block;
+      }
+      .vr-stat-l {
+        font-size: 0.72rem;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+      }
 
       .prog-card .card-actions {
         display: flex;
@@ -338,7 +406,9 @@
         text-decoration: none;
         transition: opacity 0.2s;
       }
-      .btn-vr:hover { opacity: 0.85; }
+      .btn-vr:hover {
+        opacity: 0.85;
+      }
       .btn-flat {
         flex: 1;
         text-align: center;
@@ -353,7 +423,9 @@
         text-decoration: none;
         transition: border-color 0.2s;
       }
-      .btn-flat:hover { border-color: var(--cyan); }
+      .btn-flat:hover {
+        border-color: var(--cyan);
+      }
 
       /* ── Lattice Info ── */
       .lattice-panel {
@@ -373,8 +445,18 @@
         padding: 0.9rem 1rem;
         font-size: 0.8rem;
       }
-      .info-cell .ic-label { color: var(--muted); margin-bottom: 0.25rem; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; }
-      .info-cell .ic-val { color: var(--cyan); font-weight: 700; font-family: monospace; }
+      .info-cell .ic-label {
+        color: var(--muted);
+        margin-bottom: 0.25rem;
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+      .info-cell .ic-val {
+        color: var(--cyan);
+        font-weight: 700;
+        font-family: monospace;
+      }
 
       /* ── A-Frame scene container ── */
       #vr-scene-container {
@@ -403,16 +485,35 @@
       }
 
       @media (max-width: 600px) {
-        .vr-hero { padding: 2.5rem 1rem 1.5rem; }
-        nav { padding: 0.75rem 1rem; }
-        .programme-grid { grid-template-columns: 1fr; padding: 0 1rem 3rem; }
+        .vr-hero {
+          padding: 2.5rem 1rem 1.5rem;
+        }
+        nav {
+          padding: 0.75rem 1rem;
+        }
+        .programme-grid {
+          grid-template-columns: 1fr;
+          padding: 0 1rem 3rem;
+        }
       }
       /* Quest touch overrides */
       @media (pointer: coarse), (hover: none) {
-        .btn-vr, .btn-flat { padding: 0.75rem 1rem; font-size: 0.9rem; }
-        .prog-card { padding: 1.75rem; }
-        .cat-tab { padding: 0.55rem 1.2rem; font-size: 0.9rem; }
-        nav .nav-links a { font-size: 1rem; padding: 0.4rem 0.5rem; }
+        .btn-vr,
+        .btn-flat {
+          padding: 0.75rem 1rem;
+          font-size: 0.9rem;
+        }
+        .prog-card {
+          padding: 1.75rem;
+        }
+        .cat-tab {
+          padding: 0.55rem 1.2rem;
+          font-size: 0.9rem;
+        }
+        nav .nav-links a {
+          font-size: 1rem;
+          padding: 0.4rem 0.5rem;
+        }
       }
     </style>
   </head>
@@ -436,9 +537,10 @@
         <div class="lattice-sig">8→26→48:480 · PHI=1.618 · PSI=1.414</div>
         <h1>Merkaba Dimensional Theatre<br />in Virtual Reality</h1>
         <p>
-          The same PHI lattice geometry that powers the AIOS intelligence engine — now navigable in
-          full immersive VR. Browse 6 dimensional Theatre programmes spatially anchored to the
-          48-node canonical lattice. Works on Meta Quest 2 &amp; 3 via browser. Zero install.
+          The same PHI lattice geometry that powers the AIOS intelligence engine
+          — now navigable in full immersive VR. Browse 6 dimensional Theatre
+          programmes spatially anchored to the 48-node canonical lattice. Works
+          on Meta Quest 2 &amp; 3 via browser. Zero install.
         </p>
 
         <!-- WebXR enter button — shown only when supported -->
@@ -451,7 +553,14 @@
           🥽 WebXR not detected on this device. To experience AIOS VR:
           <br /><br />
           Open this page in your <strong>Meta Quest Browser</strong>:
-          <code style="display:block;margin-top:0.5rem;font-size:0.78rem;color:var(--cyan)">
+          <code
+            style="
+              display: block;
+              margin-top: 0.5rem;
+              font-size: 0.78rem;
+              color: var(--cyan);
+            "
+          >
             https://realaios.com/vr
           </code>
         </div>
@@ -467,21 +576,44 @@
 
       <!-- Stats bar -->
       <div class="vr-stats">
-        <div class="vr-stat"><span class="vr-stat-n">6</span><span class="vr-stat-l">Live Experiences</span></div>
-        <div class="vr-stat"><span class="vr-stat-n">0</span><span class="vr-stat-l">Downloads</span></div>
-        <div class="vr-stat"><span class="vr-stat-n">7</span><span class="vr-stat-l">Categories</span></div>
-        <div class="vr-stat"><span class="vr-stat-n">24/7</span><span class="vr-stat-l">AI Generation</span></div>
+        <div class="vr-stat">
+          <span class="vr-stat-n">6</span
+          ><span class="vr-stat-l">Live Experiences</span>
+        </div>
+        <div class="vr-stat">
+          <span class="vr-stat-n">0</span
+          ><span class="vr-stat-l">Downloads</span>
+        </div>
+        <div class="vr-stat">
+          <span class="vr-stat-n">7</span
+          ><span class="vr-stat-l">Categories</span>
+        </div>
+        <div class="vr-stat">
+          <span class="vr-stat-n">24/7</span
+          ><span class="vr-stat-l">AI Generation</span>
+        </div>
       </div>
 
       <!-- Category tabs -->
       <div class="cat-strip">
-        <button class="cat-tab active" onclick="filterProgs('all',this)">✦ All</button>
-        <button class="cat-tab" onclick="filterProgs('cinema',this)">🎬 Cinema</button>
-        <button class="cat-tab" onclick="filterProgs('enterprise',this)">🏢 Enterprise</button>
+        <button class="cat-tab active" onclick="filterProgs('all', this)">
+          ✦ All
+        </button>
+        <button class="cat-tab" onclick="filterProgs('cinema', this)">
+          🎬 Cinema
+        </button>
+        <button class="cat-tab" onclick="filterProgs('enterprise', this)">
+          🏢 Enterprise
+        </button>
         <a href="/vr-hub#lab" class="cat-tab">🔬 Lab</a>
         <a href="/vr-hub#arcade" class="cat-tab">🎮 Arcade</a>
         <a href="/vr-hub#wellness" class="cat-tab">🧘 Wellness</a>
-        <a href="/vr-hub" class="cat-tab" style="border-color:rgba(0,212,255,0.3);color:var(--cyan);">🗂️ Full VR Hub →</a>
+        <a
+          href="/vr-hub"
+          class="cat-tab"
+          style="border-color: rgba(0, 212, 255, 0.3); color: var(--cyan)"
+          >🗂️ Full VR Hub →</a
+        >
       </div>
 
       <!-- ── Lattice Constants ── -->
@@ -517,7 +649,17 @@
       <!-- ── Programme Cards ── -->
       <div class="section-title">
         Choose a <span>Dimensional Experience</span>
-        <div style="font-size:0.8rem;color:var(--muted);font-weight:400;margin-top:0.4rem;">6 programmes · PHI=1.618 lattice geometry · Spatial audio at GeoQode Hz</div>
+        <div
+          style="
+            font-size: 0.8rem;
+            color: var(--muted);
+            font-weight: 400;
+            margin-top: 0.4rem;
+          "
+        >
+          6 programmes · PHI=1.618 lattice geometry · Spatial audio at GeoQode
+          Hz
+        </div>
       </div>
       <div class="programme-grid" id="prog-grid">
         <!-- populated by JS -->
@@ -541,24 +683,78 @@
 
       // ── GeoQode Semantic Frequencies ────────────────────────────────────
       const SEMANTIC = {
-        ENTITY:      { hz: 396,  color: "#ef4444" },
-        LOCATION:    { hz: 417,  color: "#22c55e" },
-        ACTION:      { hz: 528,  color: "#3b82f6" },
-        DIALOGUE:    { hz: 639,  color: "#eab308" },
-        EMOTION:     { hz: 741,  color: "#a855f7" },
-        PHYSICS:     { hz: 852,  color: "#f8fafc" },
-        NARRATIVE:   { hz: 963,  color: "#f59e0b" },
-        HOLOGRAPHIC: { hz: 72,   color: "#00d4ff" },
+        ENTITY: { hz: 396, color: "#ef4444" },
+        LOCATION: { hz: 417, color: "#22c55e" },
+        ACTION: { hz: 528, color: "#3b82f6" },
+        DIALOGUE: { hz: 639, color: "#eab308" },
+        EMOTION: { hz: 741, color: "#a855f7" },
+        PHYSICS: { hz: 852, color: "#f8fafc" },
+        NARRATIVE: { hz: 963, color: "#f59e0b" },
+        HOLOGRAPHIC: { hz: 72, color: "#00d4ff" },
       };
 
       // ── Theatre Programmes ───────────────────────────────────────────────
       const PROGRAMMES = [
-        { name: "matrix",       display: "The Matrix Simulation",      sem: "PHYSICS",   cat: "cinema",     desc: "Digital rain, code cascades, reality deconstruction in pure cyberpunk geometry.",       shortDesc: "Enter the simulation. See the code behind reality.",      panelAngle: 0,   latticeNode: 0  },
-        { name: "inception",    display: "Inception Dream Architecture", sem: "NARRATIVE", cat: "cinema",     desc: "Folding cities, layered dream states, time dilation across dimensional planes.",          shortDesc: "Navigate layered dream architectures in spatial VR.",    panelAngle: 60,  latticeNode: 8  },
-        { name: "starwars",     display: "Star Wars Galactic Theatre",  sem: "ACTION",   cat: "cinema",     desc: "Hyperspace jumps, orbital battles, Force resonance across the galactic lattice.",          shortDesc: "Immersive galactic storytelling across the stars.",       panelAngle: 120, latticeNode: 16 },
-        { name: "apollo11",     display: "Apollo 11 Mission Control",   sem: "LOCATION", cat: "cinema",     desc: "Lunar descent telemetry, mission control simulation, historical immersion.",              shortDesc: "One small step — in full immersive VR.",                  panelAngle: 180, latticeNode: 24 },
-        { name: "governance",   display: "AI Governance Summit",       sem: "DIALOGUE", cat: "enterprise", desc: "Policy chambers, global AI debate, collaborative decision architecture.",                shortDesc: "Shape the future of AI policy in a virtual summit.",     panelAngle: 240, latticeNode: 32 },
-        { name: "investordeck", display: "Investor Intelligence Deck",  sem: "ENTITY",   cat: "enterprise", desc: "Market signals, funding landscape, spatial revenue intelligence visualisation.",          shortDesc: "Pitch decks and market intelligence in 3D.",             panelAngle: 300, latticeNode: 40 },
+        {
+          name: "matrix",
+          display: "The Matrix Simulation",
+          sem: "PHYSICS",
+          cat: "cinema",
+          desc: "Digital rain, code cascades, reality deconstruction in pure cyberpunk geometry.",
+          shortDesc: "Enter the simulation. See the code behind reality.",
+          panelAngle: 0,
+          latticeNode: 0,
+        },
+        {
+          name: "inception",
+          display: "Inception Dream Architecture",
+          sem: "NARRATIVE",
+          cat: "cinema",
+          desc: "Folding cities, layered dream states, time dilation across dimensional planes.",
+          shortDesc: "Navigate layered dream architectures in spatial VR.",
+          panelAngle: 60,
+          latticeNode: 8,
+        },
+        {
+          name: "starwars",
+          display: "Star Wars Galactic Theatre",
+          sem: "ACTION",
+          cat: "cinema",
+          desc: "Hyperspace jumps, orbital battles, Force resonance across the galactic lattice.",
+          shortDesc: "Immersive galactic storytelling across the stars.",
+          panelAngle: 120,
+          latticeNode: 16,
+        },
+        {
+          name: "apollo11",
+          display: "Apollo 11 Mission Control",
+          sem: "LOCATION",
+          cat: "cinema",
+          desc: "Lunar descent telemetry, mission control simulation, historical immersion.",
+          shortDesc: "One small step — in full immersive VR.",
+          panelAngle: 180,
+          latticeNode: 24,
+        },
+        {
+          name: "governance",
+          display: "AI Governance Summit",
+          sem: "DIALOGUE",
+          cat: "enterprise",
+          desc: "Policy chambers, global AI debate, collaborative decision architecture.",
+          shortDesc: "Shape the future of AI policy in a virtual summit.",
+          panelAngle: 240,
+          latticeNode: 32,
+        },
+        {
+          name: "investordeck",
+          display: "Investor Intelligence Deck",
+          sem: "ENTITY",
+          cat: "enterprise",
+          desc: "Market signals, funding landscape, spatial revenue intelligence visualisation.",
+          shortDesc: "Pitch decks and market intelligence in 3D.",
+          panelAngle: 300,
+          latticeNode: 40,
+        },
       ];
 
       // ── URL param: ?prog=matrix to pre-select ───────────────────────────
@@ -593,10 +789,13 @@
 
       // ── Category filter ──────────────────────────────────────────────────
       function filterProgs(cat, el) {
-        document.querySelectorAll(".cat-tab").forEach(t => t.classList.remove("active"));
+        document
+          .querySelectorAll(".cat-tab")
+          .forEach((t) => t.classList.remove("active"));
         if (el) el.classList.add("active");
-        document.querySelectorAll(".prog-card").forEach(c => {
-          c.style.display = (cat === "all" || c.dataset.cat === cat) ? "" : "none";
+        document.querySelectorAll(".prog-card").forEach((c) => {
+          c.style.display =
+            cat === "all" || c.dataset.cat === cat ? "" : "none";
         });
       }
 
@@ -607,27 +806,42 @@
           await navigator.clipboard.writeText(url);
         } catch (_) {
           const ta = document.createElement("textarea");
-          ta.value = url; ta.style.position = "fixed"; ta.style.opacity = "0";
-          document.body.appendChild(ta); ta.select(); document.execCommand("copy");
+          ta.value = url;
+          ta.style.position = "fixed";
+          ta.style.opacity = "0";
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
           document.body.removeChild(ta);
         }
         const c = document.getElementById("share-confirm");
         c.style.display = "block";
-        setTimeout(() => { c.style.display = "none"; }, 2500);
+        setTimeout(() => {
+          c.style.display = "none";
+        }, 2500);
       }
 
       async function shareProgLink(progName) {
         const url = `https://realaios.com/vr?prog=${progName}`;
-        try { await navigator.clipboard.writeText(url); } catch (_) {
+        try {
+          await navigator.clipboard.writeText(url);
+        } catch (_) {
           const ta = document.createElement("textarea");
-          ta.value = url; ta.style.position = "fixed"; ta.style.opacity = "0";
-          document.body.appendChild(ta); ta.select(); document.execCommand("copy");
+          ta.value = url;
+          ta.style.position = "fixed";
+          ta.style.opacity = "0";
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
           document.body.removeChild(ta);
         }
         const c = document.getElementById("share-confirm");
         c.textContent = `✓ Copied: realaios.com/vr?prog=${progName}`;
         c.style.display = "block";
-        setTimeout(() => { c.style.display = "none"; c.textContent = "✓ Link copied to clipboard!"; }, 2500);
+        setTimeout(() => {
+          c.style.display = "none";
+          c.textContent = "✓ Link copied to clipboard!";
+        }, 2500);
       }
 
       // ── WebXR Detection ──────────────────────────────────────────────────
@@ -636,16 +850,19 @@
       let webXRSupported = false;
 
       if (navigator.xr) {
-        navigator.xr.isSessionSupported("immersive-vr").then((supported) => {
-          webXRSupported = supported;
-          if (supported) {
-            enterBtn.style.display = "flex";
-          } else {
+        navigator.xr
+          .isSessionSupported("immersive-vr")
+          .then((supported) => {
+            webXRSupported = supported;
+            if (supported) {
+              enterBtn.style.display = "flex";
+            } else {
+              noSupportEl.style.display = "block";
+            }
+          })
+          .catch(() => {
             noSupportEl.style.display = "block";
-          }
-        }).catch(() => {
-          noSupportEl.style.display = "block";
-        });
+          });
       } else {
         noSupportEl.style.display = "block";
       }
@@ -750,7 +967,16 @@
         });
 
         // 8 Foundation nodes (PHI cube corners)
-        const corners = [[-1,-1,-1],[-1,-1,1],[-1,1,-1],[-1,1,1],[1,-1,-1],[1,-1,1],[1,1,-1],[1,1,1]];
+        const corners = [
+          [-1, -1, -1],
+          [-1, -1, 1],
+          [-1, 1, -1],
+          [-1, 1, 1],
+          [1, -1, -1],
+          [1, -1, 1],
+          [1, 1, -1],
+          [1, 1, 1],
+        ];
         corners.forEach(([cx, cy, cz], i) => {
           const nx = (cx * PHI * 1.8).toFixed(3);
           const ny = (cy * PHI * 1.8 + 1.5).toFixed(3);
@@ -772,17 +998,21 @@
             const [ax, ay, az] = corners[i];
             const [bx, by, bz] = corners[j];
             // Only draw edges between adjacent nodes (differ in exactly 1 axis)
-            const diff = Math.abs(ax-bx) + Math.abs(ay-by) + Math.abs(az-bz);
+            const diff =
+              Math.abs(ax - bx) + Math.abs(ay - by) + Math.abs(az - bz);
             if (diff !== 2) continue;
-            const mx = +((ax + bx) / 2 * PHI * 1.8).toFixed(3);
-            const my = +((ay + by) / 2 * PHI * 1.8 + 1.5).toFixed(3);
-            const mz = +((az + bz) / 2 * PHI * 1.8).toFixed(3);
+            const mx = +(((ax + bx) / 2) * PHI * 1.8).toFixed(3);
+            const my = +(((ay + by) / 2) * PHI * 1.8 + 1.5).toFixed(3);
+            const mz = +(((az + bz) / 2) * PHI * 1.8).toFixed(3);
             const len = +(PHI * 1.8 * 2).toFixed(3);
             const dx = (bx - ax) * PHI * 1.8;
             const dy = (by - ay) * PHI * 1.8;
             const dz = (bz - az) * PHI * 1.8;
-            const rotZ = +(Math.atan2(Math.sqrt(dx*dx+dz*dz), dy) * 180/Math.PI).toFixed(1);
-            const rotY2 = +(Math.atan2(dx, dz) * 180/Math.PI).toFixed(1);
+            const rotZ = +(
+              (Math.atan2(Math.sqrt(dx * dx + dz * dz), dy) * 180) /
+              Math.PI
+            ).toFixed(1);
+            const rotY2 = +((Math.atan2(dx, dz) * 180) / Math.PI).toFixed(1);
             edgesHTML += `
               <a-cylinder
                 position="${mx} ${my} ${mz}"
@@ -824,7 +1054,8 @@
           const px = +(Math.sin(t) * r).toFixed(2);
           const py = +(Math.sin(t * PSI) * 2 + 1.5).toFixed(2);
           const pz = +(Math.cos(t) * r).toFixed(2);
-          const col = i % 3 === 0 ? "#00d4ff" : i % 3 === 1 ? "#9b5cff" : "#f59e0b";
+          const col =
+            i % 3 === 0 ? "#00d4ff" : i % 3 === 1 ? "#9b5cff" : "#f59e0b";
           particlesHTML += `<a-sphere position="${px} ${py} ${pz}" radius="0.04" color="${col}" opacity="${(0.2 + Math.random() * 0.3).toFixed(2)}" material="shader: flat"></a-sphere>`;
         }
 
@@ -924,7 +1155,8 @@
         document.getElementById("flat-ui").style.display = "none";
 
         // Inject A-Frame scene
-        container.innerHTML = `<button id="vr-exit-btn" onclick="exitVRScene()">✕ Exit VR</button>` +
+        container.innerHTML =
+          `<button id="vr-exit-btn" onclick="exitVRScene()">✕ Exit VR</button>` +
           buildAFrameScene(currentProg);
 
         // Attach launch button listeners after scene loads
@@ -935,7 +1167,11 @@
 
         // Start ambient tone at base frequency (72 Hz)
         const semHz = currentProg
-          ? (SEMANTIC[(PROGRAMMES.find(p => p.name === currentProg) || {}).sem] || SEMANTIC.HOLOGRAPHIC).hz
+          ? (
+              SEMANTIC[
+                (PROGRAMMES.find((p) => p.name === currentProg) || {}).sem
+              ] || SEMANTIC.HOLOGRAPHIC
+            ).hz
           : BASE_FREQ;
         startAmbientTone(semHz);
       }
