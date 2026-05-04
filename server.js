@@ -354,11 +354,16 @@ const server = createServer(async (req, res) => {
         `  <url><loc>https://realaios.com/lab</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>`,
         `  <url><loc>https://realaios.com/products</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.75</priority></url>`,
         // Individual VR experience SEO pages (19 live XPs)
-        ...(VR_TAXONOMY ? (VR_TAXONOMY.categories || []).flatMap(cat =>
-          (cat.experiences || []).filter(x => x.status === "live").map(x =>
-            `  <url><loc>https://realaios.com/vr-experience/${x.id}</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>`
-          )
-        ) : []),
+        ...(VR_TAXONOMY
+          ? (VR_TAXONOMY.categories || []).flatMap((cat) =>
+              (cat.experiences || [])
+                .filter((x) => x.status === "live")
+                .map(
+                  (x) =>
+                    `  <url><loc>https://realaios.com/vr-experience/${x.id}</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>`,
+                ),
+            )
+          : []),
         ...slugs.map(
           (s) =>
             `  <url><loc>https://realaios.com/products/${s}</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.65</priority></url>`,
@@ -1720,17 +1725,21 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
     }
 
     // ── GET /vr-experience/:id — SEO landing page per experience ──────────
-    if (
-      req.method === "GET" &&
-      pathname.startsWith("/vr-experience/")
-    ) {
-      const xpId = pathname.replace("/vr-experience/", "").split("/")[0].replace(/[^a-z0-9-]/g, "");
+    if (req.method === "GET" && pathname.startsWith("/vr-experience/")) {
+      const xpId = pathname
+        .replace("/vr-experience/", "")
+        .split("/")[0]
+        .replace(/[^a-z0-9-]/g, "");
       let found = null;
       let foundCat = null;
       if (VR_TAXONOMY && xpId) {
         for (const cat of VR_TAXONOMY.categories || []) {
           const xp = (cat.experiences || []).find((e) => e.id === xpId);
-          if (xp) { found = xp; foundCat = cat; break; }
+          if (xp) {
+            found = xp;
+            foundCat = cat;
+            break;
+          }
         }
       }
       if (!found || found.status !== "live") {
@@ -1739,7 +1748,10 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
         return;
       }
       const title = `${found.display} — AIOS VR | realaios.com`;
-      const desc = found.description || found.shortDesc || `Immersive WebXR experience for Meta Quest. ${found.display} — zero install required.`;
+      const desc =
+        found.description ||
+        found.shortDesc ||
+        `Immersive WebXR experience for Meta Quest. ${found.display} — zero install required.`;
       const vrUrl = `https://realaios.com${found.vrUrl || `/vr?prog=${xpId}`}`;
       const flatUrl = `https://realaios.com${found.flatUrl || `/aiosdream?prog=${xpId}`}`;
       const shareUrl = `https://realaios.com/vr-experience/${xpId}`;
@@ -1768,18 +1780,22 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
 <meta name="twitter:description" content="${desc.slice(0, 200)}"/>
 <!-- Structured Data -->
 <script type="application/ld+json">${JSON.stringify({
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "name": found.display,
-  "applicationCategory": "Game",
-  "applicationSubCategory": "VR Experience",
-  "operatingSystem": "Meta Quest Browser, Any WebXR Browser",
-  "description": desc,
-  "url": shareUrl,
-  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-  "author": { "@type": "Organization", "name": "Brains4Ai", "url": "https://realaios.com" },
-  "keywords": seoBadge,
-})}</script>
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        name: found.display,
+        applicationCategory: "Game",
+        applicationSubCategory: "VR Experience",
+        operatingSystem: "Meta Quest Browser, Any WebXR Browser",
+        description: desc,
+        url: shareUrl,
+        offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+        author: {
+          "@type": "Organization",
+          name: "Brains4Ai",
+          url: "https://realaios.com",
+        },
+        keywords: seoBadge,
+      })}</script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#04080f;color:#edf4ff;font-family:system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;}
@@ -1818,7 +1834,10 @@ h1{font-size:1.6rem;font-weight:800;margin-bottom:0.75rem;line-height:1.25;}
 </div>
 </body>
 </html>`;
-      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "public, max-age=600" });
+      res.writeHead(200, {
+        "Content-Type": "text/html; charset=utf-8",
+        "Cache-Control": "public, max-age=600",
+      });
       res.end(html);
       return;
     }

@@ -1167,8 +1167,8 @@
       <h1 class="hero-title">Enter Any World.<br />Zero Install.</h1>
       <p class="hero-sub">
         48+ immersive WebXR experiences for Meta Quest 2/3. Cinema, Enterprise,
-        Education, Arcade, Wellness, Social, Art &amp; Music — all delivered through your Quest
-        Browser. Open URL. Dive in.
+        Education, Arcade, Wellness, Social, Art &amp; Music — all delivered
+        through your Quest Browser. Open URL. Dive in.
       </p>
       <div class="hero-ctas">
         <a href="/vr" class="btn-primary">🥽 Launch VR Theatre</a>
@@ -1270,7 +1270,9 @@
       <a href="#wellness" class="cat-pill" data-cat="wellness">🧘 Wellness</a>
       <a href="#social" class="cat-pill" data-cat="social">👥 Social</a>
       <a href="#creator" class="cat-pill" data-cat="creator">🛠️ Creator</a>
-      <a href="#education" class="cat-pill" data-cat="education">📚 Education</a>
+      <a href="#education" class="cat-pill" data-cat="education"
+        >📚 Education</a
+      >
       <a href="#art" class="cat-pill" data-cat="art">🎨 Art & Music</a>
     </div>
 
@@ -1661,8 +1663,12 @@
     <div class="cat-section" id="education">
       <div class="cat-section-header">
         <div>
-          <div class="cat-section-title" style="color:#f97316;">📚 Education</div>
-          <div class="cat-section-desc">History, science, maths and language — learn by being there</div>
+          <div class="cat-section-title" style="color: #f97316">
+            📚 Education
+          </div>
+          <div class="cat-section-desc">
+            History, science, maths and language — learn by being there
+          </div>
         </div>
       </div>
       <div class="xp-grid" id="education-grid"></div>
@@ -1672,8 +1678,13 @@
     <div class="cat-section" id="art">
       <div class="cat-section-header">
         <div>
-          <div class="cat-section-title" style="color:#ec4899;">🎨 Art & Music</div>
-          <div class="cat-section-desc">Create at 741 Hz resonance — spatial canvas, frequency composition, AI galleries</div>
+          <div class="cat-section-title" style="color: #ec4899">
+            🎨 Art & Music
+          </div>
+          <div class="cat-section-desc">
+            Create at 741 Hz resonance — spatial canvas, frequency composition,
+            AI galleries
+          </div>
         </div>
       </div>
       <div class="xp-grid" id="art-grid"></div>
@@ -2214,7 +2225,10 @@
       function buildWellCard(w) {
         const tag = w.entry ? "a" : "div";
         const href = w.entry ? `href="${w.entry}"` : "";
-        const liveBadge = w.badge === "live" ? `<span style="font-size:0.65rem;background:#22c55e;color:#000;padding:0.15rem 0.4rem;border-radius:3px;font-weight:700;margin-left:0.4rem;">LIVE</span>` : "";
+        const liveBadge =
+          w.badge === "live"
+            ? `<span style="font-size:0.65rem;background:#22c55e;color:#000;padding:0.15rem 0.4rem;border-radius:3px;font-weight:700;margin-left:0.4rem;">LIVE</span>`
+            : "";
         return `<${tag} ${href} class="well-card" style="--accent:${w.color}${w.entry ? ";cursor:pointer;" : ""}">
           <span class="well-icon">${w.emoji}</span>
           <div class="well-title">${w.title}${liveBadge}</div>
@@ -2231,8 +2245,8 @@
           <div class="teaser-eta">ETA ${t.eta}</div>
         </div>`;
       }
-      document.getElementById("education-grid").innerHTML = EDUCATION_XP.map((x) =>
-        buildXpCard(x, "#f97316"),
+      document.getElementById("education-grid").innerHTML = EDUCATION_XP.map(
+        (x) => buildXpCard(x, "#f97316"),
       ).join("");
       document.getElementById("art-grid").innerHTML = ART_XP.map((x) =>
         buildXpCard(x, "#ec4899"),
