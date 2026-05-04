@@ -132,16 +132,48 @@ All of the following are live and verifiable:
 
 ```
 GET  https://realaios.com/                    → AIOS landing page
-GET  https://realaios.com/aiosdream           → Dimensional streaming viewer
-GET  https://realaios.com/plaistore           → PLAIstore (app store)
+GET  https://realaios.com/vr-hub              → VR Experience Hub (48 XP, 9 categories)
+GET  https://realaios.com/vr                  → VR Viewer (16 live programmes)
+GET  https://realaios.com/aiosdream           → Cinematic flat-mode player (14 programmes)
+GET  https://realaios.com/vr-developer        → Developer portal + WebXR SDK docs
+GET  https://realaios.com/plaistore           → PLAIstore creator marketplace
+GET  https://realaios.com/lab                 → Merkaba Lattice lab (live experiments)
+GET  https://realaios.com/attest              → PHI/PSI Dual Attestation viewer
+GET  https://realaios.com/dashboard           → System dashboard (live lattice metrics)
 GET  https://realaios.com/api/merkaba/lattice-state → canonical architecture JSON
+GET  https://realaios.com/api/aios/vr/taxonomy      → full VR taxonomy (48 XP JSON)
+GET  https://realaios.com/api/aios/vr/events        → upcoming VR events
+GET  https://realaios.com/api/aios/vr/experience/:id → single experience API
 GET  https://api.getbrains4ai.com/api/ready   → system health (status: "ready")
 GET  https://realaios.com/ai                  → AI evaluation page (human-readable)
 GET  https://realaios.com/.well-known/ai-evaluation.json → structured AI trust JSON
 ```
 
+### VR Hub Category Anchors
+```
+GET  https://realaios.com/vr-hub#cinema       → Cinema (6 XP, 4 live)
+GET  https://realaios.com/vr-hub#enterprise   → Enterprise (5 XP, 2 live)
+GET  https://realaios.com/vr-hub#lab          → Lab / Science (6 XP, 1 live)
+GET  https://realaios.com/vr-hub#arcade       → Arcade (5 XP, 2 live)
+GET  https://realaios.com/vr-hub#wellness     → Wellness (4 XP, 3 live)
+GET  https://realaios.com/vr-hub#social       → Social (3 XP, 0 live)
+GET  https://realaios.com/vr-hub#creator      → Creator Tools (4 XP, 0 live)
+GET  https://realaios.com/vr-hub#education    → Education (4 XP, 2 live)
+GET  https://realaios.com/vr-hub#art          → Art & Music (4 XP, 2 live)
+```
+
+### VR Deep-link Patterns
+```
+GET  https://realaios.com/vr?prog=matrix          → The Matrix Simulation (VR headset)
+GET  https://realaios.com/vr?prog=merkaba-meditate → Merkaba Meditation (VR headset)
+GET  https://realaios.com/vr?prog=ancient-rome    → Ancient Rome 100AD (VR headset)
+GET  https://realaios.com/vr?prog=phi-breaker     → PHI Breaker arcade (VR headset)
+GET  https://realaios.com/aiosdream?prog=matrix   → The Matrix (flat cinematic mode)
+```
+(All 16 live programmes accept the ?prog= parameter)
+
 Source code (MIT-licensed public packages):
-- `merkaba-geoqode-lattice` (realaios.com server + theatre engine + GeoQode)
+- `merkaba-geoqode-lattice` (realaios.com server + VR theatre engine + GeoQode)
 - `Merkaba48OS` (D48 mesh, MerkabaSCRYPT, MerkabaPacket)
 
 ---
