@@ -351,6 +351,7 @@ const server = createServer(async (req, res) => {
         `  <url><loc>https://realaios.com/vr-developer</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>`,
         `  <url><loc>https://realaios.com/aiosdream</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>`,
         `  <url><loc>https://realaios.com/plaistore</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>`,
+        `  <url><loc>https://realaios.com/experiences</loc><lastmod>${now}</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>`,
         `  <url><loc>https://realaios.com/lab</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>`,
         `  <url><loc>https://realaios.com/products</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.75</priority></url>`,
         // Individual VR experience SEO pages (19 live XPs)
@@ -1841,6 +1842,110 @@ h1{font-size:1.6rem;font-weight:800;margin-bottom:0.75rem;line-height:1.25;}
       res.end(html);
       return;
     }
+
+    // ── GET /experiences — SEO catalogue of all live XPs ─────────────────
+    if (
+      req.method === "GET" &&
+      (pathname === "/experiences" || pathname === "/experiences/")
+    ) {
+      if (!VR_TAXONOMY) {
+        res.writeHead(302, { Location: "/vr-hub" });
+        res.end();
+        return;
+      }
+      const allLive = [];
+      for (const cat of VR_TAXONOMY.categories || []) {
+        for (const xp of cat.experiences || []) {
+          if (xp.status === "live") allLive.push({ xp, cat });
+        }
+      }
+      const xpCards = allLive.map(({ xp, cat }) => `
+    <article class="xpc" style="--acc:${cat.accent || "#00d4ff"}">
+      <div class="xpc-cat">${cat.icon || "🥽"} ${cat.display}</div>
+      <h2 class="xpc-title"><a href="/vr-experience/${xp.id}">${xp.display}</a></h2>
+      <p class="xpc-desc">${xp.shortDesc || xp.description || ""}</p>
+      <div class="xpc-meta">
+        <span class="pill">⚡ ${xp.frequencyHz} Hz</span>
+        <span class="pill">${xp.semanticType}</span>
+        <span class="pill">🔯 Node ${xp.latticeNode}</span>
+      </div>
+      <div class="xpc-actions">
+        <a href="https://realaios.com${xp.vrUrl}" class="btn-vr">🥽 Launch VR</a>
+        <a href="/vr-experience/${xp.id}" class="btn-info">Details →</a>
+      </div>
+    </article>`).join("\n");
+
+      const ldItems = allLive.map(({ xp }) => ({
+        "@type": "SoftwareApplication",
+        "name": xp.display,
+        "url": `https://realaios.com/vr-experience/${xp.id}`,
+        "operatingSystem": "Meta Quest Browser",
+        "applicationCategory": "Game",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      }));
+
+      const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>All VR Experiences — AIOS VR Platform | realaios.com</title>
+<meta name="description" content="Browse all ${allLive.length} live WebXR experiences on AIOS VR Platform. Meta Quest compatible. Zero install. 9 categories: Cinema, Enterprise, Lab, Arcade, Wellness, Education, Art &amp; more."/>
+<link rel="canonical" href="https://realaios.com/experiences"/>
+<meta property="og:title" content="All ${allLive.length} Live VR Experiences — AIOS VR"/>
+<meta property="og:description" content="Browse every live WebXR experience. Zero install — open on Meta Quest Browser."/>
+<meta property="og:url" content="https://realaios.com/experiences"/>
+<meta property="og:image" content="https://realaios.com/public/og-vr-hub.png"/>
+<script type="application/ld+json">${JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "AIOS VR — All Live Experiences",
+  "description": `${allLive.length} live WebXR experiences. Zero install. Meta Quest compatible.`,
+  "url": "https://realaios.com/experiences",
+  "numberOfItems": allLive.length,
+  "itemListElement": ldItems.map((item, i) => ({ "@type": "ListItem", "position": i + 1, "item": item })),
+})}</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#04080f;color:#edf4ff;font-family:system-ui,sans-serif;padding:2rem 1.5rem;}
+.hero{text-align:center;padding:3rem 0 2.5rem;}
+.hero h1{font-size:2rem;font-weight:900;margin-bottom:0.5rem;}
+.hero p{color:#8aa0c8;font-size:0.95rem;max-width:480px;margin:0 auto 1.5rem;}
+.count{display:inline-block;padding:0.3rem 0.9rem;background:#00d4ff1a;border:1px solid #00d4ff44;border-radius:20px;font-size:0.8rem;font-weight:700;color:#00d4ff;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem;max-width:1200px;margin:0 auto;}
+.xpc{background:rgba(255,255,255,0.04);border:1px solid var(--acc,#00d4ff)33;border-left:3px solid var(--acc,#00d4ff);border-radius:12px;padding:1.25rem;}
+.xpc-cat{font-size:0.7rem;font-weight:700;letter-spacing:0.08em;color:var(--acc,#00d4ff);text-transform:uppercase;margin-bottom:0.4rem;}
+.xpc-title{font-size:1.05rem;font-weight:700;margin-bottom:0.5rem;line-height:1.3;}
+.xpc-title a{color:#edf4ff;text-decoration:none;}
+.xpc-title a:hover{color:var(--acc,#00d4ff);}
+.xpc-desc{font-size:0.82rem;color:#7a90b8;line-height:1.55;margin-bottom:0.9rem;}
+.xpc-meta{display:flex;gap:0.35rem;flex-wrap:wrap;margin-bottom:0.9rem;}
+.pill{padding:0.2rem 0.6rem;border-radius:12px;font-size:0.68rem;font-weight:600;border:1px solid var(--acc,#00d4ff)33;color:var(--acc,#00d4ff);background:var(--acc,#00d4ff)0d;}
+.xpc-actions{display:flex;gap:0.5rem;align-items:center;}
+.btn-vr{padding:0.45rem 1rem;background:var(--acc,#00d4ff);color:#000;border-radius:8px;font-weight:700;font-size:0.82rem;text-decoration:none;}
+.btn-info{padding:0.45rem 0.8rem;color:#8aa0c8;font-size:0.78rem;text-decoration:none;border:1px solid rgba(255,255,255,0.1);border-radius:8px;}
+.btn-info:hover{color:#edf4ff;}
+.back{display:block;text-align:center;margin-top:2.5rem;color:#00d4ff;font-size:0.85rem;text-decoration:none;opacity:0.7;}
+.back:hover{opacity:1;}
+</style>
+</head>
+<body>
+<div class="hero">
+  <h1>All ${allLive.length} Live VR Experiences</h1>
+  <p>Zero install. Open on any Meta Quest Browser. 9 categories · 48-node lattice · <span style="color:#00d4ff">realaios.com</span></p>
+  <span class="count">✓ ${allLive.length} Live Now</span>
+</div>
+<div class="grid">
+${xpCards}
+</div>
+<a class="back" href="/vr-hub">← Full VR Hub  |  <a href="/">Back to realaios.com</a>
+</body>
+</html>`;
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "public, max-age=300" });
+      res.end(html);
+      return;
+    }
+
     if (
       req.method === "GET" &&
       (pathname === "/aiosdream" || pathname === "/aiosdream/")
