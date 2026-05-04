@@ -294,7 +294,52 @@
     @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
     .skeleton { background: linear-gradient(90deg, #141928 25%, #1e2540 50%, #141928 75%); background-size: 200% 100%; animation: shimmer 1.6s infinite; border-radius: 6px; }
 
-    /* ── MOBILE ── */
+
+    /* ── SEARCH OVERLAY ── */
+    .search-over {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 300;
+      background: rgba(6,8,15,0.97); backdrop-filter: blur(28px);
+      padding: 88px 52px 40px; overflow-y: auto;
+      transform: translateY(-100%); transition: transform 0.36s cubic-bezier(.16,1,.3,1);
+      pointer-events: none;
+    }
+    .search-over.open { transform: none; pointer-events: all; }
+    .search-bar-row {
+      display: flex; align-items: center; gap: 14px;
+      border-bottom: 2px solid rgba(255,255,255,0.1); padding-bottom: 20px; margin-bottom: 26px;
+    }
+    .search-bar-row .sb-icon { font-size: 26px; color: var(--muted); flex-shrink: 0; }
+    .search-bar-row input {
+      flex: 1; background: none; border: none; color: #fff;
+      font-size: 22px; font-weight: 300; outline: none; font-family: inherit;
+    }
+    .search-bar-row input::placeholder { color: rgba(255,255,255,0.18); }
+    .search-bar-row .sb-close {
+      background: none; border: none; color: var(--muted);
+      font-size: 17px; cursor: pointer; padding: 6px 10px;
+      border-radius: 6px; transition: color 0.15s, background 0.15s;
+    }
+    .search-bar-row .sb-close:hover { color: #fff; background: rgba(255,255,255,0.06); }
+    .search-label { font-size: 11px; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+    .search-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(190px,1fr)); gap: 12px;
+    }
+    .src-card {
+      background: var(--card-bg); border-radius: 10px; overflow: hidden;
+      cursor: pointer; border: 1px solid var(--border);
+      transition: border-color 0.2s, transform 0.15s;
+    }
+    .src-card:hover { border-color: rgba(255,255,255,0.22); transform: translateY(-2px); }
+    .src-accent-bar { height: 3px; }
+    .src-thumb-box { height: 68px; display: flex; align-items: center; justify-content: center; font-size: 30px; }
+    .src-body { padding: 10px 12px 14px; }
+    .src-title { font-size: 13px; font-weight: 700; margin-bottom: 4px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .src-meta { font-size: 11px; color: var(--muted); }
+    .src-no-res { grid-column: 1/-1; text-align: center; padding: 60px 20px;
+      color: var(--muted); font-size: 15px; }
+        /* ── MOBILE ── */
     @media (max-width: 768px) {
       nav { padding: 0 20px; }
       .nav-links { display: none; }
@@ -328,7 +373,7 @@
   <div class="nav-right">
     <a href="/vr-hub" style="font-size:13px;color:var(--muted);transition:color 0.2s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--muted)'">🥽 VR Hub</a>
     <a href="/plaistore" style="font-size:13px;color:var(--muted);transition:color 0.2s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--muted)'">PLAIstore</a>
-    <button class="nav-icon-btn" title="Search" onclick="toast('Search coming soon')">⌕</button>
+    <button class="nav-icon-btn" title="Search" onclick="openSearch()" title="Search (Ctrl+K)">⌕</button>
     <div class="nav-avatar" title="Profile">A</div>
   </div>
 </nav>
@@ -365,6 +410,18 @@
     <div id="rows-container"></div>
   </div>
 </main>
+
+<!-- ── SEARCH OVERLAY ── -->
+<div id="search-overlay" class="search-over" role="search" aria-label="Search programmes">
+  <div class="search-bar-row">
+    <span class="sb-icon">⌕</span>
+    <input id="search-input" type="text" placeholder="Search programmes, genres, themes…"
+           autocomplete="off" spellcheck="false" />
+    <button class="sb-close" id="search-close" title="Close (Esc)">✕</button>
+  </div>
+  <div class="search-label" id="search-label">All Programmes</div>
+  <div class="search-grid" id="search-grid"></div>
+</div>
 
 <!-- ── PLAYER ── -->
 <div id="player">
@@ -1611,6 +1668,7 @@ function openPlayer(progId, startScene = 0, e) {
   buildChapterMarkers(prog);
   updateSceneUI();
   startRenderer();
+  startAmbientAudio(prog.id);
   startPlayback();
   showPlayerUI();
 }
@@ -1726,6 +1784,7 @@ function jumpToScene(sceneIdx) {
 
 function closePlayer() {
   saveProgress();
+  stopAmbientAudio();
   pausePlayback();
   if (window._activePlayerRenderer) {
     try { window._activePlayerRenderer.stop(); } catch(_) {}
@@ -1917,6 +1976,215 @@ if (urlProg) {
   const p = CATALOGUE.find(c => c.id === urlProg);
   if (p) setTimeout(() => openPlayer(p.id, 0), 400);
 }
+// ═══════════════════════════════════════════════════════════════
+// SEARCH ENGINE
+// ═══════════════════════════════════════════════════════════════
+let _searchOpen = false;
+
+function openSearch() {
+  _searchOpen = true;
+  document.getElementById('search-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => document.getElementById('search-input').focus(), 55);
+  renderSearchGrid('');
+}
+
+function closeSearch() {
+  _searchOpen = false;
+  document.getElementById('search-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+  document.getElementById('search-input').value = '';
+}
+
+function renderSearchGrid(q) {
+  const el = document.getElementById('search-grid');
+  const label = document.getElementById('search-label');
+  const matches = q
+    ? CATALOGUE.filter(p =>
+        p.title.toLowerCase().includes(q) ||
+        p.tagline.toLowerCase().includes(q) ||
+        p.desc.toLowerCase().includes(q) ||
+        p.genre.some(g => g.toLowerCase().includes(q)))
+    : CATALOGUE;
+  label.textContent = q
+    ? matches.length + ' result' + (matches.length !== 1 ? 's' : '') + ' for "' + q + '"'
+    : 'All Programmes';
+  if (!matches.length) {
+    el.innerHTML = '<div class="src-no-res">Nothing matched "' + q + '" — try a genre or keyword</div>';
+    return;
+  }
+  el.innerHTML = matches.map(function(p) {
+    return '<div class="src-card" onclick="closeSearch();openPlayer('' + p.id + '',0)">' +
+      '<div class="src-accent-bar" style="background:' + p.accent + '"></div>' +
+      '<div class="src-thumb-box" style="background:' + p.thumb + '">' + p.icon + '</div>' +
+      '<div class="src-body">' +
+        '<div class="src-title">' + p.title + '</div>' +
+        '<div class="src-meta">' + p.year + ' · ' + p.genre.slice(0,2).join(' · ') + '</div>' +
+      '</div></div>';
+  }).join('');
+}
+
+document.getElementById('search-input').addEventListener('input', function(e) {
+  renderSearchGrid(e.target.value.toLowerCase().trim());
+});
+document.getElementById('search-close').addEventListener('click', closeSearch);
+document.addEventListener('keydown', function(e) {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+    e.preventDefault();
+    _searchOpen ? closeSearch() : openSearch();
+    return;
+  }
+  if (e.key === 'Escape' && _searchOpen) { closeSearch(); }
+});
+
+// ═══════════════════════════════════════════════════════════════
+// AMBIENT AUDIO ENGINE (WebAudio API — zero external samples, fully generative)
+// ═══════════════════════════════════════════════════════════════
+var PROG_AUDIO_CFG = {
+  matrix:    { hz: 852, wave: 'sawtooth', noise: 0.30, lfo: 0.21, fHz: 1800 },
+  inception: { hz: 963, wave: 'sine',     noise: 0.15, lfo: 0.13, fHz: 2200 },
+  apollo:    { hz: 417, wave: 'sine',     noise: 0.10, lfo: 0.09, fHz: 1200 },
+  hyperspace:{ hz: 528, wave: 'sawtooth', noise: 0.40, lfo: 0.38, fHz: 3000 },
+  nebula:    { hz: 396, wave: 'sine',     noise: 0.22, lfo: 0.07, fHz: 900  },
+  neural:    { hz: 639, wave: 'square',   noise: 0.20, lfo: 0.28, fHz: 1600 },
+  quantum:   { hz: 741, wave: 'sine',     noise: 0.18, lfo: 0.19, fHz: 1500 },
+  merkaba:   { hz: 72,  wave: 'sine',     noise: 0.05, lfo: 0.05, fHz: 200  },
+  phoenix:   { hz: 528, wave: 'sawtooth', noise: 0.50, lfo: 0.55, fHz: 3500 },
+  ocean:     { hz: 417, wave: 'sine',     noise: 0.38, lfo: 0.06, fHz: 800  },
+  escher:    { hz: 963, wave: 'triangle', noise: 0.12, lfo: 0.16, fHz: 2000 },
+  chronos:   { hz: 417, wave: 'sine',     noise: 0.08, lfo: 0.11, fHz: 1100 }
+};
+
+var _audioCtx = null;
+var _masterGain = null;
+var _ambientNodes = [];
+
+function _ensureAudio() {
+  if (_audioCtx) return;
+  _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  _masterGain = _audioCtx.createGain();
+  _masterGain.gain.value = 0;
+  _masterGain.connect(_audioCtx.destination);
+}
+
+function startAmbientAudio(progId) {
+  try {
+    _ensureAudio();
+    stopAmbientAudio();
+    if (_audioCtx.state === 'suspended') _audioCtx.resume();
+    var cfg = PROG_AUDIO_CFG[progId] || PROG_AUDIO_CFG.merkaba;
+    var ctx = _audioCtx;
+    var now = ctx.currentTime;
+    var volVal = parseFloat(document.getElementById('vol-slider').value);
+
+    // Sub-bass drone at hz/4 — creates deep resonance
+    var subOsc = ctx.createOscillator();
+    var subGain = ctx.createGain();
+    subOsc.type = 'sine';
+    subOsc.frequency.value = cfg.hz / 4;
+    subGain.gain.value = 0.18;
+    subOsc.connect(subGain);
+    subGain.connect(_masterGain);
+    subOsc.start();
+
+    // Main harmonic tone through lowpass filter
+    var mainOsc = ctx.createOscillator();
+    var mainFilt = ctx.createBiquadFilter();
+    var mainGain = ctx.createGain();
+    mainOsc.type = cfg.wave;
+    mainOsc.frequency.value = cfg.hz;
+    mainFilt.type = 'lowpass';
+    mainFilt.frequency.value = cfg.fHz;
+    mainFilt.Q.value = 1.8;
+    mainGain.gain.value = 0.07;
+    mainOsc.connect(mainFilt);
+    mainFilt.connect(mainGain);
+    mainGain.connect(_masterGain);
+    mainOsc.start();
+
+    // PHI-rate LFO — creates slow breathing pulse
+    var lfo = ctx.createOscillator();
+    var lfoGain = ctx.createGain();
+    lfo.type = 'sine';
+    lfo.frequency.value = cfg.lfo;
+    lfoGain.gain.value = 0.04;
+    lfo.connect(lfoGain);
+    lfoGain.connect(mainGain.gain);
+    lfo.start();
+
+    _ambientNodes.push(subOsc, subGain, mainOsc, mainFilt, mainGain, lfo, lfoGain);
+
+    // Filtered noise layer (adds texture and presence)
+    if (cfg.noise > 0) {
+      var sRate = ctx.sampleRate;
+      var buf = ctx.createBuffer(1, sRate * 3, sRate);
+      var data = buf.getChannelData(0);
+      for (var i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+      var noiseSrc = ctx.createBufferSource();
+      noiseSrc.buffer = buf;
+      noiseSrc.loop = true;
+      var noiseFilt = ctx.createBiquadFilter();
+      noiseFilt.type = 'bandpass';
+      noiseFilt.frequency.value = cfg.hz * 0.6;
+      noiseFilt.Q.value = 0.8;
+      var noiseGain = ctx.createGain();
+      noiseGain.gain.value = cfg.noise * 0.04;
+      noiseSrc.connect(noiseFilt);
+      noiseFilt.connect(noiseGain);
+      noiseGain.connect(_masterGain);
+      noiseSrc.start();
+      _ambientNodes.push(noiseSrc, noiseFilt, noiseGain);
+    }
+
+    // Fade master in over 2.2 seconds
+    _masterGain.gain.setValueAtTime(0, now);
+    _masterGain.gain.linearRampToValueAtTime(volVal * 0.22, now + 2.2);
+
+  } catch (e) {
+    // AudioContext may be blocked until user gesture — graceful no-op
+  }
+}
+
+function stopAmbientAudio() {
+  var nodes = _ambientNodes.splice(0);
+  for (var i = 0; i < nodes.length; i++) {
+    try { if (nodes[i].stop) nodes[i].stop(); } catch (e) {}
+    try { nodes[i].disconnect(); } catch (e) {}
+  }
+  if (_masterGain && _audioCtx) {
+    try { _masterGain.gain.setValueAtTime(0, _audioCtx.currentTime); } catch (e) {}
+  }
+}
+
+// Volume slider → wired to master audio gain
+document.getElementById('vol-slider').addEventListener('input', function(e) {
+  var v = parseFloat(e.target.value);
+  if (_masterGain && _audioCtx) {
+    _masterGain.gain.setTargetAtTime(v * 0.22, _audioCtx.currentTime, 0.1);
+  }
+  var btn = document.getElementById('ctrl-vol-btn');
+  if (btn) btn.textContent = v === 0 ? '🔇' : v < 0.45 ? '🔉' : '🔊';
+});
+
+// Mute button — dispatches input event so audio follows
+(function() {
+  var volBtn = document.getElementById('ctrl-vol-btn');
+  if (volBtn && !volBtn._audioPatched) {
+    volBtn._audioPatched = true;
+    volBtn.addEventListener('click', function() {
+      var slider = document.getElementById('vol-slider');
+      if (parseFloat(slider.value) > 0) {
+        slider.dataset.prev = slider.value;
+        slider.value = 0;
+      } else {
+        slider.value = slider.dataset.prev || '0.7';
+      }
+      slider.dispatchEvent(new Event('input'));
+    });
+  }
+})();
+
+
 </script>
 </body>
 </html>
