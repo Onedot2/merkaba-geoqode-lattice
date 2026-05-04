@@ -1519,7 +1519,10 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       pathname === "/.well-known/ai-evaluation.json"
     ) {
       if (!AI_EVAL_JSON)
-        return json(res, 404, { ok: false, error: "ai-evaluation.json not found" });
+        return json(res, 404, {
+          ok: false,
+          error: "ai-evaluation.json not found",
+        });
       res.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });
       res.end(AI_EVAL_JSON);
       return;

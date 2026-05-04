@@ -684,11 +684,11 @@
         border: 1px solid var(--accent);
         border-radius: 8px;
         cursor: pointer;
-        background: rgba(124,58,237,0.1);
+        background: rgba(124, 58, 237, 0.1);
         transition: all 0.2s;
       }
       .nav-auth:hover {
-        background: rgba(124,58,237,0.2);
+        background: rgba(124, 58, 237, 0.2);
         border-color: var(--accent2);
       }
       .user-chip {
@@ -699,13 +699,13 @@
         font-size: 13px;
         color: var(--accent2);
         padding: 5px 12px;
-        border: 1px solid rgba(168,85,247,0.3);
+        border: 1px solid rgba(168, 85, 247, 0.3);
         border-radius: 20px;
         cursor: pointer;
-        background: rgba(124,58,237,0.1);
+        background: rgba(124, 58, 237, 0.1);
       }
       .user-chip:hover {
-        background: rgba(124,58,237,0.18);
+        background: rgba(124, 58, 237, 0.18);
       }
     </style>
   </head>
@@ -728,8 +728,17 @@
             />
           </div>
         </div>
-        <button class="nav-auth" id="nav-auth-btn" onclick="openAuthModal()">Sign In</button>
-        <div class="user-chip" id="nav-user-chip" onclick="signOut()" title="Click to sign out">👤 <span id="nav-user-label"></span></div>
+        <button class="nav-auth" id="nav-auth-btn" onclick="openAuthModal()">
+          Sign In
+        </button>
+        <div
+          class="user-chip"
+          id="nav-user-chip"
+          onclick="signOut()"
+          title="Click to sign out"
+        >
+          👤 <span id="nav-user-label"></span>
+        </div>
         <a
           href="https://realaios.com"
           class="aios-link"
@@ -810,10 +819,16 @@
       </div>
 
       <!-- My Library (shown when signed in) -->
-      <div id="library-section" style="display:none">
+      <div id="library-section" style="display: none">
         <div class="section-header">
           <h2 class="section-title">📚 My Library</h2>
-          <button class="btn btn-outline" onclick="signOut()" style="font-size:12px;padding:5px 12px">Sign Out</button>
+          <button
+            class="btn btn-outline"
+            onclick="signOut()"
+            style="font-size: 12px; padding: 5px 12px"
+          >
+            Sign Out
+          </button>
         </div>
         <div class="app-grid" id="library-grid">
           <div class="loading"><div class="spinner"></div></div>
@@ -849,7 +864,37 @@
           </div>
         </div>
       </div>
+
+      <!-- Developer CTA -->
+      <div class="install-steps" style="background:linear-gradient(135deg,rgba(124,58,237,0.15),rgba(217,70,239,0.1));border-color:rgba(124,58,237,0.3);text-align:center;margin-top:24px;">
+        <h3 style="color:var(--purple)">🚀 Build on AIOS</h3>
+        <p style="color:var(--muted);margin:10px 0 20px;font-size:14px;">Publish your Theatre programme, Cinema playbook, or AI agent to PLAIstore. Reach every AIOS user instantly.</p>
+        <button class="btn btn-primary" onclick="openDevSubmitModal()">Submit Your App</button>
+      </div>
     </main>
+
+    <!-- Developer submit modal -->
+    <div class="modal-overlay" id="dev-modal" onclick="if(event.target===this)closeDevSubmitModal()">
+      <div class="modal" style="max-width:500px">
+        <button class="modal-close" onclick="closeDevSubmitModal()">✕</button>
+        <h2 style="margin-bottom:8px;font-size:20px;font-weight:700">Submit Your App</h2>
+        <p style="color:var(--muted);font-size:13px;margin-bottom:20px">Fill in the details below. Our team reviews every submission and publishes approved apps within 48 hours.</p>
+        <div id="dev-submit-result" style="display:none;padding:12px;border-radius:8px;margin-bottom:16px;font-size:14px;"></div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <input id="dev-app-name" class="search-input" placeholder="App name *" style="width:100%">
+          <input id="dev-bundle-id" class="search-input" placeholder="Bundle ID (e.g. com.yourname.appname) *" style="width:100%">
+          <select id="dev-category" style="background:var(--bg2);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:14px;width:100%">
+            <option value="">Select category *</option>
+            <option>Theatre</option><option>Cinema</option><option>Agents</option>
+            <option>Codex</option><option>Analytics</option><option>Integrations</option><option>Utilities</option>
+          </select>
+          <textarea id="dev-description" class="search-input" placeholder="Description *" rows="3" style="width:100%;resize:vertical;font-family:inherit;"></textarea>
+          <input id="dev-entry-point" class="search-input" placeholder="Entry URL (https://...) *" style="width:100%">
+          <input id="dev-icon-url" class="search-input" placeholder="Icon URL (optional)" style="width:100%">
+          <button class="btn btn-primary" style="width:100%;margin-top:4px;" onclick="submitDevApp()">Submit for Review</button>
+        </div>
+      </div>
+    </div>
 
     <!-- App detail modal -->
     <div class="modal-overlay" id="modal">
@@ -861,44 +906,104 @@
 
     <!-- Auth modal -->
     <div class="modal-overlay" id="auth-modal">
-      <div class="modal" style="max-width:420px">
+      <div class="modal" style="max-width: 420px">
         <button class="modal-close" id="auth-modal-close">✕</button>
-        <h2 style="margin-bottom:20px;font-size:20px;font-weight:700">Your AIOS Account</h2>
+        <h2 style="margin-bottom: 20px; font-size: 20px; font-weight: 700">
+          Your AIOS Account
+        </h2>
         <div class="auth-tabs">
-          <button class="auth-tab active" id="tab-signin" onclick="switchAuthTab('signin')">Sign In</button>
-          <button class="auth-tab" id="tab-register" onclick="switchAuthTab('register')">Create Account</button>
+          <button
+            class="auth-tab active"
+            id="tab-signin"
+            onclick="switchAuthTab('signin')"
+          >
+            Sign In
+          </button>
+          <button
+            class="auth-tab"
+            id="tab-register"
+            onclick="switchAuthTab('register')"
+          >
+            Create Account
+          </button>
         </div>
         <!-- Sign In -->
         <div id="auth-signin-form">
           <div class="auth-field">
             <label>Email</label>
-            <input type="email" id="auth-email" placeholder="you@example.com" autocomplete="email" />
+            <input
+              type="email"
+              id="auth-email"
+              placeholder="you@example.com"
+              autocomplete="email"
+            />
           </div>
           <div class="auth-field">
             <label>Password</label>
-            <input type="password" id="auth-password" placeholder="Your password" autocomplete="current-password" />
+            <input
+              type="password"
+              id="auth-password"
+              placeholder="Your password"
+              autocomplete="current-password"
+            />
           </div>
           <div class="auth-error" id="auth-error"></div>
-          <button class="btn btn-primary btn-full" id="auth-signin-btn" onclick="doSignIn()">Sign In</button>
+          <button
+            class="btn btn-primary btn-full"
+            id="auth-signin-btn"
+            onclick="doSignIn()"
+          >
+            Sign In
+          </button>
         </div>
         <!-- Register -->
-        <div id="auth-register-form" style="display:none">
+        <div id="auth-register-form" style="display: none">
           <div class="auth-field">
             <label>Name</label>
-            <input type="text" id="reg-name" placeholder="Your name" autocomplete="name" />
+            <input
+              type="text"
+              id="reg-name"
+              placeholder="Your name"
+              autocomplete="name"
+            />
           </div>
           <div class="auth-field">
             <label>Email</label>
-            <input type="email" id="reg-email" placeholder="you@example.com" autocomplete="email" />
+            <input
+              type="email"
+              id="reg-email"
+              placeholder="you@example.com"
+              autocomplete="email"
+            />
           </div>
           <div class="auth-field">
             <label>Password (min 8 chars)</label>
-            <input type="password" id="reg-password" placeholder="Choose a password" autocomplete="new-password" />
+            <input
+              type="password"
+              id="reg-password"
+              placeholder="Choose a password"
+              autocomplete="new-password"
+            />
           </div>
           <div class="auth-error" id="reg-error"></div>
-          <button class="btn btn-primary btn-full" id="auth-register-btn" onclick="doRegister()">Create Free Account</button>
+          <button
+            class="btn btn-primary btn-full"
+            id="auth-register-btn"
+            onclick="doRegister()"
+          >
+            Create Free Account
+          </button>
         </div>
-        <p style="text-align:center;color:var(--muted);font-size:12px;margin-top:16px">Free account — no credit card required</p>
+        <p
+          style="
+            text-align: center;
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 16px;
+          "
+        >
+          Free account — no credit card required
+        </p>
       </div>
     </div>
 
@@ -1031,9 +1136,10 @@
           ? '<span class="app-verified"></span>'
           : "";
 
-        const theatreBadge = app.type === 'theatre-programme'
-          ? `<span style="font-size:10px;color:#a855f7;border:1px solid rgba(168,85,247,0.3);border-radius:4px;padding:1px 5px;margin-left:6px">🎬 AIOSdream</span>`
-          : '';
+        const theatreBadge =
+          app.type === "theatre-programme"
+            ? `<span style="font-size:10px;color:#a855f7;border:1px solid rgba(168,85,247,0.3);border-radius:4px;padding:1px 5px;margin-left:6px">🎬 AIOSdream</span>`
+            : "";
         return `
       <div class="app-card" onclick="openApp(${app.id})">
         <div class="app-card-header">
@@ -1062,10 +1168,13 @@
           if (!app) throw new Error("Not found");
           const icon = CATEGORY_ICONS[app.category] || "📦";
           const launchUrl = app.entry_point || "https://realaios.com";
-          const progKey = app.type === 'theatre-programme' ? app.bundle_id.replace('com.aios.', '') : null;
+          const progKey =
+            app.type === "theatre-programme"
+              ? app.bundle_id.replace("com.aios.", "")
+              : null;
           const dreamBtn = progKey
             ? `<a href="/aiosdream?prog=${progKey}" class="btn btn-outline" style="border-color:#a855f7;color:#a855f7">🎬 Watch in AIOSdream</a>`
-            : '';
+            : "";
           document.getElementById("modal-body").innerHTML = `
         <div class="modal-app-header">
           <div class="modal-icon">${icon}</div>
@@ -1098,7 +1207,13 @@
             method: "POST",
             headers: { Authorization: "Bearer " + jwt },
           });
-          if (r.status === 401) { jwt = null; localStorage.removeItem("plai_jwt"); _pendingInstall = { id, name }; openAuthModal(); return; }
+          if (r.status === 401) {
+            jwt = null;
+            localStorage.removeItem("plai_jwt");
+            _pendingInstall = { id, name };
+            openAuthModal();
+            return;
+          }
           showToast(`✓ ${name} installed — check My Library`, "success");
           loadLibrary();
         } catch {
@@ -1158,13 +1273,24 @@
         if (e.target === document.getElementById("modal"))
           document.getElementById("modal").classList.remove("open");
       });
-      document.getElementById("auth-modal-close").addEventListener("click", closeAuthModal);
+      document
+        .getElementById("auth-modal-close")
+        .addEventListener("click", closeAuthModal);
       document.getElementById("auth-modal").addEventListener("click", (e) => {
-        if (e.target === document.getElementById("auth-modal")) closeAuthModal();
+        if (e.target === document.getElementById("auth-modal"))
+          closeAuthModal();
       });
       // Enter key in auth inputs
-      ["auth-email","auth-password"].forEach(id => document.getElementById(id).addEventListener("keydown", e => { if (e.key === "Enter") doSignIn(); }));
-      ["reg-email","reg-password","reg-name"].forEach(id => document.getElementById(id).addEventListener("keydown", e => { if (e.key === "Enter") doRegister(); }));
+      ["auth-email", "auth-password"].forEach((id) =>
+        document.getElementById(id).addEventListener("keydown", (e) => {
+          if (e.key === "Enter") doSignIn();
+        }),
+      );
+      ["reg-email", "reg-password", "reg-name"].forEach((id) =>
+        document.getElementById(id).addEventListener("keydown", (e) => {
+          if (e.key === "Enter") doRegister();
+        }),
+      );
 
       // ── Auth ──────────────────────────────────────────────────────────────────
       let _pendingInstall = null;
@@ -1180,13 +1306,18 @@
         document.getElementById("auth-signin-btn").disabled = false;
         document.getElementById("auth-signin-btn").textContent = "Sign In";
         document.getElementById("auth-register-btn").disabled = false;
-        document.getElementById("auth-register-btn").textContent = "Create Free Account";
+        document.getElementById("auth-register-btn").textContent =
+          "Create Free Account";
       }
       function switchAuthTab(tab) {
-        document.getElementById("auth-signin-form").style.display = tab === "signin" ? "" : "none";
-        document.getElementById("auth-register-form").style.display = tab === "register" ? "" : "none";
-        document.getElementById("tab-signin").className = "auth-tab" + (tab === "signin" ? " active" : "");
-        document.getElementById("tab-register").className = "auth-tab" + (tab === "register" ? " active" : "");
+        document.getElementById("auth-signin-form").style.display =
+          tab === "signin" ? "" : "none";
+        document.getElementById("auth-register-form").style.display =
+          tab === "register" ? "" : "none";
+        document.getElementById("tab-signin").className =
+          "auth-tab" + (tab === "signin" ? " active" : "");
+        document.getElementById("tab-register").className =
+          "auth-tab" + (tab === "register" ? " active" : "");
       }
       async function doSignIn() {
         const email = document.getElementById("auth-email").value.trim();
@@ -1194,14 +1325,34 @@
         const errEl = document.getElementById("auth-error");
         const btn = document.getElementById("auth-signin-btn");
         errEl.className = "auth-error";
-        if (!email || !password) { errEl.textContent = "Email and password required"; errEl.className = "auth-error show"; return; }
-        btn.disabled = true; btn.textContent = "Signing in...";
+        if (!email || !password) {
+          errEl.textContent = "Email and password required";
+          errEl.className = "auth-error show";
+          return;
+        }
+        btn.disabled = true;
+        btn.textContent = "Signing in...";
         try {
-          const r = await fetch(API + "/api/auth/login", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, password }) });
+          const r = await fetch(API + "/api/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+          });
           const data = await r.json();
-          if (!r.ok) { errEl.textContent = data.error || "Sign in failed"; errEl.className = "auth-error show"; btn.disabled = false; btn.textContent = "Sign In"; return; }
+          if (!r.ok) {
+            errEl.textContent = data.error || "Sign in failed";
+            errEl.className = "auth-error show";
+            btn.disabled = false;
+            btn.textContent = "Sign In";
+            return;
+          }
           onAuthSuccess(data.token, data.user);
-        } catch { errEl.textContent = "Network error — please try again"; errEl.className = "auth-error show"; btn.disabled = false; btn.textContent = "Sign In"; }
+        } catch {
+          errEl.textContent = "Network error — please try again";
+          errEl.className = "auth-error show";
+          btn.disabled = false;
+          btn.textContent = "Sign In";
+        }
       }
       async function doRegister() {
         const name = document.getElementById("reg-name").value.trim();
@@ -1210,21 +1361,46 @@
         const errEl = document.getElementById("reg-error");
         const btn = document.getElementById("auth-register-btn");
         errEl.className = "auth-error";
-        if (!email || !password || password.length < 8) { errEl.textContent = "Email and password (min 8 chars) required"; errEl.className = "auth-error show"; return; }
-        btn.disabled = true; btn.textContent = "Creating account...";
+        if (!email || !password || password.length < 8) {
+          errEl.textContent = "Email and password (min 8 chars) required";
+          errEl.className = "auth-error show";
+          return;
+        }
+        btn.disabled = true;
+        btn.textContent = "Creating account...";
         try {
-          const r = await fetch(API + "/api/auth/register", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, password, full_name: name }) });
+          const r = await fetch(API + "/api/auth/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password, full_name: name }),
+          });
           const data = await r.json();
-          if (!r.ok) { errEl.textContent = data.error || data.message || "Registration failed"; errEl.className = "auth-error show"; btn.disabled = false; btn.textContent = "Create Free Account"; return; }
+          if (!r.ok) {
+            errEl.textContent =
+              data.error || data.message || "Registration failed";
+            errEl.className = "auth-error show";
+            btn.disabled = false;
+            btn.textContent = "Create Free Account";
+            return;
+          }
           onAuthSuccess(data.token, data.user);
-        } catch { errEl.textContent = "Network error — please try again"; errEl.className = "auth-error show"; btn.disabled = false; btn.textContent = "Create Free Account"; }
+        } catch {
+          errEl.textContent = "Network error — please try again";
+          errEl.className = "auth-error show";
+          btn.disabled = false;
+          btn.textContent = "Create Free Account";
+        }
       }
       function onAuthSuccess(token, user) {
         jwt = token;
         localStorage.setItem("plai_jwt", token);
         closeAuthModal();
         updateAuthUI(user);
-        if (_pendingInstall) { const pi = _pendingInstall; _pendingInstall = null; installApp(pi.id, pi.name); }
+        if (_pendingInstall) {
+          const pi = _pendingInstall;
+          _pendingInstall = null;
+          installApp(pi.id, pi.name);
+        }
         loadLibrary();
       }
       function signOut() {
@@ -1240,7 +1416,10 @@
         if (jwt && user) {
           btn.style.display = "none";
           chip.style.display = "flex";
-          const label = (user.full_name || "").split(" ")[0] || (user.email || "").split("@")[0] || "Account";
+          const label =
+            (user.full_name || "").split(" ")[0] ||
+            (user.email || "").split("@")[0] ||
+            "Account";
           document.getElementById("nav-user-label").textContent = label;
         } else {
           btn.style.display = "";
@@ -1250,17 +1429,20 @@
       async function loadLibrary() {
         if (!jwt) return;
         document.getElementById("library-section").style.display = "";
-        document.getElementById("library-grid").innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+        document.getElementById("library-grid").innerHTML =
+          '<div class="loading"><div class="spinner"></div></div>';
         try {
           const data = await fetchJSON("/api/plai/library");
           const apps = data.apps || [];
           if (!apps.length) {
-            document.getElementById("library-grid").innerHTML = '<div class="empty"><div class="empty-icon">📭</div><p>No installed apps yet — browse and click Install!</p></div>';
+            document.getElementById("library-grid").innerHTML =
+              '<div class="empty"><div class="empty-icon">📭</div><p>No installed apps yet — browse and click Install!</p></div>';
           } else {
             renderGrid("library-grid", apps);
           }
         } catch {
-          document.getElementById("library-grid").innerHTML = '<div class="empty"><p>Failed to load library</p></div>';
+          document.getElementById("library-grid").innerHTML =
+            '<div class="empty"><p>Failed to load library</p></div>';
         }
       }
 
@@ -1281,24 +1463,82 @@
           .replace(/"/g, "&quot;");
       }
 
+      // ── Developer submit modal ─────────────────────────────────────────────────
+      function openDevSubmitModal() {
+        document.getElementById("dev-modal").style.display = "flex";
+        document.getElementById("dev-submit-result").style.display = "none";
+      }
+      function closeDevSubmitModal() {
+        document.getElementById("dev-modal").style.display = "none";
+      }
+      async function submitDevApp() {
+        if (!jwt) { openAuthModal(); return; }
+        const name = document.getElementById("dev-app-name").value.trim();
+        const bundleId = document.getElementById("dev-bundle-id").value.trim();
+        const category = document.getElementById("dev-category").value;
+        const description = document.getElementById("dev-description").value.trim();
+        const entryPoint = document.getElementById("dev-entry-point").value.trim();
+        const iconUrl = document.getElementById("dev-icon-url").value.trim();
+        if (!name || !bundleId || !category || !description || !entryPoint) {
+          showResult("dev-submit-result", "⚠️ Please fill in all required fields.", "warning"); return;
+        }
+        try {
+          const resp = await fetch(`${API}/plai/developer/apps`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", Authorization: `Bearer ${jwt}` },
+            body: JSON.stringify({ name, bundle_id: bundleId, category, type: category.toLowerCase(), description, short_desc: description.substring(0, 120), entry_point: entryPoint, icon_url: iconUrl || null }),
+          });
+          const data = await resp.json();
+          if (resp.ok) {
+            showResult("dev-submit-result", "✅ Submitted! Your app is under review and will be published within 48 hours.", "success");
+            setTimeout(closeDevSubmitModal, 3000);
+          } else {
+            showResult("dev-submit-result", `❌ ${data.error || "Submission failed — please try again."}`, "error");
+          }
+        } catch {
+          showResult("dev-submit-result", "❌ Network error — please try again.", "error");
+        }
+      }
+      function showResult(id, msg, type) {
+        const el = document.getElementById(id);
+        el.style.display = "block";
+        el.textContent = msg;
+        el.style.background = type === "success" ? "rgba(34,197,94,0.15)" : type === "warning" ? "rgba(245,158,11,0.15)" : "rgba(239,68,68,0.15)";
+        el.style.color = type === "success" ? "#22c55e" : type === "warning" ? "#f59e0b" : "#ef4444";
+        el.style.border = `1px solid currentColor`;
+      }
+
       // ── Boot ───────────────────────────────────────────────────────────────────
       // Check URL token (post-auth redirect)
       const _urlToken = new URLSearchParams(location.search).get("token");
-      if (_urlToken) { jwt = _urlToken; localStorage.setItem("plai_jwt", _urlToken); history.replaceState({}, "", location.pathname); }
+      if (_urlToken) {
+        jwt = _urlToken;
+        localStorage.setItem("plai_jwt", _urlToken);
+        history.replaceState({}, "", location.pathname);
+      }
       // Restore session from stored JWT
       if (jwt) {
         try {
           const parts = jwt.split(".");
           if (parts.length === 3) {
-            const payload = JSON.parse(atob(parts[1].replace(/-/g, "+").replace(/_/g, "/")));
+            const payload = JSON.parse(
+              atob(parts[1].replace(/-/g, "+").replace(/_/g, "/")),
+            );
             if (payload.exp && payload.exp * 1000 > Date.now()) {
-              updateAuthUI({ email: payload.email, full_name: payload.full_name });
+              updateAuthUI({
+                email: payload.email,
+                full_name: payload.full_name,
+              });
               loadLibrary();
             } else {
-              jwt = null; localStorage.removeItem("plai_jwt");
+              jwt = null;
+              localStorage.removeItem("plai_jwt");
             }
           }
-        } catch { jwt = null; localStorage.removeItem("plai_jwt"); }
+        } catch {
+          jwt = null;
+          localStorage.removeItem("plai_jwt");
+        }
       }
       loadFeatured();
       loadAllApps();

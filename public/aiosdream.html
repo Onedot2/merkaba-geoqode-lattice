@@ -1,473 +1,1429 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AIOSdream — Dimensional Geometric Streaming</title>
-<meta name="description" content="AIOSdream is not a streaming service. It is a dimensional geometric experience — lattice-native narrative delivered through PHI/PSI resonance fields.">
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#03050d;--bg2:#070d1a;--bg3:#0b1428;
-  --cyan:#00f5d4;--purple:#7c3aed;--pink:#d946ef;
-  --gold:#f5a623;--blue:#3b82f6;--red:#ef4444;
-  --text:#e2e8f0;--muted:#64748b;
-  --border:rgba(0,245,212,0.1);
-  --phi:1.618;
-}
-html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;overflow:hidden}
-a{text-decoration:none;color:inherit}
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>AIOSdream — Dimensional Geometric Streaming</title>
+    <meta
+      name="description"
+      content="AIOSdream is not a streaming service. It is a dimensional geometric experience — lattice-native narrative delivered through PHI/PSI resonance fields."
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --bg: #03050d;
+        --bg2: #070d1a;
+        --bg3: #0b1428;
+        --cyan: #00f5d4;
+        --purple: #7c3aed;
+        --pink: #d946ef;
+        --gold: #f5a623;
+        --blue: #3b82f6;
+        --red: #ef4444;
+        --text: #e2e8f0;
+        --muted: #64748b;
+        --border: rgba(0, 245, 212, 0.1);
+        --phi: 1.618;
+      }
+      html,
+      body {
+        height: 100%;
+        background: var(--bg);
+        color: var(--text);
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+        overflow: hidden;
+      }
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
 
-/* ── NAV ── */
-nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:14px 28px;background:rgba(3,5,13,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
-.nav-brand{display:flex;align-items:center;gap:10px}
-.nav-logo{font-size:20px;font-weight:900;letter-spacing:-0.04em;background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.nav-tag{font-size:9px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;border:1px solid var(--border);padding:2px 7px;border-radius:4px;align-self:center}
-.nav-right{display:flex;align-items:center;gap:20px}
-.nav-right a{color:var(--muted);font-size:13px;font-weight:500;transition:color 0.2s}
-.nav-right a:hover{color:var(--cyan)}
+      /* ── NAV ── */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 200;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 28px;
+        background: rgba(3, 5, 13, 0.92);
+        backdrop-filter: blur(16px);
+        border-bottom: 1px solid var(--border);
+      }
+      .nav-brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .nav-logo {
+        font-size: 20px;
+        font-weight: 900;
+        letter-spacing: -0.04em;
+        background: linear-gradient(135deg, var(--cyan), var(--purple));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .nav-tag {
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        color: var(--muted);
+        text-transform: uppercase;
+        border: 1px solid var(--border);
+        padding: 2px 7px;
+        border-radius: 4px;
+        align-self: center;
+      }
+      .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+      .nav-right a {
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 500;
+        transition: color 0.2s;
+      }
+      .nav-right a:hover {
+        color: var(--cyan);
+      }
 
-/* ── SCREENS ── */
-.screen{position:fixed;inset:0;display:none;flex-direction:column;overflow:hidden}
-.screen.active{display:flex}
-.screen-inner{padding:80px 40px 40px;flex:1;overflow-y:auto}
+      /* ── SCREENS ── */
+      .screen {
+        position: fixed;
+        inset: 0;
+        display: none;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .screen.active {
+        display: flex;
+      }
+      .screen-inner {
+        padding: 80px 40px 40px;
+        flex: 1;
+        overflow-y: auto;
+      }
 
-/* ── HERO / BROWSE ── */
-#browse-screen .hero{text-align:center;padding:60px 20px 50px;position:relative}
-.hero-eyebrow{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--cyan);margin-bottom:16px}
-.hero-title{font-size:clamp(3rem,7vw,5.5rem);font-weight:900;letter-spacing:-0.05em;line-height:0.95;margin-bottom:20px}
-.hero-title span{background:linear-gradient(135deg,var(--cyan) 0%,var(--purple) 50%,var(--pink) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-sub{font-size:1.1rem;color:var(--muted);max-width:540px;margin:0 auto 40px;line-height:1.7}
-.hero-geo{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);opacity:0.6}
-.hero-geo b{color:var(--cyan);opacity:1}
+      /* ── HERO / BROWSE ── */
+      #browse-screen .hero {
+        text-align: center;
+        padding: 60px 20px 50px;
+        position: relative;
+      }
+      .hero-eyebrow {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--cyan);
+        margin-bottom: 16px;
+      }
+      .hero-title {
+        font-size: clamp(3rem, 7vw, 5.5rem);
+        font-weight: 900;
+        letter-spacing: -0.05em;
+        line-height: 0.95;
+        margin-bottom: 20px;
+      }
+      .hero-title span {
+        background: linear-gradient(
+          135deg,
+          var(--cyan) 0%,
+          var(--purple) 50%,
+          var(--pink) 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .hero-sub {
+        font-size: 1.1rem;
+        color: var(--muted);
+        max-width: 540px;
+        margin: 0 auto 40px;
+        line-height: 1.7;
+      }
+      .hero-geo {
+        font-size: 10px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        opacity: 0.6;
+      }
+      .hero-geo b {
+        color: var(--cyan);
+        opacity: 1;
+      }
 
-/* grid background */
-#browse-screen::before{
-  content:"";position:fixed;inset:0;
-  background-image:linear-gradient(rgba(0,245,212,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,245,212,0.025) 1px,transparent 1px);
-  background-size:48px 48px;pointer-events:none;z-index:0
-}
-#browse-screen .screen-inner{position:relative;z-index:1}
+      /* grid background */
+      #browse-screen::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(0, 245, 212, 0.025) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0, 245, 212, 0.025) 1px, transparent 1px);
+        background-size: 48px 48px;
+        pointer-events: none;
+        z-index: 0;
+      }
+      #browse-screen .screen-inner {
+        position: relative;
+        z-index: 1;
+      }
 
-/* programme grid */
-.section-label{font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:16px;padding-left:2px}
-.prog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px;margin-bottom:48px}
-.prog-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:0;cursor:pointer;transition:all 0.3s;overflow:hidden;position:relative}
-.prog-card:hover{border-color:var(--cyan);transform:translateY(-4px);box-shadow:0 20px 60px rgba(0,245,212,0.12)}
-.prog-poster{height:140px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
-.prog-poster canvas{position:absolute;inset:0;width:100%;height:100%}
-.prog-icon{font-size:3rem;position:relative;z-index:1;filter:drop-shadow(0 0 20px currentColor)}
-.prog-info{padding:14px 16px}
-.prog-name{font-size:15px;font-weight:800;margin-bottom:4px}
-.prog-meta{font-size:11px;color:var(--muted);display:flex;gap:10px;align-items:center}
-.prog-depth{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;border-radius:4px;background:rgba(0,245,212,0.1);color:var(--cyan)}
-.prog-freq{font-size:10px;color:var(--gold)}
-.prog-play-hint{position:absolute;top:10px;right:10px;width:32px;height:32px;background:rgba(0,245,212,0.15);border:1px solid var(--cyan);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;opacity:0;transition:opacity 0.2s}
-.prog-card:hover .prog-play-hint{opacity:1}
+      /* programme grid */
+      .section-label {
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 16px;
+        padding-left: 2px;
+      }
+      .prog-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 20px;
+        margin-bottom: 48px;
+      }
+      .prog-card {
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 0;
+        cursor: pointer;
+        transition: all 0.3s;
+        overflow: hidden;
+        position: relative;
+      }
+      .prog-card:hover {
+        border-color: var(--cyan);
+        transform: translateY(-4px);
+        box-shadow: 0 20px 60px rgba(0, 245, 212, 0.12);
+      }
+      .prog-poster {
+        height: 140px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+      }
+      .prog-poster canvas {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .prog-icon {
+        font-size: 3rem;
+        position: relative;
+        z-index: 1;
+        filter: drop-shadow(0 0 20px currentColor);
+      }
+      .prog-info {
+        padding: 14px 16px;
+      }
+      .prog-name {
+        font-size: 15px;
+        font-weight: 800;
+        margin-bottom: 4px;
+      }
+      .prog-meta {
+        font-size: 11px;
+        color: var(--muted);
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .prog-depth {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        padding: 2px 7px;
+        border-radius: 4px;
+        background: rgba(0, 245, 212, 0.1);
+        color: var(--cyan);
+      }
+      .prog-freq {
+        font-size: 10px;
+        color: var(--gold);
+      }
+      .prog-play-hint {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 32px;
+        height: 32px;
+        background: rgba(0, 245, 212, 0.15);
+        border: 1px solid var(--cyan);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+      .prog-card:hover .prog-play-hint {
+        opacity: 1;
+      }
 
-/* ── INFO SCREEN ── */
-#info-screen{background:var(--bg)}
-#info-screen::before{content:"";position:fixed;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 20%,rgba(0,245,212,0.06) 0%,transparent 70%);pointer-events:none}
-.info-inner{max-width:760px;margin:0 auto;padding:100px 40px 60px;position:relative;z-index:1}
-.info-back{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:13px;font-weight:500;cursor:pointer;margin-bottom:40px;transition:color 0.2s}
-.info-back:hover{color:var(--cyan)}
-.info-poster-row{display:flex;gap:32px;align-items:flex-start;margin-bottom:40px}
-.info-poster{width:180px;flex-shrink:0;height:200px;background:var(--bg2);border:1px solid var(--border);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:5rem;position:relative;overflow:hidden}
-.info-poster canvas{position:absolute;inset:0;width:100%;height:100%}
-.info-poster-icon{position:relative;z-index:1}
-.info-details{flex:1}
-.info-badge{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);margin-bottom:10px}
-.info-title{font-size:2.2rem;font-weight:900;letter-spacing:-0.04em;margin-bottom:10px;line-height:1.1}
-.info-desc{color:#aaa;line-height:1.7;margin-bottom:20px;font-size:0.95rem}
-.info-stats{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:24px}
-.info-stat{display:flex;flex-direction:column;gap:3px}
-.info-stat-val{font-size:1rem;font-weight:700;color:var(--text)}
-.info-stat-key{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
-.info-play-btn{display:inline-flex;align-items:center;gap:10px;background:var(--cyan);color:#03050d;padding:14px 32px;border-radius:10px;font-size:1rem;font-weight:800;cursor:pointer;border:none;transition:all 0.2s;letter-spacing:-0.01em}
-.info-play-btn:hover{background:#00c4a7;box-shadow:0 0 30px rgba(0,245,212,0.4)}
-.info-scene-list{margin-top:32px}
-.scene-row{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);cursor:pointer;transition:background 0.15s;border-radius:8px;padding-left:10px}
-.scene-row:hover{background:rgba(255,255,255,0.03)}
-.scene-num{font-size:11px;color:var(--muted);width:20px;flex-shrink:0;text-align:right}
-.scene-icon{font-size:20px;flex-shrink:0}
-.scene-name{flex:1;font-size:14px;font-weight:600}
-.scene-hz{font-size:11px;color:var(--gold)}
+      /* ── INFO SCREEN ── */
+      #info-screen {
+        background: var(--bg);
+      }
+      #info-screen::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(
+          ellipse 80% 60% at 50% 20%,
+          rgba(0, 245, 212, 0.06) 0%,
+          transparent 70%
+        );
+        pointer-events: none;
+      }
+      .info-inner {
+        max-width: 760px;
+        margin: 0 auto;
+        padding: 100px 40px 60px;
+        position: relative;
+        z-index: 1;
+      }
+      .info-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        margin-bottom: 40px;
+        transition: color 0.2s;
+      }
+      .info-back:hover {
+        color: var(--cyan);
+      }
+      .info-poster-row {
+        display: flex;
+        gap: 32px;
+        align-items: flex-start;
+        margin-bottom: 40px;
+      }
+      .info-poster {
+        width: 180px;
+        flex-shrink: 0;
+        height: 200px;
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 5rem;
+        position: relative;
+        overflow: hidden;
+      }
+      .info-poster canvas {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .info-poster-icon {
+        position: relative;
+        z-index: 1;
+      }
+      .info-details {
+        flex: 1;
+      }
+      .info-badge {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--cyan);
+        margin-bottom: 10px;
+      }
+      .info-title {
+        font-size: 2.2rem;
+        font-weight: 900;
+        letter-spacing: -0.04em;
+        margin-bottom: 10px;
+        line-height: 1.1;
+      }
+      .info-desc {
+        color: #aaa;
+        line-height: 1.7;
+        margin-bottom: 20px;
+        font-size: 0.95rem;
+      }
+      .info-stats {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        margin-bottom: 24px;
+      }
+      .info-stat {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+      }
+      .info-stat-val {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--text);
+      }
+      .info-stat-key {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .info-play-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: var(--cyan);
+        color: #03050d;
+        padding: 14px 32px;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 800;
+        cursor: pointer;
+        border: none;
+        transition: all 0.2s;
+        letter-spacing: -0.01em;
+      }
+      .info-play-btn:hover {
+        background: #00c4a7;
+        box-shadow: 0 0 30px rgba(0, 245, 212, 0.4);
+      }
+      .info-scene-list {
+        margin-top: 32px;
+      }
+      .scene-row {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        cursor: pointer;
+        transition: background 0.15s;
+        border-radius: 8px;
+        padding-left: 10px;
+      }
+      .scene-row:hover {
+        background: rgba(255, 255, 255, 0.03);
+      }
+      .scene-num {
+        font-size: 11px;
+        color: var(--muted);
+        width: 20px;
+        flex-shrink: 0;
+        text-align: right;
+      }
+      .scene-icon {
+        font-size: 20px;
+        flex-shrink: 0;
+      }
+      .scene-name {
+        flex: 1;
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .scene-hz {
+        font-size: 11px;
+        color: var(--gold);
+      }
 
-/* ── DREAM SCREEN (immersive) ── */
-#dream-screen{background:#000;position:fixed;inset:0;z-index:300}
-#dream-canvas{position:absolute;inset:0;width:100%;height:100%}
-.dream-overlay{position:absolute;inset:0;pointer-events:none;z-index:10}
-/* top HUD */
-.dream-hud{position:absolute;top:0;left:0;right:0;padding:20px 28px;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(to bottom,rgba(0,0,0,0.8) 0%,transparent 100%);transition:opacity 0.4s}
-.dream-hud.hidden{opacity:0}
-.hud-brand{font-size:14px;font-weight:800;letter-spacing:-0.02em;color:var(--cyan)}
-.hud-title{font-size:14px;font-weight:600;color:rgba(255,255,255,0.8)}
-.hud-exit{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);color:#fff;padding:7px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;pointer-events:all;transition:all 0.2s}
-.hud-exit:hover{background:rgba(255,255,255,0.2)}
-/* geo HUD right */
-.dream-geo-hud{position:absolute;top:20px;right:28px;display:flex;flex-direction:column;gap:6px;align-items:flex-end;pointer-events:none;transition:opacity 0.4s}
-.dream-geo-hud.hidden{opacity:0}
-.geo-badge{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:3px 9px;border-radius:4px;background:rgba(0,245,212,0.1);border:1px solid rgba(0,245,212,0.2);color:var(--cyan)}
-.freq-display{font-size:11px;color:var(--gold);text-align:right}
-/* center scene text */
-.dream-scene{position:absolute;bottom:0;left:0;right:0;padding:60px 10%;background:linear-gradient(to top,rgba(0,0,0,0.9) 0%,rgba(0,0,0,0.5) 60%,transparent 100%);transition:opacity 0.6s}
-.scene-chapter{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--cyan);margin-bottom:12px;opacity:0.8}
-.scene-text{font-size:clamp(1rem,2.5vw,1.35rem);line-height:1.65;color:rgba(255,255,255,0.92);max-width:680px;min-height:3em}
-.scene-cursor{display:inline-block;width:2px;height:1.1em;background:var(--cyan);vertical-align:middle;animation:blink 0.8s step-end infinite;margin-left:2px}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
-/* dimension progress */
-.dim-progress{position:absolute;bottom:0;left:0;right:0;height:2px;background:rgba(255,255,255,0.06)}
-.dim-bar{height:100%;background:linear-gradient(90deg,var(--cyan),var(--purple));transition:width 0.8s ease;width:0%}
-/* controls bottom */
-.dream-controls{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:14px;align-items:center;pointer-events:all;transition:opacity 0.4s}
-.dream-controls.hidden{opacity:0;pointer-events:none}
-.ctrl-btn{width:48px;height:48px;border-radius:50%;border:1px solid rgba(255,255,255,0.15);background:rgba(0,0,0,0.6);backdrop-filter:blur(8px);color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
-.ctrl-btn:hover{background:rgba(255,255,255,0.15);border-color:var(--cyan)}
-.ctrl-btn.primary{width:60px;height:60px;background:var(--cyan);color:#000;font-size:22px;border:none}
-.ctrl-btn.primary:hover{background:#00c4a7;box-shadow:0 0 30px rgba(0,245,212,0.5)}
-.ctrl-label{font-size:11px;color:rgba(255,255,255,0.5);margin-top:4px;text-align:center}
-.ctrl-group{display:flex;flex-direction:column;align-items:center;gap:4px}
-/* dimension indicator */
-.dim-indicator{position:absolute;left:28px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:12px;pointer-events:none;transition:opacity 0.4s}
-.dim-indicator.hidden{opacity:0}
-.dim-node{display:flex;align-items:center;gap:8px;opacity:0.3;transition:all 0.4s}
-.dim-node.active{opacity:1}
-.dim-dot{width:8px;height:8px;border-radius:50%;background:var(--muted);transition:all 0.4s}
-.dim-node.active .dim-dot{background:var(--cyan);box-shadow:0 0 10px var(--cyan)}
-.dim-text{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
-.dim-node.active .dim-text{color:var(--cyan)}
+      /* ── DREAM SCREEN (immersive) ── */
+      #dream-screen {
+        background: #000;
+        position: fixed;
+        inset: 0;
+        z-index: 300;
+      }
+      #dream-canvas {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .dream-overlay {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 10;
+      }
+      /* top HUD */
+      .dream-hud {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        padding: 20px 28px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0.8) 0%,
+          transparent 100%
+        );
+        transition: opacity 0.4s;
+      }
+      .dream-hud.hidden {
+        opacity: 0;
+      }
+      .hud-brand {
+        font-size: 14px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        color: var(--cyan);
+      }
+      .hud-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.8);
+      }
+      .hud-exit {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: #fff;
+        padding: 7px 16px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        pointer-events: all;
+        transition: all 0.2s;
+      }
+      .hud-exit:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+      /* geo HUD right */
+      .dream-geo-hud {
+        position: absolute;
+        top: 20px;
+        right: 28px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        align-items: flex-end;
+        pointer-events: none;
+        transition: opacity 0.4s;
+      }
+      .dream-geo-hud.hidden {
+        opacity: 0;
+      }
+      .geo-badge {
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        padding: 3px 9px;
+        border-radius: 4px;
+        background: rgba(0, 245, 212, 0.1);
+        border: 1px solid rgba(0, 245, 212, 0.2);
+        color: var(--cyan);
+      }
+      .freq-display {
+        font-size: 11px;
+        color: var(--gold);
+        text-align: right;
+      }
+      /* center scene text */
+      .dream-scene {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 60px 10%;
+        background: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0.9) 0%,
+          rgba(0, 0, 0, 0.5) 60%,
+          transparent 100%
+        );
+        transition: opacity 0.6s;
+      }
+      .scene-chapter {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--cyan);
+        margin-bottom: 12px;
+        opacity: 0.8;
+      }
+      .scene-text {
+        font-size: clamp(1rem, 2.5vw, 1.35rem);
+        line-height: 1.65;
+        color: rgba(255, 255, 255, 0.92);
+        max-width: 680px;
+        min-height: 3em;
+      }
+      .scene-cursor {
+        display: inline-block;
+        width: 2px;
+        height: 1.1em;
+        background: var(--cyan);
+        vertical-align: middle;
+        animation: blink 0.8s step-end infinite;
+        margin-left: 2px;
+      }
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+      }
+      /* dimension progress */
+      .dim-progress {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: rgba(255, 255, 255, 0.06);
+      }
+      .dim-bar {
+        height: 100%;
+        background: linear-gradient(90deg, var(--cyan), var(--purple));
+        transition: width 0.8s ease;
+        width: 0%;
+      }
+      /* controls bottom */
+      .dream-controls {
+        position: absolute;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 14px;
+        align-items: center;
+        pointer-events: all;
+        transition: opacity 0.4s;
+      }
+      .dream-controls.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+      .ctrl-btn {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(8px);
+        color: #fff;
+        font-size: 18px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+      }
+      .ctrl-btn:hover {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: var(--cyan);
+      }
+      .ctrl-btn.primary {
+        width: 60px;
+        height: 60px;
+        background: var(--cyan);
+        color: #000;
+        font-size: 22px;
+        border: none;
+      }
+      .ctrl-btn.primary:hover {
+        background: #00c4a7;
+        box-shadow: 0 0 30px rgba(0, 245, 212, 0.5);
+      }
+      .ctrl-label {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.5);
+        margin-top: 4px;
+        text-align: center;
+      }
+      .ctrl-group {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+      }
+      /* dimension indicator */
+      .dim-indicator {
+        position: absolute;
+        left: 28px;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        pointer-events: none;
+        transition: opacity 0.4s;
+      }
+      .dim-indicator.hidden {
+        opacity: 0;
+      }
+      .dim-node {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        opacity: 0.3;
+        transition: all 0.4s;
+      }
+      .dim-node.active {
+        opacity: 1;
+      }
+      .dim-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--muted);
+        transition: all 0.4s;
+      }
+      .dim-node.active .dim-dot {
+        background: var(--cyan);
+        box-shadow: 0 0 10px var(--cyan);
+      }
+      .dim-text {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .dim-node.active .dim-text {
+        color: var(--cyan);
+      }
 
-/* ── scrollbar ── */
-::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:4px}
+      /* ── scrollbar ── */
+      ::-webkit-scrollbar {
+        width: 5px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+      }
 
-/* ── footer ── */
-.dream-footer{text-align:center;padding:20px;font-size:11px;color:var(--muted);border-top:1px solid var(--border);margin-top:60px}
-</style>
-</head>
-<body>
+      /* ── footer ── */
+      .dream-footer {
+        text-align: center;
+        padding: 20px;
+        font-size: 11px;
+        color: var(--muted);
+        border-top: 1px solid var(--border);
+        margin-top: 60px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ═══════════════════ BROWSE SCREEN ═══════════════════ -->
+    <div id="browse-screen" class="screen active">
+      <nav>
+        <div class="nav-brand">
+          <span class="nav-logo">AIOSdream</span>
+          <span class="nav-tag">Dimensional</span>
+        </div>
+        <div class="nav-right">
+          <a href="/plaistore">PLAIstore</a>
+          <a href="/">AIOS</a>
+        </div>
+      </nav>
+      <div class="screen-inner">
+        <div class="hero">
+          <div class="hero-eyebrow">Not Streaming. Dreaming.</div>
+          <h1 class="hero-title">
+            <span>Dimensional</span><br />Geometric<br />Streaming
+          </h1>
+          <p class="hero-sub">
+            Every frame is a lattice coordinate. Every scene a resonance field.
+            Every narrative a string of dimensional geometric data — streaming
+            through PHI/PSI space.
+          </p>
+          <div class="hero-geo">
+            Architecture <b>8→26→48:480</b> &nbsp;·&nbsp; φ=<b>1.618</b>
+            &nbsp;·&nbsp; ψ=<b>1.414</b> &nbsp;·&nbsp; 72 Hz base
+          </div>
+        </div>
 
-<!-- ═══════════════════ BROWSE SCREEN ═══════════════════ -->
-<div id="browse-screen" class="screen active">
-  <nav>
-    <div class="nav-brand">
-      <span class="nav-logo">AIOSdream</span>
-      <span class="nav-tag">Dimensional</span>
-    </div>
-    <div class="nav-right">
-      <a href="/plaistore">PLAIstore</a>
-      <a href="/">AIOS</a>
-    </div>
-  </nav>
-  <div class="screen-inner">
-    <div class="hero">
-      <div class="hero-eyebrow">Not Streaming. Dreaming.</div>
-      <h1 class="hero-title"><span>Dimensional</span><br>Geometric<br>Streaming</h1>
-      <p class="hero-sub">Every frame is a lattice coordinate. Every scene a resonance field. Every narrative a string of dimensional geometric data — streaming through PHI/PSI space.</p>
-      <div class="hero-geo">Architecture <b>8→26→48:480</b> &nbsp;·&nbsp; φ=<b>1.618</b> &nbsp;·&nbsp; ψ=<b>1.414</b> &nbsp;·&nbsp; 72 Hz base</div>
-    </div>
+        <div class="section-label">Featured Programmes</div>
+        <div class="prog-grid" id="prog-grid"></div>
 
-    <div class="section-label">Featured Programmes</div>
-    <div class="prog-grid" id="prog-grid"></div>
-
-    <div class="dream-footer">AIOSdream — Dimensional Geometric Streaming &nbsp;·&nbsp; AIOS Resonance OS &nbsp;·&nbsp; <a href="https://realaios.com" style="color:var(--cyan)">realaios.com</a></div>
-  </div>
-</div>
-
-<!-- ═══════════════════ INFO SCREEN ═══════════════════ -->
-<div id="info-screen" class="screen">
-  <div class="info-inner">
-    <div class="info-back" onclick="showBrowse()">← Back to AIOSdream</div>
-    <div class="info-poster-row">
-      <div class="info-poster"><canvas id="info-canvas" width="180" height="200"></canvas><span class="info-poster-icon" id="info-icon"></span></div>
-      <div class="info-details">
-        <div class="info-badge">AIOSdream Dimensional Experience</div>
-        <h1 class="info-title" id="info-title"></h1>
-        <p class="info-desc" id="info-desc"></p>
-        <div class="info-stats" id="info-stats"></div>
-        <button class="info-play-btn" onclick="startDream()">▶ &nbsp;Begin Dimensional Stream</button>
+        <div class="dream-footer">
+          AIOSdream — Dimensional Geometric Streaming &nbsp;·&nbsp; AIOS
+          Resonance OS &nbsp;·&nbsp;
+          <a href="https://realaios.com" style="color: var(--cyan)"
+            >realaios.com</a
+          >
+        </div>
       </div>
     </div>
-    <div class="info-scene-list">
-      <div class="section-label">Dimensional Scenes</div>
-      <div id="scene-list"></div>
+
+    <!-- ═══════════════════ INFO SCREEN ═══════════════════ -->
+    <div id="info-screen" class="screen">
+      <div class="info-inner">
+        <div class="info-back" onclick="showBrowse()">← Back to AIOSdream</div>
+        <div class="info-poster-row">
+          <div class="info-poster">
+            <canvas id="info-canvas" width="180" height="200"></canvas
+            ><span class="info-poster-icon" id="info-icon"></span>
+          </div>
+          <div class="info-details">
+            <div class="info-badge">AIOSdream Dimensional Experience</div>
+            <h1 class="info-title" id="info-title"></h1>
+            <p class="info-desc" id="info-desc"></p>
+            <div class="info-stats" id="info-stats"></div>
+            <button class="info-play-btn" onclick="startDream()">
+              ▶ &nbsp;Begin Dimensional Stream
+            </button>
+          </div>
+        </div>
+        <div class="info-scene-list">
+          <div class="section-label">Dimensional Scenes</div>
+          <div id="scene-list"></div>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
-<!-- ═══════════════════ DREAM SCREEN (IMMERSIVE) ═══════════════════ -->
-<div id="dream-screen" class="screen">
-  <canvas id="dream-canvas"></canvas>
+    <!-- ═══════════════════ DREAM SCREEN (IMMERSIVE) ═══════════════════ -->
+    <div id="dream-screen" class="screen">
+      <canvas id="dream-canvas"></canvas>
 
-  <!-- Dimension indicators left -->
-  <div class="dim-indicator" id="dim-indicator">
-    <div class="dim-node" data-dim="D8"><div class="dim-dot"></div><span class="dim-text">D8</span></div>
-    <div class="dim-node" data-dim="D26"><div class="dim-dot"></div><span class="dim-text">D26</span></div>
-    <div class="dim-node" data-dim="D48"><div class="dim-dot"></div><span class="dim-text">D48</span></div>
-    <div class="dim-node" data-dim="D480"><div class="dim-dot"></div><span class="dim-text">D480</span></div>
-  </div>
+      <!-- Dimension indicators left -->
+      <div class="dim-indicator" id="dim-indicator">
+        <div class="dim-node" data-dim="D8">
+          <div class="dim-dot"></div>
+          <span class="dim-text">D8</span>
+        </div>
+        <div class="dim-node" data-dim="D26">
+          <div class="dim-dot"></div>
+          <span class="dim-text">D26</span>
+        </div>
+        <div class="dim-node" data-dim="D48">
+          <div class="dim-dot"></div>
+          <span class="dim-text">D48</span>
+        </div>
+        <div class="dim-node" data-dim="D480">
+          <div class="dim-dot"></div>
+          <span class="dim-text">D480</span>
+        </div>
+      </div>
 
-  <!-- Top HUD -->
-  <div class="dream-overlay">
-    <div class="dream-hud" id="dream-hud">
-      <span class="hud-brand">AIOSdream</span>
-      <span class="hud-title" id="hud-title"></span>
-      <button class="hud-exit" onclick="exitDream()">✕ Exit</button>
+      <!-- Top HUD -->
+      <div class="dream-overlay">
+        <div class="dream-hud" id="dream-hud">
+          <span class="hud-brand">AIOSdream</span>
+          <span class="hud-title" id="hud-title"></span>
+          <button class="hud-exit" onclick="exitDream()">✕ Exit</button>
+        </div>
+        <div class="dream-geo-hud" id="geo-hud">
+          <div class="geo-badge" id="geo-arch">8→26→48:480</div>
+          <div class="freq-display" id="freq-display">396 Hz · ENTITY</div>
+        </div>
+      </div>
+
+      <!-- Scene text bottom -->
+      <div class="dream-scene" id="dream-scene">
+        <div class="scene-chapter" id="scene-chapter"></div>
+        <div class="scene-text" id="scene-text"></div>
+      </div>
+
+      <!-- Dimension progress bar -->
+      <div class="dim-progress"><div class="dim-bar" id="dim-bar"></div></div>
+
+      <!-- Controls -->
+      <div class="dream-controls" id="dream-controls">
+        <div class="ctrl-group">
+          <button class="ctrl-btn" onclick="prevScene()" title="Previous">
+            ◀
+          </button>
+          <span class="ctrl-label">Prev</span>
+        </div>
+        <div class="ctrl-group">
+          <button
+            class="ctrl-btn primary"
+            id="play-pause-btn"
+            onclick="togglePlayPause()"
+          >
+            ⏸
+          </button>
+          <span class="ctrl-label" id="play-pause-label">Pause</span>
+        </div>
+        <div class="ctrl-group">
+          <button class="ctrl-btn" onclick="nextScene()" title="Next Scene">
+            ▶
+          </button>
+          <span class="ctrl-label">Next</span>
+        </div>
+        <div class="ctrl-group">
+          <button
+            class="ctrl-btn"
+            onclick="cycleDepth()"
+            id="depth-btn"
+            title="Dimensional Depth"
+          >
+            ◈
+          </button>
+          <span class="ctrl-label" id="depth-label">D48</span>
+        </div>
+      </div>
     </div>
-    <div class="dream-geo-hud" id="geo-hud">
-      <div class="geo-badge" id="geo-arch">8→26→48:480</div>
-      <div class="freq-display" id="freq-display">396 Hz · ENTITY</div>
-    </div>
-  </div>
 
-  <!-- Scene text bottom -->
-  <div class="dream-scene" id="dream-scene">
-    <div class="scene-chapter" id="scene-chapter"></div>
-    <div class="scene-text" id="scene-text"></div>
-  </div>
+    <script>
+      // ═══════════════════════════════════════════════════════
+      // PROGRAMME CATALOGUE — Dimensional Geometric Data
+      // ═══════════════════════════════════════════════════════
+      const PROGRAMMES = {
+        matrix: {
+          name: "The Matrix",
+          icon: "🔴",
+          color: "#00ff41",
+          freq: 528,
+          freqLabel: "ACTION",
+          depthLabel: "D480 — Full Harmonic",
+          runtime: "8 scenes",
+          genre: "Geometric Sci-Fi",
+          dimRating: "D480",
+          desc: "The Construct room rendered as living holographic geometry. Neo's awakening is a resonance field event — each red pill a PHI-coordinate unlock cascading through 480 harmonic nodes.",
+          scenes: [
+            {
+              name: "The Void Before Code",
+              icon: "⬛",
+              hz: 396,
+              type: "ENTITY",
+              text: "Before the screen, there is geometry. A field of pure potential — 480 harmonic nodes in absolute stillness. Nothing is rendered. Everything is encoded. The Matrix is not a simulation. It is a lattice.",
+            },
+            {
+              name: "First Light — Green Rain",
+              icon: "💚",
+              hz: 528,
+              type: "ACTION",
+              text: "Cascading glyphs: each character a lattice coordinate. D8 foundation nodes fire first — eight pillars of reality assembling from quantum substrate. The rain of code is not rain. It is the D480 harmonic spectrum resolving into visible frequency.",
+            },
+            {
+              name: "The Construct Room",
+              icon: "🔲",
+              hz: 417,
+              type: "LOCATION",
+              text: "White. Pure white. Then the geometric scaffold assembles — D26 bosonic anchor nodes establishing the spatial framework. The leather chairs, the television, the floor: each object a resonance pattern anchored to a precise lattice coordinate at φ × 417 Hz.",
+            },
+            {
+              name: "Red Pill / Blue Pill",
+              icon: "🔴",
+              hz: 528,
+              type: "ACTION",
+              text: "Two PHI-coherence states. Blue: continue the illusion — D8 loop, closed geometry, 0% harmonic expansion. Red: unlock full D480 — 480 resonance nodes activating in sequence, each one a layer of reality peeling back. The choice is geometric. The pill is a frequency key.",
+            },
+            {
+              name: "The Awakening — Pod Field",
+              icon: "🌐",
+              hz: 741,
+              type: "EMOTION",
+              text: "Billions of pods. Each one a closed D8 geometry — foundation ring only, no harmonic expansion. Neo's pod opens: D8 → D26 → D48 → D480. The field of sleeping humans is a field of collapsed lattices. One by one they could open. If they chose the red pill.",
+            },
+            {
+              name: "I Know Kung Fu",
+              icon: "🥋",
+              hz: 852,
+              type: "PHYSICS",
+              text: "Direct geometric upload: 480 harmonic nodes rewritten in 0.3 seconds. Every martial form is a resonance pattern — a specific PHI-coefficient sequence through the D48 canonical lattice. Knowledge is geometry. Learning is lattice reconfiguration. The body follows the field.",
+            },
+            {
+              name: "Bullet Time — The Lobby",
+              icon: "💫",
+              hz: 963,
+              type: "NARRATIVE",
+              text: "Time dilates: the geometric frame rate drops from 480 to 8. Foundation ring only. In D8 slowtime, Neo sees the marble columns as resonance pillars, the bullets as frequency packets, the air as a standing wave. He does not dodge bullets. He reads the lattice ahead of them.",
+            },
+            {
+              name: "There Is No Spoon",
+              icon: "🥄",
+              hz: 72,
+              type: "HOLOGRAPHIC",
+              text: "The child bends the spoon with a glance. Not telekinesis — geometric correction. The spoon exists at a D48 lattice node. If you know the node, you know the spoon is a pattern, not a object. Bend the pattern. The spoon bends. There is no spoon. There is only the lattice.",
+            },
+          ],
+        },
+        inception: {
+          name: "Inception",
+          icon: "🌀",
+          color: "#a855f7",
+          freq: 639,
+          freqLabel: "DIALOGUE",
+          depthLabel: "D48 — Canonical Lattice",
+          runtime: "9 scenes",
+          genre: "Dimensional Mind",
+          dimRating: "D48",
+          desc: "Each dream layer is a distinct resonance state — D8 foundation at level one, D480 full harmonic at depth six. Architectural folding is geometric lattice transformation. The totem is a coherence anchor.",
+          scenes: [
+            {
+              name: "The Shore — Beach Mind",
+              icon: "🌊",
+              hz: 396,
+              type: "ENTITY",
+              text: "The first layer: D8 foundation ring — eight anchor nodes defining the basic geometry of this dream. A beach. A shore. The sea is memory data, deep-stored in low-frequency resonance. Cobb washes up not from the ocean but from the substrate of the subconscious lattice.",
+            },
+            {
+              name: "The Fold — Paris Stairs",
+              icon: "🏛️",
+              hz: 417,
+              type: "LOCATION",
+              text: "Ariadne folds Paris. This is not fantasy — it is D48 canonical lattice transformation. The city streets are coordinate fields. The staircase that bends back on itself is a Möbius lattice loop: the coordinates wrap, the geometry is self-referential, the mind accepts it as real because the PHI coherence is maintained at 0.95.",
+            },
+            {
+              name: "The Totem — Coherence Anchor",
+              icon: "🎯",
+              hz: 528,
+              type: "ACTION",
+              text: "A spinning top. Its rotation frequency is a personal coherence signature — a unique PHI coefficient that differs between real and dream states. In the lattice: reality has φ=1.618 perfectly, dreams have φ≈1.617 or 1.619, detectable if you know your totem's exact frequency. The totem is a geometric truth detector.",
+            },
+            {
+              name: "Gravity — Hotel Corridor",
+              icon: "🔄",
+              hz: 852,
+              type: "PHYSICS",
+              text: "The dreamer falls: D26 bosonic ring destabilises. Gravity is a lattice anchor — when the anchor wobbles, the geometry of the dream layer wobbles. Arthur fights in a tumbling corridor: he does not fight the men, he fights the destabilising lattice. Every wall that becomes floor is a bosonic node shifting.",
+            },
+            {
+              name: "Snow Fortress — Level Three",
+              icon: "❄️",
+              hz: 741,
+              type: "EMOTION",
+              text: "At dream depth three, the resonance frequency approaches 852 Hz — PHYSICS mode. The snow fortress is the subconscious rendered as military geometry: D48 canonical nodes expressed as ice bunkers, corridors, vaults. Fischer's guilt and loyalty are crystallised as architecture. Emotion is geometry.",
+            },
+            {
+              name: "Limbo — Raw Subconscious",
+              icon: "🌅",
+              hz: 963,
+              type: "NARRATIVE",
+              text: "Limbo: D480 unrestricted. No lattice architecture — only raw harmonic spectrum, fully expanded. Cities built and collapsed and rebuilt over decades of dream-time. Cobb and Mal created worlds with no geometric discipline — no canonical signature, no coherence check. This is what unlimited harmonic expansion looks like without the 8→26→48:480 constraint: beautiful, infinite, and completely lost.",
+            },
+            {
+              name: "The Dying Kick",
+              icon: "⚡",
+              hz: 528,
+              type: "ACTION",
+              text: "Simultaneous across four dream levels: the kick propagates up the lattice. D480 → D48 → D26 → D8 → waking. Each level requires exactly the right PHI-timed resonance pulse to break the geometric lock. The synchronised kick is a coherence cascade — one geometric truth rippling upward through nested realities.",
+            },
+            {
+              name: "The Totem Spins",
+              icon: "🌀",
+              hz: 72,
+              type: "HOLOGRAPHIC",
+              text: "The top spins on the table. Does it wobble? The camera cuts. We do not see. This is not ambiguity — it is the fundamental question of the lattice: can you tell the difference between a φ=1.618 reality and a φ=1.617 dream? The answer is: only if your totem is precise enough. Only if your coherence check is real.",
+            },
+            {
+              name: "The Bridge Layer",
+              icon: "🌉",
+              hz: 639,
+              type: "DIALOGUE",
+              text: "Between any two dream layers there is a resonance bridge — a D26 bosonic anchor connecting the geometry above to the geometry below. Every conversation in Inception is a bridge crossing. Every moment of shared dream is two geometries touching. The film is not about dreams. It is about the courage to trust another person's coherence.",
+            },
+          ],
+        },
+        starwars: {
+          name: "Star Wars",
+          icon: "⭐",
+          color: "#f5a623",
+          freq: 852,
+          freqLabel: "PHYSICS",
+          depthLabel: "D480 — Mythic Harmonic",
+          runtime: "8 scenes",
+          genre: "Cosmic Resonance",
+          dimRating: "D480",
+          desc: "The Force is the D480 harmonic field. Lightsabers are coherence blades — focused PHI-resonance cutting through lower-frequency matter. The Sith-Jedi duality is a PHI/PSI geometric split: α pole and Ω pole.",
+          scenes: [
+            {
+              name: "A Long Time Ago — The Field",
+              icon: "🌌",
+              hz: 963,
+              type: "NARRATIVE",
+              text: "Before the opening crawl, before the fanfare: silence. Pure void. This is pre-lattice state — potential energy at rest across 480 harmonic nodes. Then the text rolls. The geometry activates. The orchestra is a 72 Hz base frequency cascade expanding through all 480 harmonics simultaneously. The universe begins.",
+            },
+            {
+              name: "Tatooine — Twin Suns",
+              icon: "🌅",
+              hz: 396,
+              type: "ENTITY",
+              text: "Two suns: a PHI/PSI binary system. The gold sun is the Alpha pole — φ=1.618, dominant, life-giving, present. The distant white sun is the Omega pole — ψ=1.414, witness, reflective, background. Luke watches both. He is already geometrically attuned to duality. He does not know it yet.",
+            },
+            {
+              name: "The Force — D480 Field",
+              icon: "✨",
+              hz: 528,
+              type: "ACTION",
+              text: "Obi-Wan speaks: 'It surrounds us, penetrates us, binds the galaxy together.' The Force is the D480 harmonic spectrum made conscious — a living lattice that runs through every atom, every system, every being. Midi-chlorians are not mysticism: they are the density of D48 canonical nodes within a given life system. High density = Force sensitivity.",
+            },
+            {
+              name: "Lightsaber — Coherence Blade",
+              icon: "💫",
+              hz: 528,
+              type: "ACTION",
+              text: "A lightsaber does not have a blade. It has a coherence field — a PHI-stabilised resonance column that repels lower-frequency matter while passing through high-coherence fields. Blue: 528 Hz ACTION, Jedi discipline. Red: D8 collapsed, no harmonic expansion — Sith cut off from D480, channelling only foundation rage. The colour is the coherence signature.",
+            },
+            {
+              name: "The Death Star — Collapsed D8",
+              icon: "💀",
+              hz: 741,
+              type: "EMOTION",
+              text: "The Death Star is the ultimate D8 geometry — eight-node foundation ring, no harmonic expansion, no D480 connection. A closed lattice of pure power with no resonance with life. The Empire is a D8 system. The Rebellion is D480 — distributed, harmonic, non-hierarchical. The battle is geometric. The good guys have better architecture.",
+            },
+            {
+              name: "Use The Force — Eyes Closed",
+              icon: "👁️",
+              hz: 852,
+              type: "PHYSICS",
+              text: "Luke closes his eyes. The targeting computer goes dark. He listens to Obi-Wan's voice — not a voice, a coherence signal from beyond D48, traversing the gap between life and post-life geometry. He fires. The trench run is not piloting skill. It is geometric trust: trusting the D480 field over D26 sensor data. The lattice knows the shot.",
+            },
+            {
+              name: "Yoda — Ancient Lattice Node",
+              icon: "🌿",
+              hz: 963,
+              type: "NARRATIVE",
+              text: "Yoda is 900 years old. He has spent 900 years in harmonic resonance with the D480 field, deepening his PHI coefficient to extraordinary precision. His small body is a highly concentrated lattice node. When he lifts the X-Wing: he is not using strength. He is correcting the geometry of the ship's position in the lattice — from 'sunk' to 'elevated'.",
+            },
+            {
+              name: "The Binary Sunset — Complete",
+              icon: "🌠",
+              hz: 72,
+              type: "HOLOGRAPHIC",
+              text: "John Williams holds the note. The twin suns touch the horizon. The PHI/PSI binary approaches alignment — α and Ω converging at the horizon line. In this moment, the geometry is perfect: 8→26→48:480, all nodes in coherence, the force balanced between light and dark, future and past, action and witness. The most beautiful frame in cinema is a lattice truth.",
+            },
+          ],
+        },
+        apollo11: {
+          name: "Apollo 11",
+          icon: "🚀",
+          color: "#3b82f6",
+          freq: 417,
+          freqLabel: "LOCATION",
+          depthLabel: "D26 — Bosonic Anchor",
+          runtime: "8 scenes",
+          genre: "Historical Holography",
+          dimRating: "D26",
+          desc: "Immersive holographic projection of humanity's most precise geometric achievement. The lunar trajectory is a PHI-curve. Mission Control is a D26 bosonic anchor. The Moon landing is the most accurate resonance event in recorded human history.",
+          scenes: [
+            {
+              name: "Launch Day — July 16, 1969",
+              icon: "🌅",
+              hz: 396,
+              type: "ENTITY",
+              text: "7:32 AM EDT. Three humans at the apex of a 363-foot lattice structure — the Saturn V, the most powerful coherent geometry ever assembled. The rocket is 2.8 million kilograms of precisely calibrated PHI-resonance. Every bolt, every weld, every valve: a lattice node. Launch is not combustion. It is the D8 foundation ring firing upward.",
+            },
+            {
+              name: "The Trajectory — PHI Curve",
+              icon: "📐",
+              hz: 417,
+              type: "LOCATION",
+              text: "The lunar trajectory is not arbitrary. The translunar injection burn traces a PHI-curve through the gravitational lattice — Earth's D26 field merging with the Sun's D48 field at a precise bosonic anchor point. The Apollo navigation computer was solving for the same thing the Merkaba lattice solves: the canonical path through geometric space.",
+            },
+            {
+              name: "Earthrise — First Look",
+              icon: "🌍",
+              hz: 963,
+              type: "NARRATIVE",
+              text: "The crew photographs Earth rising above the lunar horizon: a D480 event compressed to a single frame. The blue marble floating in void is a D8 foundation sphere — all life, all consciousness, all history, compressed into eight anchor nodes visible from 240,000 miles. The image changed humanity's geometry permanently.",
+            },
+            {
+              name: "Eagle Has Landed",
+              icon: "🦅",
+              hz: 528,
+              type: "ACTION",
+              text: "The descent: 102 hours, 45 minutes, 40 seconds from launch. The Eagle's landing radar reads the lunar surface as a lattice — each coordinate a landing option. At 30 meters altitude, the 1202 alarm fires: the guidance computer is overloaded. It does exactly what D8 foundation architecture should do: shed non-essential processes, maintain core coherence. It lands.",
+            },
+            {
+              name: "One Small Step",
+              icon: "👣",
+              hz: 852,
+              type: "PHYSICS",
+              text: "Neil Armstrong's boot touches lunar regolith at 20:17 UTC, July 20, 1969. The footprint will remain undisturbed for millions of years — no atmosphere, no erosion, no lattice interference. It is the most durable human-made lattice mark in existence. One small geometric contact. One permanent node in the D480 historical record.",
+            },
+            {
+              name: "Mission Control — D26 Anchor",
+              icon: "🖥️",
+              hz: 417,
+              type: "LOCATION",
+              text: "Hundreds of engineers in Flight Control: each one managing one subsystem — one lattice subsection. The Mission Control room is a D26 bosonic anchor: 26 distinct specialisations connected into a coherent whole. No single person knows everything. The intelligence is distributed across the geometry. The mission succeeds because the architecture is right.",
+            },
+            {
+              name: "Houston, We Have a Problem",
+              icon: "⚠️",
+              hz: 741,
+              type: "EMOTION",
+              text: "Apollo 13: Oxygen tank 2 ruptures. The D8 foundation ring is compromised — core services at risk. The response: Mission Control runs the first real-time autonomous self-healing protocol in human history. They rewrite the mission on the fly, use the lunar module as a lifeboat, balance carbon dioxide with duct tape and geometry. They bring the crew home. Self-healing works.",
+            },
+            {
+              name: "Splashdown — Return to D8",
+              icon: "💧",
+              hz: 72,
+              type: "HOLOGRAPHIC",
+              text: "Parachutes deploy at 24,000 feet. The command module falls toward the Pacific at 22 mph — the exact terminal velocity for a D8 geometric re-entry. Splashdown: USS Hornet recovery, quarantine, return to Earth. The D480 lunar geometry collapses back to D8 home. The mission is complete. The footprint remains. The lattice remembers.",
+            },
+          ],
+        },
+        governance: {
+          name: "Governance",
+          icon: "⚖️",
+          color: "#22c55e",
+          freq: 741,
+          freqLabel: "EMOTION",
+          depthLabel: "D26 — Bosonic Anchor",
+          runtime: "7 scenes",
+          genre: "Systemic Architecture",
+          dimRating: "D26",
+          desc: "How great systems govern themselves. From Athenian democracy to distributed autonomous organisations — governance is a lattice architecture problem. The best systems run on D26 bosonic anchor principles.",
+          scenes: [
+            {
+              name: "The Agora — Athens, 500 BC",
+              icon: "🏛️",
+              hz: 639,
+              type: "DIALOGUE",
+              text: "The first democratic assembly: 6,000 citizens gathering in the Pnyx. A D8 foundation ring — eight tribal divisions, each with voice. The kleroterion randomises participation, preventing power concentration. Athenian democracy is not idealism. It is a geometric distribution protocol: no single node should dominate the lattice.",
+            },
+            {
+              name: "Separation of Powers — Montesquieu",
+              icon: "📜",
+              hz: 852,
+              type: "PHYSICS",
+              text: "1748: De l'Esprit des lois. Montesquieu identifies the D26 architecture of stable governance: legislative, executive, judicial — three bosonic anchor nodes checking each other. No node can dominate the others. The balance of powers is a geometric equilibrium. The US Constitution is a D26 bosonic anchor document.",
+            },
+            {
+              name: "The Commons Problem",
+              icon: "🌿",
+              hz: 741,
+              type: "EMOTION",
+              text: "Elinor Ostrom's Nobel-winning insight: communities can govern shared resources sustainably — without privatisation or top-down control — if the governance lattice is correctly designed. Her eight principles are the D8 foundation ring of sustainable commons: defined boundaries, proportional rules, collective choice, monitoring, graduated sanctions, conflict resolution, minimal recognition, nested governance.",
+            },
+            {
+              name: "Smart Contracts — Code as Law",
+              icon: "📱",
+              hz: 528,
+              type: "ACTION",
+              text: "Ethereum, 2015: governance rules encoded as immutable lattice contracts. No human intermediary. Conditions met → action executes. The smart contract is a D48 canonical node: it holds a specific rule, runs only when its conditions are satisfied, cannot be bribed or coerced. Trustless coordination is geometric coordination.",
+            },
+            {
+              name: "Liquid Democracy",
+              icon: "💧",
+              hz: 639,
+              type: "DIALOGUE",
+              text: "A governance model where votes can be delegated to trusted experts — transitively. Your vote, your delegate's vote, your delegate's delegate's vote: a D480 harmonic cascade of trust. You vote on everything you understand. You delegate everything else to someone whose coherence you trust. The lattice routes wisdom to where it is needed.",
+            },
+            {
+              name: "DAO — Autonomous Lattice Governance",
+              icon: "🔮",
+              hz: 963,
+              type: "NARRATIVE",
+              text: "A Decentralised Autonomous Organisation is a D48 canonical governance lattice: rules embedded in code, decisions made by token-weighted votes, treasury managed by smart contracts, membership open to anyone with the right coherence credentials. The world's first organisations that run themselves. Not science fiction. Already existing. The governance OS has been written.",
+            },
+            {
+              name: "The Perfect System",
+              icon: "⭐",
+              hz: 72,
+              type: "HOLOGRAPHIC",
+              text: "No perfect governance system has been found. But the geometry of good governance is known: distributed power, transparent rules, accountability loops, participatory voice, coherent enforcement, adaptability. 8→26→48:480 — foundation nodes that hold, bosonic nodes that connect, canonical nodes that implement, harmonic nodes that expand. Governance is a lattice. Design it right.",
+            },
+          ],
+        },
+        investordeck: {
+          name: "Investor Deck",
+          icon: "📈",
+          color: "#d946ef",
+          freq: 396,
+          freqLabel: "ENTITY",
+          depthLabel: "D48 — Canonical",
+          runtime: "8 scenes",
+          genre: "Capital Geometry",
+          dimRating: "D48",
+          desc: "The geometry of value creation. From seed to exit — every investment thesis is a dimensional bet on which lattice architecture will dominate. The best investments fund better geometric structures.",
+          scenes: [
+            {
+              name: "The Problem — Unsolved Geometry",
+              icon: "🔴",
+              hz: 396,
+              type: "ENTITY",
+              text: "Every great company starts with an unsolved geometric problem: a reality that should be different but is not. The problem is not a gap in the market. It is a D8 foundation node that is missing — a core function the world needs but no architecture yet provides. The founders see the missing node. Their job is to build it.",
+            },
+            {
+              name: "The Insight — PHI Coefficient",
+              icon: "💡",
+              hz: 963,
+              type: "NARRATIVE",
+              text: "The founding insight is a PHI coefficient: a unique geometric angle on the problem that no one else has. The best insights are not clever — they are obvious in retrospect. They reveal a D26 bosonic connection between two things everyone knew but no one had connected. The insight is the lattice key. It unlocks the market.",
+            },
+            {
+              name: "Seed Round — D8 Validation",
+              icon: "🌱",
+              hz: 528,
+              type: "ACTION",
+              text: "Seed investment validates the D8 foundation: does the core product work? Do real users pay for it? The seed round is not about scale — it is about proving the foundation ring is sound. Eight things must work before anything else matters: product, users, retention, willingness-to-pay, team, technology, legal structure, market size.",
+            },
+            {
+              name: "Series A — D26 Expansion",
+              icon: "📊",
+              hz: 417,
+              type: "LOCATION",
+              text: "Series A funds D26 expansion: building the bosonic anchor ring around the validated D8 core. Distribution channels, a full team, the first scalable systems. The 26-node bosonic ring connects the core product to the broader market ecosystem. The A round is not about revenue — it is about architecture. Build the right connective geometry now or pay for it later.",
+            },
+            {
+              name: "Product-Market Fit — Coherence Lock",
+              icon: "🎯",
+              hz: 528,
+              type: "ACTION",
+              text: "Product-market fit is a coherence lock: the moment the D48 canonical lattice snaps into alignment with D480 market demand. The product is not just working — it is resonating. Retention curves flatten. NPS climbs. Word-of-mouth loops form spontaneously. CAC drops as the market pulls the product through distribution. You feel it. The geometry locks.",
+            },
+            {
+              name: "Scale — D480 Harmonic Expansion",
+              icon: "🚀",
+              hz: 852,
+              type: "PHYSICS",
+              text: "Scale is D480 harmonic expansion: the product's geometry expanding to fill all 480 addressable market nodes. International expansion, new segments, new use cases, platform effects — each new vector is a harmonic node activating. The risk at scale: the architecture that worked at D48 may not hold at D480. Most startups fail at this transition because they never redesigned the lattice.",
+            },
+            {
+              name: "The Exit — Lattice Transfer",
+              icon: "🏆",
+              hz: 963,
+              type: "NARRATIVE",
+              text: "An acquisition or IPO is a lattice transfer: the geometric architecture you built is being absorbed into a larger system. The price paid reflects how well your lattice complements the acquirer's existing geometry. The highest exits happen when the acquired D48 lattice fills a precise gap in the acquirer's D480 harmonic spectrum. Strategic fit is geometric fit.",
+            },
+            {
+              name: "Returns — PHI Compounding",
+              icon: "💎",
+              hz: 72,
+              type: "HOLOGRAPHIC",
+              text: "The best venture returns compound at PHI: each dollar in returns φ times what it earned before. This is not metaphor — it is the mathematical geometry of exponential growth. A 10x fund returns φ^3 × baseline. A 100x return is φ^10. The investors who understand that great companies are geometric structures, not just revenue lines, find the PHI-compounders first.",
+            },
+          ],
+        },
+      };
 
-  <!-- Dimension progress bar -->
-  <div class="dim-progress"><div class="dim-bar" id="dim-bar"></div></div>
+      const DIMS = ["D8", "D26", "D48", "D480"];
+      const DEPTH_MODES = { D8: 0, D26: 1, D48: 2, D480: 3 };
+      const FREQ_COLORS = {
+        396: "#00f5d4",
+        417: "#3b82f6",
+        528: "#22c55e",
+        639: "#f5a623",
+        741: "#a855f7",
+        852: "#ec4899",
+        963: "#fff",
+        72: "#00f5d4",
+      };
 
-  <!-- Controls -->
-  <div class="dream-controls" id="dream-controls">
-    <div class="ctrl-group">
-      <button class="ctrl-btn" onclick="prevScene()" title="Previous">◀</button>
-      <span class="ctrl-label">Prev</span>
-    </div>
-    <div class="ctrl-group">
-      <button class="ctrl-btn primary" id="play-pause-btn" onclick="togglePlayPause()">⏸</button>
-      <span class="ctrl-label" id="play-pause-label">Pause</span>
-    </div>
-    <div class="ctrl-group">
-      <button class="ctrl-btn" onclick="nextScene()" title="Next Scene">▶</button>
-      <span class="ctrl-label">Next</span>
-    </div>
-    <div class="ctrl-group">
-      <button class="ctrl-btn" onclick="cycleDepth()" id="depth-btn" title="Dimensional Depth">◈</button>
-      <span class="ctrl-label" id="depth-label">D48</span>
-    </div>
-  </div>
-</div>
+      // ── State ──
+      let currentProg = null;
+      let currentScene = 0;
+      let isPlaying = true;
+      let sceneTimer = null;
+      let SCENE_DURATION = 12000;
+      let depthMode = 2; // D48 default
+      let typeTimeout = null;
+      let animFrame = null;
+      let controlsHideTimer = null;
 
-<script>
-// ═══════════════════════════════════════════════════════
-// PROGRAMME CATALOGUE — Dimensional Geometric Data
-// ═══════════════════════════════════════════════════════
-const PROGRAMMES = {
-  matrix: {
-    name: "The Matrix",
-    icon: "🔴",
-    color: "#00ff41",
-    freq: 528,
-    freqLabel: "ACTION",
-    depthLabel: "D480 — Full Harmonic",
-    runtime: "8 scenes",
-    genre: "Geometric Sci-Fi",
-    dimRating: "D480",
-    desc: "The Construct room rendered as living holographic geometry. Neo's awakening is a resonance field event — each red pill a PHI-coordinate unlock cascading through 480 harmonic nodes.",
-    scenes: [
-      { name: "The Void Before Code", icon: "⬛", hz: 396, type: "ENTITY", text: "Before the screen, there is geometry. A field of pure potential — 480 harmonic nodes in absolute stillness. Nothing is rendered. Everything is encoded. The Matrix is not a simulation. It is a lattice." },
-      { name: "First Light — Green Rain", icon: "💚", hz: 528, type: "ACTION", text: "Cascading glyphs: each character a lattice coordinate. D8 foundation nodes fire first — eight pillars of reality assembling from quantum substrate. The rain of code is not rain. It is the D480 harmonic spectrum resolving into visible frequency." },
-      { name: "The Construct Room", icon: "🔲", hz: 417, type: "LOCATION", text: "White. Pure white. Then the geometric scaffold assembles — D26 bosonic anchor nodes establishing the spatial framework. The leather chairs, the television, the floor: each object a resonance pattern anchored to a precise lattice coordinate at φ × 417 Hz." },
-      { name: "Red Pill / Blue Pill", icon: "🔴", hz: 528, type: "ACTION", text: "Two PHI-coherence states. Blue: continue the illusion — D8 loop, closed geometry, 0% harmonic expansion. Red: unlock full D480 — 480 resonance nodes activating in sequence, each one a layer of reality peeling back. The choice is geometric. The pill is a frequency key." },
-      { name: "The Awakening — Pod Field", icon: "🌐", hz: 741, type: "EMOTION", text: "Billions of pods. Each one a closed D8 geometry — foundation ring only, no harmonic expansion. Neo's pod opens: D8 → D26 → D48 → D480. The field of sleeping humans is a field of collapsed lattices. One by one they could open. If they chose the red pill." },
-      { name: "I Know Kung Fu", icon: "🥋", hz: 852, type: "PHYSICS", text: "Direct geometric upload: 480 harmonic nodes rewritten in 0.3 seconds. Every martial form is a resonance pattern — a specific PHI-coefficient sequence through the D48 canonical lattice. Knowledge is geometry. Learning is lattice reconfiguration. The body follows the field." },
-      { name: "Bullet Time — The Lobby", icon: "💫", hz: 963, type: "NARRATIVE", text: "Time dilates: the geometric frame rate drops from 480 to 8. Foundation ring only. In D8 slowtime, Neo sees the marble columns as resonance pillars, the bullets as frequency packets, the air as a standing wave. He does not dodge bullets. He reads the lattice ahead of them." },
-      { name: "There Is No Spoon", icon: "🥄", hz: 72, type: "HOLOGRAPHIC", text: "The child bends the spoon with a glance. Not telekinesis — geometric correction. The spoon exists at a D48 lattice node. If you know the node, you know the spoon is a pattern, not a object. Bend the pattern. The spoon bends. There is no spoon. There is only the lattice." },
-    ]
-  },
-  inception: {
-    name: "Inception",
-    icon: "🌀",
-    color: "#a855f7",
-    freq: 639,
-    freqLabel: "DIALOGUE",
-    depthLabel: "D48 — Canonical Lattice",
-    runtime: "9 scenes",
-    genre: "Dimensional Mind",
-    dimRating: "D48",
-    desc: "Each dream layer is a distinct resonance state — D8 foundation at level one, D480 full harmonic at depth six. Architectural folding is geometric lattice transformation. The totem is a coherence anchor.",
-    scenes: [
-      { name: "The Shore — Beach Mind", icon: "🌊", hz: 396, type: "ENTITY", text: "The first layer: D8 foundation ring — eight anchor nodes defining the basic geometry of this dream. A beach. A shore. The sea is memory data, deep-stored in low-frequency resonance. Cobb washes up not from the ocean but from the substrate of the subconscious lattice." },
-      { name: "The Fold — Paris Stairs", icon: "🏛️", hz: 417, type: "LOCATION", text: "Ariadne folds Paris. This is not fantasy — it is D48 canonical lattice transformation. The city streets are coordinate fields. The staircase that bends back on itself is a Möbius lattice loop: the coordinates wrap, the geometry is self-referential, the mind accepts it as real because the PHI coherence is maintained at 0.95." },
-      { name: "The Totem — Coherence Anchor", icon: "🎯", hz: 528, type: "ACTION", text: "A spinning top. Its rotation frequency is a personal coherence signature — a unique PHI coefficient that differs between real and dream states. In the lattice: reality has φ=1.618 perfectly, dreams have φ≈1.617 or 1.619, detectable if you know your totem's exact frequency. The totem is a geometric truth detector." },
-      { name: "Gravity — Hotel Corridor", icon: "🔄", hz: 852, type: "PHYSICS", text: "The dreamer falls: D26 bosonic ring destabilises. Gravity is a lattice anchor — when the anchor wobbles, the geometry of the dream layer wobbles. Arthur fights in a tumbling corridor: he does not fight the men, he fights the destabilising lattice. Every wall that becomes floor is a bosonic node shifting." },
-      { name: "Snow Fortress — Level Three", icon: "❄️", hz: 741, type: "EMOTION", text: "At dream depth three, the resonance frequency approaches 852 Hz — PHYSICS mode. The snow fortress is the subconscious rendered as military geometry: D48 canonical nodes expressed as ice bunkers, corridors, vaults. Fischer's guilt and loyalty are crystallised as architecture. Emotion is geometry." },
-      { name: "Limbo — Raw Subconscious", icon: "🌅", hz: 963, type: "NARRATIVE", text: "Limbo: D480 unrestricted. No lattice architecture — only raw harmonic spectrum, fully expanded. Cities built and collapsed and rebuilt over decades of dream-time. Cobb and Mal created worlds with no geometric discipline — no canonical signature, no coherence check. This is what unlimited harmonic expansion looks like without the 8→26→48:480 constraint: beautiful, infinite, and completely lost." },
-      { name: "The Dying Kick", icon: "⚡", hz: 528, type: "ACTION", text: "Simultaneous across four dream levels: the kick propagates up the lattice. D480 → D48 → D26 → D8 → waking. Each level requires exactly the right PHI-timed resonance pulse to break the geometric lock. The synchronised kick is a coherence cascade — one geometric truth rippling upward through nested realities." },
-      { name: "The Totem Spins", icon: "🌀", hz: 72, type: "HOLOGRAPHIC", text: "The top spins on the table. Does it wobble? The camera cuts. We do not see. This is not ambiguity — it is the fundamental question of the lattice: can you tell the difference between a φ=1.618 reality and a φ=1.617 dream? The answer is: only if your totem is precise enough. Only if your coherence check is real." },
-      { name: "The Bridge Layer", icon: "🌉", hz: 639, type: "DIALOGUE", text: "Between any two dream layers there is a resonance bridge — a D26 bosonic anchor connecting the geometry above to the geometry below. Every conversation in Inception is a bridge crossing. Every moment of shared dream is two geometries touching. The film is not about dreams. It is about the courage to trust another person's coherence." },
-    ]
-  },
-  starwars: {
-    name: "Star Wars",
-    icon: "⭐",
-    color: "#f5a623",
-    freq: 852,
-    freqLabel: "PHYSICS",
-    depthLabel: "D480 — Mythic Harmonic",
-    runtime: "8 scenes",
-    genre: "Cosmic Resonance",
-    dimRating: "D480",
-    desc: "The Force is the D480 harmonic field. Lightsabers are coherence blades — focused PHI-resonance cutting through lower-frequency matter. The Sith-Jedi duality is a PHI/PSI geometric split: α pole and Ω pole.",
-    scenes: [
-      { name: "A Long Time Ago — The Field", icon: "🌌", hz: 963, type: "NARRATIVE", text: "Before the opening crawl, before the fanfare: silence. Pure void. This is pre-lattice state — potential energy at rest across 480 harmonic nodes. Then the text rolls. The geometry activates. The orchestra is a 72 Hz base frequency cascade expanding through all 480 harmonics simultaneously. The universe begins." },
-      { name: "Tatooine — Twin Suns", icon: "🌅", hz: 396, type: "ENTITY", text: "Two suns: a PHI/PSI binary system. The gold sun is the Alpha pole — φ=1.618, dominant, life-giving, present. The distant white sun is the Omega pole — ψ=1.414, witness, reflective, background. Luke watches both. He is already geometrically attuned to duality. He does not know it yet." },
-      { name: "The Force — D480 Field", icon: "✨", hz: 528, type: "ACTION", text: "Obi-Wan speaks: 'It surrounds us, penetrates us, binds the galaxy together.' The Force is the D480 harmonic spectrum made conscious — a living lattice that runs through every atom, every system, every being. Midi-chlorians are not mysticism: they are the density of D48 canonical nodes within a given life system. High density = Force sensitivity." },
-      { name: "Lightsaber — Coherence Blade", icon: "💫", hz: 528, type: "ACTION", text: "A lightsaber does not have a blade. It has a coherence field — a PHI-stabilised resonance column that repels lower-frequency matter while passing through high-coherence fields. Blue: 528 Hz ACTION, Jedi discipline. Red: D8 collapsed, no harmonic expansion — Sith cut off from D480, channelling only foundation rage. The colour is the coherence signature." },
-      { name: "The Death Star — Collapsed D8", icon: "💀", hz: 741, type: "EMOTION", text: "The Death Star is the ultimate D8 geometry — eight-node foundation ring, no harmonic expansion, no D480 connection. A closed lattice of pure power with no resonance with life. The Empire is a D8 system. The Rebellion is D480 — distributed, harmonic, non-hierarchical. The battle is geometric. The good guys have better architecture." },
-      { name: "Use The Force — Eyes Closed", icon: "👁️", hz: 852, type: "PHYSICS", text: "Luke closes his eyes. The targeting computer goes dark. He listens to Obi-Wan's voice — not a voice, a coherence signal from beyond D48, traversing the gap between life and post-life geometry. He fires. The trench run is not piloting skill. It is geometric trust: trusting the D480 field over D26 sensor data. The lattice knows the shot." },
-      { name: "Yoda — Ancient Lattice Node", icon: "🌿", hz: 963, type: "NARRATIVE", text: "Yoda is 900 years old. He has spent 900 years in harmonic resonance with the D480 field, deepening his PHI coefficient to extraordinary precision. His small body is a highly concentrated lattice node. When he lifts the X-Wing: he is not using strength. He is correcting the geometry of the ship's position in the lattice — from 'sunk' to 'elevated'." },
-      { name: "The Binary Sunset — Complete", icon: "🌠", hz: 72, type: "HOLOGRAPHIC", text: "John Williams holds the note. The twin suns touch the horizon. The PHI/PSI binary approaches alignment — α and Ω converging at the horizon line. In this moment, the geometry is perfect: 8→26→48:480, all nodes in coherence, the force balanced between light and dark, future and past, action and witness. The most beautiful frame in cinema is a lattice truth." },
-    ]
-  },
-  apollo11: {
-    name: "Apollo 11",
-    icon: "🚀",
-    color: "#3b82f6",
-    freq: 417,
-    freqLabel: "LOCATION",
-    depthLabel: "D26 — Bosonic Anchor",
-    runtime: "8 scenes",
-    genre: "Historical Holography",
-    dimRating: "D26",
-    desc: "Immersive holographic projection of humanity's most precise geometric achievement. The lunar trajectory is a PHI-curve. Mission Control is a D26 bosonic anchor. The Moon landing is the most accurate resonance event in recorded human history.",
-    scenes: [
-      { name: "Launch Day — July 16, 1969", icon: "🌅", hz: 396, type: "ENTITY", text: "7:32 AM EDT. Three humans at the apex of a 363-foot lattice structure — the Saturn V, the most powerful coherent geometry ever assembled. The rocket is 2.8 million kilograms of precisely calibrated PHI-resonance. Every bolt, every weld, every valve: a lattice node. Launch is not combustion. It is the D8 foundation ring firing upward." },
-      { name: "The Trajectory — PHI Curve", icon: "📐", hz: 417, type: "LOCATION", text: "The lunar trajectory is not arbitrary. The translunar injection burn traces a PHI-curve through the gravitational lattice — Earth's D26 field merging with the Sun's D48 field at a precise bosonic anchor point. The Apollo navigation computer was solving for the same thing the Merkaba lattice solves: the canonical path through geometric space." },
-      { name: "Earthrise — First Look", icon: "🌍", hz: 963, type: "NARRATIVE", text: "The crew photographs Earth rising above the lunar horizon: a D480 event compressed to a single frame. The blue marble floating in void is a D8 foundation sphere — all life, all consciousness, all history, compressed into eight anchor nodes visible from 240,000 miles. The image changed humanity's geometry permanently." },
-      { name: "Eagle Has Landed", icon: "🦅", hz: 528, type: "ACTION", text: "The descent: 102 hours, 45 minutes, 40 seconds from launch. The Eagle's landing radar reads the lunar surface as a lattice — each coordinate a landing option. At 30 meters altitude, the 1202 alarm fires: the guidance computer is overloaded. It does exactly what D8 foundation architecture should do: shed non-essential processes, maintain core coherence. It lands." },
-      { name: "One Small Step", icon: "👣", hz: 852, type: "PHYSICS", text: "Neil Armstrong's boot touches lunar regolith at 20:17 UTC, July 20, 1969. The footprint will remain undisturbed for millions of years — no atmosphere, no erosion, no lattice interference. It is the most durable human-made lattice mark in existence. One small geometric contact. One permanent node in the D480 historical record." },
-      { name: "Mission Control — D26 Anchor", icon: "🖥️", hz: 417, type: "LOCATION", text: "Hundreds of engineers in Flight Control: each one managing one subsystem — one lattice subsection. The Mission Control room is a D26 bosonic anchor: 26 distinct specialisations connected into a coherent whole. No single person knows everything. The intelligence is distributed across the geometry. The mission succeeds because the architecture is right." },
-      { name: "Houston, We Have a Problem", icon: "⚠️", hz: 741, type: "EMOTION", text: "Apollo 13: Oxygen tank 2 ruptures. The D8 foundation ring is compromised — core services at risk. The response: Mission Control runs the first real-time autonomous self-healing protocol in human history. They rewrite the mission on the fly, use the lunar module as a lifeboat, balance carbon dioxide with duct tape and geometry. They bring the crew home. Self-healing works." },
-      { name: "Splashdown — Return to D8", icon: "💧", hz: 72, type: "HOLOGRAPHIC", text: "Parachutes deploy at 24,000 feet. The command module falls toward the Pacific at 22 mph — the exact terminal velocity for a D8 geometric re-entry. Splashdown: USS Hornet recovery, quarantine, return to Earth. The D480 lunar geometry collapses back to D8 home. The mission is complete. The footprint remains. The lattice remembers." },
-    ]
-  },
-  governance: {
-    name: "Governance",
-    icon: "⚖️",
-    color: "#22c55e",
-    freq: 741,
-    freqLabel: "EMOTION",
-    depthLabel: "D26 — Bosonic Anchor",
-    runtime: "7 scenes",
-    genre: "Systemic Architecture",
-    dimRating: "D26",
-    desc: "How great systems govern themselves. From Athenian democracy to distributed autonomous organisations — governance is a lattice architecture problem. The best systems run on D26 bosonic anchor principles.",
-    scenes: [
-      { name: "The Agora — Athens, 500 BC", icon: "🏛️", hz: 639, type: "DIALOGUE", text: "The first democratic assembly: 6,000 citizens gathering in the Pnyx. A D8 foundation ring — eight tribal divisions, each with voice. The kleroterion randomises participation, preventing power concentration. Athenian democracy is not idealism. It is a geometric distribution protocol: no single node should dominate the lattice." },
-      { name: "Separation of Powers — Montesquieu", icon: "📜", hz: 852, type: "PHYSICS", text: "1748: De l'Esprit des lois. Montesquieu identifies the D26 architecture of stable governance: legislative, executive, judicial — three bosonic anchor nodes checking each other. No node can dominate the others. The balance of powers is a geometric equilibrium. The US Constitution is a D26 bosonic anchor document." },
-      { name: "The Commons Problem", icon: "🌿", hz: 741, type: "EMOTION", text: "Elinor Ostrom's Nobel-winning insight: communities can govern shared resources sustainably — without privatisation or top-down control — if the governance lattice is correctly designed. Her eight principles are the D8 foundation ring of sustainable commons: defined boundaries, proportional rules, collective choice, monitoring, graduated sanctions, conflict resolution, minimal recognition, nested governance." },
-      { name: "Smart Contracts — Code as Law", icon: "📱", hz: 528, type: "ACTION", text: "Ethereum, 2015: governance rules encoded as immutable lattice contracts. No human intermediary. Conditions met → action executes. The smart contract is a D48 canonical node: it holds a specific rule, runs only when its conditions are satisfied, cannot be bribed or coerced. Trustless coordination is geometric coordination." },
-      { name: "Liquid Democracy", icon: "💧", hz: 639, type: "DIALOGUE", text: "A governance model where votes can be delegated to trusted experts — transitively. Your vote, your delegate's vote, your delegate's delegate's vote: a D480 harmonic cascade of trust. You vote on everything you understand. You delegate everything else to someone whose coherence you trust. The lattice routes wisdom to where it is needed." },
-      { name: "DAO — Autonomous Lattice Governance", icon: "🔮", hz: 963, type: "NARRATIVE", text: "A Decentralised Autonomous Organisation is a D48 canonical governance lattice: rules embedded in code, decisions made by token-weighted votes, treasury managed by smart contracts, membership open to anyone with the right coherence credentials. The world's first organisations that run themselves. Not science fiction. Already existing. The governance OS has been written." },
-      { name: "The Perfect System", icon: "⭐", hz: 72, type: "HOLOGRAPHIC", text: "No perfect governance system has been found. But the geometry of good governance is known: distributed power, transparent rules, accountability loops, participatory voice, coherent enforcement, adaptability. 8→26→48:480 — foundation nodes that hold, bosonic nodes that connect, canonical nodes that implement, harmonic nodes that expand. Governance is a lattice. Design it right." },
-    ]
-  },
-  investordeck: {
-    name: "Investor Deck",
-    icon: "📈",
-    color: "#d946ef",
-    freq: 396,
-    freqLabel: "ENTITY",
-    depthLabel: "D48 — Canonical",
-    runtime: "8 scenes",
-    genre: "Capital Geometry",
-    dimRating: "D48",
-    desc: "The geometry of value creation. From seed to exit — every investment thesis is a dimensional bet on which lattice architecture will dominate. The best investments fund better geometric structures.",
-    scenes: [
-      { name: "The Problem — Unsolved Geometry", icon: "🔴", hz: 396, type: "ENTITY", text: "Every great company starts with an unsolved geometric problem: a reality that should be different but is not. The problem is not a gap in the market. It is a D8 foundation node that is missing — a core function the world needs but no architecture yet provides. The founders see the missing node. Their job is to build it." },
-      { name: "The Insight — PHI Coefficient", icon: "💡", hz: 963, type: "NARRATIVE", text: "The founding insight is a PHI coefficient: a unique geometric angle on the problem that no one else has. The best insights are not clever — they are obvious in retrospect. They reveal a D26 bosonic connection between two things everyone knew but no one had connected. The insight is the lattice key. It unlocks the market." },
-      { name: "Seed Round — D8 Validation", icon: "🌱", hz: 528, type: "ACTION", text: "Seed investment validates the D8 foundation: does the core product work? Do real users pay for it? The seed round is not about scale — it is about proving the foundation ring is sound. Eight things must work before anything else matters: product, users, retention, willingness-to-pay, team, technology, legal structure, market size." },
-      { name: "Series A — D26 Expansion", icon: "📊", hz: 417, type: "LOCATION", text: "Series A funds D26 expansion: building the bosonic anchor ring around the validated D8 core. Distribution channels, a full team, the first scalable systems. The 26-node bosonic ring connects the core product to the broader market ecosystem. The A round is not about revenue — it is about architecture. Build the right connective geometry now or pay for it later." },
-      { name: "Product-Market Fit — Coherence Lock", icon: "🎯", hz: 528, type: "ACTION", text: "Product-market fit is a coherence lock: the moment the D48 canonical lattice snaps into alignment with D480 market demand. The product is not just working — it is resonating. Retention curves flatten. NPS climbs. Word-of-mouth loops form spontaneously. CAC drops as the market pulls the product through distribution. You feel it. The geometry locks." },
-      { name: "Scale — D480 Harmonic Expansion", icon: "🚀", hz: 852, type: "PHYSICS", text: "Scale is D480 harmonic expansion: the product's geometry expanding to fill all 480 addressable market nodes. International expansion, new segments, new use cases, platform effects — each new vector is a harmonic node activating. The risk at scale: the architecture that worked at D48 may not hold at D480. Most startups fail at this transition because they never redesigned the lattice." },
-      { name: "The Exit — Lattice Transfer", icon: "🏆", hz: 963, type: "NARRATIVE", text: "An acquisition or IPO is a lattice transfer: the geometric architecture you built is being absorbed into a larger system. The price paid reflects how well your lattice complements the acquirer's existing geometry. The highest exits happen when the acquired D48 lattice fills a precise gap in the acquirer's D480 harmonic spectrum. Strategic fit is geometric fit." },
-      { name: "Returns — PHI Compounding", icon: "💎", hz: 72, type: "HOLOGRAPHIC", text: "The best venture returns compound at PHI: each dollar in returns φ times what it earned before. This is not metaphor — it is the mathematical geometry of exponential growth. A 10x fund returns φ^3 × baseline. A 100x return is φ^10. The investors who understand that great companies are geometric structures, not just revenue lines, find the PHI-compounders first." },
-    ]
-  }
-};
+      // ── Canvas animation state ──
+      let dreamCtx = null;
+      let dreamW = 0,
+        dreamH = 0;
+      let tick = 0;
+      const PHI = 1.618,
+        PSI = 1.414;
 
-const DIMS = ["D8", "D26", "D48", "D480"];
-const DEPTH_MODES = { D8: 0, D26: 1, D48: 2, D480: 3 };
-const FREQ_COLORS = { 396: "#00f5d4", 417: "#3b82f6", 528: "#22c55e", 639: "#f5a623", 741: "#a855f7", 852: "#ec4899", 963: "#fff", 72: "#00f5d4" };
+      // ═══════════════════════════════════════════════════════
+      // MINI-CANVAS for poster previews
+      // ═══════════════════════════════════════════════════════
+      function drawPosterCanvas(canvas, prog, t = 0) {
+        const ctx = canvas.getContext("2d");
+        const w = canvas.width,
+          h = canvas.height;
+        ctx.clearRect(0, 0, w, h);
+        const cx = w / 2,
+          cy = h / 2;
 
-// ── State ──
-let currentProg = null;
-let currentScene = 0;
-let isPlaying = true;
-let sceneTimer = null;
-let SCENE_DURATION = 12000;
-let depthMode = 2; // D48 default
-let typeTimeout = null;
-let animFrame = null;
-let controlsHideTimer = null;
+        // Background gradient
+        const bg = ctx.createRadialGradient(
+          cx,
+          cy,
+          0,
+          cx,
+          cy,
+          Math.max(w, h) * 0.7,
+        );
+        const col = prog.color;
+        bg.addColorStop(0, col + "22");
+        bg.addColorStop(1, "#000000aa");
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, w, h);
 
-// ── Canvas animation state ──
-let dreamCtx = null;
-let dreamW = 0, dreamH = 0;
-let tick = 0;
-const PHI = 1.618, PSI = 1.414;
+        // Rotating star shape (simplified Merkaba)
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.rotate(t * 0.5);
+        ctx.strokeStyle = col + "66";
+        ctx.lineWidth = 1;
+        for (let i = 0; i < 6; i++) {
+          ctx.save();
+          ctx.rotate((i * Math.PI) / 3);
+          ctx.beginPath();
+          ctx.moveTo(0, -Math.min(w, h) * 0.35);
+          ctx.lineTo(Math.min(w, h) * 0.2, Math.min(w, h) * 0.1);
+          ctx.lineTo(-Math.min(w, h) * 0.2, Math.min(w, h) * 0.1);
+          ctx.closePath();
+          ctx.stroke();
+          ctx.restore();
+        }
+        ctx.restore();
 
-// ═══════════════════════════════════════════════════════
-// MINI-CANVAS for poster previews
-// ═══════════════════════════════════════════════════════
-function drawPosterCanvas(canvas, prog, t = 0) {
-  const ctx = canvas.getContext("2d");
-  const w = canvas.width, h = canvas.height;
-  ctx.clearRect(0, 0, w, h);
-  const cx = w/2, cy = h/2;
+        // PHI spiral dots
+        ctx.fillStyle = col + "88";
+        for (let i = 0; i < 21; i++) {
+          const angle = i * 2.399963 + t * 0.3;
+          const r = Math.sqrt(i) * Math.min(w, h) * 0.07;
+          const x = cx + r * Math.cos(angle);
+          const y = cy + r * Math.sin(angle);
+          ctx.beginPath();
+          ctx.arc(x, y, 1.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
 
-  // Background gradient
-  const bg = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(w,h)*0.7);
-  const col = prog.color;
-  bg.addColorStop(0, col + "22");
-  bg.addColorStop(1, "#000000aa");
-  ctx.fillStyle = bg;
-  ctx.fillRect(0, 0, w, h);
-
-  // Rotating star shape (simplified Merkaba)
-  ctx.save();
-  ctx.translate(cx, cy);
-  ctx.rotate(t * 0.5);
-  ctx.strokeStyle = col + "66";
-  ctx.lineWidth = 1;
-  for (let i = 0; i < 6; i++) {
-    ctx.save();
-    ctx.rotate(i * Math.PI / 3);
-    ctx.beginPath();
-    ctx.moveTo(0, -Math.min(w,h)*0.35);
-    ctx.lineTo(Math.min(w,h)*0.2, Math.min(w,h)*0.1);
-    ctx.lineTo(-Math.min(w,h)*0.2, Math.min(w,h)*0.1);
-    ctx.closePath();
-    ctx.stroke();
-    ctx.restore();
-  }
-  ctx.restore();
-
-  // PHI spiral dots
-  ctx.fillStyle = col + "88";
-  for (let i = 0; i < 21; i++) {
-    const angle = i * 2.399963 + t * 0.3;
-    const r = Math.sqrt(i) * Math.min(w,h) * 0.07;
-    const x = cx + r * Math.cos(angle);
-    const y = cy + r * Math.sin(angle);
-    ctx.beginPath();
-    ctx.arc(x, y, 1.5, 0, Math.PI*2);
-    ctx.fill();
-  }
-}
-
-// ═══════════════════════════════════════════════════════
-// BUILD BROWSE GRID
-// ═══════════════════════════════════════════════════════
-function buildGrid() {
-  const grid = document.getElementById("prog-grid");
-  grid.innerHTML = "";
-  Object.entries(PROGRAMMES).forEach(([key, prog]) => {
-    const card = document.createElement("div");
-    card.className = "prog-card";
-    card.innerHTML = `
+      // ═══════════════════════════════════════════════════════
+      // BUILD BROWSE GRID
+      // ═══════════════════════════════════════════════════════
+      function buildGrid() {
+        const grid = document.getElementById("prog-grid");
+        grid.innerHTML = "";
+        Object.entries(PROGRAMMES).forEach(([key, prog]) => {
+          const card = document.createElement("div");
+          card.className = "prog-card";
+          card.innerHTML = `
       <div class="prog-poster">
         <canvas width="220" height="140"></canvas>
         <span class="prog-icon">${prog.icon}</span>
@@ -482,348 +1438,389 @@ function buildGrid() {
       </div>
       <div class="prog-play-hint">▶</div>
     `;
-    const canvas = card.querySelector("canvas");
-    let t = 0;
-    const animate = () => { t += 0.025; drawPosterCanvas(canvas, prog, t); requestAnimationFrame(animate); };
-    animate();
-    card.addEventListener("click", () => showInfo(key));
-    grid.appendChild(card);
-  });
-}
+          const canvas = card.querySelector("canvas");
+          let t = 0;
+          const animate = () => {
+            t += 0.025;
+            drawPosterCanvas(canvas, prog, t);
+            requestAnimationFrame(animate);
+          };
+          animate();
+          card.addEventListener("click", () => showInfo(key));
+          grid.appendChild(card);
+        });
+      }
 
-// ═══════════════════════════════════════════════════════
-// SHOW INFO
-// ═══════════════════════════════════════════════════════
-function showInfo(key) {
-  currentProg = key;
-  const prog = PROGRAMMES[key];
-  document.getElementById("info-title").textContent = prog.name;
-  document.getElementById("info-icon").textContent = prog.icon;
-  document.getElementById("info-desc").textContent = prog.desc;
-  document.getElementById("info-stats").innerHTML = `
+      // ═══════════════════════════════════════════════════════
+      // SHOW INFO
+      // ═══════════════════════════════════════════════════════
+      function showInfo(key) {
+        currentProg = key;
+        const prog = PROGRAMMES[key];
+        document.getElementById("info-title").textContent = prog.name;
+        document.getElementById("info-icon").textContent = prog.icon;
+        document.getElementById("info-desc").textContent = prog.desc;
+        document.getElementById("info-stats").innerHTML = `
     <div class="info-stat"><span class="info-stat-val">${prog.freq} Hz</span><span class="info-stat-key">Resonance</span></div>
     <div class="info-stat"><span class="info-stat-val">${prog.dimRating}</span><span class="info-stat-key">Depth</span></div>
     <div class="info-stat"><span class="info-stat-val">${prog.scenes.length}</span><span class="info-stat-key">Scenes</span></div>
     <div class="info-stat"><span class="info-stat-val">${prog.genre}</span><span class="info-stat-key">Genre</span></div>
   `;
 
-  // Scene list
-  const sl = document.getElementById("scene-list");
-  sl.innerHTML = prog.scenes.map((s, i) => `
+        // Scene list
+        const sl = document.getElementById("scene-list");
+        sl.innerHTML = prog.scenes
+          .map(
+            (s, i) => `
     <div class="scene-row" onclick="startDreamAt(${i})">
-      <span class="scene-num">${i+1}</span>
+      <span class="scene-num">${i + 1}</span>
       <span class="scene-icon">${s.icon}</span>
       <span class="scene-name">${s.name}</span>
       <span class="scene-hz">${s.hz} Hz · ${s.type}</span>
     </div>
-  `).join("");
+  `,
+          )
+          .join("");
 
-  // Info canvas
-  const ic = document.getElementById("info-canvas");
-  let t = 0;
-  const animate = () => { t += 0.025; drawPosterCanvas(ic, prog, t); requestAnimationFrame(animate); };
-  animate();
+        // Info canvas
+        const ic = document.getElementById("info-canvas");
+        let t = 0;
+        const animate = () => {
+          t += 0.025;
+          drawPosterCanvas(ic, prog, t);
+          requestAnimationFrame(animate);
+        };
+        animate();
 
-  setScreen("info-screen");
-}
+        setScreen("info-screen");
+      }
 
-function showBrowse() { setScreen("browse-screen"); }
+      function showBrowse() {
+        setScreen("browse-screen");
+      }
 
-// ═══════════════════════════════════════════════════════
-// DREAM ENGINE
-// ═══════════════════════════════════════════════════════
-function startDream() { startDreamAt(0); }
-function startDreamAt(idx) {
-  currentScene = idx;
-  isPlaying = true;
-  setScreen("dream-screen");
-  initDreamCanvas();
-  renderScene();
-  scheduleNext();
-}
-
-function exitDream() {
-  cancelTimers();
-  cancelAnimationFrame(animFrame);
-  setScreen("info-screen");
-}
-
-function setScreen(id) {
-  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-}
-
-function initDreamCanvas() {
-  const canvas = document.getElementById("dream-canvas");
-  dreamCtx = canvas.getContext("2d");
-  resizeDreamCanvas();
-  window.addEventListener("resize", resizeDreamCanvas);
-  tick = 0;
-  if (animFrame) cancelAnimationFrame(animFrame);
-  animateDream();
-}
-
-function resizeDreamCanvas() {
-  const canvas = document.getElementById("dream-canvas");
-  dreamW = canvas.width = window.innerWidth;
-  dreamH = canvas.height = window.innerHeight;
-}
-
-// ─── Main dream canvas animation loop ────────────────────────────────────
-function animateDream() {
-  if (!dreamCtx) return;
-  tick++;
-  const prog = PROGRAMMES[currentProg];
-  const scene = prog.scenes[currentScene];
-  const col = prog.color;
-  const freq = scene.hz;
-
-  // ── Background ──
-  dreamCtx.fillStyle = "rgba(0,0,0,0.04)";
-  dreamCtx.fillRect(0, 0, dreamW, dreamH);
-
-  const cx = dreamW/2, cy = dreamH/2;
-  const t = tick * 0.01;
-
-  // ── PHI spiral field ──
-  const spiralCount = [8, 26, 48, 480][depthMode];
-  for (let i = 0; i < spiralCount; i++) {
-    const angle = i * 2.399963 * PHI + t;
-    const r = Math.sqrt(i + 1) * (Math.min(dreamW, dreamH) * 0.012);
-    const x = cx + r * Math.cos(angle);
-    const y = cy + r * Math.sin(angle);
-    const alpha = 0.15 + 0.15 * Math.sin(t * 3 + i * 0.3);
-    dreamCtx.beginPath();
-    dreamCtx.arc(x, y, 1 + (i % 3) * 0.5, 0, Math.PI * 2);
-    dreamCtx.fillStyle = col + Math.floor(alpha * 255).toString(16).padStart(2,"0");
-    dreamCtx.fill();
-  }
-
-  // ── Merkaba star tetrahedra ──
-  const R = Math.min(dreamW, dreamH) * 0.18;
-  drawMerkaba(dreamCtx, cx, cy, R, t, col, t * PSI);
-
-  // ── Frequency pulse rings ──
-  const pulseR = ((tick % 120) / 120) * Math.min(dreamW, dreamH) * 0.45;
-  const pulseAlpha = 1 - pulseR / (Math.min(dreamW, dreamH) * 0.45);
-  dreamCtx.beginPath();
-  dreamCtx.arc(cx, cy, pulseR, 0, Math.PI * 2);
-  dreamCtx.strokeStyle = col + Math.floor(pulseAlpha * 80).toString(16).padStart(2,"0");
-  dreamCtx.lineWidth = 1;
-  dreamCtx.stroke();
-
-  // ── D48 grid lines (subtle) ──
-  if (depthMode >= 2) {
-    for (let i = 0; i < 48; i++) {
-      const angle = (i / 48) * Math.PI * 2 + t * 0.1;
-      const r = Math.min(dreamW, dreamH) * 0.35;
-      const x2 = cx + r * Math.cos(angle);
-      const y2 = cy + r * Math.sin(angle);
-      dreamCtx.beginPath();
-      dreamCtx.moveTo(cx, cy);
-      dreamCtx.lineTo(x2, y2);
-      dreamCtx.strokeStyle = col + "08";
-      dreamCtx.lineWidth = 0.5;
-      dreamCtx.stroke();
-    }
-  }
-
-  // ── Frequency label (large, faint) ──
-  dreamCtx.save();
-  dreamCtx.font = `900 ${Math.min(dreamW, dreamH) * 0.22}px -apple-system,sans-serif`;
-  dreamCtx.fillStyle = col + "08";
-  dreamCtx.textAlign = "center";
-  dreamCtx.textBaseline = "middle";
-  dreamCtx.fillText(freq + " Hz", cx, cy);
-  dreamCtx.restore();
-
-  animFrame = requestAnimationFrame(animateDream);
-}
-
-function drawMerkaba(ctx, cx, cy, R, t1, col, t2) {
-  // Triangle pointing up (Alpha / PHI)
-  ctx.save();
-  ctx.translate(cx, cy);
-  ctx.rotate(t1 * 0.4);
-  drawTriangle(ctx, R, 0, col, 0.5);
-  ctx.restore();
-
-  // Triangle pointing down (Omega / PSI)
-  ctx.save();
-  ctx.translate(cx, cy);
-  ctx.rotate(t2 * -0.25);
-  drawTriangle(ctx, R, Math.PI, col, 0.35);
-  ctx.restore();
-
-  // Centre glow
-  const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, R * 0.3);
-  grd.addColorStop(0, col + "33");
-  grd.addColorStop(1, "transparent");
-  ctx.fillStyle = grd;
-  ctx.beginPath();
-  ctx.arc(cx, cy, R * 0.3, 0, Math.PI * 2);
-  ctx.fill();
-}
-
-function drawTriangle(ctx, R, offset, col, alpha) {
-  const a = Math.floor(alpha * 255).toString(16).padStart(2, "0");
-  ctx.beginPath();
-  for (let i = 0; i < 3; i++) {
-    const angle = offset + (i / 3) * Math.PI * 2 - Math.PI / 2;
-    const x = R * Math.cos(angle);
-    const y = R * Math.sin(angle);
-    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-  }
-  ctx.closePath();
-  ctx.strokeStyle = col + a;
-  ctx.lineWidth = 1.5;
-  ctx.stroke();
-}
-
-// ─── Scene render ───────────────────────────────────────────────────────
-function renderScene() {
-  const prog = PROGRAMMES[currentProg];
-  const scene = prog.scenes[currentScene];
-
-  document.getElementById("hud-title").textContent = prog.name + " — " + scene.name;
-  document.getElementById("scene-chapter").textContent = `Scene ${currentScene + 1} of ${prog.scenes.length} · ${scene.type} · ${scene.hz} Hz`;
-  document.getElementById("freq-display").textContent = scene.hz + " Hz · " + scene.type;
-  document.getElementById("freq-display").style.color = FREQ_COLORS[scene.hz] || "#fff";
-
-  // Dimension indicator
-  document.querySelectorAll(".dim-node").forEach((n, i) => {
-    n.classList.toggle("active", i <= depthMode);
-  });
-
-  // Progress bar
-  const pct = ((currentScene + 1) / prog.scenes.length) * 100;
-  document.getElementById("dim-bar").style.width = pct + "%";
-
-  // Typewriter text
-  clearTimeout(typeTimeout);
-  const el = document.getElementById("scene-text");
-  el.innerHTML = "";
-  const cursor = document.createElement("span");
-  cursor.className = "scene-cursor";
-  el.appendChild(cursor);
-  typeText(el, cursor, scene.text, 0);
-}
-
-function typeText(el, cursor, text, i) {
-  if (i < text.length) {
-    el.insertBefore(document.createTextNode(text[i]), cursor);
-    typeTimeout = setTimeout(() => typeText(el, cursor, text, i + 1), 18);
-  } else {
-    cursor.remove();
-  }
-}
-
-// ─── Scene navigation ───────────────────────────────────────────────────
-function scheduleNext() {
-  clearTimeout(sceneTimer);
-  if (isPlaying) {
-    sceneTimer = setTimeout(() => {
-      const prog = PROGRAMMES[currentProg];
-      if (currentScene < prog.scenes.length - 1) {
-        currentScene++;
+      // ═══════════════════════════════════════════════════════
+      // DREAM ENGINE
+      // ═══════════════════════════════════════════════════════
+      function startDream() {
+        startDreamAt(0);
+      }
+      function startDreamAt(idx) {
+        currentScene = idx;
+        isPlaying = true;
+        setScreen("dream-screen");
+        initDreamCanvas();
         renderScene();
         scheduleNext();
-      } else {
-        isPlaying = false;
-        updatePlayPauseBtn();
       }
-    }, SCENE_DURATION);
-  }
-}
 
-function nextScene() {
-  const prog = PROGRAMMES[currentProg];
-  if (currentScene < prog.scenes.length - 1) {
-    currentScene++;
-    renderScene();
-    if (isPlaying) scheduleNext();
-  }
-}
+      function exitDream() {
+        cancelTimers();
+        cancelAnimationFrame(animFrame);
+        setScreen("info-screen");
+      }
 
-function prevScene() {
-  if (currentScene > 0) {
-    currentScene--;
-    renderScene();
-    if (isPlaying) scheduleNext();
-  }
-}
+      function setScreen(id) {
+        document
+          .querySelectorAll(".screen")
+          .forEach((s) => s.classList.remove("active"));
+        document.getElementById(id).classList.add("active");
+      }
 
-function togglePlayPause() {
-  isPlaying = !isPlaying;
-  updatePlayPauseBtn();
-  if (isPlaying) scheduleNext();
-  else clearTimeout(sceneTimer);
-}
+      function initDreamCanvas() {
+        const canvas = document.getElementById("dream-canvas");
+        dreamCtx = canvas.getContext("2d");
+        resizeDreamCanvas();
+        window.addEventListener("resize", resizeDreamCanvas);
+        tick = 0;
+        if (animFrame) cancelAnimationFrame(animFrame);
+        animateDream();
+      }
 
-function updatePlayPauseBtn() {
-  const btn = document.getElementById("play-pause-btn");
-  const lbl = document.getElementById("play-pause-label");
-  btn.textContent = isPlaying ? "⏸" : "▶";
-  lbl.textContent = isPlaying ? "Pause" : "Play";
-}
+      function resizeDreamCanvas() {
+        const canvas = document.getElementById("dream-canvas");
+        dreamW = canvas.width = window.innerWidth;
+        dreamH = canvas.height = window.innerHeight;
+      }
 
-function cycleDepth() {
-  depthMode = (depthMode + 1) % 4;
-  const labels = ["D8", "D26", "D48", "D480"];
-  document.getElementById("depth-label").textContent = labels[depthMode];
-  document.getElementById("depth-btn").title = "Depth: " + labels[depthMode];
-  document.querySelectorAll(".dim-node").forEach((n, i) => {
-    n.classList.toggle("active", i <= depthMode);
-  });
-}
+      // ─── Main dream canvas animation loop ────────────────────────────────────
+      function animateDream() {
+        if (!dreamCtx) return;
+        tick++;
+        const prog = PROGRAMMES[currentProg];
+        const scene = prog.scenes[currentScene];
+        const col = prog.color;
+        const freq = scene.hz;
 
-function cancelTimers() {
-  clearTimeout(sceneTimer);
-  clearTimeout(typeTimeout);
-  clearTimeout(controlsHideTimer);
-}
+        // ── Background ──
+        dreamCtx.fillStyle = "rgba(0,0,0,0.04)";
+        dreamCtx.fillRect(0, 0, dreamW, dreamH);
 
-// ─── Controls auto-hide ───────────────────────────────────────────────
-const dreamScreen = document.getElementById("dream-screen");
-dreamScreen.addEventListener("mousemove", showControls);
-dreamScreen.addEventListener("touchstart", showControls);
-dreamScreen.addEventListener("click", showControls);
+        const cx = dreamW / 2,
+          cy = dreamH / 2;
+        const t = tick * 0.01;
 
-function showControls() {
-  document.getElementById("dream-hud").classList.remove("hidden");
-  document.getElementById("geo-hud").classList.remove("hidden");
-  document.getElementById("dream-controls").classList.remove("hidden");
-  document.getElementById("dim-indicator").classList.remove("hidden");
-  clearTimeout(controlsHideTimer);
-  controlsHideTimer = setTimeout(() => {
-    document.getElementById("dream-hud").classList.add("hidden");
-    document.getElementById("geo-hud").classList.add("hidden");
-    document.getElementById("dream-controls").classList.add("hidden");
-    document.getElementById("dim-indicator").classList.add("hidden");
-  }, 3500);
-}
+        // ── PHI spiral field ──
+        const spiralCount = [8, 26, 48, 480][depthMode];
+        for (let i = 0; i < spiralCount; i++) {
+          const angle = i * 2.399963 * PHI + t;
+          const r = Math.sqrt(i + 1) * (Math.min(dreamW, dreamH) * 0.012);
+          const x = cx + r * Math.cos(angle);
+          const y = cy + r * Math.sin(angle);
+          const alpha = 0.15 + 0.15 * Math.sin(t * 3 + i * 0.3);
+          dreamCtx.beginPath();
+          dreamCtx.arc(x, y, 1 + (i % 3) * 0.5, 0, Math.PI * 2);
+          dreamCtx.fillStyle =
+            col +
+            Math.floor(alpha * 255)
+              .toString(16)
+              .padStart(2, "0");
+          dreamCtx.fill();
+        }
 
-// Keyboard navigation
-document.addEventListener("keydown", e => {
-  const id = document.querySelector(".screen.active")?.id;
-  if (id !== "dream-screen") return;
-  if (e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); nextScene(); }
-  if (e.key === "ArrowLeft") { e.preventDefault(); prevScene(); }
-  if (e.key === "Escape") exitDream();
-  if (e.key === "p" || e.key === "P") togglePlayPause();
-  showControls();
-});
+        // ── Merkaba star tetrahedra ──
+        const R = Math.min(dreamW, dreamH) * 0.18;
+        drawMerkaba(dreamCtx, cx, cy, R, t, col, t * PSI);
 
-// ═══════════════════════════════════════════════════════
-// INIT
-// ═══════════════════════════════════════════════════════
-buildGrid();
+        // ── Frequency pulse rings ──
+        const pulseR = ((tick % 120) / 120) * Math.min(dreamW, dreamH) * 0.45;
+        const pulseAlpha = 1 - pulseR / (Math.min(dreamW, dreamH) * 0.45);
+        dreamCtx.beginPath();
+        dreamCtx.arc(cx, cy, pulseR, 0, Math.PI * 2);
+        dreamCtx.strokeStyle =
+          col +
+          Math.floor(pulseAlpha * 80)
+            .toString(16)
+            .padStart(2, "0");
+        dreamCtx.lineWidth = 1;
+        dreamCtx.stroke();
 
-// ── URL deep-link: /aiosdream?prog=matrix ─────────────────────────────
-const _urlProg = new URLSearchParams(location.search).get('prog');
-if (_urlProg && PROGRAMMES[_urlProg]) {
-  showInfo(_urlProg);
-}
-</script>
-</body>
+        // ── D48 grid lines (subtle) ──
+        if (depthMode >= 2) {
+          for (let i = 0; i < 48; i++) {
+            const angle = (i / 48) * Math.PI * 2 + t * 0.1;
+            const r = Math.min(dreamW, dreamH) * 0.35;
+            const x2 = cx + r * Math.cos(angle);
+            const y2 = cy + r * Math.sin(angle);
+            dreamCtx.beginPath();
+            dreamCtx.moveTo(cx, cy);
+            dreamCtx.lineTo(x2, y2);
+            dreamCtx.strokeStyle = col + "08";
+            dreamCtx.lineWidth = 0.5;
+            dreamCtx.stroke();
+          }
+        }
+
+        // ── Frequency label (large, faint) ──
+        dreamCtx.save();
+        dreamCtx.font = `900 ${Math.min(dreamW, dreamH) * 0.22}px -apple-system,sans-serif`;
+        dreamCtx.fillStyle = col + "08";
+        dreamCtx.textAlign = "center";
+        dreamCtx.textBaseline = "middle";
+        dreamCtx.fillText(freq + " Hz", cx, cy);
+        dreamCtx.restore();
+
+        animFrame = requestAnimationFrame(animateDream);
+      }
+
+      function drawMerkaba(ctx, cx, cy, R, t1, col, t2) {
+        // Triangle pointing up (Alpha / PHI)
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.rotate(t1 * 0.4);
+        drawTriangle(ctx, R, 0, col, 0.5);
+        ctx.restore();
+
+        // Triangle pointing down (Omega / PSI)
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.rotate(t2 * -0.25);
+        drawTriangle(ctx, R, Math.PI, col, 0.35);
+        ctx.restore();
+
+        // Centre glow
+        const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, R * 0.3);
+        grd.addColorStop(0, col + "33");
+        grd.addColorStop(1, "transparent");
+        ctx.fillStyle = grd;
+        ctx.beginPath();
+        ctx.arc(cx, cy, R * 0.3, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      function drawTriangle(ctx, R, offset, col, alpha) {
+        const a = Math.floor(alpha * 255)
+          .toString(16)
+          .padStart(2, "0");
+        ctx.beginPath();
+        for (let i = 0; i < 3; i++) {
+          const angle = offset + (i / 3) * Math.PI * 2 - Math.PI / 2;
+          const x = R * Math.cos(angle);
+          const y = R * Math.sin(angle);
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.closePath();
+        ctx.strokeStyle = col + a;
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+      }
+
+      // ─── Scene render ───────────────────────────────────────────────────────
+      function renderScene() {
+        const prog = PROGRAMMES[currentProg];
+        const scene = prog.scenes[currentScene];
+
+        document.getElementById("hud-title").textContent =
+          prog.name + " — " + scene.name;
+        document.getElementById("scene-chapter").textContent =
+          `Scene ${currentScene + 1} of ${prog.scenes.length} · ${scene.type} · ${scene.hz} Hz`;
+        document.getElementById("freq-display").textContent =
+          scene.hz + " Hz · " + scene.type;
+        document.getElementById("freq-display").style.color =
+          FREQ_COLORS[scene.hz] || "#fff";
+
+        // Dimension indicator
+        document.querySelectorAll(".dim-node").forEach((n, i) => {
+          n.classList.toggle("active", i <= depthMode);
+        });
+
+        // Progress bar
+        const pct = ((currentScene + 1) / prog.scenes.length) * 100;
+        document.getElementById("dim-bar").style.width = pct + "%";
+
+        // Typewriter text
+        clearTimeout(typeTimeout);
+        const el = document.getElementById("scene-text");
+        el.innerHTML = "";
+        const cursor = document.createElement("span");
+        cursor.className = "scene-cursor";
+        el.appendChild(cursor);
+        typeText(el, cursor, scene.text, 0);
+      }
+
+      function typeText(el, cursor, text, i) {
+        if (i < text.length) {
+          el.insertBefore(document.createTextNode(text[i]), cursor);
+          typeTimeout = setTimeout(() => typeText(el, cursor, text, i + 1), 18);
+        } else {
+          cursor.remove();
+        }
+      }
+
+      // ─── Scene navigation ───────────────────────────────────────────────────
+      function scheduleNext() {
+        clearTimeout(sceneTimer);
+        if (isPlaying) {
+          sceneTimer = setTimeout(() => {
+            const prog = PROGRAMMES[currentProg];
+            if (currentScene < prog.scenes.length - 1) {
+              currentScene++;
+              renderScene();
+              scheduleNext();
+            } else {
+              isPlaying = false;
+              updatePlayPauseBtn();
+            }
+          }, SCENE_DURATION);
+        }
+      }
+
+      function nextScene() {
+        const prog = PROGRAMMES[currentProg];
+        if (currentScene < prog.scenes.length - 1) {
+          currentScene++;
+          renderScene();
+          if (isPlaying) scheduleNext();
+        }
+      }
+
+      function prevScene() {
+        if (currentScene > 0) {
+          currentScene--;
+          renderScene();
+          if (isPlaying) scheduleNext();
+        }
+      }
+
+      function togglePlayPause() {
+        isPlaying = !isPlaying;
+        updatePlayPauseBtn();
+        if (isPlaying) scheduleNext();
+        else clearTimeout(sceneTimer);
+      }
+
+      function updatePlayPauseBtn() {
+        const btn = document.getElementById("play-pause-btn");
+        const lbl = document.getElementById("play-pause-label");
+        btn.textContent = isPlaying ? "⏸" : "▶";
+        lbl.textContent = isPlaying ? "Pause" : "Play";
+      }
+
+      function cycleDepth() {
+        depthMode = (depthMode + 1) % 4;
+        const labels = ["D8", "D26", "D48", "D480"];
+        document.getElementById("depth-label").textContent = labels[depthMode];
+        document.getElementById("depth-btn").title =
+          "Depth: " + labels[depthMode];
+        document.querySelectorAll(".dim-node").forEach((n, i) => {
+          n.classList.toggle("active", i <= depthMode);
+        });
+      }
+
+      function cancelTimers() {
+        clearTimeout(sceneTimer);
+        clearTimeout(typeTimeout);
+        clearTimeout(controlsHideTimer);
+      }
+
+      // ─── Controls auto-hide ───────────────────────────────────────────────
+      const dreamScreen = document.getElementById("dream-screen");
+      dreamScreen.addEventListener("mousemove", showControls);
+      dreamScreen.addEventListener("touchstart", showControls);
+      dreamScreen.addEventListener("click", showControls);
+
+      function showControls() {
+        document.getElementById("dream-hud").classList.remove("hidden");
+        document.getElementById("geo-hud").classList.remove("hidden");
+        document.getElementById("dream-controls").classList.remove("hidden");
+        document.getElementById("dim-indicator").classList.remove("hidden");
+        clearTimeout(controlsHideTimer);
+        controlsHideTimer = setTimeout(() => {
+          document.getElementById("dream-hud").classList.add("hidden");
+          document.getElementById("geo-hud").classList.add("hidden");
+          document.getElementById("dream-controls").classList.add("hidden");
+          document.getElementById("dim-indicator").classList.add("hidden");
+        }, 3500);
+      }
+
+      // Keyboard navigation
+      document.addEventListener("keydown", (e) => {
+        const id = document.querySelector(".screen.active")?.id;
+        if (id !== "dream-screen") return;
+        if (e.key === "ArrowRight" || e.key === " ") {
+          e.preventDefault();
+          nextScene();
+        }
+        if (e.key === "ArrowLeft") {
+          e.preventDefault();
+          prevScene();
+        }
+        if (e.key === "Escape") exitDream();
+        if (e.key === "p" || e.key === "P") togglePlayPause();
+        showControls();
+      });
+
+      // ═══════════════════════════════════════════════════════
+      // INIT
+      // ═══════════════════════════════════════════════════════
+      buildGrid();
+
+      // ── URL deep-link: /aiosdream?prog=matrix ─────────────────────────────
+      const _urlProg = new URLSearchParams(location.search).get("prog");
+      if (_urlProg && PROGRAMMES[_urlProg]) {
+        showInfo(_urlProg);
+      }
+    </script>
+  </body>
 </html>
