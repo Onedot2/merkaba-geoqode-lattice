@@ -132,7 +132,7 @@ All of the following are live and verifiable:
 
 ```
 GET  https://realaios.com/                    → AIOS landing page
-GET  https://realaios.com/vr-hub              → VR Experience Hub (39 listed, 23 live, 9 categories)
+GET  https://realaios.com/vr-hub              → VR Experience Hub (48 listed, 23 live, 9 categories)
 GET  https://realaios.com/experiences         → SEO catalogue — all 23 live XPs with JSON-LD
 GET  https://realaios.com/vr-experience/:id   → per-XP SEO landing page (23 live, e.g. /vr-experience/matrix)
 GET  https://realaios.com/vr                  → VR Viewer (23 live programmes)
@@ -143,7 +143,7 @@ GET  https://realaios.com/lab                 → Merkaba Lattice lab (live expe
 GET  https://realaios.com/attest              → PHI/PSI Dual Attestation viewer
 GET  https://realaios.com/dashboard           → System dashboard (live lattice metrics)
 GET  https://realaios.com/api/merkaba/lattice-state → canonical architecture JSON
-GET  https://realaios.com/api/aios/vr/taxonomy      → full VR taxonomy (39 entries, 23 live, D48 48-slot target)
+GET  https://realaios.com/api/aios/vr/taxonomy      → full VR taxonomy (48 entries, 23 live, D48 complete)
 GET  https://realaios.com/api/aios/vr/events        → upcoming VR events
 GET  https://realaios.com/api/aios/vr/experience/:id → single experience API
 GET  https://api.getbrains4ai.com/api/ready   → system health (status: "ready")
