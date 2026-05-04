@@ -350,10 +350,10 @@
       <div class="nav-links">
         <a href="/">Home</a>
         <a href="/vr-hub">VR Hub</a>
-        <a href="/aiosdream">Theatre</a>
-        <a href="/plaistore">PLAIstore</a>
-        <a href="/ai">For AIs</a>
         <a href="/products">Products</a>
+        <a href="/news">News</a>
+        <a href="/claude" style="color:#d97706">Claude ×</a>
+        <a href="/ai">For AIs</a>
       </div>
     </nav>
 
@@ -428,6 +428,17 @@
         </p>
         <a href="/products" class="path-cta cyan">Browse Products →</a>
       </div>
+
+      <div class="path-card" style="border-color:rgba(205,133,63,0.25)">
+        <div class="path-icon">🃏</div>
+        <h2>I use Claude (or another AI)</h2>
+        <p>
+          Connect Claude to AIOS as a native agent. REST API, MCP config,
+          tool catalogue, and a system prompt template — Claude can call
+          AIOS endpoints and operate as a node in the Merkaba mesh.
+        </p>
+        <a href="/claude" class="path-cta" style="background:rgba(205,133,63,0.15);border:1px solid rgba(205,133,63,0.35);color:#d97706">Claude × AIOS Guide →</a>
+      </div>
     </div>
 
     <!-- QUEST GUIDE -->
@@ -493,6 +504,47 @@
           <a href="/vr" style="color: #00d4ff">Enter VR Mode</a> and it'll use
           your PC VR headset if connected.
         </p>
+      </div>
+    </div>
+
+    <!-- WHAT YOU NEED -->
+    <div class="section">
+      <p class="section-label">Apps & Setup</p>
+      <h2>What do you actually need?</h2>
+      <p style="color:rgba(237,244,255,0.55);font-size:0.9rem;margin:0.75rem 0 1.75rem">AIOS is mostly zero-install. Here's the minimal kit depending on your goal:</p>
+      <div style="display:grid;gap:1rem;grid-template-columns:repeat(auto-fill,minmax(240px,1fr))">
+        <div style="background:rgba(0,212,255,0.04);border:1px solid rgba(0,212,255,0.12);border-radius:12px;padding:1.25rem">
+          <div style="font-size:1.4rem;margin-bottom:0.5rem">🥽</div>
+          <strong style="font-size:0.95rem">For VR</strong>
+          <p style="font-size:0.82rem;color:rgba(237,244,255,0.55);margin-top:0.4rem;line-height:1.6">
+            <strong style="color:#00d4ff">Meta Quest 2 / 3 / Pro</strong> — open the built-in browser, go to <code>realaios.com/vr</code>. That's it.<br/><br/>
+            No headset? Works on <strong>Chrome/Edge on PC</strong> with a WebXR-compatible device, or just explore in flat 360° view.
+          </p>
+        </div>
+        <div style="background:rgba(99,102,241,0.05);border:1px solid rgba(99,102,241,0.15);border-radius:12px;padding:1.25rem">
+          <div style="font-size:1.4rem;margin-bottom:0.5rem">🧠</div>
+          <strong style="font-size:0.95rem">For AI (STORMchat)</strong>
+          <p style="font-size:0.82rem;color:rgba(237,244,255,0.55);margin-top:0.4rem;line-height:1.6">
+            <strong style="color:#6366f1">Any browser</strong> — no install. Go to <a href="https://www.getbrains4ai.com" style="color:#6366f1">getbrains4ai.com</a> and create a free account.<br/><br/>
+            To add STORMchat to your own site: one `&lt;script&gt;` tag embed. Works in 90 seconds.
+          </p>
+        </div>
+        <div style="background:rgba(168,85,247,0.04);border:1px solid rgba(168,85,247,0.15);border-radius:12px;padding:1.25rem">
+          <div style="font-size:1.4rem;margin-bottom:0.5rem">⚙️</div>
+          <strong style="font-size:0.95rem">For developers</strong>
+          <p style="font-size:0.82rem;color:rgba(237,244,255,0.55);margin-top:0.4rem;line-height:1.6">
+            <strong style="color:#c084fc">Node.js ≥ 24</strong> + the AIOS REST API (no SDK needed).<br/><br/>
+            Optionally: <a href="/claude" style="color:#d97706">Claude Desktop</a> with MCP config for AI-assisted AIOS development. Docs at <a href="/vr-developer" style="color:#c084fc">/vr-developer</a>.
+          </p>
+        </div>
+        <div style="background:rgba(205,133,63,0.04);border:1px solid rgba(205,133,63,0.15);border-radius:12px;padding:1.25rem">
+          <div style="font-size:1.4rem;margin-bottom:0.5rem">🃏</div>
+          <strong style="font-size:0.95rem">For Claude users</strong>
+          <p style="font-size:0.82rem;color:rgba(237,244,255,0.55);margin-top:0.4rem;line-height:1.6">
+            <strong style="color:#d97706">Claude Desktop</strong> (free tier works). Add AIOS as an MCP server — full config at <a href="/claude" style="color:#d97706">/claude</a>.<br/><br/>
+            Or just paste the system prompt template into any Claude Project — no install needed.
+          </p>
+        </div>
       </div>
     </div>
 
@@ -582,16 +634,18 @@
           >🧠 Get AI Assistant</a
         >
         <a href="/ai" class="btn-secondary">📖 Read the Brief</a>
+        <a href="/news" class="btn-secondary">📡 Latest News</a>
+        <a href="/claude" class="btn-secondary">🃏 Claude Integration</a>
       </div>
     </div>
 
     <footer>
       <a href="/">realaios.com</a> &nbsp;·&nbsp;
       <a href="/vr-hub">VR Hub</a> &nbsp;·&nbsp;
-      <a href="/aiosdream">AIOSdream</a> &nbsp;·&nbsp;
-      <a href="/plaistore">PLAIstore</a> &nbsp;·&nbsp;
-      <a href="/ai">For AIs</a> &nbsp;·&nbsp;
       <a href="/products">Products</a> &nbsp;·&nbsp;
+      <a href="/news">News</a> &nbsp;·&nbsp;
+      <a href="/claude">Claude ×</a> &nbsp;·&nbsp;
+      <a href="/ai">For AIs</a> &nbsp;·&nbsp;
       <a href="/llms.txt">llms.txt</a>
       <br /><br />
       &copy; 2026 Brains4Ai &nbsp;&middot;&nbsp; AIOS — AI-Native OS
