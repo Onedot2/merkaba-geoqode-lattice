@@ -344,11 +344,11 @@ const server = createServer(async (req, res) => {
       const now = new Date().toISOString().split("T")[0];
       const slugs = [
         "app-factory",
-        "aios-theatre",
-        "intelligence-hub",
-        "autonomy-engine",
-        "storm-market",
-        "code-forge",
+        "attested-ai",
+        "never-down",
+        "truth-agent",
+        "freq-hub",
+        "freq-match",
       ];
       const urlTags = [
         `  <url><loc>https://realaios.com/</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>`,
@@ -402,6 +402,29 @@ const server = createServer(async (req, res) => {
         brand: "AIOS",
         url: "https://realaios.com",
       });
+    }
+
+    // ── GET /products — AIOS product directory ────────────────────────────
+    if (req.method === "GET" && pathname === "/products") {
+      const PRODUCT_LIST = [
+        { slug: "app-factory", name: "AIOS App Factory", color: "#00f5d4", icon: "⚡", tagline: "Build fully self-healing, AI-native apps with a single command" },
+        { slug: "attested-ai", name: "AttestedAI", color: "#a855f7", icon: "✓", tagline: "AI audit & compliance attestation — every answer verified by two independent AI poles" },
+        { slug: "never-down", name: "NeverDown", color: "#2dd4bf", icon: "↺", tagline: "AI-powered uptime intelligence — monitors, detects, and heals production incidents at the OS layer" },
+        { slug: "truth-agent", name: "TruthAgent", color: "#ec4899", icon: "◈", tagline: "AI hallucination detection & grounding for healthcare, legal, and finance" },
+        { slug: "freq-hub", name: "FreqHub", color: "#f59e0b", icon: "◎", tagline: "AI signal marketplace — publish, discover, and monetize AI signals semantically" },
+        { slug: "freq-match", name: "FreqMatch", color: "#3b82f6", icon: "⟷", tagline: "AI-native talent & collaboration matching — find the right people semantically" },
+      ];
+      const cardsHTML = PRODUCT_LIST.map(p => `
+      <a href="/products/${p.slug}" style="display:block;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:2rem;text-decoration:none;transition:border-color 0.2s;position:relative;overflow:hidden" onmouseover="this.style.borderColor='${p.color}44'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)'">
+        <div style="font-size:2rem;margin-bottom:0.75rem">${p.icon}</div>
+        <div style="font-size:1.15rem;font-weight:700;color:#fff;margin-bottom:0.5rem">${p.name}</div>
+        <div style="font-size:0.9rem;color:#888;line-height:1.6">${p.tagline}</div>
+        <div style="margin-top:1rem;font-size:0.82rem;font-weight:600;color:${p.color}">Learn more →</div>
+      </a>`).join("");
+      const html = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AIOS Products — AI-Native Tools Built on Merkaba OS</title><meta name="description" content="Six AI-native products built on the AIOS Merkaba OS. App factory, AI attestation, uptime intelligence, hallucination detection, signal marketplace, and semantic matching."><meta property="og:title" content="AIOS Products"><meta property="og:description" content="AI-native tools built on autonomous OS geometry."><meta property="og:image" content="https://realaios.com/public/og-image.svg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://realaios.com/public/og-image.svg"><style>*{margin:0;padding:0;box-sizing:border-box}body{background:#0a0a0f;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;min-height:100vh}a{text-decoration:none}nav{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 2rem;border-bottom:1px solid rgba(255,255,255,0.08);position:sticky;top:0;background:rgba(10,10,15,0.92);backdrop-filter:blur(12px);z-index:100}.logo{font-size:1.25rem;font-weight:800;letter-spacing:-0.02em;background:linear-gradient(135deg,#00f5d4,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.nav-links{display:flex;gap:1.5rem;align-items:center}.nav-links a{color:rgba(255,255,255,0.55);font-size:0.875rem;font-weight:500;transition:color 0.2s}.nav-links a:hover{color:#fff}main{max-width:1000px;margin:0 auto;padding:5rem 2rem}.hero-label{font-size:0.78rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#00f5d4;margin-bottom:1rem}h1{font-size:clamp(2rem,5vw,3rem);font-weight:800;letter-spacing:-0.03em;margin-bottom:1rem}h1 span{background:linear-gradient(135deg,#00f5d4,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.hero-sub{font-size:1.05rem;color:#888;line-height:1.7;max-width:560px;margin-bottom:3rem}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem}footer{text-align:center;padding:4rem 2rem;color:#444;font-size:0.85rem;border-top:1px solid rgba(255,255,255,0.06);margin-top:4rem}@media(max-width:640px){nav{padding:1rem 1.25rem}main{padding:3rem 1.25rem}}</style></head><body><nav><a href="/" class="logo">⬡ AIOS</a><div class="nav-links"><a href="/vr-hub">🥽 VR Hub</a><a href="/start">Start Here</a><a href="/ai">For AIs</a></div></nav><main><div class="hero-label">AIOS Product Suite</div><h1>Built for the <span>AI-Native Era</span></h1><p class="hero-sub">Six intelligent products running on AIOS Merkaba OS. Self-healing, semantically grounded, and geometrically sound.</p><div class="grid">${cardsHTML}</div></main><footer>© 2025 AIOS — realaios.com</footer></body></html>`;
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.end(html);
+      return;
     }
 
     // ── GET /products/:slug — individual AIOS product pages ──────────────
