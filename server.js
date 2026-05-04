@@ -53,14 +53,15 @@ const GA_ID =
   "G-E3NTLP8HS3";
 const GSC_TOKEN = process.env.GOOGLE_SITE_VERIFICATION || "";
 
-/** Inject GA4 + optional GSC meta tag into any HTML string before </head> */
+/** Inject GA4 + optional GSC meta tag + preconnect hints into any HTML string before </head> */
 function withMeta(html) {
   if (!html) return html;
   const gscTag = GSC_TOKEN
     ? `<meta name="google-site-verification" content="${GSC_TOKEN}"/>`
     : "";
+  const preconnect = `<link rel="preconnect" href="https://www.googletagmanager.com"/><link rel="dns-prefetch" href="https://www.google-analytics.com"/>`;
   const gaTag = `<script async src="https://www.googletagmanager.com/gtag/js?id=${GA_ID}"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${GA_ID}',{send_page_view:true,cookie_flags:'SameSite=None;Secure'});</script>`;
-  return html.replace("</head>", `${gscTag}${gaTag}\n</head>`);
+  return html.replace("</head>", `${gscTag}${preconnect}${gaTag}\n</head>`);
 }
 
 // ─── Static assets ───────────────────────────────────────────────────────────
@@ -404,7 +405,7 @@ const server = createServer(async (req, res) => {
   res.setHeader("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
   res.setHeader(
     "Content-Security-Policy",
-    "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; img-src 'self' data: https://www.google-analytics.com; connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://api.getbrains4ai.com; style-src 'self' 'unsafe-inline'; frame-src 'none'; object-src 'none'; base-uri 'self'",
+    "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://aframe.io; img-src 'self' data: https://www.google-analytics.com; connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://api.getbrains4ai.com; style-src 'self' 'unsafe-inline'; frame-src 'none'; object-src 'none'; base-uri 'self'; worker-src blob:",
   );
 
   if (req.method === "OPTIONS") {
@@ -500,6 +501,11 @@ const server = createServer(async (req, res) => {
         `  <url><loc>https://realaios.com/products</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.75</priority></url>`,
         `  <url><loc>https://realaios.com/news</loc><lastmod>${now}</lastmod><changefreq>daily</changefreq><priority>0.88</priority></url>`,
         `  <url><loc>https://realaios.com/claude</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.82</priority></url>`,
+        // Individual news article pages
+        ...AIOS_NEWS.map(
+          (n) =>
+            `  <url><loc>https://realaios.com/news/${n.id}</loc><lastmod>${n.date}</lastmod><changefreq>never</changefreq><priority>0.72</priority></url>`,
+        ),
         // Individual VR experience SEO pages (live XPs — count from taxonomy)
         ...(VR_TAXONOMY
           ? (VR_TAXONOMY.categories || []).flatMap((cat) =>
@@ -976,12 +982,22 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
         const cacheValue = isImmutable
           ? "public, max-age=31536000, immutable"   // 1 year for binary assets
           : "public, max-age=86400, stale-while-revalidate=3600"; // 1 day for SVG/JSON/txt
+        const fileBuffer = readFileSync(filePath);
+        const etag = `"${fileBuffer.length}-${existsSync(filePath) ? Date.now() : 0}"`;
+        const ifNoneMatch = req.headers["if-none-match"];
+        if (ifNoneMatch === etag) {
+          res.writeHead(304, { "Cache-Control": cacheValue, "ETag": etag });
+          res.end();
+          return;
+        }
         res.writeHead(200, {
           "Content-Type": mime,
           "Cache-Control": cacheValue,
+          "ETag": etag,
+          "Vary": "Accept-Encoding",
           "X-Content-Type-Options": "nosniff",
         });
-        res.end(readFileSync(filePath));
+        res.end(fileBuffer);
         return;
       }
       return json(res, 404, { ok: false, error: "Static file not found" });
@@ -2343,11 +2359,11 @@ function filterXP(cat, btn) {
             <span class="cat-badge cat-${n.category.toLowerCase().replace(/\s/g,"-")}">${n.category}</span>
             <time class="card-date">${new Date(n.date).toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"})}</time>
           </div>
-          <h2 class="card-title">${n.title}</h2>
+          <h2 class="card-title"><a href="/news/${n.id}" style="color:inherit">${n.title}</a></h2>
           <p class="card-summary">${n.summary}</p>
           <div class="card-footer">
             ${n.tags.map(t=>`<span class="tag">#${t}</span>`).join("")}
-            <a href="${n.url}" class="card-link">Explore →</a>
+            <a href="/news/${n.id}" class="card-link">Read →</a>
           </div>
         </article>`).join("");
       const newsPage = `<!DOCTYPE html>
@@ -2371,7 +2387,7 @@ function filterXP(cat, btn) {
   "headline":n.title,
   "description":n.summary,
   "datePublished":n.date,
-  "url":n.url,
+  "url":`https://realaios.com/news/${n.id}`,
   "keywords":n.tags.join(", "),
   "author":{"@type":"Person","name":"Brad Levitan"},
   "publisher":{"@type":"Organization","name":"AIOS","url":"https://realaios.com"}
@@ -2466,6 +2482,120 @@ footer{text-align:center;padding:3rem 1.5rem;color:#334155;font-size:0.8rem;bord
         count: AIOS_NEWS.length,
         items: AIOS_NEWS,
       });
+    }
+
+    // ── GET /news/:id — individual news article page ──────────────────────
+    if (req.method === "GET" && pathname.startsWith("/news/")) {
+      const articleId = pathname.slice("/news/".length).replace(/[\/\s]/g, "");
+      const article = AIOS_NEWS.find((n) => n.id === articleId);
+      if (!article) {
+        res.writeHead(302, { Location: "/news" });
+        res.end();
+        return;
+      }
+      const articleUrl = `https://realaios.com/news/${article.id}`;
+      const tagBadges = article.tags
+        .map((t) => `<span class="tag">${t}</span>`)
+        .join("");
+      const otherArticles = AIOS_NEWS.filter((n) => n.id !== article.id)
+        .slice(0, 3)
+        .map(
+          (n) =>
+            `<a class="related-link" href="/news/${n.id}"><span class="rc">${n.category}</span>${n.title}</a>`,
+        )
+        .join("");
+      const articleHtml = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>${article.title} — AIOS News</title>
+<meta name="description" content="${article.summary.slice(0, 160)}"/>
+<link rel="canonical" href="${articleUrl}"/>
+<meta property="og:type" content="article"/>
+<meta property="og:title" content="${article.title}"/>
+<meta property="og:description" content="${article.summary.slice(0, 200)}"/>
+<meta property="og:url" content="${articleUrl}"/>
+<meta property="og:image" content="https://realaios.com/public/og-image.svg"/>
+<meta property="og:site_name" content="AIOS News"/>
+<meta property="article:published_time" content="${article.date}T00:00:00Z"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="${article.title}"/>
+<meta name="twitter:description" content="${article.summary.slice(0, 200)}"/>
+${GSC_TOKEN ? `<meta name="google-site-verification" content="${GSC_TOKEN}"/>` : ""}
+<link rel="preconnect" href="https://www.googletagmanager.com"/>
+<script async src="https://www.googletagmanager.com/gtag/js?id=${GA_ID}"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${GA_ID}',{send_page_view:true});</script>
+<script type="application/ld+json">${JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "NewsArticle",
+  headline: article.title,
+  description: article.summary,
+  datePublished: `${article.date}T00:00:00Z`,
+  dateModified: `${article.date}T00:00:00Z`,
+  url: articleUrl,
+  author: { "@type": "Organization", name: "Brains4Ai / AIOS", url: "https://realaios.com" },
+  publisher: { "@type": "Organization", name: "AIOS", url: "https://realaios.com",
+    logo: { "@type": "ImageObject", url: "https://realaios.com/public/og-image.svg" } },
+  mainEntityOfPage: articleUrl,
+  keywords: article.tags.join(", "),
+})}</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#060d18;color:#edf4ff;font-family:system-ui,sans-serif;line-height:1.6}
+nav{display:flex;align-items:center;justify-content:space-between;padding:0.75rem 1.5rem;border-bottom:1px solid rgba(255,255,255,0.07);background:rgba(6,13,24,0.95);backdrop-filter:blur(8px);position:sticky;top:0;z-index:100}
+.nav-brand{color:#00d4ff;font-weight:800;font-size:1rem;text-decoration:none}
+.nav-links{display:flex;gap:1.25rem}
+.nav-links a{color:rgba(237,244,255,0.5);font-size:0.82rem;text-decoration:none;font-weight:500}
+.nav-links a:hover{color:#edf4ff}
+article{max-width:680px;margin:3rem auto;padding:0 1.5rem}
+.breadcrumb{font-size:0.78rem;color:#4a6080;margin-bottom:1.5rem}
+.breadcrumb a{color:#4a6080;text-decoration:none}
+.breadcrumb a:hover{color:#00d4ff}
+.cat-badge{display:inline-block;padding:0.25rem 0.7rem;border-radius:12px;font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;background:#00d4ff1a;border:1px solid #00d4ff44;color:#00d4ff;margin-bottom:1rem}
+.article-date{color:#4a6080;font-size:0.8rem;margin-bottom:1.25rem}
+h1{font-size:clamp(1.5rem,4vw,2.25rem);font-weight:800;line-height:1.2;margin-bottom:1.5rem;letter-spacing:-0.02em}
+.article-body{font-size:1rem;color:#b8cce0;line-height:1.8;margin-bottom:2rem}
+.tags{display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:2.5rem}
+.tag{padding:0.2rem 0.65rem;border-radius:12px;font-size:0.72rem;font-weight:600;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:#8aa0c8}
+.related{border-top:1px solid rgba(255,255,255,0.08);padding-top:2rem;margin-top:2rem}
+.related h2{font-size:0.85rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#4a6080;margin-bottom:1rem}
+.related-link{display:block;padding:0.75rem;border:1px solid rgba(255,255,255,0.07);border-radius:8px;text-decoration:none;color:#b8cce0;margin-bottom:0.5rem;font-size:0.88rem;transition:border-color 0.15s}
+.related-link:hover{border-color:#00d4ff44;color:#edf4ff}
+.rc{display:inline-block;font-size:0.68rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#00d4ff;margin-right:0.5rem}
+.back-cta{display:inline-block;margin-top:2rem;padding:0.55rem 1.25rem;border:1px solid rgba(255,255,255,0.15);border-radius:8px;color:#8aa0c8;text-decoration:none;font-size:0.85rem}
+.back-cta:hover{border-color:#00d4ff;color:#00d4ff}
+footer{text-align:center;padding:2.5rem;color:#2a3a50;font-size:0.8rem;border-top:1px solid rgba(255,255,255,0.05);margin-top:4rem}
+</style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-brand">&#x2B21; AIOS</a>
+  <div class="nav-links">
+    <a href="/news">&larr; All News</a>
+    <a href="/ai">For AIs</a>
+    <a href="/claude" style="color:#d97706">Claude &times;</a>
+    <a href="/start">Start Here</a>
+  </div>
+</nav>
+<article>
+  <div class="breadcrumb"><a href="/">AIOS</a> &rsaquo; <a href="/news">News</a> &rsaquo; ${article.category}</div>
+  <div class="cat-badge">${article.category}</div>
+  <div class="article-date">Published ${article.date}</div>
+  <h1>${article.title}</h1>
+  <div class="article-body">${article.summary}</div>
+  <div class="tags">${tagBadges}</div>
+  <a class="back-cta" href="/news">&larr; All Updates</a>
+  ${otherArticles ? `<div class="related"><h2>Related Updates</h2>${otherArticles}</div>` : ""}
+</article>
+<footer>&copy; 2026 AIOS &mdash; <a href="/" style="color:inherit">realaios.com</a> &mdash; <a href="/news.json" style="color:inherit">JSON Feed</a></footer>
+</body>
+</html>`;
+      res.writeHead(200, {
+        "Content-Type": "text/html; charset=utf-8",
+        "Cache-Control": "public, max-age=3600, stale-while-revalidate=600",
+      });
+      res.end(articleHtml);
+      return;
     }
 
     // ── GET /claude — Claude AI integration landing page ──────────────────
