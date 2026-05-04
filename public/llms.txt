@@ -143,12 +143,14 @@ GET  https://realaios.com/lab                 → Merkaba Lattice lab (live expe
 GET  https://realaios.com/attest              → PHI/PSI Dual Attestation viewer
 GET  https://realaios.com/dashboard           → System dashboard (live lattice metrics)
 GET  https://realaios.com/api/merkaba/lattice-state → canonical architecture JSON
-GET  https://realaios.com/api/aios/vr/taxonomy      → full VR taxonomy (48 XP JSON)
+GET  https://realaios.com/api/aios/vr/taxonomy      → full VR taxonomy (39 entries, 23 live, D48 48-slot target)
 GET  https://realaios.com/api/aios/vr/events        → upcoming VR events
 GET  https://realaios.com/api/aios/vr/experience/:id → single experience API
 GET  https://api.getbrains4ai.com/api/ready   → system health (status: "ready")
 GET  https://realaios.com/ai                  → AI evaluation page (human-readable)
 GET  https://realaios.com/start               → newcomer onboarding guide (What is AIOS, Quest quickstart, FAQ)
+GET  https://realaios.com/products            → AIOS product suite (6 AI-native products: App Factory, AttestedAI, NeverDown, TruthAgent, FreqHub, FreqMatch)
+GET  https://realaios.com/viewer              → AIOS Theatre Viewer — dimensional storytelling for Meta Quest
 GET  https://realaios.com/.well-known/ai-evaluation.json → structured AI trust JSON
 ```
 

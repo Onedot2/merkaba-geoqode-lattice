@@ -1976,6 +1976,7 @@ h1{font-size:1.6rem;font-weight:800;margin-bottom:0.75rem;line-height:1.25;}
 <meta property="og:title" content="All ${allLive.length} Live VR Experiences — AIOS VR"/>
 <meta property="og:description" content="Browse every live WebXR experience. Zero install — open on Meta Quest Browser."/>
 <meta property="og:url" content="https://realaios.com/experiences"/>
+<meta property="og:type" content="website"/>
 <meta property="og:image" content="https://realaios.com/public/og-image.svg"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="All ${allLive.length} Live VR Experiences — AIOS VR"/>
