@@ -14,12 +14,24 @@
       content="Build immersive WebXR experiences for the AIOS VR Platform — powered by Merkaba 8→26→48:480"
     />
     <meta property="og:url" content="https://realaios.com/vr-developer" />
-    <meta property="og:image" content="https://realaios.com/public/og-image.svg" />
+    <meta
+      property="og:image"
+      content="https://realaios.com/public/og-image.svg"
+    />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="AIOS VR Developer Portal — Build for the Merkaba Lattice" />
-    <meta name="twitter:description" content="Build WebXR experiences for Meta Quest via AIOS. A-Frame templates, GeoQode SDK, PLAIstore submission. 70% revenue share." />
-    <meta name="twitter:image" content="https://realaios.com/public/og-image.svg" />
+    <meta
+      name="twitter:title"
+      content="AIOS VR Developer Portal — Build for the Merkaba Lattice"
+    />
+    <meta
+      name="twitter:description"
+      content="Build WebXR experiences for Meta Quest via AIOS. A-Frame templates, GeoQode SDK, PLAIstore submission. 70% revenue share."
+    />
+    <meta
+      name="twitter:image"
+      content="https://realaios.com/public/og-image.svg"
+    />
     <link rel="canonical" href="https://realaios.com/vr-developer" />
     <style>
       *,
@@ -956,7 +968,8 @@
             </div>
           </div>
           <div class="cat-card-desc">
-            Immersive learning — Ancient Rome, Human Body, Future Cities, Deep Ocean. Educational VR reduces learning time by up to 4×.
+            Immersive learning — Ancient Rome, Human Body, Future Cities, Deep
+            Ocean. Educational VR reduces learning time by up to 4×.
           </div>
           <div class="cat-card-meta">
             <span class="tag-pill">latticeRing: Canonical</span
@@ -972,7 +985,8 @@
             </div>
           </div>
           <div class="cat-card-desc">
-            Spatial canvas painting, 3D sculpture, frequency composition. Create 3D art with your hands. Frequency Composer. Spatial Canvas.
+            Spatial canvas painting, 3D sculpture, frequency composition. Create
+            3D art with your hands. Frequency Composer. Spatial Canvas.
           </div>
           <div class="cat-card-meta">
             <span class="tag-pill">latticeRing: Canonical</span
@@ -1079,7 +1093,10 @@
           <tr>
             <td><span class="method method-get">GET</span></td>
             <td class="endpoint">/api/aios/vr/taxonomy</td>
-            <td>Full VR taxonomy JSON — all 9 categories + 48 experiences (23 live)</td>
+            <td>
+              Full VR taxonomy JSON — all 9 categories + 48 experiences (23
+              live)
+            </td>
             <td>Cache-Control: 5min · CORS *</td>
           </tr>
           <tr>
@@ -1439,7 +1456,15 @@
         .then((r) => (r.ok ? r.json() : null))
         .then((d) => {
           if (!d) return;
-          const total = d.totalExperiences || (() => { let t=0; (d.categories||[]).forEach(c=>{ t+=(c.experiences||[]).length; }); return t; })();
+          const total =
+            d.totalExperiences ||
+            (() => {
+              let t = 0;
+              (d.categories || []).forEach((c) => {
+                t += (c.experiences || []).length;
+              });
+              return t;
+            })();
           const el = document.getElementById("live-xp-count");
           if (el) el.textContent = total;
         })

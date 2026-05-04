@@ -21,32 +21,89 @@
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://realaios.com/vr-hub" />
-    <meta property="og:image" content="https://realaios.com/public/og-image.svg" />
+    <meta
+      property="og:image"
+      content="https://realaios.com/public/og-image.svg"
+    />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="AIOS VR Hub — 23 Live Immersive Worlds for Meta Quest" />
-    <meta name="twitter:description" content="23 live WebXR experiences across 9 categories. Zero install — open on Meta Quest Browser." />
-    <meta name="twitter:image" content="https://realaios.com/public/og-image.svg" />
+    <meta
+      name="twitter:title"
+      content="AIOS VR Hub — 23 Live Immersive Worlds for Meta Quest"
+    />
+    <meta
+      name="twitter:description"
+      content="23 live WebXR experiences across 9 categories. Zero install — open on Meta Quest Browser."
+    />
+    <meta
+      name="twitter:image"
+      content="https://realaios.com/public/og-image.svg"
+    />
     <link rel="canonical" href="https://realaios.com/vr-hub" />
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "ItemList",
-      "name": "AIOS VR Hub — 23 Live WebXR Experiences",
-      "description": "23 live WebXR experiences across 9 categories for Meta Quest 2/3. Browser-only, zero install.",
-      "url": "https://realaios.com/vr-hub",
-      "numberOfItems": 9,
-      "itemListElement": [
-        {"@type":"ListItem","position":1,"name":"Cinema","url":"https://realaios.com/vr-hub#cinema"},
-        {"@type":"ListItem","position":2,"name":"Enterprise","url":"https://realaios.com/vr-hub#enterprise"},
-        {"@type":"ListItem","position":3,"name":"Lab","url":"https://realaios.com/vr-hub#lab"},
-        {"@type":"ListItem","position":4,"name":"Arcade","url":"https://realaios.com/vr-hub#arcade"},
-        {"@type":"ListItem","position":5,"name":"Wellness","url":"https://realaios.com/vr-hub#wellness"},
-        {"@type":"ListItem","position":6,"name":"Social","url":"https://realaios.com/vr-hub#social"},
-        {"@type":"ListItem","position":7,"name":"Creator","url":"https://realaios.com/vr-hub#creator"},
-        {"@type":"ListItem","position":8,"name":"Education","url":"https://realaios.com/vr-hub#education"},
-        {"@type":"ListItem","position":9,"name":"Art","url":"https://realaios.com/vr-hub#art"}
-      ]
-    }
+      {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "name": "AIOS VR Hub — 23 Live WebXR Experiences",
+        "description": "23 live WebXR experiences across 9 categories for Meta Quest 2/3. Browser-only, zero install.",
+        "url": "https://realaios.com/vr-hub",
+        "numberOfItems": 9,
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Cinema",
+            "url": "https://realaios.com/vr-hub#cinema"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Enterprise",
+            "url": "https://realaios.com/vr-hub#enterprise"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Lab",
+            "url": "https://realaios.com/vr-hub#lab"
+          },
+          {
+            "@type": "ListItem",
+            "position": 4,
+            "name": "Arcade",
+            "url": "https://realaios.com/vr-hub#arcade"
+          },
+          {
+            "@type": "ListItem",
+            "position": 5,
+            "name": "Wellness",
+            "url": "https://realaios.com/vr-hub#wellness"
+          },
+          {
+            "@type": "ListItem",
+            "position": 6,
+            "name": "Social",
+            "url": "https://realaios.com/vr-hub#social"
+          },
+          {
+            "@type": "ListItem",
+            "position": 7,
+            "name": "Creator",
+            "url": "https://realaios.com/vr-hub#creator"
+          },
+          {
+            "@type": "ListItem",
+            "position": 8,
+            "name": "Education",
+            "url": "https://realaios.com/vr-hub#education"
+          },
+          {
+            "@type": "ListItem",
+            "position": 9,
+            "name": "Art",
+            "url": "https://realaios.com/vr-hub#art"
+          }
+        ]
+      }
     </script>
     <style>
       :root {
@@ -1216,7 +1273,12 @@
       <div class="hero-ctas">
         <a href="/vr" class="btn-primary">🥽 Launch VR Theatre</a>
         <a href="#browse" class="btn-secondary">📂 Browse All Categories</a>
-        <a href="/experiences" class="btn-secondary" style="border-color:rgba(34,197,94,0.3);color:#22c55e">✓ 23 Live Now</a>
+        <a
+          href="/experiences"
+          class="btn-secondary"
+          style="border-color: rgba(34, 197, 94, 0.3); color: #22c55e"
+          >✓ 23 Live Now</a
+        >
       </div>
       <!-- Quest detected CTA -->
       <div id="quest-hero-cta">
@@ -1236,7 +1298,7 @@
     <!-- ── STATS ─────────────────────────────────────────────────────────── -->
     <div class="stats-bar">
       <div class="stat">
-        <span class="stat-num">48</span
+        <span class="stat-num" id="stat-xp">48</span
         ><span class="stat-label">VR Experiences</span>
       </div>
       <div class="stat">
@@ -1479,7 +1541,9 @@
     <div class="cat-section" id="lab">
       <div class="cat-section-header">
         <div>
-          <div class="cat-section-title" style="color: var(--lab)">🔬 Lab <span class="live-pill">3 live</span></div>
+          <div class="cat-section-title" style="color: var(--lab)">
+            🔬 Lab <span class="live-pill">3 live</span>
+          </div>
           <div class="cat-section-desc">
             Educational and scientific visualisation — reality as data
           </div>
@@ -2480,11 +2544,17 @@
         .then((d) => {
           if (!d || !d.categories) return;
           let total = 0;
+          let live = 0;
           d.categories.forEach((c) => {
             total += (c.experiences || []).length;
+            live += (c.experiences || []).filter((e) => e.status === "live").length;
           });
           if (total)
             document.getElementById("stat-xp").textContent = total + "+";
+          if (live) {
+            const el = document.getElementById("stat-live");
+            if (el) el.textContent = live;
+          }
         })
         .catch(() => {
           // Fallback to PLAIstore

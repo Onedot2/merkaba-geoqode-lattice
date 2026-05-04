@@ -410,20 +410,64 @@ const server = createServer(async (req, res) => {
     // ── GET /products — AIOS product directory ────────────────────────────
     if (req.method === "GET" && pathname === "/products") {
       const PRODUCT_LIST = [
-        { slug: "app-factory", name: "AIOS App Factory", color: "#00f5d4", icon: "⚡", tagline: "Build fully self-healing, AI-native apps with a single command" },
-        { slug: "attested-ai", name: "AttestedAI", color: "#a855f7", icon: "✓", tagline: "AI audit & compliance attestation — every answer verified by two independent AI poles" },
-        { slug: "never-down", name: "NeverDown", color: "#2dd4bf", icon: "↺", tagline: "AI-powered uptime intelligence — monitors, detects, and heals production incidents at the OS layer" },
-        { slug: "truth-agent", name: "TruthAgent", color: "#ec4899", icon: "◈", tagline: "AI hallucination detection & grounding for healthcare, legal, and finance" },
-        { slug: "freq-hub", name: "FreqHub", color: "#f59e0b", icon: "◎", tagline: "AI signal marketplace — publish, discover, and monetize AI signals semantically" },
-        { slug: "freq-match", name: "FreqMatch", color: "#3b82f6", icon: "⟷", tagline: "AI-native talent & collaboration matching — find the right people semantically" },
+        {
+          slug: "app-factory",
+          name: "AIOS App Factory",
+          color: "#00f5d4",
+          icon: "⚡",
+          tagline:
+            "Build fully self-healing, AI-native apps with a single command",
+        },
+        {
+          slug: "attested-ai",
+          name: "AttestedAI",
+          color: "#a855f7",
+          icon: "✓",
+          tagline:
+            "AI audit & compliance attestation — every answer verified by two independent AI poles",
+        },
+        {
+          slug: "never-down",
+          name: "NeverDown",
+          color: "#2dd4bf",
+          icon: "↺",
+          tagline:
+            "AI-powered uptime intelligence — monitors, detects, and heals production incidents at the OS layer",
+        },
+        {
+          slug: "truth-agent",
+          name: "TruthAgent",
+          color: "#ec4899",
+          icon: "◈",
+          tagline:
+            "AI hallucination detection & grounding for healthcare, legal, and finance",
+        },
+        {
+          slug: "freq-hub",
+          name: "FreqHub",
+          color: "#f59e0b",
+          icon: "◎",
+          tagline:
+            "AI signal marketplace — publish, discover, and monetize AI signals semantically",
+        },
+        {
+          slug: "freq-match",
+          name: "FreqMatch",
+          color: "#3b82f6",
+          icon: "⟷",
+          tagline:
+            "AI-native talent & collaboration matching — find the right people semantically",
+        },
       ];
-      const cardsHTML = PRODUCT_LIST.map(p => `
+      const cardsHTML = PRODUCT_LIST.map(
+        (p) => `
       <a href="/products/${p.slug}" style="display:block;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:2rem;text-decoration:none;transition:border-color 0.2s;position:relative;overflow:hidden" onmouseover="this.style.borderColor='${p.color}44'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)'">
         <div style="font-size:2rem;margin-bottom:0.75rem">${p.icon}</div>
         <div style="font-size:1.15rem;font-weight:700;color:#fff;margin-bottom:0.5rem">${p.name}</div>
         <div style="font-size:0.9rem;color:#888;line-height:1.6">${p.tagline}</div>
         <div style="margin-top:1rem;font-size:0.82rem;font-weight:600;color:${p.color}">Learn more →</div>
-      </a>`).join("");
+      </a>`,
+      ).join("");
       const productListLD = JSON.stringify({
         "@context": "https://schema.org",
         "@type": "ItemList",
@@ -1808,7 +1852,9 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
         return;
       }
       const liveCount = (VR_TAXONOMY.categories || []).reduce(
-        (n, c) => n + (c.experiences || []).filter((e) => e.status === "live").length, 0
+        (n, c) =>
+          n + (c.experiences || []).filter((e) => e.status === "live").length,
+        0,
       );
       const title = `${found.display} — AIOS VR | realaios.com`;
       const desc =
@@ -1939,7 +1985,9 @@ h1{font-size:1.6rem;font-weight:800;margin-bottom:0.75rem;line-height:1.25;}
           if (xp.status === "live") allLive.push({ xp, cat });
         }
       }
-      const xpCards = allLive.map(({ xp, cat }) => `
+      const xpCards = allLive
+        .map(
+          ({ xp, cat }) => `
     <article class="xpc" data-cat="${cat.id}" style="--acc:${cat.accent || "#00d4ff"}">
       <div class="xpc-cat">${cat.icon || "🥽"} ${cat.display}</div>
       <h2 class="xpc-title"><a href="/vr-experience/${xp.id}">${xp.display}</a></h2>
@@ -1953,22 +2001,28 @@ h1{font-size:1.6rem;font-weight:800;margin-bottom:0.75rem;line-height:1.25;}
         <a href="https://realaios.com${xp.vrUrl}" class="btn-vr">🥽 Launch VR</a>
         <a href="/vr-experience/${xp.id}" class="btn-info">Details →</a>
       </div>
-    </article>`).join("\n");
+    </article>`,
+        )
+        .join("\n");
 
-      const liveCats = [...new Map(allLive.map(({ cat }) => [cat.id, cat])).values()];
-      const filterBtns = [`<button class="ft active" onclick="filterXP('all',this)">All (${allLive.length})</button>`,
-        ...liveCats.map(cat => {
+      const liveCats = [
+        ...new Map(allLive.map(({ cat }) => [cat.id, cat])).values(),
+      ];
+      const filterBtns = [
+        `<button class="ft active" onclick="filterXP('all',this)">All (${allLive.length})</button>`,
+        ...liveCats.map((cat) => {
           const count = allLive.filter(({ cat: c }) => c.id === cat.id).length;
           return `<button class="ft" onclick="filterXP('${cat.id}',this)">${cat.icon || ""} ${cat.display} (${count})</button>`;
-        })].join("\n");
+        }),
+      ].join("\n");
 
       const ldItems = allLive.map(({ xp }) => ({
         "@type": "SoftwareApplication",
-        "name": xp.display,
-        "url": `https://realaios.com/vr-experience/${xp.id}`,
-        "operatingSystem": "Meta Quest Browser",
-        "applicationCategory": "Game",
-        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        name: xp.display,
+        url: `https://realaios.com/vr-experience/${xp.id}`,
+        operatingSystem: "Meta Quest Browser",
+        applicationCategory: "Game",
+        offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
       }));
 
       const html = `<!DOCTYPE html>
@@ -1989,14 +2043,18 @@ h1{font-size:1.6rem;font-weight:800;margin-bottom:0.75rem;line-height:1.25;}
 <meta name="twitter:description" content="Browse every live WebXR experience. Zero install — open on Meta Quest Browser."/>
 <meta name="twitter:image" content="https://realaios.com/public/og-image.svg"/>
 <script type="application/ld+json">${JSON.stringify({
-  "@context": "https://schema.org",
-  "@type": "ItemList",
-  "name": "AIOS VR — All Live Experiences",
-  "description": `${allLive.length} live WebXR experiences. Zero install. Meta Quest compatible.`,
-  "url": "https://realaios.com/experiences",
-  "numberOfItems": allLive.length,
-  "itemListElement": ldItems.map((item, i) => ({ "@type": "ListItem", "position": i + 1, "item": item })),
-})}</script>
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        name: "AIOS VR — All Live Experiences",
+        description: `${allLive.length} live WebXR experiences. Zero install. Meta Quest compatible.`,
+        url: "https://realaios.com/experiences",
+        numberOfItems: allLive.length,
+        itemListElement: ldItems.map((item, i) => ({
+          "@type": "ListItem",
+          position: i + 1,
+          item: item,
+        })),
+      })}</script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#04080f;color:#edf4ff;font-family:system-ui,sans-serif;padding:2rem 1.5rem;}
@@ -2071,7 +2129,10 @@ function filterXP(cat, btn) {
 </script>
 </body>
 </html>`;
-      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "public, max-age=300" });
+      res.writeHead(200, {
+        "Content-Type": "text/html; charset=utf-8",
+        "Cache-Control": "public, max-age=300",
+      });
       res.end(html);
       return;
     }
@@ -2097,7 +2158,10 @@ function filterXP(cat, btn) {
     }
 
     // ── GET /start — newcomer onboarding page ────────────────────────────
-    if (req.method === "GET" && (pathname === "/start" || pathname === "/start/")) {
+    if (
+      req.method === "GET" &&
+      (pathname === "/start" || pathname === "/start/")
+    ) {
       if (!START_HTML)
         return json(res, 404, { ok: false, error: "Start page not found" });
       res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
@@ -2219,7 +2283,7 @@ p{color:#8aa0c8;font-size:0.92rem;max-width:380px;line-height:1.6;margin-bottom:
 <body>
 <div class="glyph">⬡</div>
 <h1>Page Not Found</h1>
-<p>That URL doesn't exist on AIOS. Head back to the platform — ${VR_TAXONOMY ? (VR_TAXONOMY.categories || []).reduce((n, c) => n + (c.experiences || []).filter(e => e.status === "live").length, 0) : 23} live VR worlds are waiting.</p>
+<p>That URL doesn't exist on AIOS. Head back to the platform — ${VR_TAXONOMY ? (VR_TAXONOMY.categories || []).reduce((n, c) => n + (c.experiences || []).filter((e) => e.status === "live").length, 0) : 23} live VR worlds are waiting.</p>
 <div class="links">
   <a class="btn btn-primary" href="/vr-hub">🥽 VR Hub</a>
   <a class="btn btn-secondary" href="/">Home</a>
@@ -2231,7 +2295,11 @@ p{color:#8aa0c8;font-size:0.92rem;max-width:380px;line-height:1.6;margin-bottom:
 </html>`);
       return;
     }
-    return json(res, 404, { ok: false, error: "Not Found", hint: "Visit https://realaios.com for the full platform." });
+    return json(res, 404, {
+      ok: false,
+      error: "Not Found",
+      hint: "Visit https://realaios.com for the full platform.",
+    });
   } catch (err) {
     console.error("[GeoQode OS] Request error:", err);
     return json(res, 500, {

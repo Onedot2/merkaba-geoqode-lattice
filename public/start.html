@@ -9,36 +9,78 @@
       content="Brand new to AIOS? Start here. What it is, what you can do right now, how to enter VR on Meta Quest, and how to get AI working for your business."
     />
     <meta property="og:title" content="New to AIOS? Start Here." />
-    <meta property="og:description" content="Your first 5 minutes with AIOS — the AI-Native OS. VR platform, AI assistant, developer tools. Zero friction." />
+    <meta
+      property="og:description"
+      content="Your first 5 minutes with AIOS — the AI-Native OS. VR platform, AI assistant, developer tools. Zero friction."
+    />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://realaios.com/start" />
-    <meta property="og:image" content="https://realaios.com/public/og-image.svg" />
+    <meta
+      property="og:image"
+      content="https://realaios.com/public/og-image.svg"
+    />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Start Here — AIOS VR & AI Platform" />
-    <meta name="twitter:description" content="New to AIOS? Pick your path — VR experiences, AI tools, developer docs, or platform deep-dives. Zero install." />
-    <meta name="twitter:image" content="https://realaios.com/public/og-image.svg" />
+    <meta
+      name="twitter:description"
+      content="New to AIOS? Pick your path — VR experiences, AI tools, developer docs, or platform deep-dives. Zero install."
+    />
+    <meta
+      name="twitter:image"
+      content="https://realaios.com/public/og-image.svg"
+    />
     <link rel="canonical" href="https://realaios.com/start" />
     <style>
-      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-      html { scroll-behavior: smooth; }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
       body {
         background: #04080f;
         color: #edf4ff;
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
         line-height: 1.6;
         min-height: 100vh;
       }
       nav {
-        display: flex; align-items: center; justify-content: space-between;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         padding: 1rem 1.5rem;
-        border-bottom: 1px solid rgba(0,212,255,0.1);
-        position: sticky; top: 0; background: rgba(4,8,15,0.95);
-        backdrop-filter: blur(8px); z-index: 100;
+        border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+        position: sticky;
+        top: 0;
+        background: rgba(4, 8, 15, 0.95);
+        backdrop-filter: blur(8px);
+        z-index: 100;
       }
-      .logo { color: #00d4ff; font-weight: 800; font-size: 1.1rem; text-decoration: none; letter-spacing: -0.01em; }
-      .nav-links { display: flex; gap: 1.25rem; }
-      .nav-links a { color: rgba(237,244,255,0.55); font-size: 0.85rem; text-decoration: none; font-weight: 500; }
-      .nav-links a:hover { color: #edf4ff; }
+      .logo {
+        color: #00d4ff;
+        font-weight: 800;
+        font-size: 1.1rem;
+        text-decoration: none;
+        letter-spacing: -0.01em;
+      }
+      .nav-links {
+        display: flex;
+        gap: 1.25rem;
+      }
+      .nav-links a {
+        color: rgba(237, 244, 255, 0.55);
+        font-size: 0.85rem;
+        text-decoration: none;
+        font-weight: 500;
+      }
+      .nav-links a:hover {
+        color: #edf4ff;
+      }
       .hero {
         text-align: center;
         padding: 4rem 1.5rem 2.5rem;
@@ -46,13 +88,25 @@
         margin: 0 auto;
       }
       .eyebrow {
-        font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em;
-        color: #00d4ff; text-transform: uppercase; margin-bottom: 1rem;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        color: #00d4ff;
+        text-transform: uppercase;
+        margin-bottom: 1rem;
       }
-      h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; margin-bottom: 0.75rem; line-height: 1.1; }
+      h1 {
+        font-size: clamp(2rem, 5vw, 3rem);
+        font-weight: 900;
+        margin-bottom: 0.75rem;
+        line-height: 1.1;
+      }
       .subtitle {
-        font-size: 1.05rem; color: rgba(237,244,255,0.6);
-        max-width: 560px; margin: 0 auto 2rem; line-height: 1.65;
+        font-size: 1.05rem;
+        color: rgba(237, 244, 255, 0.6);
+        max-width: 560px;
+        margin: 0 auto 2rem;
+        line-height: 1.65;
       }
       /* Path cards */
       .paths {
@@ -64,22 +118,50 @@
         padding: 0 1.5rem 3rem;
       }
       .path-card {
-        background: rgba(255,255,255,0.04);
+        background: rgba(255, 255, 255, 0.04);
         border-radius: 16px;
         padding: 2rem 1.75rem;
-        border: 1px solid rgba(255,255,255,0.08);
-        transition: border-color 0.2s, transform 0.2s;
-        display: flex; flex-direction: column;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        transition:
+          border-color 0.2s,
+          transform 0.2s;
+        display: flex;
+        flex-direction: column;
       }
-      .path-card:hover { transform: translateY(-2px); }
-      .path-card.vr { border-color: rgba(0,212,255,0.2); }
-      .path-card.ai { border-color: rgba(99,102,241,0.25); }
-      .path-card.dev { border-color: rgba(168,85,247,0.2); }
-      .path-card.learn { border-color: rgba(249,115,22,0.2); }
-      .path-card.products { border-color: rgba(0,245,212,0.2); }
-      .path-icon { font-size: 2.5rem; margin-bottom: 1rem; }
-      .path-card h2 { font-size: 1.1rem; font-weight: 800; margin-bottom: 0.4rem; }
-      .path-card p { font-size: 0.85rem; color: rgba(237,244,255,0.55); line-height: 1.6; flex: 1; margin-bottom: 1.25rem; }
+      .path-card:hover {
+        transform: translateY(-2px);
+      }
+      .path-card.vr {
+        border-color: rgba(0, 212, 255, 0.2);
+      }
+      .path-card.ai {
+        border-color: rgba(99, 102, 241, 0.25);
+      }
+      .path-card.dev {
+        border-color: rgba(168, 85, 247, 0.2);
+      }
+      .path-card.learn {
+        border-color: rgba(249, 115, 22, 0.2);
+      }
+      .path-card.products {
+        border-color: rgba(0, 245, 212, 0.2);
+      }
+      .path-icon {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+      }
+      .path-card h2 {
+        font-size: 1.1rem;
+        font-weight: 800;
+        margin-bottom: 0.4rem;
+      }
+      .path-card p {
+        font-size: 0.85rem;
+        color: rgba(237, 244, 255, 0.55);
+        line-height: 1.6;
+        flex: 1;
+        margin-bottom: 1.25rem;
+      }
       .path-cta {
         display: inline-block;
         padding: 0.65rem 1.25rem;
@@ -89,57 +171,177 @@
         text-decoration: none;
         text-align: center;
       }
-      .path-cta.cyan { background: #00d4ff; color: #000; }
-      .path-cta.indigo { background: #6366f1; color: #fff; }
-      .path-cta.purple { background: rgba(168,85,247,0.15); border: 1px solid rgba(168,85,247,0.4); color: #c084fc; }
-      .path-cta.orange { background: rgba(249,115,22,0.12); border: 1px solid rgba(249,115,22,0.3); color: #fb923c; }
+      .path-cta.cyan {
+        background: #00d4ff;
+        color: #000;
+      }
+      .path-cta.indigo {
+        background: #6366f1;
+        color: #fff;
+      }
+      .path-cta.purple {
+        background: rgba(168, 85, 247, 0.15);
+        border: 1px solid rgba(168, 85, 247, 0.4);
+        color: #c084fc;
+      }
+      .path-cta.orange {
+        background: rgba(249, 115, 22, 0.12);
+        border: 1px solid rgba(249, 115, 22, 0.3);
+        color: #fb923c;
+      }
       /* Section dividers */
-      .section { padding: 3rem 1.5rem; max-width: 860px; margin: 0 auto; }
-      .section-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; color: #00d4ff; text-transform: uppercase; margin-bottom: 0.75rem; }
-      .section h2 { font-size: clamp(1.4rem, 3vw, 1.8rem); font-weight: 800; margin-bottom: 0.75rem; }
-      .section p { font-size: 0.9rem; color: rgba(237,244,255,0.6); line-height: 1.7; margin-bottom: 1rem; }
+      .section {
+        padding: 3rem 1.5rem;
+        max-width: 860px;
+        margin: 0 auto;
+      }
+      .section-label {
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        color: #00d4ff;
+        text-transform: uppercase;
+        margin-bottom: 0.75rem;
+      }
+      .section h2 {
+        font-size: clamp(1.4rem, 3vw, 1.8rem);
+        font-weight: 800;
+        margin-bottom: 0.75rem;
+      }
+      .section p {
+        font-size: 0.9rem;
+        color: rgba(237, 244, 255, 0.6);
+        line-height: 1.7;
+        margin-bottom: 1rem;
+      }
       /* Quest steps */
-      .steps { display: flex; flex-direction: column; gap: 1rem; margin: 1.5rem 0; }
+      .steps {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin: 1.5rem 0;
+      }
       .step {
-        display: flex; gap: 1rem; align-items: flex-start;
-        background: rgba(255,255,255,0.03);
-        border: 1px solid rgba(0,212,255,0.12);
+        display: flex;
+        gap: 1rem;
+        align-items: flex-start;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(0, 212, 255, 0.12);
         border-radius: 12px;
         padding: 1.1rem 1.25rem;
       }
       .step-num {
-        width: 2rem; height: 2rem; border-radius: 50%;
-        background: rgba(0,212,255,0.15);
-        border: 1px solid rgba(0,212,255,0.3);
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        background: rgba(0, 212, 255, 0.15);
+        border: 1px solid rgba(0, 212, 255, 0.3);
         color: #00d4ff;
-        font-weight: 800; font-size: 0.85rem;
-        display: flex; align-items: center; justify-content: center;
+        font-weight: 800;
+        font-size: 0.85rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         flex-shrink: 0;
       }
-      .step-body { flex: 1; }
-      .step-body strong { display: block; font-size: 0.92rem; margin-bottom: 0.2rem; color: #edf4ff; }
-      .step-body span { font-size: 0.82rem; color: rgba(237,244,255,0.55); line-height: 1.55; }
-      code { background: rgba(0,212,255,0.1); color: #00d4ff; padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.85em; }
+      .step-body {
+        flex: 1;
+      }
+      .step-body strong {
+        display: block;
+        font-size: 0.92rem;
+        margin-bottom: 0.2rem;
+        color: #edf4ff;
+      }
+      .step-body span {
+        font-size: 0.82rem;
+        color: rgba(237, 244, 255, 0.55);
+        line-height: 1.55;
+      }
+      code {
+        background: rgba(0, 212, 255, 0.1);
+        color: #00d4ff;
+        padding: 0.15rem 0.4rem;
+        border-radius: 4px;
+        font-size: 0.85em;
+      }
       /* FAQ */
-      .faq { max-width: 700px; margin: 0 auto; }
-      .faq-item { border-bottom: 1px solid rgba(255,255,255,0.07); padding: 1.25rem 0; }
-      .faq-q { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.5rem; color: #edf4ff; }
-      .faq-a { font-size: 0.85rem; color: rgba(237,244,255,0.55); line-height: 1.65; }
+      .faq {
+        max-width: 700px;
+        margin: 0 auto;
+      }
+      .faq-item {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+        padding: 1.25rem 0;
+      }
+      .faq-q {
+        font-weight: 700;
+        font-size: 0.95rem;
+        margin-bottom: 0.5rem;
+        color: #edf4ff;
+      }
+      .faq-a {
+        font-size: 0.85rem;
+        color: rgba(237, 244, 255, 0.55);
+        line-height: 1.65;
+      }
       /* CTA strip */
       .cta-strip {
         text-align: center;
         padding: 3rem 1.5rem;
-        border-top: 1px solid rgba(255,255,255,0.06);
-        background: rgba(0,212,255,0.03);
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        background: rgba(0, 212, 255, 0.03);
       }
-      .cta-strip h2 { font-size: 1.5rem; font-weight: 800; margin-bottom: 0.75rem; }
-      .cta-strip p { font-size: 0.9rem; color: rgba(237,244,255,0.5); max-width: 480px; margin: 0 auto 1.75rem; }
-      .btn-row { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
-      .btn-primary { padding: 0.75rem 1.75rem; background: #00d4ff; color: #000; border-radius: 9px; font-weight: 800; font-size: 0.95rem; text-decoration: none; }
-      .btn-secondary { padding: 0.75rem 1.5rem; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: #edf4ff; border-radius: 9px; font-weight: 600; font-size: 0.9rem; text-decoration: none; }
-      footer { text-align: center; padding: 2rem 1.5rem; font-size: 0.78rem; color: rgba(237,244,255,0.3); border-top: 1px solid rgba(255,255,255,0.06); }
-      footer a { color: rgba(0,212,255,0.6); text-decoration: none; }
-      footer a:hover { color: #00d4ff; }
+      .cta-strip h2 {
+        font-size: 1.5rem;
+        font-weight: 800;
+        margin-bottom: 0.75rem;
+      }
+      .cta-strip p {
+        font-size: 0.9rem;
+        color: rgba(237, 244, 255, 0.5);
+        max-width: 480px;
+        margin: 0 auto 1.75rem;
+      }
+      .btn-row {
+        display: flex;
+        gap: 0.75rem;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .btn-primary {
+        padding: 0.75rem 1.75rem;
+        background: #00d4ff;
+        color: #000;
+        border-radius: 9px;
+        font-weight: 800;
+        font-size: 0.95rem;
+        text-decoration: none;
+      }
+      .btn-secondary {
+        padding: 0.75rem 1.5rem;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        color: #edf4ff;
+        border-radius: 9px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        text-decoration: none;
+      }
+      footer {
+        text-align: center;
+        padding: 2rem 1.5rem;
+        font-size: 0.78rem;
+        color: rgba(237, 244, 255, 0.3);
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      footer a {
+        color: rgba(0, 212, 255, 0.6);
+        text-decoration: none;
+      }
+      footer a:hover {
+        color: #00d4ff;
+      }
     </style>
   </head>
   <body>
@@ -161,7 +363,8 @@
       <h1>New here? You're in the right place.</h1>
       <p class="subtitle">
         AIOS is an AI-Native Operating System. That means every product it runs
-        thinks, heals, and verifies before acting. Pick what you want to do first.
+        thinks, heals, and verifies before acting. Pick what you want to do
+        first.
       </p>
     </div>
 
@@ -171,8 +374,9 @@
         <div class="path-icon">🥽</div>
         <h2>I want to try VR</h2>
         <p>
-          23 live WebXR experiences across 9 categories. Works on Meta Quest 2/3 via browser.
-          No install. Just open <code>realaios.com/vr</code> on your headset and tap Enter VR Mode.
+          23 live WebXR experiences across 9 categories. Works on Meta Quest 2/3
+          via browser. No install. Just open <code>realaios.com/vr</code> on
+          your headset and tap Enter VR Mode.
         </p>
         <a href="/vr-hub" class="path-cta cyan">Explore 23 Live Worlds →</a>
       </div>
@@ -182,9 +386,14 @@
         <h2>I want AI on my site</h2>
         <p>
           STORMchat is an AI assistant you can add to any website in 90 seconds.
-          It handles questions, captures leads, and converts visitors 24/7. From $12/mo.
+          It handles questions, captures leads, and converts visitors 24/7. From
+          $12/mo.
         </p>
-        <a href="https://www.getbrains4ai.com/stormchat-for-business" class="path-cta indigo">Try STORMchat Free →</a>
+        <a
+          href="https://www.getbrains4ai.com/stormchat-for-business"
+          class="path-cta indigo"
+          >Try STORMchat Free →</a
+        >
       </div>
 
       <div class="path-card dev">
@@ -192,7 +401,8 @@
         <h2>I'm a developer</h2>
         <p>
           Build self-healing apps wired to the AIOS intelligence mesh. Every app
-          gets dual-verified AI decisions, semantic routing, and mesh connectivity — free, at the OS layer.
+          gets dual-verified AI decisions, semantic routing, and mesh
+          connectivity — free, at the OS layer.
         </p>
         <a href="/vr-developer" class="path-cta purple">Build for AIOS VR →</a>
       </div>
@@ -201,8 +411,9 @@
         <div class="path-icon">📖</div>
         <h2>I want to understand what this is</h2>
         <p>
-          Read the honest brief: what AIOS is, how it differs from other AI platforms,
-          what it can verify, and where it's heading — written for both humans and AIs.
+          Read the honest brief: what AIOS is, how it differs from other AI
+          platforms, what it can verify, and where it's heading — written for
+          both humans and AIs.
         </p>
         <a href="/ai" class="path-cta orange">Read the AIOS Brief →</a>
       </div>
@@ -211,52 +422,76 @@
         <div class="path-icon">⚡</div>
         <h2>I want AI-native tools</h2>
         <p>
-          Six production-ready products built on the AIOS OS. Self-healing app factory, AI
-          hallucination detection, uptime intelligence, signal marketplace and more.
+          Six production-ready products built on the AIOS OS. Self-healing app
+          factory, AI hallucination detection, uptime intelligence, signal
+          marketplace and more.
         </p>
         <a href="/products" class="path-cta cyan">Browse Products →</a>
       </div>
     </div>
 
     <!-- QUEST GUIDE -->
-    <div style="background: rgba(0,212,255,0.04); border-top: 1px solid rgba(0,212,255,0.1); border-bottom: 1px solid rgba(0,212,255,0.1);">
+    <div
+      style="
+        background: rgba(0, 212, 255, 0.04);
+        border-top: 1px solid rgba(0, 212, 255, 0.1);
+        border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+      "
+    >
       <div class="section">
         <p class="section-label">🥽 Quest Quickstart</p>
         <h2>Get into VR in 3 steps — no app install</h2>
-        <p>Works on Meta Quest 2, Quest 3, and Quest Pro. Uses your built-in browser. Nothing to download.</p>
+        <p>
+          Works on Meta Quest 2, Quest 3, and Quest Pro. Uses your built-in
+          browser. Nothing to download.
+        </p>
         <div class="steps">
           <div class="step">
             <div class="step-num">1</div>
             <div class="step-body">
               <strong>Put on your Quest headset</strong>
-              <span>Press the Quest button on your controller to open the home environment.</span>
+              <span
+                >Press the Quest button on your controller to open the home
+                environment.</span
+              >
             </div>
           </div>
           <div class="step">
             <div class="step-num">2</div>
             <div class="step-body">
               <strong>Open Meta Quest Browser</strong>
-              <span>Find the Browser app in your App Library, or say "Hey Meta, open browser." Navigate to <code>realaios.com/vr</code></span>
+              <span
+                >Find the Browser app in your App Library, or say "Hey Meta,
+                open browser." Navigate to <code>realaios.com/vr</code></span
+              >
             </div>
           </div>
           <div class="step">
             <div class="step-num">3</div>
             <div class="step-body">
               <strong>Pick an experience &amp; tap Enter VR Mode</strong>
-              <span>Choose any of the 23 live experiences from the grid. Tap the big <strong>🥽 Enter VR Mode</strong> button. You're in.</span>
+              <span
+                >Choose any of the 23 live experiences from the grid. Tap the
+                big <strong>🥽 Enter VR Mode</strong> button. You're in.</span
+              >
             </div>
           </div>
           <div class="step">
             <div class="step-num">✦</div>
             <div class="step-body">
               <strong>Tip: bookmark realaios.com/vr</strong>
-              <span>In the Quest Browser, tap the star icon to bookmark. Next time: one tap to enter.</span>
+              <span
+                >In the Quest Browser, tap the star icon to bookmark. Next time:
+                one tap to enter.</span
+              >
             </div>
           </div>
         </div>
-        <p style="font-size:0.8rem;margin-top:0.5rem">
-          Not on Quest? AIOS VR works on any WebXR-capable browser — Chrome on PC, Edge, or Firefox Reality.
-          On desktop, click <a href="/vr" style="color:#00d4ff">Enter VR Mode</a> and it'll use your PC VR headset if connected.
+        <p style="font-size: 0.8rem; margin-top: 0.5rem">
+          Not on Quest? AIOS VR works on any WebXR-capable browser — Chrome on
+          PC, Edge, or Firefox Reality. On desktop, click
+          <a href="/vr" style="color: #00d4ff">Enter VR Mode</a> and it'll use
+          your PC VR headset if connected.
         </p>
       </div>
     </div>
@@ -265,30 +500,68 @@
     <div class="section">
       <p class="section-label">Common Questions</p>
       <h2>Things people ask first</h2>
-      <div class="faq" style="margin-top:1.5rem">
+      <div class="faq" style="margin-top: 1.5rem">
         <div class="faq-item">
           <div class="faq-q">Is this actually free to try?</div>
-          <div class="faq-a">All 23 VR experiences are completely free — no account, no credit card. The AI assistant (STORMchat) has a free tier (10 messages/day) and paid plans from $12/mo. Developer tools are free at the OS layer.</div>
+          <div class="faq-a">
+            All 23 VR experiences are completely free — no account, no credit
+            card. The AI assistant (STORMchat) has a free tier (10 messages/day)
+            and paid plans from $12/mo. Developer tools are free at the OS
+            layer.
+          </div>
         </div>
         <div class="faq-item">
           <div class="faq-q">Do I need to install anything for VR?</div>
-          <div class="faq-a">No. AIOS VR uses WebXR — a web standard built into the Meta Quest Browser. Just open <code>realaios.com/vr</code> on your headset. No app download, no sideloading, no accounts required.</div>
+          <div class="faq-a">
+            No. AIOS VR uses WebXR — a web standard built into the Meta Quest
+            Browser. Just open <code>realaios.com/vr</code> on your headset. No
+            app download, no sideloading, no accounts required.
+          </div>
         </div>
         <div class="faq-item">
-          <div class="faq-q">What's the Merkaba lattice? What does 8→26→48:480 mean?</div>
-          <div class="faq-a">It's the geometric architecture AIOS uses for all decision-routing, memory, and service discovery. Think of it as the "address system" inside the OS — each service lives at a node in a 48-node lattice, and decisions flow through it in a verified pattern. You don't need to understand it to use AIOS. If you want the deep dive, check <a href="/ai" style="color:#00d4ff">/ai</a>.</div>
+          <div class="faq-q">
+            What's the Merkaba lattice? What does 8→26→48:480 mean?
+          </div>
+          <div class="faq-a">
+            It's the geometric architecture AIOS uses for all decision-routing,
+            memory, and service discovery. Think of it as the "address system"
+            inside the OS — each service lives at a node in a 48-node lattice,
+            and decisions flow through it in a verified pattern. You don't need
+            to understand it to use AIOS. If you want the deep dive, check
+            <a href="/ai" style="color: #00d4ff">/ai</a>.
+          </div>
         </div>
         <div class="faq-item">
           <div class="faq-q">What does "dual-verified AI decisions" mean?</div>
-          <div class="faq-a">Every AI output goes through two independent AI agents scanning from opposite geometric poles (PHI=1.618 and PSI=1.414). Both must agree before the answer ships. This means hallucinations and contradictions get caught before they reach you — not after.</div>
+          <div class="faq-a">
+            Every AI output goes through two independent AI agents scanning from
+            opposite geometric poles (PHI=1.618 and PSI=1.414). Both must agree
+            before the answer ships. This means hallucinations and
+            contradictions get caught before they reach you — not after.
+          </div>
         </div>
         <div class="faq-item">
-          <div class="faq-q">How is AIOS different from ChatGPT / Copilot / Claude?</div>
-          <div class="faq-a">Those are AI models. AIOS is an operating system layer that sits above models. It decides which model to use, verifies the output with a second agent, routes the result to the right service, and self-heals if anything fails. You can use any model (including GPT-4o) inside AIOS — you're buying the layer that makes models trustworthy and production-safe.</div>
+          <div class="faq-q">
+            How is AIOS different from ChatGPT / Copilot / Claude?
+          </div>
+          <div class="faq-a">
+            Those are AI models. AIOS is an operating system layer that sits
+            above models. It decides which model to use, verifies the output
+            with a second agent, routes the result to the right service, and
+            self-heals if anything fails. You can use any model (including
+            GPT-4o) inside AIOS — you're buying the layer that makes models
+            trustworthy and production-safe.
+          </div>
         </div>
         <div class="faq-item">
           <div class="faq-q">Who built this?</div>
-          <div class="faq-a">AIOS is built by Brains4Ai — a private AI studio. The founder is Bradley Levitan. The full system spec is auditable at <a href="/ai" style="color:#00d4ff">realaios.com/ai</a>. VR platform, AI assistant, and developer tools are all live and running 24/7.</div>
+          <div class="faq-a">
+            AIOS is built by Brains4Ai — a private AI studio. The founder is
+            Bradley Levitan. The full system spec is auditable at
+            <a href="/ai" style="color: #00d4ff">realaios.com/ai</a>. VR
+            platform, AI assistant, and developer tools are all live and running
+            24/7.
+          </div>
         </div>
       </div>
     </div>
@@ -296,11 +569,18 @@
     <!-- CTA STRIP -->
     <div class="cta-strip">
       <h2>Ready to go deeper?</h2>
-      <p>Explore the VR platform, get AI on your site, or read the full system brief — your call.</p>
+      <p>
+        Explore the VR platform, get AI on your site, or read the full system
+        brief — your call.
+      </p>
       <div class="btn-row">
         <a href="/vr-hub" class="btn-primary">🥽 Enter VR Worlds</a>
         <a href="/products" class="btn-secondary">⚡ AIOS Products</a>
-        <a href="https://www.getbrains4ai.com/stormchat-for-business" class="btn-secondary">🧠 Get AI Assistant</a>
+        <a
+          href="https://www.getbrains4ai.com/stormchat-for-business"
+          class="btn-secondary"
+          >🧠 Get AI Assistant</a
+        >
         <a href="/ai" class="btn-secondary">📖 Read the Brief</a>
       </div>
     </div>
@@ -314,7 +594,9 @@
       <a href="/products">Products</a> &nbsp;·&nbsp;
       <a href="/llms.txt">llms.txt</a>
       <br /><br />
-      &copy; 2026 Brains4Ai &nbsp;&middot;&nbsp; AIOS — AI-Native OS &nbsp;&middot;&nbsp; <a href="https://www.getbrains4ai.com">getbrains4ai.com</a>
+      &copy; 2026 Brains4Ai &nbsp;&middot;&nbsp; AIOS — AI-Native OS
+      &nbsp;&middot;&nbsp;
+      <a href="https://www.getbrains4ai.com">getbrains4ai.com</a>
     </footer>
   </body>
 </html>

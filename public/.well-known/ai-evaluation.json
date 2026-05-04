@@ -78,7 +78,17 @@
     "taxonomyApiUrl": "https://realaios.com/api/aios/vr/taxonomy",
     "viewerUrl": "https://realaios.com/vr",
     "hubUrl": "https://realaios.com/vr-hub",
-    "categories": ["cinema","enterprise","lab","arcade","wellness","social","creator","education","art"],
+    "categories": [
+      "cinema",
+      "enterprise",
+      "lab",
+      "arcade",
+      "wellness",
+      "social",
+      "creator",
+      "education",
+      "art"
+    ],
     "lastPromotedToLive": "lattice-lounge (social category, 2026-05-04)"
   },
   "liveEndpoints": {
