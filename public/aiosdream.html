@@ -518,6 +518,31 @@
     }
     #player.active #player-scanlines { opacity: 1; }
 
+    /* ── GEO codec badge ── */
+    #geo-badge {
+      position: absolute; bottom: 120px; left: 18px; z-index: 14;
+      background: rgba(0,0,0,0.65); backdrop-filter: blur(10px);
+      border: 1px solid rgba(0,212,255,0.25); border-radius: 8px;
+      padding: 7px 13px; pointer-events: none;
+      opacity: 0; transition: opacity 0.7s;
+    }
+    #player.active #geo-badge { opacity: 1; }
+    #geo-badge .gb-format {
+      font-size: 9px; font-weight: 900; letter-spacing: 0.18em;
+      color: var(--cyan, #00d4ff); text-transform: uppercase;
+      display: flex; align-items: center; gap: 6px;
+    }
+    #geo-badge .gb-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--cyan, #00d4ff); box-shadow: 0 0 6px var(--cyan, #00d4ff);
+      animation: gbpulse 1.6s ease-in-out infinite;
+    }
+    @keyframes gbpulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
+    #geo-badge .gb-stats {
+      font-size: 8px; letter-spacing: 0.1em; color: rgba(200,210,255,0.6);
+      margin-top: 3px; font-family: monospace;
+    }
+
     /* ── MOBILE ── */
     @media (max-width: 768px) {
       nav { padding: 0 20px; }
@@ -551,6 +576,8 @@
   </div>
   <div class="nav-right">
     <a href="/vr-hub" style="font-size:13px;color:var(--muted);transition:color 0.2s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--muted)'">🥽 VR Hub</a>
+    <a href="/aios-studio" style="font-size:13px;color:var(--muted);transition:color 0.2s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--muted)'">⚡ Studio</a>
+    <a href="/geo-codec" style="font-size:13px;color:var(--muted);transition:color 0.2s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--muted)'">● .geo</a>
     <a href="/plaistore" style="font-size:13px;color:var(--muted);transition:color 0.2s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='var(--muted)'">PLAIstore</a>
     <button class="nav-icon-btn" title="Search" onclick="openSearch()" title="Search (Ctrl+K)">⌕</button>
     <div class="nav-avatar" title="Profile">A</div>
@@ -611,6 +638,10 @@
   <div id="player-vignette"></div>
   <canvas id="player-grain"></canvas>
   <div id="player-colour-overlay"></div>
+  <div id="geo-badge">
+    <div class="gb-format"><div class="gb-dot"></div>AIOS-GEO-V2 &middot; LIVE RENDER</div>
+    <div class="gb-stats">14 KB &nbsp;&nbsp;/&nbsp;&nbsp; ∞ RESOLUTION &nbsp;&nbsp;/&nbsp;&nbsp; φ 1.618</div>
+  </div>
   <div id="player-quality">4K GENERATIVE</div>
   <div class="player-ui" id="player-ui">
     <div class="player-top" id="player-top">
@@ -2735,7 +2766,7 @@ function _applyColourGrade(progId) {
   // Quality badge — light up in accent
   var qb = document.getElementById('player-quality');
   if (qb) {
-    qb.textContent = '4K GENERATIVE';
+    qb.textContent = '● .GEO v2';
     setTimeout(() => qb && qb.classList.add('lit'), 300);
   }
 }

@@ -125,6 +125,11 @@ const AIOS_STUDIO_HTML = existsSync(AIOS_STUDIO_HTML_PATH)
   ? withMeta(readFileSync(AIOS_STUDIO_HTML_PATH, "utf-8"))
   : null;
 
+const GEO_CODEC_HTML_PATH = join(PUBLIC_DIR, "geo-codec.html");
+const GEO_CODEC_HTML = existsSync(GEO_CODEC_HTML_PATH)
+  ? withMeta(readFileSync(GEO_CODEC_HTML_PATH, "utf-8"))
+  : null;
+
 const VR_DEV_HTML_PATH = join(PUBLIC_DIR, "vr-developer.html");
 const VR_DEV_HTML = existsSync(VR_DEV_HTML_PATH)
   ? withMeta(readFileSync(VR_DEV_HTML_PATH, "utf-8"))
@@ -1823,6 +1828,18 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
         return json(res, 404, { ok: false, error: "VR page not found" });
       res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
       res.end(VR_HTML);
+      return;
+    }
+
+    // ── GET /geo-codec — AIOS Standard .geo Format Specification ──────────
+    if (
+      req.method === "GET" &&
+      (pathname === "/geo-codec" || pathname === "/geo-codec/")
+    ) {
+      if (!GEO_CODEC_HTML)
+        return json(res, 404, { ok: false, error: "AIOS Standard page not found" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.end(GEO_CODEC_HTML);
       return;
     }
 
