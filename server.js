@@ -99,6 +99,14 @@ const LLMS_TXT = existsSync(LLMS_TXT_PATH)
   ? readFileSync(LLMS_TXT_PATH, "utf-8")
   : null;
 
+// VR taxonomy — canonical CI/CD data source for all AIOS VR experiences
+const VR_TAXONOMY_PATH = join(__dirname_static, "data", "vr-taxonomy.json");
+const VR_TAXONOMY_JSON = existsSync(VR_TAXONOMY_PATH)
+  ? readFileSync(VR_TAXONOMY_PATH, "utf-8")
+  : null;
+let VR_TAXONOMY = null;
+try { VR_TAXONOMY = VR_TAXONOMY_JSON ? JSON.parse(VR_TAXONOMY_JSON) : null; } catch (_) {}
+
 const AI_EVAL_JSON_PATH = join(PUBLIC_DIR, ".well-known", "ai-evaluation.json");
 const AI_EVAL_JSON = existsSync(AI_EVAL_JSON_PATH)
   ? readFileSync(AI_EVAL_JSON_PATH, "utf-8")
@@ -1517,6 +1525,69 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       return;
     }
 
+    // ── GET /api/aios/vr/taxonomy — Full VR experience taxonomy (CI/CD) ──
+    if (
+      req.method === "GET" &&
+      (pathname === "/api/aios/vr/taxonomy" || pathname === "/api/aios/vr/taxonomy/")
+    ) {
+      if (!VR_TAXONOMY)
+        return json(res, 404, { ok: false, error: "VR taxonomy not found" });
+      res.writeHead(200, {
+        "Content-Type": "application/json; charset=utf-8",
+        "Cache-Control": "public, max-age=300",
+        "Access-Control-Allow-Origin": "*",
+      });
+      res.end(VR_TAXONOMY_JSON);
+      return;
+    }
+
+    // ── GET /api/aios/vr/categories — Category list (lightweight) ────────
+    if (
+      req.method === "GET" &&
+      (pathname === "/api/aios/vr/categories" || pathname === "/api/aios/vr/categories/")
+    ) {
+      if (!VR_TAXONOMY)
+        return json(res, 404, { ok: false, error: "VR taxonomy not found" });
+      const cats = VR_TAXONOMY.categories.map(c => ({
+        id: c.id,
+        display: c.display,
+        icon: c.icon,
+        accent: c.accent,
+        tagline: c.tagline,
+        liveCount: (c.experiences || []).filter(e => e.status === "live").length,
+        totalCount: (c.experiences || []).length,
+        frequencyHz: c.frequencyHz,
+        latticeRing: c.latticeRing,
+      }));
+      return json(res, 200, { ok: true, categories: cats, total: cats.length });
+    }
+
+    // ── GET /api/aios/vr/experiences — All experiences flat list ─────────
+    if (
+      req.method === "GET" &&
+      (pathname === "/api/aios/vr/experiences" || pathname === "/api/aios/vr/experiences/")
+    ) {
+      if (!VR_TAXONOMY)
+        return json(res, 404, { ok: false, error: "VR taxonomy not found" });
+      const qs = new URLSearchParams(url.search);
+      const filterCat = qs.get("category");
+      const filterStatus = qs.get("status");
+      let all = [];
+      for (const cat of VR_TAXONOMY.categories) {
+        for (const xp of (cat.experiences || [])) {
+          all.push({ ...xp, category: cat.id, categoryDisplay: cat.display, categoryAccent: cat.accent });
+        }
+      }
+      if (filterCat) all = all.filter(x => x.category === filterCat.toLowerCase());
+      if (filterStatus) all = all.filter(x => x.status === filterStatus.toLowerCase());
+      return json(res, 200, {
+        ok: true,
+        experiences: all,
+        total: all.length,
+        live: all.filter(x => x.status === "live").length,
+      });
+    }
+
     // ── GET /aiosdream — Dimensional Geometric Streaming viewer ──────────
     if (
       req.method === "GET" &&
@@ -1663,6 +1734,9 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
         "GET  /dashboard",
         "GET  /vr",
         "GET  /vr-hub",
+        "GET  /api/aios/vr/taxonomy",
+        "GET  /api/aios/vr/categories",
+        "GET  /api/aios/vr/experiences",
         "GET  /audio/status",
         "GET  /audio/frequencies",
         "POST /audio/score",

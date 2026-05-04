@@ -1080,7 +1080,7 @@
 
       async function loadVRApps() {
         try {
-          const data = await fetchJSON("/api/plai/featured?category=VR&limit=8");
+          const data = await fetchJSON("/api/plai/apps?category=VR&limit=8&sort=downloads");
           const apps = data.apps || [];
           if (apps.length > 0) {
             renderGrid("vr-grid", apps);

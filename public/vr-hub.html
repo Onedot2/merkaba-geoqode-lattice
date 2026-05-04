@@ -914,7 +914,7 @@
 
       const LAB_XP = [
         { emoji:"🔯", title:"Merkaba Lattice",     desc:"Walk through the live 8→26→48:480 lattice. PHI cube corners, D480 particle field, 72 Hz base tone.", freq:"72 Hz · HOLOGRAPHIC",  color:"#00d4ff", badge:"live",  entry:"/vr" },
-        { emoji:"⚛️", title:"Quantum Field Sim",   desc:"Visualise quantum probability fields, particle interference, and wave-function collapse in 3D space.", freq:"852 Hz · PHYSICS",    color:"#f8fafc", badge:"new",   entry:"/vr-hub#lab" },
+        { emoji:"⚛️", title:"Quantum Field Sim",   desc:"Visualise quantum probability fields, particle interference, and wave-function collapse in 3D space.", freq:"852 Hz · PHYSICS",    color:"#f8fafc", badge:"coming", entry:"" },
         { emoji:"🧬", title:"Molecular Structure",  desc:"Walk through DNA helices, protein folds, and molecular bonds at nanoscale.", freq:"396 Hz · ENTITY",    color:"#22c55e", badge:"coming", entry:"" },
         { emoji:"🌌", title:"Solar System VR",      desc:"Orbital mechanics at true scale. Walk Jupiter's surface, orbit Saturn's rings.", freq:"417 Hz · LOCATION",  color:"#3b82f6", badge:"coming", entry:"" },
         { emoji:"🌀", title:"Fractal Space",        desc:"Infinite zoom through Mandelbrot and Julia sets rendered as navigable 3D caverns.", freq:"963 Hz · NARRATIVE",  color:"#f59e0b", badge:"coming", entry:"" },
@@ -1006,9 +1006,9 @@
       }
 
       // ── Stat: live XP count from PLAIstore API ───────────────────────────
-      fetch(`${API_BASE}/plai/featured?category=VR&limit=100`)
+      fetch(`${API_BASE}/plai/apps?category=VR&limit=100&sort=downloads`)
         .then(r => r.ok ? r.json() : null)
-        .then(d => { if (d && d.apps) document.getElementById("stat-xp").textContent = d.apps.length + "+"; })
+        .then(d => { if (d && d.total) document.getElementById("stat-xp").textContent = d.total + "+"; else if (d && d.apps) document.getElementById("stat-xp").textContent = d.apps.length + "+"; })
         .catch(() => {});
 
       // ── Category pill active state on scroll ─────────────────────────────
