@@ -2182,6 +2182,236 @@
       const PHI = 1.618,
         PSI = 1.414;
 
+      // ── Programme-specific canvas state ──
+      const _cinemaProgs = new Set(["matrix", "inception", "apollo11", "starwars"]);
+      const MATRIX_CHARS =
+        "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEF";
+      const _matrixCols = { arr: null };
+      const _apolloStars = { arr: null };
+      const _starwarsStars = { arr: null };
+
+      // ─── Matrix code rain ───────────────────────────────────────────────────
+      function renderMatrixBg(scene) {
+        const trailAlpha = scene.hz >= 528 ? 0.05 : 0.03;
+        dreamCtx.fillStyle = "rgba(0,0,0," + trailAlpha + ")";
+        dreamCtx.fillRect(0, 0, dreamW, dreamH);
+        const fontSize = 16;
+        const numCols = Math.floor(dreamW / fontSize);
+        if (!_matrixCols.arr || _matrixCols.arr.length !== numCols) {
+          _matrixCols.arr = Array.from({ length: numCols }, () =>
+            Math.floor(Math.random() * (dreamH / fontSize)) * fontSize,
+          );
+        }
+        dreamCtx.font = "bold " + fontSize + "px monospace";
+        for (let i = 0; i < _matrixCols.arr.length; i++) {
+          dreamCtx.fillStyle = "#ccffcc";
+          const ch = MATRIX_CHARS[Math.floor(Math.random() * MATRIX_CHARS.length)];
+          dreamCtx.fillText(ch, i * fontSize, _matrixCols.arr[i]);
+          if (_matrixCols.arr[i] > fontSize) {
+            dreamCtx.fillStyle = "#00ff41";
+            const ch2 =
+              MATRIX_CHARS[Math.floor(Math.random() * MATRIX_CHARS.length)];
+            dreamCtx.fillText(ch2, i * fontSize, _matrixCols.arr[i] - fontSize);
+          }
+          _matrixCols.arr[i] += fontSize;
+          if (_matrixCols.arr[i] > dreamH + fontSize && Math.random() > 0.96) {
+            _matrixCols.arr[i] = -fontSize;
+          }
+        }
+      }
+
+      // ─── Inception folding city ──────────────────────────────────────────────
+      function renderInceptionBg(scene) {
+        dreamCtx.fillStyle = "rgba(0,0,0,0.05)";
+        dreamCtx.fillRect(0, 0, dreamW, dreamH);
+        const t = tick * 0.007;
+        const cx = dreamW / 2,
+          cy = dreamH / 2;
+        for (let layer = 0; layer < 3; layer++) {
+          const layerT = t * (layer % 2 === 0 ? 1 : -0.7) * (1 + layer * 0.3);
+          const scaleY = 0.45 + layer * 0.12;
+          const alpha = 0.06 - layer * 0.015;
+          dreamCtx.save();
+          dreamCtx.translate(cx, cy + dreamH * 0.05 * layer);
+          dreamCtx.rotate(layerT);
+          dreamCtx.scale(1, scaleY);
+          dreamCtx.strokeStyle = "rgba(168,85,247," + alpha + ")";
+          dreamCtx.lineWidth = 0.8;
+          const sp = Math.min(dreamW, dreamH) * 0.08;
+          const rng = Math.max(dreamW, dreamH);
+          for (let x = -rng; x <= rng; x += sp) {
+            dreamCtx.beginPath();
+            dreamCtx.moveTo(x, -rng);
+            dreamCtx.lineTo(x, rng);
+            dreamCtx.stroke();
+          }
+          for (let y = -rng; y <= rng; y += sp) {
+            dreamCtx.beginPath();
+            dreamCtx.moveTo(-rng, y);
+            dreamCtx.lineTo(rng, y);
+            dreamCtx.stroke();
+          }
+          dreamCtx.restore();
+        }
+        const baseY = dreamH * 0.82;
+        const buildN = 14;
+        for (let i = 0; i < buildN; i++) {
+          const bx =
+            (dreamW * i) / buildN + 5 * Math.sin(t * 0.4 + i * 1.3);
+          const bh =
+            dreamH * (0.1 + 0.15 * Math.abs(Math.sin(i * 2.1 + t * 0.15)));
+          const bw = (dreamW / buildN) * 0.55;
+          dreamCtx.fillStyle =
+            "rgba(168,85,247," + (0.07 + 0.03 * Math.sin(t + i)) + ")";
+          dreamCtx.fillRect(bx, baseY - bh, bw, bh + dreamH * 0.2);
+        }
+      }
+
+      // ─── Apollo 11 lunar surface ─────────────────────────────────────────────
+      function renderApollo11Bg(scene) {
+        dreamCtx.fillStyle = "rgba(0,0,0,0.07)";
+        dreamCtx.fillRect(0, 0, dreamW, dreamH);
+        if (!_apolloStars.arr) {
+          _apolloStars.arr = Array.from({ length: 350 }, () => ({
+            x: Math.random() * dreamW,
+            y: Math.random() * dreamH * 0.65,
+            r: Math.random() * 1.4 + 0.3,
+            phase: Math.random() * Math.PI * 2,
+          }));
+        }
+        for (const s of _apolloStars.arr) {
+          const a = 0.35 + 0.35 * Math.sin(tick * 0.018 + s.phase);
+          dreamCtx.beginPath();
+          dreamCtx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          dreamCtx.fillStyle = "rgba(220,235,255," + a + ")";
+          dreamCtx.fill();
+        }
+        const horizonY = dreamH * 0.68;
+        dreamCtx.beginPath();
+        dreamCtx.moveTo(0, horizonY);
+        for (let x = 0; x <= dreamW; x += 30) {
+          const hy =
+            horizonY +
+            12 * Math.sin(x * 0.008 + tick * 0.008) +
+            6 * Math.cos(x * 0.015);
+          dreamCtx.lineTo(x, hy);
+        }
+        dreamCtx.lineTo(dreamW, dreamH);
+        dreamCtx.lineTo(0, dreamH);
+        dreamCtx.closePath();
+        const lunG = dreamCtx.createLinearGradient(0, horizonY, 0, dreamH);
+        lunG.addColorStop(0, "rgba(90,110,140,0.75)");
+        lunG.addColorStop(0.5, "rgba(55,75,100,0.85)");
+        lunG.addColorStop(1, "rgba(30,45,70,0.95)");
+        dreamCtx.fillStyle = lunG;
+        dreamCtx.fill();
+        const craters = [
+          [0.2, 0.78, 18],
+          [0.55, 0.82, 11],
+          [0.78, 0.75, 14],
+          [0.38, 0.9, 8],
+        ];
+        for (const [rx, ry, rr] of craters) {
+          dreamCtx.beginPath();
+          dreamCtx.arc(dreamW * rx, dreamH * ry, rr, 0, Math.PI * 2);
+          dreamCtx.strokeStyle = "rgba(60,80,110,0.6)";
+          dreamCtx.lineWidth = 1.5;
+          dreamCtx.stroke();
+        }
+        const ex = dreamW * 0.12,
+          ey = dreamH * 0.18,
+          er = Math.min(dreamW, dreamH) * 0.055;
+        const eg = dreamCtx.createRadialGradient(
+          ex - er * 0.3,
+          ey - er * 0.3,
+          er * 0.1,
+          ex,
+          ey,
+          er,
+        );
+        eg.addColorStop(0, "rgba(120,200,255,0.95)");
+        eg.addColorStop(0.35, "rgba(40,130,220,0.9)");
+        eg.addColorStop(0.7, "rgba(15,70,170,0.85)");
+        eg.addColorStop(1, "rgba(0,0,0,0)");
+        dreamCtx.beginPath();
+        dreamCtx.arc(ex, ey, er, 0, Math.PI * 2);
+        dreamCtx.fillStyle = eg;
+        dreamCtx.fill();
+        dreamCtx.beginPath();
+        dreamCtx.arc(ex, ey, er * 1.2, 0, Math.PI * 2);
+        dreamCtx.strokeStyle = "rgba(100,180,255,0.2)";
+        dreamCtx.lineWidth = er * 0.3;
+        dreamCtx.stroke();
+        dreamCtx.beginPath();
+        dreamCtx.arc(
+          ex,
+          ey + dreamH * 0.6,
+          dreamH * 0.65,
+          -Math.PI * 0.6,
+          -Math.PI * 0.35,
+        );
+        dreamCtx.strokeStyle = "rgba(59,130,246,0.15)";
+        dreamCtx.lineWidth = 1;
+        dreamCtx.setLineDash([5, 8]);
+        dreamCtx.stroke();
+        dreamCtx.setLineDash([]);
+      }
+
+      // ─── Star Wars hyperspace ────────────────────────────────────────────────
+      function renderStarWarsBg(scene) {
+        dreamCtx.fillStyle = "rgba(0,0,0,0.06)";
+        dreamCtx.fillRect(0, 0, dreamW, dreamH);
+        const cx = dreamW / 2,
+          cy = dreamH / 2;
+        const speedMult = scene.hz >= 852 ? 2.5 : 1.2;
+        if (!_starwarsStars.arr) {
+          _starwarsStars.arr = Array.from({ length: 220 }, () => ({
+            angle: Math.random() * Math.PI * 2,
+            r: Math.random() * 30 + 5,
+            spd: 0.6 + Math.random() * 1.8,
+            gold: Math.random() > 0.75,
+          }));
+        }
+        for (const s of _starwarsStars.arr) {
+          s.r += s.spd * speedMult;
+          if (s.r > Math.max(dreamW, dreamH) * 0.8) {
+            s.r = 3 + Math.random() * 15;
+            s.angle = Math.random() * Math.PI * 2;
+          }
+          const tail = Math.min(s.spd * speedMult * 5, 20);
+          const x1 = cx + s.r * Math.cos(s.angle);
+          const y1 = cy + s.r * Math.sin(s.angle);
+          const x0 = cx + (s.r - tail) * Math.cos(s.angle);
+          const y0 = cy + (s.r - tail) * Math.sin(s.angle);
+          const alpha = Math.min(0.7, s.r / (Math.min(dreamW, dreamH) * 0.3));
+          dreamCtx.beginPath();
+          dreamCtx.moveTo(x0, y0);
+          dreamCtx.lineTo(x1, y1);
+          dreamCtx.strokeStyle = s.gold
+            ? "rgba(245,166,35," + alpha * 0.65 + ")"
+            : "rgba(255,255,255," + alpha * 0.55 + ")";
+          dreamCtx.lineWidth = s.gold ? 1.5 : 0.8;
+          dreamCtx.stroke();
+        }
+      }
+
+      // ─── Programme background dispatcher ────────────────────────────────────
+      function renderProgrammeBg(prog, scene, col) {
+        switch (currentProg) {
+          case "matrix":
+            return renderMatrixBg(scene);
+          case "inception":
+            return renderInceptionBg(scene);
+          case "apollo11":
+            return renderApollo11Bg(scene);
+          case "starwars":
+            return renderStarWarsBg(scene);
+          default:
+            dreamCtx.fillStyle = "rgba(0,0,0,0.04)";
+            dreamCtx.fillRect(0, 0, dreamW, dreamH);
+        }
+      }
+
       // ═══════════════════════════════════════════════════════
       // MINI-CANVAS for poster previews
       // ═══════════════════════════════════════════════════════
@@ -2192,42 +2422,124 @@
         ctx.clearRect(0, 0, w, h);
         const cx = w / 2,
           cy = h / 2;
+        const col = prog.color;
+        const key = Object.entries(PROGRAMMES).find(([, v]) => v === prog)?.[0];
 
         // Background gradient
-        const bg = ctx.createRadialGradient(
-          cx,
-          cy,
-          0,
-          cx,
-          cy,
-          Math.max(w, h) * 0.7,
-        );
-        const col = prog.color;
+        const bg = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(w, h) * 0.7);
         bg.addColorStop(0, col + "22");
         bg.addColorStop(1, "#000000aa");
         ctx.fillStyle = bg;
         ctx.fillRect(0, 0, w, h);
 
-        // Rotating star shape (simplified Merkaba)
-        ctx.save();
-        ctx.translate(cx, cy);
-        ctx.rotate(t * 0.5);
-        ctx.strokeStyle = col + "66";
-        ctx.lineWidth = 1;
-        for (let i = 0; i < 6; i++) {
+        if (key === "matrix") {
+          // Mini code rain
+          const fs = 9;
+          const cols = Math.floor(w / fs);
+          if (!prog._pCols) {
+            prog._pCols = Array.from({ length: cols }, () => Math.random() * h);
+          }
+          ctx.font = fs + "px monospace";
+          ctx.fillStyle = col;
+          for (let i = 0; i < prog._pCols.length; i++) {
+            const ch =
+              MATRIX_CHARS[Math.floor(Math.random() * MATRIX_CHARS.length)];
+            ctx.fillText(ch, i * fs, prog._pCols[i]);
+            prog._pCols[i] += fs * 0.4;
+            if (prog._pCols[i] > h && Math.random() > 0.97) prog._pCols[i] = 0;
+          }
+        } else if (key === "inception") {
+          // Mini perspective grid rotating
           ctx.save();
-          ctx.rotate((i * Math.PI) / 3);
+          ctx.translate(cx, cy);
+          ctx.rotate(t * 0.3);
+          ctx.scale(1, 0.5);
+          ctx.strokeStyle = col + "50";
+          ctx.lineWidth = 0.7;
+          const sp = Math.min(w, h) * 0.15;
+          for (let i = -4; i <= 4; i++) {
+            ctx.beginPath();
+            ctx.moveTo(i * sp, -h);
+            ctx.lineTo(i * sp, h);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(-w, i * sp);
+            ctx.lineTo(w, i * sp);
+            ctx.stroke();
+          }
+          ctx.restore();
+        } else if (key === "apollo11") {
+          // Deep space + stars + lunar horizon + Earth
+          ctx.fillStyle = "#000";
+          ctx.fillRect(0, 0, w, h);
+          for (let i = 0; i < 55; i++) {
+            const sx = (i * 37.3) % w;
+            const sy = (i * 19.7) % (h * 0.65);
+            const sa = 0.4 + 0.4 * Math.sin(t * 2 + i);
+            ctx.beginPath();
+            ctx.arc(sx, sy, 0.8, 0, Math.PI * 2);
+            ctx.fillStyle = "rgba(255,255,255," + sa + ")";
+            ctx.fill();
+          }
+          const lg = ctx.createLinearGradient(0, h * 0.68, 0, h);
+          lg.addColorStop(0, "rgba(80,100,130,0.8)");
+          lg.addColorStop(1, "rgba(40,60,90,0.9)");
+          ctx.fillStyle = lg;
           ctx.beginPath();
-          ctx.moveTo(0, -Math.min(w, h) * 0.35);
-          ctx.lineTo(Math.min(w, h) * 0.2, Math.min(w, h) * 0.1);
-          ctx.lineTo(-Math.min(w, h) * 0.2, Math.min(w, h) * 0.1);
+          ctx.moveTo(0, h * 0.72 + 8 * Math.sin(t * 0.5));
+          ctx.lineTo(w, h * 0.72 + 8 * Math.cos(t * 0.5));
+          ctx.lineTo(w, h);
+          ctx.lineTo(0, h);
           ctx.closePath();
-          ctx.stroke();
+          ctx.fill();
+          const eg = ctx.createRadialGradient(
+            w * 0.2 - 4, h * 0.3 - 4, 1,
+            w * 0.2, h * 0.3, 13,
+          );
+          eg.addColorStop(0, "rgba(120,200,255,0.95)");
+          eg.addColorStop(0.6, "rgba(30,100,200,0.85)");
+          eg.addColorStop(1, "rgba(10,40,120,0)");
+          ctx.beginPath();
+          ctx.arc(w * 0.2, h * 0.3, 13, 0, Math.PI * 2);
+          ctx.fillStyle = eg;
+          ctx.fill();
+        } else if (key === "starwars") {
+          // Hyperspace lines from centre
+          ctx.fillStyle = "rgba(0,0,0,0.15)";
+          ctx.fillRect(0, 0, w, h);
+          for (let i = 0; i < 30; i++) {
+            const angle = (i / 30) * Math.PI * 2 + t * 0.1;
+            const r0 = 5 + i * 0.5;
+            const r1 = r0 + 15 + i * 0.8;
+            ctx.beginPath();
+            ctx.moveTo(cx + r0 * Math.cos(angle), cy + r0 * Math.sin(angle));
+            ctx.lineTo(cx + r1 * Math.cos(angle), cy + r1 * Math.sin(angle));
+            ctx.strokeStyle = i % 5 === 0 ? col + "cc" : "#ffffff99";
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+          }
+        } else {
+          // Generic: rotating Merkaba star
+          ctx.save();
+          ctx.translate(cx, cy);
+          ctx.rotate(t * 0.5);
+          ctx.strokeStyle = col + "66";
+          ctx.lineWidth = 1;
+          for (let i = 0; i < 6; i++) {
+            ctx.save();
+            ctx.rotate((i * Math.PI) / 3);
+            ctx.beginPath();
+            ctx.moveTo(0, -Math.min(w, h) * 0.35);
+            ctx.lineTo(Math.min(w, h) * 0.2, Math.min(w, h) * 0.1);
+            ctx.lineTo(-Math.min(w, h) * 0.2, Math.min(w, h) * 0.1);
+            ctx.closePath();
+            ctx.stroke();
+            ctx.restore();
+          }
           ctx.restore();
         }
-        ctx.restore();
 
-        // PHI spiral dots
+        // PHI spiral dots — GeoQode lattice backbone (always present)
         ctx.fillStyle = col + "88";
         for (let i = 0; i < 21; i++) {
           const angle = i * 2.399963 + t * 0.3;
@@ -2367,6 +2679,9 @@
         const canvas = document.getElementById("dream-canvas");
         dreamW = canvas.width = window.innerWidth;
         dreamH = canvas.height = window.innerHeight;
+        _matrixCols.arr = null;
+        _apolloStars.arr = null;
+        _starwarsStars.arr = null;
       }
 
       // ─── Main dream canvas animation loop ────────────────────────────────────
@@ -2378,30 +2693,31 @@
         const col = prog.color;
         const freq = scene.hz;
 
-        // ── Background ──
-        dreamCtx.fillStyle = "rgba(0,0,0,0.04)";
-        dreamCtx.fillRect(0, 0, dreamW, dreamH);
-
+        // ── Programme-specific background ──
         const cx = dreamW / 2,
           cy = dreamH / 2;
         const t = tick * 0.01;
 
-        // ── PHI spiral field ──
-        const spiralCount = [8, 26, 48, 480][depthMode];
-        for (let i = 0; i < spiralCount; i++) {
-          const angle = i * 2.399963 * PHI + t;
-          const r = Math.sqrt(i + 1) * (Math.min(dreamW, dreamH) * 0.012);
-          const x = cx + r * Math.cos(angle);
-          const y = cy + r * Math.sin(angle);
-          const alpha = 0.15 + 0.15 * Math.sin(t * 3 + i * 0.3);
-          dreamCtx.beginPath();
-          dreamCtx.arc(x, y, 1 + (i % 3) * 0.5, 0, Math.PI * 2);
-          dreamCtx.fillStyle =
-            col +
-            Math.floor(alpha * 255)
-              .toString(16)
-              .padStart(2, "0");
-          dreamCtx.fill();
+        renderProgrammeBg(prog, scene, col);
+
+        // ── PHI spiral field (non-cinematic programmes only) ──
+        if (!_cinemaProgs.has(currentProg)) {
+          const spiralCount = [8, 26, 48, 480][depthMode];
+          for (let i = 0; i < spiralCount; i++) {
+            const angle = i * 2.399963 * PHI + t;
+            const r = Math.sqrt(i + 1) * (Math.min(dreamW, dreamH) * 0.012);
+            const x = cx + r * Math.cos(angle);
+            const y = cy + r * Math.sin(angle);
+            const alpha = 0.15 + 0.15 * Math.sin(t * 3 + i * 0.3);
+            dreamCtx.beginPath();
+            dreamCtx.arc(x, y, 1 + (i % 3) * 0.5, 0, Math.PI * 2);
+            dreamCtx.fillStyle =
+              col +
+              Math.floor(alpha * 255)
+                .toString(16)
+                .padStart(2, "0");
+            dreamCtx.fill();
+          }
         }
 
         // ── Merkaba star tetrahedra ──
@@ -2421,8 +2737,8 @@
         dreamCtx.lineWidth = 1;
         dreamCtx.stroke();
 
-        // ── D48 grid lines (subtle) ──
-        if (depthMode >= 2) {
+        // ── D48 grid lines (subtle, non-cinematic programmes) ──
+        if (depthMode >= 2 && !_cinemaProgs.has(currentProg)) {
           for (let i = 0; i < 48; i++) {
             const angle = (i / 48) * Math.PI * 2 + t * 0.1;
             const r = Math.min(dreamW, dreamH) * 0.35;
