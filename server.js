@@ -652,6 +652,8 @@ const server = createServer(async (req, res) => {
 <meta property="og:description" content="${product.tagline}">
 <meta property="og:image" content="https://realaios.com/public/og-image.svg">
 <meta property="og:url" content="https://realaios.com/products/${slug}">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://realaios.com/products/${slug}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${product.name} — AIOS">
 <meta name="twitter:description" content="${product.tagline}">

@@ -223,6 +223,44 @@
           "flatCompatible": true,
           "estimatedDuration": "persistent",
           "releaseDate": "2026-05-01"
+        },
+        {
+          "id": "deal-room",
+          "display": "Deal Room — Spatial Due Diligence",
+          "status": "coming",
+          "version": null,
+          "vrUrl": null,
+          "flatUrl": null,
+          "semanticType": "DIALOGUE",
+          "frequencyHz": 639,
+          "latticeNode": 13,
+          "harmonicNode": 130,
+          "description": "Virtual M&A deal room with shared document review, financial model navigation, and negotiation staging for up to 20 participants.",
+          "shortDesc": "M&A due diligence in shared VR. Close deals faster.",
+          "tags": ["deals", "finance", "mna", "collaboration"],
+          "questCompatible": true,
+          "flatCompatible": true,
+          "estimatedDuration": "30-120 min",
+          "releaseDate": "2026-Q3"
+        },
+        {
+          "id": "sales-stage",
+          "display": "Sales Stage — Live Pitch Studio",
+          "status": "coming",
+          "version": null,
+          "vrUrl": null,
+          "flatUrl": null,
+          "semanticType": "ACTION",
+          "frequencyHz": 528,
+          "latticeNode": 15,
+          "harmonicNode": 150,
+          "description": "Fully branded 3D pitch stage. Deliver product demos to 100 prospects simultaneously in immersive spatial VR with analytics.",
+          "shortDesc": "Pitch to 100 prospects at once. In spatial VR.",
+          "tags": ["sales", "pitch", "demo", "revenue"],
+          "questCompatible": true,
+          "flatCompatible": true,
+          "estimatedDuration": "20-60 min",
+          "releaseDate": "2026-Q3"
         }
       ]
     },
@@ -330,6 +368,25 @@
           "questCompatible": true,
           "flatCompatible": true,
           "estimatedDuration": "open-ended",
+          "releaseDate": "2026-Q4"
+        },
+        {
+          "id": "dark-matter",
+          "display": "Dark Matter — Galactic Simulation",
+          "status": "coming",
+          "version": null,
+          "vrUrl": null,
+          "flatUrl": null,
+          "semanticType": "PHYSICS",
+          "frequencyHz": 852,
+          "latticeNode": 28,
+          "harmonicNode": 280,
+          "description": "Visualise dark matter halos, gravitational lensing, and cosmic filaments at galactic scale. Data sourced from CMB surveys.",
+          "shortDesc": "See the invisible mass holding the universe together.",
+          "tags": ["astrophysics", "dark-matter", "cosmology", "science"],
+          "questCompatible": true,
+          "flatCompatible": true,
+          "estimatedDuration": "15-30 min",
           "releaseDate": "2026-Q4"
         }
       ]
@@ -439,6 +496,25 @@
           "flatCompatible": true,
           "estimatedDuration": "20-60 min",
           "releaseDate": "2026-Q4"
+        },
+        {
+          "id": "void-runner",
+          "display": "Void Runner — PHI Sprint",
+          "status": "coming",
+          "version": null,
+          "vrUrl": null,
+          "flatUrl": null,
+          "semanticType": "ACTION",
+          "frequencyHz": 528,
+          "latticeNode": 27,
+          "harmonicNode": 270,
+          "description": "Infinite runner through PHI-recursive geometric corridors. Procedurally generated. Global leaderboard. Hand-tracked controls.",
+          "shortDesc": "Sprint through infinite PHI geometry. Leaderboard.",
+          "tags": ["runner", "infinite", "phi", "arcade"],
+          "questCompatible": true,
+          "flatCompatible": false,
+          "estimatedDuration": "5-20 min",
+          "releaseDate": "2026-Q3"
         }
       ]
     },
@@ -528,6 +604,25 @@
           "flatCompatible": true,
           "estimatedDuration": "10-45 min",
           "releaseDate": "2026-Q4"
+        },
+        {
+          "id": "sleep-chamber",
+          "display": "Sleep Chamber — Delta Wave Resonance",
+          "status": "coming",
+          "version": null,
+          "vrUrl": null,
+          "flatUrl": null,
+          "semanticType": "EMOTION",
+          "frequencyHz": 741,
+          "latticeNode": 29,
+          "harmonicNode": 290,
+          "description": "396 Hz → 432 Hz → 72 Hz entrainment progression. Immersive soundscape and visual geometry designed for sleep onset and deep rest.",
+          "shortDesc": "Frequency-guided sleep onset. Delta wave resonance.",
+          "tags": ["sleep", "delta", "432hz", "resonance", "wellness"],
+          "questCompatible": true,
+          "flatCompatible": true,
+          "estimatedDuration": "20-90 min",
+          "releaseDate": "2026-Q3"
         }
       ]
     },
@@ -597,6 +692,25 @@
           "questCompatible": true,
           "flatCompatible": false,
           "estimatedDuration": "open-ended",
+          "releaseDate": "2026-Q4"
+        },
+        {
+          "id": "vr-conference",
+          "display": "AIOS Summit — Live Conference Hub",
+          "status": "coming",
+          "version": null,
+          "vrUrl": null,
+          "flatUrl": null,
+          "semanticType": "DIALOGUE",
+          "frequencyHz": 639,
+          "latticeNode": 44,
+          "harmonicNode": 440,
+          "description": "Host or attend live multi-room VR conferences. Keynote stages, breakout rooms, and lattice-anchored networking halls with up to 500 attendees.",
+          "shortDesc": "Run a full conference in VR. 500 attendees. No travel.",
+          "tags": ["conference", "events", "networking", "enterprise"],
+          "questCompatible": true,
+          "flatCompatible": true,
+          "estimatedDuration": "varies",
           "releaseDate": "2026-Q4"
         }
       ]
@@ -706,6 +820,25 @@
           "flatCompatible": true,
           "estimatedDuration": "open-ended",
           "releaseDate": "2026-Q4"
+        },
+        {
+          "id": "audio-spatial",
+          "display": "Spatial Audio Studio",
+          "status": "coming",
+          "version": null,
+          "vrUrl": null,
+          "flatUrl": null,
+          "semanticType": "ACTION",
+          "frequencyHz": 528,
+          "latticeNode": 42,
+          "harmonicNode": 420,
+          "description": "Compose music with 3D positional audio. Place instruments anywhere in VR space. AI-generated harmonics at Solfeggio frequencies. Export as .wav or PLAIstore package.",
+          "shortDesc": "Compose in 3D. Place sounds anywhere in VR space.",
+          "tags": ["music", "audio", "spatial", "solfeggio", "composer"],
+          "questCompatible": true,
+          "flatCompatible": false,
+          "estimatedDuration": "open-ended",
+          "releaseDate": "2026-Q4"
         }
       ]
     },
@@ -795,6 +928,25 @@
           "flatCompatible": false,
           "estimatedDuration": "20-60 min",
           "releaseDate": "2026-Q3"
+        },
+        {
+          "id": "dna-explorer",
+          "display": "DNA Explorer — Genome Navigator",
+          "status": "coming",
+          "version": null,
+          "vrUrl": null,
+          "flatUrl": null,
+          "semanticType": "ENTITY",
+          "frequencyHz": 396,
+          "latticeNode": 43,
+          "harmonicNode": 430,
+          "description": "Walk through a human genome at molecular scale. Visualise gene expression, protein folding, and CRISPR edit sites in navigable 3D.",
+          "shortDesc": "Walk through your DNA. Gene editing at arm's reach.",
+          "tags": ["dna", "biology", "genome", "crispr", "science"],
+          "questCompatible": true,
+          "flatCompatible": true,
+          "estimatedDuration": "15-30 min",
+          "releaseDate": "2026-Q4"
         }
       ]
     },
@@ -865,6 +1017,25 @@
           "flatCompatible": true,
           "estimatedDuration": "open-ended",
           "releaseDate": "2026-Q3"
+        },
+        {
+          "id": "collaborative-mural",
+          "display": "Collaborative Mural — Live Canvas",
+          "status": "coming",
+          "version": null,
+          "vrUrl": null,
+          "flatUrl": null,
+          "semanticType": "EMOTION",
+          "frequencyHz": 741,
+          "latticeNode": 45,
+          "harmonicNode": 450,
+          "description": "Draw, sculpt, and animate on a shared 3D canvas with up to 20 creators simultaneously. AI-assisted colour palette keyed to Solfeggio frequencies.",
+          "shortDesc": "Paint the void with 20 people. AI-assisted palette.",
+          "tags": ["art", "collaborative", "canvas", "3d", "multiplayer"],
+          "questCompatible": true,
+          "flatCompatible": false,
+          "estimatedDuration": "open-ended",
+          "releaseDate": "2026-Q4"
         }
       ]
     }
