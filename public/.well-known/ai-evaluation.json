@@ -91,7 +91,9 @@
     "aiosdream": "https://realaios.com/aiosdream",
     "plaiApps": "https://api.getbrains4ai.com/api/plai/apps",
     "plaistore": "https://realaios.com/plaistore",
+    "products": "https://realaios.com/products",
     "aiEvalPage": "https://realaios.com/ai",
+    "startHere": "https://realaios.com/start",
     "llmsTxt": "https://realaios.com/llms.txt"
   },
   "honestCaveats": [
