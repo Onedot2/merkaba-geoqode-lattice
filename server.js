@@ -353,6 +353,12 @@ const server = createServer(async (req, res) => {
         `  <url><loc>https://realaios.com/plaistore</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>`,
         `  <url><loc>https://realaios.com/lab</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>`,
         `  <url><loc>https://realaios.com/products</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.75</priority></url>`,
+        // Individual VR experience SEO pages (19 live XPs)
+        ...(VR_TAXONOMY ? (VR_TAXONOMY.categories || []).flatMap(cat =>
+          (cat.experiences || []).filter(x => x.status === "live").map(x =>
+            `  <url><loc>https://realaios.com/vr-experience/${x.id}</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>`
+          )
+        ) : []),
         ...slugs.map(
           (s) =>
             `  <url><loc>https://realaios.com/products/${s}</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.65</priority></url>`,
@@ -1713,7 +1719,109 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       });
     }
 
-    // ── GET /aiosdream — Dimensional Geometric Streaming viewer ──────────
+    // ── GET /vr-experience/:id — SEO landing page per experience ──────────
+    if (
+      req.method === "GET" &&
+      pathname.startsWith("/vr-experience/")
+    ) {
+      const xpId = pathname.replace("/vr-experience/", "").split("/")[0].replace(/[^a-z0-9-]/g, "");
+      let found = null;
+      let foundCat = null;
+      if (VR_TAXONOMY && xpId) {
+        for (const cat of VR_TAXONOMY.categories || []) {
+          const xp = (cat.experiences || []).find((e) => e.id === xpId);
+          if (xp) { found = xp; foundCat = cat; break; }
+        }
+      }
+      if (!found || found.status !== "live") {
+        res.writeHead(302, { Location: "/vr-hub" });
+        res.end();
+        return;
+      }
+      const title = `${found.display} — AIOS VR | realaios.com`;
+      const desc = found.description || found.shortDesc || `Immersive WebXR experience for Meta Quest. ${found.display} — zero install required.`;
+      const vrUrl = `https://realaios.com${found.vrUrl || `/vr?prog=${xpId}`}`;
+      const flatUrl = `https://realaios.com${found.flatUrl || `/aiosdream?prog=${xpId}`}`;
+      const shareUrl = `https://realaios.com/vr-experience/${xpId}`;
+      const accent = foundCat.accent || "#00d4ff";
+      const icon = foundCat.icon || "🥽";
+      const seoBadge = found.tags ? found.tags.join(", ") : "";
+      const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>${title}</title>
+<meta name="description" content="${desc.slice(0, 160)}"/>
+<meta name="keywords" content="WebXR, Meta Quest, VR experience, ${seoBadge}, AIOS VR, realaios.com"/>
+<link rel="canonical" href="${shareUrl}"/>
+<!-- Open Graph -->
+<meta property="og:type" content="website"/>
+<meta property="og:title" content="${title}"/>
+<meta property="og:description" content="${desc.slice(0, 200)}"/>
+<meta property="og:url" content="${shareUrl}"/>
+<meta property="og:image" content="https://realaios.com/public/og-vr-hub.png"/>
+<meta property="og:site_name" content="AIOS VR Platform"/>
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="${title}"/>
+<meta name="twitter:description" content="${desc.slice(0, 200)}"/>
+<!-- Structured Data -->
+<script type="application/ld+json">${JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": found.display,
+  "applicationCategory": "Game",
+  "applicationSubCategory": "VR Experience",
+  "operatingSystem": "Meta Quest Browser, Any WebXR Browser",
+  "description": desc,
+  "url": shareUrl,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "author": { "@type": "Organization", "name": "Brains4Ai", "url": "https://realaios.com" },
+  "keywords": seoBadge,
+})}</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#04080f;color:#edf4ff;font-family:system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;}
+.card{max-width:560px;width:100%;background:rgba(255,255,255,0.04);border:1px solid ${accent}44;border-radius:16px;padding:2.5rem 2rem;text-align:center;}
+.icon{font-size:3.5rem;margin-bottom:1rem;}
+.cat{font-size:0.78rem;font-weight:700;letter-spacing:0.1em;color:${accent};margin-bottom:0.5rem;text-transform:uppercase;}
+h1{font-size:1.6rem;font-weight:800;margin-bottom:0.75rem;line-height:1.25;}
+.desc{font-size:0.9rem;color:#8aa0c8;line-height:1.65;margin-bottom:1.75rem;}
+.meta{display:flex;gap:0.5rem;justify-content:center;flex-wrap:wrap;margin-bottom:2rem;}
+.pill{padding:0.3rem 0.75rem;border-radius:20px;font-size:0.72rem;font-weight:600;border:1px solid ${accent}44;color:${accent};background:${accent}12;}
+.actions{display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;}
+.btn-vr{padding:0.7rem 1.75rem;background:${accent};color:#000;border-radius:10px;font-weight:800;font-size:0.95rem;text-decoration:none;border:none;cursor:pointer;}
+.btn-flat{padding:0.7rem 1.4rem;background:transparent;color:#8aa0c8;border:1px solid rgba(255,255,255,0.12);border-radius:10px;font-weight:600;font-size:0.9rem;text-decoration:none;}
+.btn-hub{display:block;margin-top:2rem;color:${accent};font-size:0.82rem;text-decoration:none;opacity:0.7;}
+.btn-hub:hover{opacity:1;}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="icon">${icon}</div>
+  <div class="cat">${foundCat.display} · ${found.semanticType} · ${found.frequencyHz} Hz</div>
+  <h1>${found.display}</h1>
+  <p class="desc">${desc}</p>
+  <div class="meta">
+    <span class="pill">⚡ ${found.frequencyHz} Hz</span>
+    <span class="pill">🔯 Node ${found.latticeNode}</span>
+    <span class="pill">🥽 Quest 2/3</span>
+    <span class="pill">✓ Zero Install</span>
+    ${found.estimatedDuration ? `<span class="pill">⏱ ${found.estimatedDuration}</span>` : ""}
+  </div>
+  <div class="actions">
+    <a class="btn-vr" href="${vrUrl}">🥽 Launch in VR</a>
+    <a class="btn-flat" href="${flatUrl}">⬛ Flat View</a>
+  </div>
+  <a class="btn-hub" href="/vr-hub">← All 48 Experiences</a>
+</div>
+</body>
+</html>`;
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "public, max-age=600" });
+      res.end(html);
+      return;
+    }
     if (
       req.method === "GET" &&
       (pathname === "/aiosdream" || pathname === "/aiosdream/")

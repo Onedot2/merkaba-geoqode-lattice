@@ -8,7 +8,7 @@
   "psi": 1.414,
   "baseFrequencyHz": 72,
   "totalExperiences": 48,
-  "liveExperiences": 17,
+  "liveExperiences": 19,
   "categories": [
     {
       "id": "cinema",
@@ -273,15 +273,15 @@
           "questCompatible": true,
           "flatCompatible": true,
           "estimatedDuration": "10-25 min",
-          "releaseDate": "2026-Q3"
+          "releaseDate": "2026-05-04"
         },
         {
           "id": "molecular",
           "display": "Molecular Chemistry Lab",
-          "status": "coming",
-          "version": null,
-          "vrUrl": null,
-          "flatUrl": null,
+          "status": "live",
+          "version": "1.0.0",
+          "vrUrl": "/vr?prog=molecular",
+          "flatUrl": "/aiosdream?prog=molecular",
           "semanticType": "ENTITY",
           "frequencyHz": 396,
           "latticeNode": 18,
