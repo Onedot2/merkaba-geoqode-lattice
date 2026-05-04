@@ -94,6 +94,11 @@ const VR_HUB_HTML = existsSync(VR_HUB_HTML_PATH)
   ? readFileSync(VR_HUB_HTML_PATH, "utf-8")
   : null;
 
+const VR_DEV_HTML_PATH = join(PUBLIC_DIR, "vr-developer.html");
+const VR_DEV_HTML = existsSync(VR_DEV_HTML_PATH)
+  ? readFileSync(VR_DEV_HTML_PATH, "utf-8")
+  : null;
+
 const LLMS_TXT_PATH = join(PUBLIC_DIR, "llms.txt");
 const LLMS_TXT = existsSync(LLMS_TXT_PATH)
   ? readFileSync(LLMS_TXT_PATH, "utf-8")
@@ -1525,6 +1530,18 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       return;
     }
 
+    // ── GET /vr-developer — AIOS VR Developer Portal ─────────────────────
+    if (
+      req.method === "GET" &&
+      (pathname === "/vr-developer" || pathname === "/vr-developer/")
+    ) {
+      if (!VR_DEV_HTML)
+        return json(res, 404, { ok: false, error: "VR Developer portal not found" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.end(VR_DEV_HTML);
+      return;
+    }
+
     // ── GET /api/aios/vr/taxonomy — Full VR experience taxonomy (CI/CD) ──
     if (
       req.method === "GET" &&
@@ -1734,6 +1751,7 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
         "GET  /dashboard",
         "GET  /vr",
         "GET  /vr-hub",
+        "GET  /vr-developer",
         "GET  /api/aios/vr/taxonomy",
         "GET  /api/aios/vr/categories",
         "GET  /api/aios/vr/experiences",
