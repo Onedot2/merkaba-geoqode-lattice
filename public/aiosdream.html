@@ -1833,6 +1833,47 @@
         transform: translateY(0) scale(1);
       }
 
+      /* ── Now-Playing sticky bar ─────────────────────────────────────────── */
+      #np-bar {
+        position: fixed;
+        bottom: -72px;
+        left: 0; right: 0;
+        height: 62px;
+        background: rgba(6,6,24,0.96);
+        backdrop-filter: blur(20px) saturate(1.6);
+        border-top: 1px solid rgba(255,255,255,0.07);
+        z-index: 490;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 0 18px;
+        transition: bottom 0.35s cubic-bezier(0.22,0.61,0.36,1);
+        box-shadow: 0 -6px 40px rgba(0,0,0,0.6);
+      }
+      #np-bar.active { bottom: 0; }
+      #np-thumb {
+        width: 44px; height: 44px; border-radius: 8px;
+        flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+        font-size: 22px; overflow: hidden;
+      }
+      #np-info { flex: 1; min-width: 0; }
+      #np-title { font-size: 12px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      #np-sub { font-size: 10px; color: rgba(255,255,255,0.38); margin-top: 1px; }
+      #np-progress {
+        position: absolute;
+        bottom: 0; left: 0;
+        height: 2px;
+        background: var(--paccent, #00d4ff);
+        width: 0%;
+        transition: width 0.8s linear;
+        border-radius: 1px;
+      }
+      .np-btn {
+        background: none; border: none; color: #fff;
+        font-size: 18px; cursor: pointer; padding: 6px; opacity: 0.7;
+        border-radius: 6px; transition: opacity 0.15s, background 0.15s; flex-shrink: 0;
+      }
+      .np-btn:hover { opacity: 1; background: rgba(255,255,255,0.08); }
       /* PiP proxy video */
       #pip-video {
         position: absolute;
@@ -2809,6 +2850,20 @@
 
     <!-- ── SHARE TOAST ── -->
     <div id="share-toast">🔗 Link copied!</div>
+
+    <!-- ── NOW PLAYING BAR ── -->
+    <div id="np-bar">
+      <div id="np-thumb"></div>
+      <div id="np-info">
+        <div id="np-title">—</div>
+        <div id="np-sub">—</div>
+      </div>
+      <button class="np-btn" id="np-btn-play" title="Play/Pause" onclick="_npTogglePlay()">▶</button>
+      <button class="np-btn" id="np-btn-next" title="Next Scene" onclick="_npNextScene()" style="font-size:14px">⏭</button>
+      <button class="np-btn" title="Expand" onclick="_npExpand()" style="font-size:14px">⊝</button>
+      <button class="np-btn" title="Close" onclick="closePlayer()" style="font-size:13px;opacity:0.4">✕</button>
+      <div id="np-progress"></div>
+    </div>
 
     <!-- ── GEO INFO PANEL ── -->
     <div
@@ -5553,6 +5608,11 @@
         document.getElementById('tl-thumb').style.left = `${pct}%`;
         document.getElementById('tl-cur').textContent = fmtTime(globalElapsed);
         document.getElementById('tl-tot').textContent = fmtTime(total);
+        // sync NP bar progress if mini is active
+        if (document.getElementById('player').classList.contains('mini')) {
+          const npProg = document.getElementById('np-progress');
+          if (npProg) npProg.style.width = pct.toFixed(2) + '%';
+        }
       }
 
       function startRenderer() {
@@ -5657,6 +5717,7 @@
         _dismissUpNext();
         _dismissNeCard();
         _hideSkipIntro();
+        document.getElementById('np-bar').classList.remove('active');
         // Stop binaural when player closes
         if (_binauralActive) { _stopBinaural(); _binauralActive = false; _setBinauralBtn(false); }
         if (window._activePlayerRenderer) {
@@ -6444,13 +6505,42 @@
           _expandMiniPlayer();
         };
         el.addEventListener('click', el._miniClick);
+        _syncNpBar();
+        document.getElementById('np-bar').classList.add('active');
       }
       function _expandMiniPlayer() {
         const el = document.getElementById('player');
         el.classList.remove('mini');
         document.body.style.overflow = 'hidden';
         if (el._miniClick) { el.removeEventListener('click', el._miniClick); el._miniClick = null; }
+        document.getElementById('np-bar').classList.remove('active');
       }
+
+      // ── Now-Playing Bar helpers ───────────────────────────────────────────
+      function _syncNpBar() {
+        if (!currentProg) return;
+        const thumb = document.getElementById('np-thumb');
+        thumb.style.background = currentProg.thumb;
+        thumb.textContent = currentProg.icon;
+        document.getElementById('np-title').textContent = currentProg.title;
+        const scene = currentProg.scenes[currentScene];
+        document.getElementById('np-sub').textContent = (currentProg.ep ? 'E' + currentProg.ep + ' · ' : '') + 'Scene ' + (currentScene+1) + (scene ? ' — ' + scene.title : '');
+        document.getElementById('np-btn-play').textContent = playerPlaying ? '⏸' : '▶';
+        _syncNpProgress();
+      }
+      function _syncNpProgress() {
+        if (!currentProg) return;
+        const prog = currentProg;
+        const total = prog.scenes.reduce((a, s) => a + s.dur, 0);
+        let sceneStart = 0;
+        for (let i = 0; i < currentScene; i++) sceneStart += prog.scenes[i].dur;
+        const elapsed = sceneStart + playerElapsed;
+        const pct = Math.min(100, elapsed / total * 100);
+        document.getElementById('np-progress').style.width = pct.toFixed(2) + '%';
+      }
+      function _npTogglePlay() { togglePlay(); document.getElementById('np-btn-play').textContent = playerPlaying ? '⏸' : '▶'; }
+      function _npNextScene() { if (!currentProg) return; jumpToScene(currentScene + 1); _syncNpBar(); }
+      function _npExpand() { _expandMiniPlayer(); }
       document.getElementById('ctrl-mini').addEventListener('click', e => { e.stopPropagation(); _toggleMiniPlayer(); });
       document.getElementById('mini-expand').addEventListener('click', e => { e.stopPropagation(); _expandMiniPlayer(); });
       document.getElementById('mini-close').addEventListener('click', e => { e.stopPropagation(); closePlayer(); });
