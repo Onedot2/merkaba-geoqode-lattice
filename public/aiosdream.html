@@ -10725,6 +10725,7 @@
             if (!document.getElementById('player').classList.contains('active')) return;
             _applyColourGrade(progId);
             _startSpectrum();
+            _startVuRing();
             // Apply spatial pan for this programme
             if (window._aiosPanner && _audioCtx) {
               var pan = _PROG_PAN[progId] || 0;
@@ -10740,6 +10741,7 @@
         closePlayer = function() {
           _base();
           _stopSpectrum();
+          _stopVuRing();
           _clearColourGrade();
           if (window._aiosPanner && _audioCtx) {
             window._aiosPanner.pan.setTargetAtTime(0, _audioCtx.currentTime, 0.3);
