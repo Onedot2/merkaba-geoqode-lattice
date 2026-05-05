@@ -10720,6 +10720,9 @@
         openPlayer = function(progId, startScene, e) {
           _base(progId, startScene, e);
           setTimeout(function() {
+            // Guard: if player was closed within 90ms, skip deferred AV setup to
+            // prevent _startSpectrum() leaking a RAF loop after close (Bug 22).
+            if (!document.getElementById('player').classList.contains('active')) return;
             _applyColourGrade(progId);
             _startSpectrum();
             // Apply spatial pan for this programme
