@@ -2065,6 +2065,44 @@
         100% { transform: translateY(-120px) scale(0.6); opacity: 0; }
       }
 
+      /* Queue Panel */
+      #queue-panel {
+        position: fixed; top: 0; right: -360px; width: 340px; height: 100vh;
+        background: rgba(8,6,20,0.97); border-left: 1px solid rgba(255,255,255,0.08);
+        z-index: 1200; transition: right 0.3s cubic-bezier(0.22,1,0.36,1);
+        display: flex; flex-direction: column; backdrop-filter: blur(24px);
+      }
+      #queue-panel.open { right: 0; }
+      .q-hdr {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 18px 20px 14px; border-bottom: 1px solid rgba(255,255,255,0.07);
+        flex-shrink: 0;
+      }
+      .q-hdr-title { font-size: 0.82rem; font-weight: 800; letter-spacing: 0.12em; color: #fff; }
+      .q-hdr-close { background: none; border: none; color: rgba(255,255,255,0.45); font-size: 1.1rem; cursor: pointer; padding: 2px 6px; border-radius: 4px; }
+      .q-hdr-close:hover { color: #fff; }
+      .q-list { flex: 1; overflow-y: auto; padding: 8px 12px 80px; }
+      .q-item {
+        display: flex; align-items: center; gap: 10px;
+        padding: 8px 6px; border-radius: 8px; cursor: pointer;
+        transition: background 0.15s; margin-bottom: 4px;
+      }
+      .q-item:hover { background: rgba(255,255,255,0.05); }
+      .q-item.q-current { background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.2); }
+      .q-thumb { width: 48px; height: 32px; border-radius: 4px; background: #1a0a3e; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+      .q-info { flex: 1; min-width: 0; }
+      .q-title { font-size: 0.76rem; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .q-sub { font-size: 0.65rem; color: rgba(255,255,255,0.38); margin-top: 1px; }
+      .q-remove { background: none; border: none; color: rgba(255,255,255,0.25); cursor: pointer; font-size: 1rem; padding: 2px 6px; border-radius: 3px; flex-shrink: 0; }
+      .q-remove:hover { color: #f87171; }
+      .q-empty { text-align: center; padding: 48px 20px; color: rgba(255,255,255,0.25); font-size: 0.78rem; line-height: 1.7; }
+      .q-badge {
+        display: none; position: absolute; top: -5px; right: -5px;
+        background: #00d4ff; color: #06040e; font-size: 8px; font-weight: 900;
+        width: 14px; height: 14px; border-radius: 50%; align-items: center; justify-content: center;
+      }
+      .q-badge.vis { display: flex; }
+
       /* ═══════════════════════════════════════════════════════════════
        NEXGEN AV ENGINE — Spectrum · Grain · Vignette · Crossfade
     ═══════════════════════════════════════════════════════════════ */
@@ -2487,6 +2525,10 @@
         >
           ⌕
         </button>
+        <div style="position:relative;display:inline-flex">
+          <button class="nav-icon-btn" title="Queue" onclick="_openQueue()" style="font-size:14px">▷</button>
+          <span class="q-badge" id="q-badge">0</span>
+        </div>
         <button
           class="nav-icon-btn"
           title="Keyboard shortcuts (?)"
@@ -2647,6 +2689,18 @@
           <div class="kbd-row"><span class="kbd-key">?</span> This Panel</div>
         </div>
       </div>
+    </div>
+
+    <!-- ── QUEUE PANEL ── -->
+    <div id="queue-panel" role="dialog" aria-label="Playback queue">
+      <div class="q-hdr">
+        <span class="q-hdr-title">▷ QUEUE</span>
+        <div style="display:flex;align-items:center;gap:8px">
+          <button onclick="_clearQueue()" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.45);font-size:0.62rem;font-weight:700;letter-spacing:0.1em;padding:3px 10px;border-radius:4px;cursor:pointer" onmouseover="this.style.color='#f87171'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">CLEAR</button>
+          <button class="q-hdr-close" onclick="_closeQueue()">✕</button>
+        </div>
+      </div>
+      <div class="q-list" id="queue-list"></div>
     </div>
 
     <!-- ── BROWSE ── -->
@@ -5475,6 +5529,7 @@
       let modalRenderer = null;
       let modalProg = null;
       let _bingeMode = false;      // auto-advance episodes in a season
+      let _queue = [];             // playlist queue (array of prog IDs)
       let myList = JSON.parse(localStorage.getItem('aios_mylist') || '[]');
       const progress = JSON.parse(localStorage.getItem('aios_progress') || '{}');
       // ── User account
@@ -5666,6 +5721,78 @@
         } catch(_) {}
       }
 
+      // ── Playlist Queue ──────────────────────────────────────────────
+      function _updateQueueBadge() {
+        const b = document.getElementById('q-badge');
+        if (!b) return;
+        b.textContent = _queue.length;
+        b.classList.toggle('vis', _queue.length > 0);
+      }
+      function _renderQueueList() {
+        const el = document.getElementById('queue-list');
+        if (!el) return;
+        if (!_queue.length) {
+          el.innerHTML = '<div class="q-empty">Queue is empty.<br>Hover a card and tap ➕ to add programmes.</div>';
+          return;
+        }
+        el.innerHTML = _queue.map((id, idx) => {
+          const p = CATALOGUE.find(c => c.id === id);
+          if (!p) return '';
+          const isCurrent = currentProg && currentProg.id === id;
+          return `<div class="q-item${isCurrent ? ' q-current' : ''}" onclick="_queuePlayAt(${idx})">
+            <div class="q-thumb" style="background:${p.thumb||p.accent||'#1a0a3e'}">${p.icon||'⬡'}</div>
+            <div class="q-info">
+              <div class="q-title">${p.title}</div>
+              <div class="q-sub">${p.ep ? 'E'+p.ep+' · ' : ''}${fmtRuntime(p.runtime)} · ${(p.genre||[])[0]||''}</div>
+            </div>
+            <button class="q-remove" onclick="_queueRemove(${idx},event)" title="Remove">\u00d7</button>
+          </div>`;
+        }).join('');
+      }
+      function _openQueue() {
+        document.getElementById('queue-panel').classList.add('open');
+        _renderQueueList();
+      }
+      function _closeQueue() {
+        document.getElementById('queue-panel').classList.remove('open');
+      }
+      function _queueAdd(progId, e) {
+        if (e) e.stopPropagation();
+        if (_queue.includes(progId)) { toast('Already in queue'); return; }
+        _queue.push(progId);
+        _updateQueueBadge();
+        const p = CATALOGUE.find(c => c.id === progId);
+        toast('\u25b7 Added to queue: ' + (p ? p.title : progId));
+      }
+      function _queueRemove(idx, e) {
+        if (e) e.stopPropagation();
+        _queue.splice(idx, 1);
+        _updateQueueBadge();
+        _renderQueueList();
+      }
+      function _clearQueue() {
+        _queue = [];
+        _updateQueueBadge();
+        _renderQueueList();
+      }
+      function _queuePlayAt(idx) {
+        if (idx < 0 || idx >= _queue.length) return;
+        const id = _queue[idx];
+        _queue.splice(0, idx + 1); // consume up to and including this item
+        _updateQueueBadge();
+        _closeQueue();
+        openPlayer(id, 0);
+      }
+      function _queueAdvance() {
+        if (!_queue.length) return false;
+        const id = _queue.shift();
+        _updateQueueBadge();
+        const p = CATALOGUE.find(c => c.id === id);
+        toast('\u25b6 Queue \u2192 ' + (p ? p.title : id));
+        setTimeout(() => openPlayer(id, 0), 1200);
+        return true;
+      }
+
       // ─────────────────────────────────────────────────────────────
       // BROWSE — build rows & cards
       // ─────────────────────────────────────────────────────────────
@@ -5695,6 +5822,7 @@
               <button class="card-btn-play" onclick="openPlayer('${prog.id}',${hasProgress && !watched ? p.scene : 0},event)">▶ Play</button>
               <button class="card-btn-info" onclick="openInfo('${prog.id}',event)" title="More Info">ⓘ</button>
               <button class="card-btn-list${myList.includes(prog.id) ? ' active' : ''}" id="list-btn-${prog.id}" onclick="cardToggleList('${prog.id}',event)" title="${myList.includes(prog.id) ? 'Remove from My List' : 'Add to My List'}">${myList.includes(prog.id) ? '♥' : '♡'}</button>
+              <button class="card-btn-list" onclick="_queueAdd('${prog.id}',event)" title="Add to Queue" style="font-size:15px;letter-spacing:0">➕</button>
             </div>
           </div>`;
         card.addEventListener('click', () => openPlayer(prog.id, hasProgress && !watched ? p.scene : 0));
@@ -5995,7 +6123,7 @@
                 return;
               }
               toast('Programme complete! Starting over\u2026');
-              setTimeout(() => jumpToScene(0), 1800);
+              if (!_queueAdvance()) setTimeout(() => jumpToScene(0), 1800);
             }
             return;
           }
