@@ -1526,8 +1526,7 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       const theatreApps = Object.entries(PROGRAMME_CATALOGUE).map(
         ([name, prog], i) => ({
           id: i + 1,
-          name:
-            prog.title + (prog.genre === "narrative" ? " Theatre" : ""),
+          name: prog.title + (prog.genre === "narrative" ? " Theatre" : ""),
           short_desc: `${prog.genre} · ${prog.mode} mode · AIOSdream experience`,
           description: `Experience "${prog.title}" in AIOSdream Theatre — an AI-generated ${prog.genre} programme with full lattice rendering in ${prog.mode} mode.`,
           category: "Theatre",
@@ -1554,8 +1553,7 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       const id = parseInt(pathname.split("/").pop(), 10);
       const entries = Object.entries(PROGRAMME_CATALOGUE);
       const entry = entries[id - 1];
-      if (!entry)
-        return json(res, 404, { ok: false, error: "App not found" });
+      if (!entry) return json(res, 404, { ok: false, error: "App not found" });
       const [name, prog] = entry;
       return json(res, 200, {
         ok: true,
@@ -1588,8 +1586,7 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
     // ── GET /api/plai/featured — PLAIstore featured apps ─────────────────
     if (
       req.method === "GET" &&
-      (pathname === "/api/plai/featured" ||
-        pathname === "/api/plai/featured/")
+      (pathname === "/api/plai/featured" || pathname === "/api/plai/featured/")
     ) {
       const apps = Object.entries(PROGRAMME_CATALOGUE)
         .slice(0, 4)

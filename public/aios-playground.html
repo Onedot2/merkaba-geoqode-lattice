@@ -856,7 +856,9 @@
         justify-content: center;
         font-size: 15px;
         position: relative;
-        transition: border-color 0.4s, box-shadow 0.4s;
+        transition:
+          border-color 0.4s,
+          box-shadow 0.4s;
       }
       .ra-badge {
         position: absolute;
@@ -1251,8 +1253,8 @@
           const borderCol = isGold
             ? "#ffd840"
             : lvl >= 5
-            ? t.color
-            : "rgba(255,255,255,0.12)";
+              ? t.color
+              : "rgba(255,255,255,0.12)";
           const badge =
             lvl > 0
               ? `<span class="ra-badge" style="background:${isGold ? "#ffd840" : t.color}">${lvl}</span>`
