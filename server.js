@@ -185,6 +185,7 @@ const MIME_TYPES = {
   ".jpg": "image/jpeg",
   ".webp": "image/webp",
   ".json": "application/json; charset=utf-8",
+  ".geoassets": "application/json; charset=utf-8",
 };
 
 const PORT = parseInt(process.env.PORT || "3030", 10);

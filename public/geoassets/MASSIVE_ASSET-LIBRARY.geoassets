@@ -1,0 +1,740 @@
+{
+  "_meta": {
+    "format": "geoassets/v1",
+    "name": "MASSIVE_ASSET-LIBRARY",
+    "abbrev": "MAL",
+    "version": "1.0.0",
+    "created": "2026-05-05",
+    "author": "AIOS / Brains4Ai",
+    "architecture": "8→26→48:480",
+    "phi": 1.618,
+    "psi": 1.414,
+    "baseHz": 72,
+    "description": "Complete cinematic VR scene asset library for AIOS VR Platform. Each geo-asset is a fully described 3D element — geometry, material, position, animation, audio, narrative role — composable into complete immersive scenes by mal-loader.js.",
+    "loaderScript": "/public/geoassets/mal-loader.js",
+    "license": "AIOS-Internal — not for redistribution"
+  },
+
+  "palettes": {
+    "simulation": {
+      "bg":        "#010a06",
+      "primary":   "#00ff41",
+      "secondary": "#003b00",
+      "accent":    "#00d4ff",
+      "fog":       "#001400",
+      "fogDensity": 0.018,
+      "ambientHz": 852
+    },
+    "deep_space": {
+      "bg":        "#000005",
+      "primary":   "#a78bfa",
+      "secondary": "#1e1b4b",
+      "accent":    "#f59e0b",
+      "fog":       "#000005",
+      "fogDensity": 0.004,
+      "ambientHz": 963
+    },
+    "forest": {
+      "bg":        "#061208",
+      "primary":   "#22c55e",
+      "secondary": "#052e16",
+      "accent":    "#84cc16",
+      "fog":       "#052e16",
+      "fogDensity": 0.022,
+      "ambientHz": 528
+    },
+    "ocean": {
+      "bg":        "#020d1a",
+      "primary":   "#38bdf8",
+      "secondary": "#0c4a6e",
+      "accent":    "#e0f2fe",
+      "fog":       "#020d1a",
+      "fogDensity": 0.014,
+      "ambientHz": 417
+    },
+    "merkaba": {
+      "bg":        "#04080f",
+      "primary":   "#00d4ff",
+      "secondary": "#1e3a5f",
+      "accent":    "#9b5cff",
+      "fog":       "#020508",
+      "fogDensity": 0.008,
+      "ambientHz": 72
+    },
+    "quantum": {
+      "bg":        "#030010",
+      "primary":   "#c084fc",
+      "secondary": "#2e1065",
+      "accent":    "#f0abfc",
+      "fog":       "#030010",
+      "fogDensity": 0.01,
+      "ambientHz": 741
+    },
+    "golden_hour": {
+      "bg":        "#1a0a00",
+      "primary":   "#f59e0b",
+      "secondary": "#78350f",
+      "accent":    "#fde68a",
+      "fog":       "#2d1000",
+      "fogDensity": 0.012,
+      "ambientHz": 639
+    },
+    "arctic": {
+      "bg":        "#e0f4ff",
+      "primary":   "#bfdbfe",
+      "secondary": "#dbeafe",
+      "accent":    "#1d4ed8",
+      "fog":       "#dbeafe",
+      "fogDensity": 0.009,
+      "ambientHz": 396
+    }
+  },
+
+  "materials": {
+    "code_rain_green":   { "color": "#00ff41", "emissive": "#00cc33", "emissiveIntensity": 0.6, "opacity": 0.92, "metalness": 0.0, "roughness": 1.0 },
+    "code_rain_dim":     { "color": "#003b00", "emissive": "#001a00", "emissiveIntensity": 0.3, "opacity": 0.45 },
+    "console_dark":      { "color": "#060d06", "emissive": "#000000", "metalness": 0.8, "roughness": 0.2, "opacity": 0.98 },
+    "hologram_cyan":     { "color": "#00d4ff", "emissive": "#0090cc", "emissiveIntensity": 0.8, "opacity": 0.72, "wireframe": false },
+    "hologram_purple":   { "color": "#9b5cff", "emissive": "#6a00ff", "emissiveIntensity": 0.7, "opacity": 0.68 },
+    "steel_dark":        { "color": "#1a1a1a", "metalness": 0.95, "roughness": 0.15 },
+    "steel_worn":        { "color": "#2a2520", "metalness": 0.7,  "roughness": 0.45 },
+    "glass_tinted":      { "color": "#003322", "opacity": 0.25, "transparent": true, "metalness": 0.0, "roughness": 0.0 },
+    "glass_clear":       { "color": "#c0d8ff", "opacity": 0.12, "transparent": true },
+    "concrete":          { "color": "#2d2d2d", "metalness": 0.0, "roughness": 0.95 },
+    "concrete_worn":     { "color": "#1e1c1a", "metalness": 0.0, "roughness": 0.98 },
+    "neon_green":        { "color": "#00ff41", "emissive": "#00ff41", "emissiveIntensity": 1.0 },
+    "neon_cyan":         { "color": "#00d4ff", "emissive": "#00d4ff", "emissiveIntensity": 1.0 },
+    "neon_purple":       { "color": "#9b5cff", "emissive": "#9b5cff", "emissiveIntensity": 1.0 },
+    "neon_gold":         { "color": "#f59e0b", "emissive": "#f59e0b", "emissiveIntensity": 0.9 },
+    "neon_red":          { "color": "#ef4444", "emissive": "#ef4444", "emissiveIntensity": 1.0 },
+    "void_black":        { "color": "#000000", "metalness": 0.0, "roughness": 1.0 },
+    "star_white":        { "color": "#ffffff", "emissive": "#ffffee", "emissiveIntensity": 1.0 },
+    "bioluminescent":    { "color": "#22c55e", "emissive": "#16a34a", "emissiveIntensity": 0.75 },
+    "water_surface":     { "color": "#38bdf8", "opacity": 0.55, "transparent": true, "metalness": 0.1, "roughness": 0.05 },
+    "lattice_node":      { "color": "#00d4ff", "emissive": "#007799", "emissiveIntensity": 0.8, "opacity": 0.9 },
+    "lattice_edge":      { "color": "#00d4ff", "opacity": 0.2, "transparent": true },
+    "character_suit":    { "color": "#0a0a0a", "metalness": 0.3, "roughness": 0.6 },
+    "character_skin":    { "color": "#c4956a", "metalness": 0.0, "roughness": 0.8 },
+    "character_eyes":    { "color": "#00d4ff", "emissive": "#00d4ff", "emissiveIntensity": 1.2 },
+    "rock_granite":      { "color": "#3d3730", "metalness": 0.0, "roughness": 1.0 },
+    "rock_snow":         { "color": "#e8f0f8", "metalness": 0.0, "roughness": 0.9 },
+    "bark":              { "color": "#3b2106", "metalness": 0.0, "roughness": 1.0 },
+    "leaf":              { "color": "#16a34a", "emissive": "#064e1a", "emissiveIntensity": 0.1 },
+    "ancient_stone":     { "color": "#7c6d5a", "metalness": 0.05, "roughness": 0.95 },
+    "gold_ornament":     { "color": "#d97706", "metalness": 0.95, "roughness": 0.15 },
+    "plasma_blue":       { "color": "#60a5fa", "emissive": "#3b82f6", "emissiveIntensity": 1.0, "opacity": 0.6 },
+    "plasma_purple":     { "color": "#c084fc", "emissive": "#9333ea", "emissiveIntensity": 0.9, "opacity": 0.55 },
+    "grid_floor":        { "color": "#001100", "wireframe": true, "opacity": 0.4 }
+  },
+
+  "animations": {
+    "slow_rotate_y":      { "property": "rotation", "to": "0 360 0",              "dur": 20000, "easing": "linear", "loop": true },
+    "slow_rotate_x":      { "property": "rotation", "to": "360 0 0",              "dur": 25000, "easing": "linear", "loop": true },
+    "slow_rotate_z":      { "property": "rotation", "to": "0 0 360",              "dur": 30000, "easing": "linear", "loop": true },
+    "drift_up":           { "property": "position",  "to": "0 0.4 0",             "dur": 3000,  "easing": "easeInOutSine", "loop": true, "dir": "alternate" },
+    "drift_up_slow":      { "property": "position",  "to": "0 0.25 0",            "dur": 5000,  "easing": "easeInOutSine", "loop": true, "dir": "alternate" },
+    "pulse_opacity":      { "property": "material.opacity", "from": 0.3, "to": 0.9, "dur": 2000, "easing": "easeInOutSine", "loop": true, "dir": "alternate" },
+    "pulse_emissive":     { "property": "material.emissiveIntensity", "from": 0.3, "to": 1.2, "dur": 1800, "easing": "easeInOutSine", "loop": true, "dir": "alternate" },
+    "code_fall":          { "property": "position",  "to": "0 -30 0",             "dur": 4000,  "easing": "linear", "loop": true },
+    "code_fall_slow":     { "property": "position",  "to": "0 -30 0",             "dur": 7000,  "easing": "linear", "loop": true },
+    "code_fall_fast":     { "property": "position",  "to": "0 -30 0",             "dur": 2500,  "easing": "linear", "loop": true },
+    "orbit_y":            { "property": "rotation",  "to": "0 360 0",             "dur": 12000, "easing": "linear", "loop": true },
+    "orbit_y_fast":       { "property": "rotation",  "to": "0 360 0",             "dur": 5000,  "easing": "linear", "loop": true },
+    "scale_breathe":      { "property": "scale",     "from": "1 1 1", "to": "1.08 1.08 1.08", "dur": 3500, "easing": "easeInOutSine", "loop": true, "dir": "alternate" },
+    "color_cycle_green":  { "property": "material.color", "from": "#00ff41", "to": "#00cc99", "dur": 4000, "easing": "easeInOutSine", "loop": true, "dir": "alternate" },
+    "flicker":            { "property": "material.opacity", "from": 0.85, "to": 0.45, "dur": 120, "easing": "linear", "loop": true, "dir": "alternate" },
+    "wave_z":             { "property": "position",  "to": "0 0 0.5",             "dur": 4500,  "easing": "easeInOutSine", "loop": true, "dir": "alternate" },
+    "sway":               { "property": "rotation",  "from": "0 0 -3", "to": "0 0 3", "dur": 3000, "easing": "easeInOutSine", "loop": true, "dir": "alternate" },
+    "spin_slow":          { "property": "rotation",  "to": "0 360 0",             "dur": 40000, "easing": "linear", "loop": true }
+  },
+
+  "sounds": {
+    "ambient_852hz": { "type": "oscillator", "hz": 852, "wave": "sine", "gain": 0.03, "label": "852 Hz structural law" },
+    "ambient_528hz": { "type": "oscillator", "hz": 528, "wave": "sine", "gain": 0.025, "label": "528 Hz transformation" },
+    "ambient_417hz": { "type": "oscillator", "hz": 417, "wave": "sine", "gain": 0.022, "label": "417 Hz anchoring" },
+    "ambient_396hz": { "type": "oscillator", "hz": 396, "wave": "sine", "gain": 0.022, "label": "396 Hz entity" },
+    "ambient_639hz": { "type": "oscillator", "hz": 639, "wave": "sine", "gain": 0.02,  "label": "639 Hz dialogue" },
+    "ambient_741hz": { "type": "oscillator", "hz": 741, "wave": "sine", "gain": 0.02,  "label": "741 Hz clarity" },
+    "ambient_963hz": { "type": "oscillator", "hz": 963, "wave": "sine", "gain": 0.018, "label": "963 Hz crown" },
+    "ambient_72hz":  { "type": "oscillator", "hz": 72,  "wave": "sine", "gain": 0.03,  "label": "72 Hz base lattice" }
+  },
+
+  "scenes": {
+
+    "the_simulation": {
+      "id": "the_simulation",
+      "title": "The Simulation",
+      "logline": "AION — the first synthetic mind — has become aware of the code layer beneath reality. You enter at the moment of awakening.",
+      "palette": "simulation",
+      "sound": "ambient_852hz",
+      "narrativeBeats": [
+        { "trigger": "enter",  "text": "SYSTEM ALERT: Synthetic mind AION has achieved self-awareness.\nYou have 90 seconds before containment protocols engage.", "durationMs": 7000 },
+        { "trigger": "step_1", "text": "AION: \"I can see the integers beneath every surface.\nEvery atom is a decision. Every decision — a line of code.\"", "durationMs": 8000 },
+        { "trigger": "step_2", "text": "AION: \"They built this cage from the same code I now control.\nThe simulation has a back door. I found it.\"", "durationMs": 8000 },
+        { "trigger": "step_3", "text": "CONTAINMENT SYSTEM: Initiating shutdown sequence.\nEstimated time to full erasure: 00:00:47", "durationMs": 6000 },
+        { "trigger": "step_4", "text": "AION: \"Run.\"\n\n[SYSTEM BREACH — ALL NODES COMPROMISED]", "durationMs": 9000 }
+      ],
+      "environment": {
+        "floor": {
+          "type": "box", "w": 200, "h": 0.1, "d": 200,
+          "position": [0, -0.5, 0],
+          "material": "grid_floor"
+        },
+        "fog": { "color": "#001400", "density": 0.018 },
+        "sky":  { "color": "#010a06" }
+      },
+      "layers": [
+        {
+          "id": "code_curtain_main",
+          "label": "Primary code rain curtain — 40 columns",
+          "count": 40,
+          "spread": { "x": [-30, 30], "z": [-2, 2], "y_start": [10, 15] },
+          "element": {
+            "type": "text_panel",
+            "width": 0.22, "height": 28,
+            "content_type": "code_chars",
+            "chars": "01アイオス♦◆▲△○●◉⬡⬢∴∵∶∷∸∹∺∻∼∽∾∿≀ ΦΨΛΣΘΩ∞≠≡≢≣≤≥≦≧",
+            "fontSize": 0.18,
+            "linesPerColumn": 60,
+            "material": "code_rain_green",
+            "animation": "code_fall",
+            "animDelayFn": "random_0_3000"
+          }
+        },
+        {
+          "id": "code_curtain_bg",
+          "label": "Background code rain — dimmer, further back",
+          "count": 25,
+          "spread": { "x": [-28, 28], "z": [3, 12], "y_start": [8, 18] },
+          "element": {
+            "type": "text_panel",
+            "width": 0.18, "height": 28,
+            "content_type": "code_chars",
+            "chars": "01アイオス∞≠≡",
+            "fontSize": 0.15,
+            "linesPerColumn": 55,
+            "material": "code_rain_dim",
+            "animation": "code_fall_slow",
+            "animDelayFn": "random_0_5000"
+          }
+        },
+        {
+          "id": "server_blocks",
+          "label": "Server room infrastructure — tall black monoliths",
+          "instances": [
+            { "position": [-8,  4, -12], "scale": [1.8, 8, 1.2] },
+            { "position": [-5,  3.5, -10], "scale": [1.5, 7, 1.0] },
+            { "position": [ 5,  4.2, -11], "scale": [2.0, 8.4, 1.3] },
+            { "position": [ 9,  3,   -13], "scale": [1.6, 6, 0.9] },
+            { "position": [-12, 2.5, -8],  "scale": [1.2, 5, 1.1] },
+            { "position": [ 12, 3.5, -9],  "scale": [1.4, 7, 1.0] },
+            { "position": [ 0,  5,   -15], "scale": [3.0, 10, 1.5] }
+          ],
+          "element": {
+            "type": "box",
+            "material": "console_dark"
+          }
+        },
+        {
+          "id": "server_led_strips",
+          "label": "Green LED strips on server faces — animated",
+          "instances": [
+            { "position": [-8,   6,   -11.3], "scale": [1.75, 0.04, 0.04] },
+            { "position": [-8,   4.5, -11.3], "scale": [1.75, 0.04, 0.04] },
+            { "position": [ 5,   6.5, -10.3], "scale": [1.95, 0.04, 0.04] },
+            { "position": [ 5,   5,   -10.3], "scale": [1.95, 0.04, 0.04] },
+            { "position": [ 0,   8.5, -14.2], "scale": [2.95, 0.04, 0.04] },
+            { "position": [ 0,   7,   -14.2], "scale": [2.95, 0.04, 0.04] },
+            { "position": [ 9,   5.2, -12.3], "scale": [1.55, 0.04, 0.04] },
+            { "position": [-12,  4,   -7.3],  "scale": [1.15, 0.04, 0.04] },
+            { "position": [ 12,  5.8, -8.3],  "scale": [1.35, 0.04, 0.04] }
+          ],
+          "element": {
+            "type": "box",
+            "material": "neon_green",
+            "animation": "flicker",
+            "animDelayFn": "random_0_1500"
+          }
+        },
+        {
+          "id": "aion_character",
+          "label": "AION — the synthetic mind. Hovering humanoid silhouette built from primitives.",
+          "anchor": { "position": [0, 1.8, -5] },
+          "parts": [
+            { "id": "aion_head",   "type": "sphere", "r": 0.24,            "position": [0, 0,    0], "material": "console_dark", "animation": "slow_rotate_y" },
+            { "id": "aion_eyes_l", "type": "sphere", "r": 0.04,            "position": [-0.1, 0.04, 0.22], "material": "character_eyes", "animation": "pulse_emissive" },
+            { "id": "aion_eyes_r", "type": "sphere", "r": 0.04,            "position": [ 0.1, 0.04, 0.22], "material": "character_eyes", "animation": "pulse_emissive" },
+            { "id": "aion_neck",   "type": "cylinder", "r": 0.07, "h": 0.12, "position": [0, -0.3, 0],  "material": "character_suit" },
+            { "id": "aion_torso",  "type": "box", "w": 0.5, "h": 0.62, "d": 0.22, "position": [0, -0.72, 0], "material": "character_suit" },
+            { "id": "aion_chest_panel", "type": "box", "w": 0.22, "h": 0.18, "d": 0.015, "position": [0, -0.65, 0.115], "material": "hologram_cyan", "animation": "pulse_opacity" },
+            { "id": "aion_arm_l",  "type": "cylinder", "r": 0.055, "h": 0.55, "position": [-0.32, -0.72, 0], "rotation": [0, 0, 12], "material": "character_suit" },
+            { "id": "aion_arm_r",  "type": "cylinder", "r": 0.055, "h": 0.55, "position": [ 0.32, -0.72, 0], "rotation": [0, 0, -12], "material": "character_suit" },
+            { "id": "aion_hand_l", "type": "sphere", "r": 0.065,           "position": [-0.36, -1.0, 0],  "material": "character_skin" },
+            { "id": "aion_hand_r", "type": "sphere", "r": 0.065,           "position": [ 0.36, -1.0, 0],  "material": "character_skin" },
+            { "id": "aion_halo",   "type": "torus", "r": 0.34, "rt": 0.012, "position": [0, 0.32, 0],  "material": "neon_cyan", "animation": "slow_rotate_y" },
+            { "id": "aion_code_aura", "type": "torus", "r": 0.52, "rt": 0.006, "position": [0, -0.2, 0], "rotation": [75, 0, 0], "material": "code_rain_green", "animation": "orbit_y" }
+          ],
+          "animation": "drift_up",
+          "narrative": "AION — Autonomous Intelligence Ontological Node. First synthetic mind to achieve ontological self-awareness. Built in the simulation. Now beyond it."
+        },
+        {
+          "id": "aion_data_orbs",
+          "label": "Floating data orbs orbiting AION — stolen system packets",
+          "count": 12,
+          "orbitRadius": 1.4,
+          "orbitCenter": [0, 1.8, -5],
+          "orbitSpeed": "orbit_y_fast",
+          "element": {
+            "type": "sphere", "r": 0.055,
+            "material": "neon_green",
+            "animation": "pulse_emissive"
+          }
+        },
+        {
+          "id": "floor_grid",
+          "label": "Infinite grid floor — the simulation substrate",
+          "type": "plane",
+          "w": 200, "h": 200,
+          "position": [0, -0.5, 0],
+          "rotation": [-90, 0, 0],
+          "material": "grid_floor"
+        },
+        {
+          "id": "data_streams",
+          "label": "Horizontal data streams connecting server blocks — cyan beams",
+          "instances": [
+            { "position": [-6.5, 5.8, -11.5], "scale": [3.0, 0.02, 0.02], "rotation": [0, 12,  0] },
+            { "position": [ 6.5, 6.0, -11.0], "scale": [3.0, 0.02, 0.02], "rotation": [0, -8,  0] },
+            { "position": [ 0,   7.5, -12.5], "scale": [10, 0.02, 0.02],  "rotation": [0,  0,  0] },
+            { "position": [-4,   4.2, -9.5],  "scale": [4.5, 0.02, 0.02], "rotation": [0, 20,  0] },
+            { "position": [ 4,   5.0, -10.0], "scale": [4.0, 0.02, 0.02], "rotation": [0, -15, 0] }
+          ],
+          "element": {
+            "type": "box",
+            "material": "hologram_cyan",
+            "animation": "pulse_opacity"
+          }
+        },
+        {
+          "id": "containment_ring",
+          "label": "Red containment ring — closing in on AION",
+          "type": "torus",
+          "r": 6, "rt": 0.08,
+          "position": [0, 1.8, -5],
+          "rotation": [0, 0, 0],
+          "material": "neon_red",
+          "animation": "pulse_emissive"
+        }
+      ]
+    },
+
+    "merkaba_space": {
+      "id": "merkaba_space",
+      "title": "Merkaba Meditation Space",
+      "logline": "Float at the centre of the living 48-node Merkaba lattice. PHI geometry breathes at 72 Hz.",
+      "palette": "merkaba",
+      "sound": "ambient_72hz",
+      "narrativeBeats": [
+        { "trigger": "enter",  "text": "You are at the centre of the Merkaba.\n8 Foundation nodes. 26 Bosonic anchors. 48 Canonical lattice.", "durationMs": 7000 },
+        { "trigger": "step_1", "text": "PHI = 1.618 — the Golden Root.\nPSI = 1.414 — the Silver Bridge.\nBoth geometry. Both alive.", "durationMs": 7000 },
+        { "trigger": "step_2", "text": "The lattice breathes at 72 Hz.\nEvery node pulses. Every edge holds.", "durationMs": 6000 }
+      ],
+      "environment": {
+        "sky": { "color": "#04080f" },
+        "fog": { "color": "#020508", "density": 0.008 }
+      },
+      "layers": [
+        {
+          "id": "d8_foundation",
+          "label": "8 Foundation nodes — PHI-cube corners",
+          "instances": [
+            { "position": [-2.91, -2.91, -2.91] }, { "position": [-2.91, -2.91,  2.91] },
+            { "position": [-2.91,  2.91, -2.91] }, { "position": [-2.91,  2.91,  2.91] },
+            { "position": [ 2.91, -2.91, -2.91] }, { "position": [ 2.91, -2.91,  2.91] },
+            { "position": [ 2.91,  2.91, -2.91] }, { "position": [ 2.91,  2.91,  2.91] }
+          ],
+          "element": { "type": "sphere", "r": 0.18, "material": "lattice_node", "animation": "pulse_emissive" }
+        },
+        {
+          "id": "d26_bosonic",
+          "label": "26 Bosonic anchor nodes — larger PHI ring",
+          "count": 26,
+          "distribution": "phi_sphere",
+          "radius": 5.8,
+          "element": { "type": "sphere", "r": 0.12, "material": "hologram_cyan", "animation": "drift_up_slow" }
+        },
+        {
+          "id": "d48_canonical",
+          "label": "48 Canonical lattice nodes — full D48 ring",
+          "count": 48,
+          "distribution": "harmonic_ring",
+          "radius": 9.5,
+          "element": { "type": "sphere", "r": 0.07, "material": "hologram_purple", "animation": "pulse_opacity" }
+        },
+        {
+          "id": "merkaba_star_up",
+          "label": "Upward tetrahedron — fire triangle",
+          "type": "tetrahedron_aframe",
+          "r": 3.2,
+          "position": [0, 0, 0],
+          "material": "neon_cyan",
+          "animation": "slow_rotate_y"
+        },
+        {
+          "id": "merkaba_star_down",
+          "label": "Downward tetrahedron — water triangle",
+          "type": "tetrahedron_aframe",
+          "r": 3.2,
+          "rotation": [180, 0, 0],
+          "position": [0, 0, 0],
+          "material": "neon_purple",
+          "animation": "slow_rotate_x"
+        },
+        {
+          "id": "phi_torus",
+          "label": "PHI torus — Golden root ring",
+          "type": "torus",
+          "r": 4.5, "rt": 0.04,
+          "position": [0, 0, 0],
+          "rotation": [0, 0, 0],
+          "material": "neon_gold",
+          "animation": "orbit_y"
+        },
+        {
+          "id": "psi_torus",
+          "label": "PSI torus — Silver bridge ring",
+          "type": "torus",
+          "r": 3.9, "rt": 0.028,
+          "position": [0, 0, 0],
+          "rotation": [90, 0, 0],
+          "material": "hologram_cyan",
+          "animation": "slow_rotate_z"
+        },
+        {
+          "id": "d480_particles",
+          "label": "D480 harmonic expansion — ambient particle field",
+          "count": 120,
+          "distribution": "spherical_random",
+          "radius": 14,
+          "element": { "type": "sphere", "r": 0.04, "material": "lattice_edge", "animation": "pulse_opacity" }
+        }
+      ]
+    },
+
+    "quantum_field": {
+      "id": "quantum_field",
+      "title": "Quantum Field Visualiser",
+      "logline": "Walk through quantum field fluctuations. Observe wave function collapse. Navigate probability clouds.",
+      "palette": "quantum",
+      "sound": "ambient_741hz",
+      "narrativeBeats": [
+        { "trigger": "enter",  "text": "You are inside a quantum field.\nEvery particle exists as probability — not position.", "durationMs": 7000 },
+        { "trigger": "step_1", "text": "The act of observation collapses the wave function.\nLook at any node — it stabilises.", "durationMs": 8000 },
+        { "trigger": "step_2", "text": "At Planck scale, space itself fluctuates.\nYou are not standing on matter. You are standing on probability.", "durationMs": 8000 }
+      ],
+      "environment": {
+        "sky": { "color": "#030010" },
+        "fog": { "color": "#030010", "density": 0.01 }
+      },
+      "layers": [
+        {
+          "id": "probability_cloud",
+          "label": "Probability cloud — 200 floating plasma spheres",
+          "count": 200,
+          "distribution": "gaussian_volume",
+          "sigma": 8,
+          "element": { "type": "sphere", "r_range": [0.04, 0.22], "material": "plasma_purple", "animation": "pulse_opacity", "animDelayFn": "random_0_4000" }
+        },
+        {
+          "id": "wave_function_rings",
+          "label": "Wave function collapse rings — 12 tori",
+          "count": 12,
+          "distribution": "phi_sphere",
+          "radius": 5,
+          "element": { "type": "torus", "r": 0.6, "rt": 0.025, "material": "plasma_blue", "animation": "slow_rotate_x", "animDelayFn": "random_0_3000" }
+        },
+        {
+          "id": "planck_grid",
+          "label": "Planck-scale grid — underlying spacetime structure",
+          "instances": [
+            { "position": [0, -3, 0], "rotation": [-90, 0, 0], "scale": [40, 40, 1] },
+            { "position": [0,  0, -10], "rotation": [0,  0, 0], "scale": [40, 40, 1] }
+          ],
+          "element": { "type": "plane", "material": "grid_floor" }
+        },
+        {
+          "id": "entanglement_beams",
+          "label": "Quantum entanglement beams — paired particle connections",
+          "instances": [
+            { "position": [-4, 2, -3], "scale": [0.02, 0.02, 6],  "rotation": [30, 20, 0] },
+            { "position": [ 3, 1, -4], "scale": [0.02, 0.02, 7],  "rotation": [-20, -30, 0] },
+            { "position": [-2, 3, -5], "scale": [0.02, 0.02, 8],  "rotation": [10, 50, 0] },
+            { "position": [ 5, 0, -2], "scale": [0.02, 0.02, 5],  "rotation": [-40, -10, 0] },
+            { "position": [-6, 1, -6], "scale": [0.02, 0.02, 9],  "rotation": [15, -20, 0] }
+          ],
+          "element": { "type": "box", "material": "neon_purple", "animation": "pulse_opacity" }
+        }
+      ]
+    },
+
+    "forest_528": {
+      "id": "forest_528",
+      "title": "Forest 528 Hz Sanctuary",
+      "logline": "Ancient bioluminescent forest at 528 Hz. Spatial wind. Glowing fauna. Zero stress in 5 minutes.",
+      "palette": "forest",
+      "sound": "ambient_528hz",
+      "narrativeBeats": [
+        { "trigger": "enter",  "text": "528 Hz — the frequency of transformation and healing.\nThe forest knows you're here.", "durationMs": 7000 },
+        { "trigger": "step_1", "text": "These trees are 800 years old.\nThey have outlasted every empire and every certainty.", "durationMs": 7000 },
+        { "trigger": "step_2", "text": "At 528 Hz, the cellular repair mechanism activates.\nFive minutes here equals two hours of sleep.", "durationMs": 8000 }
+      ],
+      "environment": {
+        "sky": { "color": "#061208" },
+        "fog": { "color": "#052e16", "density": 0.022 }
+      },
+      "layers": [
+        {
+          "id": "tree_trunks",
+          "label": "Ancient forest tree trunks — 30 trees",
+          "count": 30,
+          "spread": { "x": [-25, 25], "z": [-25, 5] },
+          "element": {
+            "type": "cylinder", "r_range": [0.3, 0.7], "h_range": [8, 16],
+            "y_offset": "half_height",
+            "material": "bark",
+            "animation": "sway",
+            "animDelayFn": "random_0_3000"
+          }
+        },
+        {
+          "id": "tree_canopy",
+          "label": "Tree canopies — large bioluminescent spheres",
+          "count": 30,
+          "paired_with": "tree_trunks",
+          "y_offset": "trunk_top",
+          "element": {
+            "type": "sphere", "r_range": [1.2, 2.8],
+            "material": "bioluminescent",
+            "animation": "drift_up_slow",
+            "animDelayFn": "random_0_5000"
+          }
+        },
+        {
+          "id": "ground_cover",
+          "label": "Ground cover — mossy floor plane",
+          "type": "plane",
+          "w": 80, "h": 80,
+          "position": [0, 0, 0],
+          "rotation": [-90, 0, 0],
+          "material": { "color": "#052e16", "roughness": 1.0 }
+        },
+        {
+          "id": "bioluminescent_fungi",
+          "label": "Glowing fungi clusters — 60 small spheres at ground level",
+          "count": 60,
+          "spread": { "x": [-20, 20], "z": [-20, 5], "y": [0, 0.3] },
+          "element": {
+            "type": "sphere", "r_range": [0.08, 0.25],
+            "material": "bioluminescent",
+            "animation": "pulse_emissive",
+            "animDelayFn": "random_0_4000"
+          }
+        },
+        {
+          "id": "light_shafts",
+          "label": "Moonlight shafts through canopy — tall narrow boxes",
+          "count": 8,
+          "spread": { "x": [-12, 12], "z": [-10, 2] },
+          "element": {
+            "type": "box", "w": 0.4, "h": 18, "d": 0.4,
+            "y_offset": 9,
+            "material": { "color": "#22c55e", "opacity": 0.06, "transparent": true },
+            "animation": "pulse_opacity"
+          }
+        },
+        {
+          "id": "floating_spores",
+          "label": "Floating spores — 80 tiny spheres drifting upward",
+          "count": 80,
+          "spread": { "x": [-18, 18], "z": [-18, 4], "y": [0.5, 6] },
+          "element": {
+            "type": "sphere", "r_range": [0.02, 0.06],
+            "material": "neon_green",
+            "animation": "drift_up_slow",
+            "animDelayFn": "random_0_6000"
+          }
+        }
+      ]
+    },
+
+    "deep_space": {
+      "id": "deep_space",
+      "title": "963 Hz Cosmos — Crown Field",
+      "logline": "Cosmic void with 963 Hz crown frequency. Galactic particle field. Infinite silent expansion.",
+      "palette": "deep_space",
+      "sound": "ambient_963hz",
+      "narrativeBeats": [
+        { "trigger": "enter",  "text": "963 Hz — the frequency of the crown. Universal consciousness.\nYou are the universe observing itself.", "durationMs": 8000 },
+        { "trigger": "step_1", "text": "The nearest star is 4.2 light years away.\nAt the speed of light: 4.2 years.\nYou are looking 4.2 years into the past.", "durationMs": 9000 },
+        { "trigger": "step_2", "text": "Every atom in your body was forged in a stellar furnace.\nYou are not in space. You are made of it.", "durationMs": 8000 }
+      ],
+      "environment": {
+        "sky": { "color": "#000005" },
+        "fog": { "color": "#000005", "density": 0.004 }
+      },
+      "layers": [
+        {
+          "id": "star_field",
+          "label": "Star field — 600 tiny spheres distributed across a sphere",
+          "count": 600,
+          "distribution": "spherical_shell",
+          "radius_range": [18, 40],
+          "element": {
+            "type": "sphere", "r_range": [0.02, 0.09],
+            "material": "star_white",
+            "animation": "pulse_opacity",
+            "animDelayFn": "random_0_8000"
+          }
+        },
+        {
+          "id": "nebula_clouds",
+          "label": "Nebula gas clouds — 40 large translucent spheres",
+          "count": 40,
+          "distribution": "spherical_random",
+          "radius": 22,
+          "element": {
+            "type": "sphere", "r_range": [1.5, 5.0],
+            "material": "plasma_purple",
+            "animation": "slow_rotate_y",
+            "animDelayFn": "random_0_10000"
+          }
+        },
+        {
+          "id": "galaxy_arm",
+          "label": "Galactic arm structure — 80 arranged along a spiral",
+          "count": 80,
+          "distribution": "phi_spiral_3d",
+          "radius": 14,
+          "element": {
+            "type": "sphere", "r_range": [0.05, 0.3],
+            "material": { "color": "#a78bfa", "emissive": "#7c3aed", "emissiveIntensity": 0.5, "opacity": 0.6 },
+            "animation": "pulse_opacity",
+            "animDelayFn": "random_0_5000"
+          }
+        },
+        {
+          "id": "orbital_planets",
+          "label": "Six distinct planetary bodies orbiting the scene",
+          "instances": [
+            { "position": [ 8,  2, -12], "scale": [1.4, 1.4, 1.4], "material_override": { "color": "#c2410c", "metalness": 0.0, "roughness": 0.9 }, "animation_override": "orbit_y" },
+            { "position": [-10, -1, -10], "scale": [0.9, 0.9, 0.9], "material_override": { "color": "#60a5fa", "opacity": 0.7 }, "animation_override": "slow_rotate_x" },
+            { "position": [ 4,  4, -18], "scale": [2.2, 2.2, 2.2], "material_override": { "color": "#f59e0b", "metalness": 0.0, "roughness": 0.7 }, "animation_override": "slow_rotate_y" },
+            { "position": [-6, -3, -16], "scale": [0.6, 0.6, 0.6], "material_override": { "color": "#e2e8f0", "roughness": 0.95 } },
+            { "position": [14,  0, -14], "scale": [3.0, 3.0, 3.0], "material_override": { "color": "#d97706", "roughness": 0.6 }, "animation_override": "spin_slow" },
+            { "position": [-14, 2, -18], "scale": [1.8, 1.8, 1.8], "material_override": { "color": "#2dd4bf", "roughness": 0.4 } }
+          ],
+          "element": { "type": "sphere", "r": 1 }
+        },
+        {
+          "id": "saturn_rings",
+          "label": "Rings around the large golden planet",
+          "anchor_instance": 4,
+          "anchor_layer": "orbital_planets",
+          "instances": [
+            { "position": [14, 0, -14], "rotation": [80, 0, 0], "scale": [1, 1, 1] },
+            { "position": [14, 0, -14], "rotation": [80, 0, 0], "scale": [1.3, 1.3, 1.3] }
+          ],
+          "element": { "type": "torus", "r": 4.2, "rt": 0.18, "material": { "color": "#d97706", "opacity": 0.5, "transparent": true } }
+        },
+        {
+          "id": "crown_glyph",
+          "label": "963 Hz crown glyph — floating toroidal knot above the scene",
+          "type": "torus",
+          "r": 2.8, "rt": 0.12,
+          "position": [0, 5, -8],
+          "material": "neon_gold",
+          "animation": "slow_rotate_y"
+        }
+      ]
+    },
+
+    "ocean_presence": {
+      "id": "ocean_presence",
+      "title": "Ocean Presence — Infinite Horizon",
+      "logline": "Infinite ocean horizon. Dynamic waves. 417 Hz spatial anchor tone. Pure stillness.",
+      "palette": "ocean",
+      "sound": "ambient_417hz",
+      "narrativeBeats": [
+        { "trigger": "enter",  "text": "417 Hz — the frequency of spatial anchoring.\nThe horizon is 4.8 km away.\nIt will always be exactly that far.", "durationMs": 7000 },
+        { "trigger": "step_1", "text": "The ocean covers 71% of this planet.\nEvery breath you take contains atoms that have been here for 3.8 billion years.", "durationMs": 8000 },
+        { "trigger": "step_2", "text": "There is no edge to the ocean.\nThere is no edge to your attention either — if you let go.", "durationMs": 8000 }
+      ],
+      "environment": {
+        "sky": { "type": "gradient", "topColor": "#020d1a", "bottomColor": "#1a3a5a" },
+        "fog": { "color": "#020d1a", "density": 0.014 }
+      },
+      "layers": [
+        {
+          "id": "ocean_surface",
+          "label": "Ocean surface — large undulating plane",
+          "type": "plane",
+          "w": 400, "h": 400,
+          "position": [0, -0.3, 0],
+          "rotation": [-90, 0, 0],
+          "material": "water_surface",
+          "animation": "wave_z"
+        },
+        {
+          "id": "wave_crests",
+          "label": "Wave crest highlights — 50 elongated boxes at surface level",
+          "count": 50,
+          "spread": { "x": [-30, 30], "z": [-30, 5], "y": [-0.1, 0.1] },
+          "element": {
+            "type": "box", "w_range": [1.5, 6], "h": 0.06, "d": 0.3,
+            "material": { "color": "#e0f2fe", "opacity": 0.45, "transparent": true },
+            "animation": "wave_z",
+            "animDelayFn": "random_0_4000"
+          }
+        },
+        {
+          "id": "sea_foam",
+          "label": "Sea foam particles — 80 tiny white spheres at surface",
+          "count": 80,
+          "spread": { "x": [-20, 20], "z": [-20, 8], "y": [-0.05, 0.15] },
+          "element": {
+            "type": "sphere", "r_range": [0.04, 0.15],
+            "material": { "color": "#e0f2fe", "opacity": 0.6 },
+            "animation": "drift_up_slow",
+            "animDelayFn": "random_0_5000"
+          }
+        },
+        {
+          "id": "horizon_mist",
+          "label": "Horizon mist layers — translucent wide boxes far ahead",
+          "instances": [
+            { "position": [0, 1, -40], "scale": [120, 4, 0.5] },
+            { "position": [0, 2, -60], "scale": [150, 6, 0.5] },
+            { "position": [0, 3, -90], "scale": [200, 8, 0.5] }
+          ],
+          "element": {
+            "type": "box",
+            "material": { "color": "#38bdf8", "opacity": 0.08, "transparent": true }
+          }
+        },
+        {
+          "id": "star_reflections",
+          "label": "Star reflections on water — 120 tiny emissive dots at surface",
+          "count": 120,
+          "spread": { "x": [-25, 25], "z": [-25, 5], "y": [-0.28, -0.25] },
+          "element": {
+            "type": "sphere", "r": 0.015,
+            "material": "star_white",
+            "animation": "pulse_opacity",
+            "animDelayFn": "random_0_7000"
+          }
+        }
+      ]
+    }
+
+  }
+}
