@@ -2952,8 +2952,8 @@ footer{text-align:center;padding:3rem 1.5rem;color:#334155;font-size:0.8rem;bord
       <div class="step">
         <div class="step-num">2</div>
         <div>
-          <h3>Get an Admin JWT (for write operations)</h3>
-          <p>Most read endpoints are public. For writes, POST to <code>/waitlist</code> (open) or request an API key via the founding partner program. Generate admin JWT from <code>JWT_SECRET</code> if you have direct system access.</p>
+          <h3>All read endpoints are open</h3>
+          <p>No auth needed to read AIOS state, experiences, or stats. To join the waitlist, <code>POST /waitlist</code> with <code>{ email, name }</code> — no key required.</p>
         </div>
       </div>
       <div class="step">
@@ -3014,7 +3014,7 @@ footer{text-align:center;padding:3rem 1.5rem;color:#334155;font-size:0.8rem;bord
       <div class="tool-card">
         <div class="method">POST</div>
         <div class="route">/waitlist</div>
-        <p>Register for founding partner access. Body: <code>{ email, name, useCase }</code>.</p>
+        <p>Join the waitlist. Body: <code>{ email, name, useCase }</code>.</p>
       </div>
     </div>
   </div>
