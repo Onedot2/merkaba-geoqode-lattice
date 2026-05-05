@@ -264,30 +264,110 @@
       }
       /* ── Watch Stats Modal ── */
       #stats-modal {
-        display: none; position: fixed; inset: 0; z-index: 650;
-        background: rgba(0,0,12,0.92); backdrop-filter: blur(18px);
-        align-items: center; justify-content: center;
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 650;
+        background: rgba(0, 0, 12, 0.92);
+        backdrop-filter: blur(18px);
+        align-items: center;
+        justify-content: center;
       }
-      #stats-modal.open { display: flex; }
+      #stats-modal.open {
+        display: flex;
+      }
       .stats-box {
-        background: #0d0a1a; border: 1px solid rgba(120,80,255,0.25);
-        border-radius: 16px; width: min(92vw, 480px); padding: 32px;
-        position: relative; color: #e8e8f0;
+        background: #0d0a1a;
+        border: 1px solid rgba(120, 80, 255, 0.25);
+        border-radius: 16px;
+        width: min(92vw, 480px);
+        padding: 32px;
+        position: relative;
+        color: #e8e8f0;
       }
-      .stats-title { font-size: 1.1rem; font-weight: 900; letter-spacing: 0.12em; color: #a78bfa; margin-bottom: 6px; }
-      .stats-sub { font-size: 0.72rem; color: rgba(255,255,255,0.35); margin-bottom: 28px; letter-spacing: 0.08em; }
-      .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 24px; }
-      .stat-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 16px 18px; }
-      .stat-val { font-size: 1.8rem; font-weight: 900; color: #c4b5fd; line-height: 1; }
-      .stat-lbl { font-size: 0.62rem; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; margin-top: 4px; text-transform: uppercase; }
-      .stats-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.8rem; }
-      .stats-row:last-child { border-bottom: none; }
-      .stats-row-lbl { color: rgba(255,255,255,0.45); }
-      .stats-row-val { font-weight: 700; color: #e8e8f0; text-align: right; max-width: 58%; }
-      .stats-rxn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
-      .stats-rxn-chip { background: rgba(255,255,255,0.05); border-radius: 20px; padding: 5px 12px; font-size: 0.8rem; }
-      .stats-close { position: absolute; top: 16px; right: 18px; background: none; border: none; color: rgba(255,255,255,0.35); font-size: 1.2rem; cursor: pointer; }
-      .stats-close:hover { color: #fff; }
+      .stats-title {
+        font-size: 1.1rem;
+        font-weight: 900;
+        letter-spacing: 0.12em;
+        color: #a78bfa;
+        margin-bottom: 6px;
+      }
+      .stats-sub {
+        font-size: 0.72rem;
+        color: rgba(255, 255, 255, 0.35);
+        margin-bottom: 28px;
+        letter-spacing: 0.08em;
+      }
+      .stats-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+        margin-bottom: 24px;
+      }
+      .stat-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 10px;
+        padding: 16px 18px;
+      }
+      .stat-val {
+        font-size: 1.8rem;
+        font-weight: 900;
+        color: #c4b5fd;
+        line-height: 1;
+      }
+      .stat-lbl {
+        font-size: 0.62rem;
+        color: rgba(255, 255, 255, 0.4);
+        letter-spacing: 0.1em;
+        margin-top: 4px;
+        text-transform: uppercase;
+      }
+      .stats-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        font-size: 0.8rem;
+      }
+      .stats-row:last-child {
+        border-bottom: none;
+      }
+      .stats-row-lbl {
+        color: rgba(255, 255, 255, 0.45);
+      }
+      .stats-row-val {
+        font-weight: 700;
+        color: #e8e8f0;
+        text-align: right;
+        max-width: 58%;
+      }
+      .stats-rxn-row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 8px;
+      }
+      .stats-rxn-chip {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 20px;
+        padding: 5px 12px;
+        font-size: 0.8rem;
+      }
+      .stats-close {
+        position: absolute;
+        top: 16px;
+        right: 18px;
+        background: none;
+        border: none;
+        color: rgba(255, 255, 255, 0.35);
+        font-size: 1.2rem;
+        cursor: pointer;
+      }
+      .stats-close:hover {
+        color: #fff;
+      }
       /* ── Keyboard Shortcuts Panel ── */
       #kbd-panel {
         position: fixed;
@@ -1140,23 +1220,53 @@
         border-color: rgba(0, 229, 255, 0.3);
       }
       /* Binaural mode popup */
-      .bine-wrap { position: relative; display: flex; align-items: center; }
+      .bine-wrap {
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
       .bine-popup {
-        position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%);
-        background: rgba(10,4,26,0.97); border: 1px solid rgba(0,229,255,0.25);
-        border-radius: 10px; padding: 8px 6px; display: none; z-index: 90;
-        white-space: nowrap; flex-direction: column; gap: 4px; min-width: 140px;
-        box-shadow: 0 8px 28px rgba(0,0,0,0.6);
+        position: absolute;
+        bottom: calc(100% + 8px);
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(10, 4, 26, 0.97);
+        border: 1px solid rgba(0, 229, 255, 0.25);
+        border-radius: 10px;
+        padding: 8px 6px;
+        display: none;
+        z-index: 90;
+        white-space: nowrap;
+        flex-direction: column;
+        gap: 4px;
+        min-width: 140px;
+        box-shadow: 0 8px 28px rgba(0, 0, 0, 0.6);
       }
-      .bine-popup.vis { display: flex; }
+      .bine-popup.vis {
+        display: flex;
+      }
       .bine-opt {
-        padding: 7px 12px; border-radius: 6px; border: none; cursor: pointer;
-        font-size: 0.7rem; font-weight: 800; letter-spacing: 0.1em;
-        background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.5);
-        text-align: left; transition: all 0.15s;
+        padding: 7px 12px;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        font-size: 0.7rem;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        background: rgba(255, 255, 255, 0.04);
+        color: rgba(255, 255, 255, 0.5);
+        text-align: left;
+        transition: all 0.15s;
       }
-      .bine-opt:hover { background: rgba(0,229,255,0.1); color: #00e5ff; }
-      .bine-opt.cur { background: rgba(0,229,255,0.14); color: #00e5ff; border: 1px solid rgba(0,229,255,0.3); }
+      .bine-opt:hover {
+        background: rgba(0, 229, 255, 0.1);
+        color: #00e5ff;
+      }
+      .bine-opt.cur {
+        background: rgba(0, 229, 255, 0.14);
+        color: #00e5ff;
+        border: 1px solid rgba(0, 229, 255, 0.3);
+      }
       /* Row header BINGE button active state */
       .binge-active {
         background: rgba(0, 229, 255, 0.25) !important;
@@ -1660,7 +1770,9 @@
           0 0 0 1px rgba(255, 255, 255, 0.09);
         cursor: grab;
       }
-      #player.mini.mini-dragging { cursor: grabbing !important; }
+      #player.mini.mini-dragging {
+        cursor: grabbing !important;
+      }
       #player.mini:hover {
         box-shadow:
           0 24px 72px rgba(0, 0, 0, 0.85),
@@ -2059,151 +2171,527 @@
       }
 
       /* Ambient Mixer */
-      @keyframes ambSlide { from { opacity:0; transform:translateY(-8px); } to { opacity:1; transform:translateY(0); } }
-      .amb-ch { display:flex; align-items:center; gap:10px; padding:8px 4px; border-radius:8px; }
-      .amb-ch:hover { background:rgba(255,255,255,0.03); }
-      .amb-toggle { width:32px;height:32px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.04);cursor:pointer;font-size:14px;transition:all 0.15s;flex-shrink:0; }
-      .amb-toggle.on { border-color:rgba(16,185,129,0.6);background:rgba(16,185,129,0.15);box-shadow:0 0 10px rgba(16,185,129,0.25); }
-      .amb-label { font-size:0.7rem;font-weight:700;color:rgba(255,255,255,0.55);width:80px;flex-shrink:0; }
-      .amb-slider { flex:1;height:3px;accent-color:#10b981;cursor:pointer; }
+      @keyframes ambSlide {
+        from {
+          opacity: 0;
+          transform: translateY(-8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .amb-ch {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 4px;
+        border-radius: 8px;
+      }
+      .amb-ch:hover {
+        background: rgba(255, 255, 255, 0.03);
+      }
+      .amb-toggle {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 1.5px solid rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.04);
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.15s;
+        flex-shrink: 0;
+      }
+      .amb-toggle.on {
+        border-color: rgba(16, 185, 129, 0.6);
+        background: rgba(16, 185, 129, 0.15);
+        box-shadow: 0 0 10px rgba(16, 185, 129, 0.25);
+      }
+      .amb-label {
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: rgba(255, 255, 255, 0.55);
+        width: 80px;
+        flex-shrink: 0;
+      }
+      .amb-slider {
+        flex: 1;
+        height: 3px;
+        accent-color: #10b981;
+        cursor: pointer;
+      }
 
       /* Command Palette */
-      #cmd-overlay { position:fixed;inset:0;z-index:700;display:none; }
-      #cmd-back { position:absolute;inset:0;background:rgba(0,0,0,0.65);backdrop-filter:blur(8px); }
-      #cmd-box { position:absolute;top:12%;left:50%;transform:translateX(-50%);width:min(580px,94vw);background:rgba(10,6,24,0.98);border:1px solid rgba(168,85,247,0.3);border-radius:16px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,0.8),0 0 0 0.5px rgba(168,85,247,0.15); }
-      #cmd-input-wrap { display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid rgba(255,255,255,0.07); }
-      #cmd-icon { font-size:18px;color:rgba(168,85,247,0.7);flex-shrink:0; }
-      #cmd-input { flex:1;background:none;border:none;outline:none;font-size:1rem;color:#e8e8f0;font-weight:500; }
-      #cmd-input::placeholder { color:rgba(255,255,255,0.2); }
-      #cmd-results { max-height:380px;overflow-y:auto;padding:8px; }
-      .cmd-item { display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:8px;cursor:pointer;transition:background 0.1s; }
-      .cmd-item:hover, .cmd-item.cmd-sel { background:rgba(168,85,247,0.12); }
-      .cmd-item-icon { width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0; }
-      .cmd-item-text { flex:1;min-width:0; }
-      .cmd-item-title { font-size:0.82rem;font-weight:700;color:#e8e8f0; }
-      .cmd-item-sub { font-size:0.65rem;color:rgba(255,255,255,0.35);margin-top:1px; }
-      .cmd-item-kbd { font-size:0.6rem;color:rgba(255,255,255,0.22);font-family:'SF Mono',monospace;border:1px solid rgba(255,255,255,0.1);border-radius:4px;padding:1px 6px;white-space:nowrap;flex-shrink:0; }
-      .cmd-group { font-size:0.58rem;font-weight:900;letter-spacing:0.18em;color:rgba(255,255,255,0.2);padding:10px 12px 4px;text-transform:uppercase; }
-      #cmd-footer { padding:8px 16px;border-top:1px solid rgba(255,255,255,0.05);display:flex;gap:16px; }
-      .cmd-hint { font-size:0.6rem;color:rgba(255,255,255,0.2);display:flex;align-items:center;gap:4px; }
-      .cmd-hint kbd { border:1px solid rgba(255,255,255,0.15);border-radius:3px;padding:0 4px;font-size:0.58rem; }
+      #cmd-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 700;
+        display: none;
+      }
+      #cmd-back {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.65);
+        backdrop-filter: blur(8px);
+      }
+      #cmd-box {
+        position: absolute;
+        top: 12%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: min(580px, 94vw);
+        background: rgba(10, 6, 24, 0.98);
+        border: 1px solid rgba(168, 85, 247, 0.3);
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow:
+          0 32px 80px rgba(0, 0, 0, 0.8),
+          0 0 0 0.5px rgba(168, 85, 247, 0.15);
+      }
+      #cmd-input-wrap {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px 18px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      }
+      #cmd-icon {
+        font-size: 18px;
+        color: rgba(168, 85, 247, 0.7);
+        flex-shrink: 0;
+      }
+      #cmd-input {
+        flex: 1;
+        background: none;
+        border: none;
+        outline: none;
+        font-size: 1rem;
+        color: #e8e8f0;
+        font-weight: 500;
+      }
+      #cmd-input::placeholder {
+        color: rgba(255, 255, 255, 0.2);
+      }
+      #cmd-results {
+        max-height: 380px;
+        overflow-y: auto;
+        padding: 8px;
+      }
+      .cmd-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.1s;
+      }
+      .cmd-item:hover,
+      .cmd-item.cmd-sel {
+        background: rgba(168, 85, 247, 0.12);
+      }
+      .cmd-item-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        flex-shrink: 0;
+      }
+      .cmd-item-text {
+        flex: 1;
+        min-width: 0;
+      }
+      .cmd-item-title {
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: #e8e8f0;
+      }
+      .cmd-item-sub {
+        font-size: 0.65rem;
+        color: rgba(255, 255, 255, 0.35);
+        margin-top: 1px;
+      }
+      .cmd-item-kbd {
+        font-size: 0.6rem;
+        color: rgba(255, 255, 255, 0.22);
+        font-family: "SF Mono", monospace;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+        padding: 1px 6px;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+      .cmd-group {
+        font-size: 0.58rem;
+        font-weight: 900;
+        letter-spacing: 0.18em;
+        color: rgba(255, 255, 255, 0.2);
+        padding: 10px 12px 4px;
+        text-transform: uppercase;
+      }
+      #cmd-footer {
+        padding: 8px 16px;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        display: flex;
+        gap: 16px;
+      }
+      .cmd-hint {
+        font-size: 0.6rem;
+        color: rgba(255, 255, 255, 0.2);
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .cmd-hint kbd {
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 3px;
+        padding: 0 4px;
+        font-size: 0.58rem;
+      }
 
       /* Color Themes */
-      :root { --theme-accent:#a855f7; --theme-cyan:#00e5ff; --theme-bg1:#0a0014; --theme-bg2:#030014; }
-      [data-theme='emerald'] { --theme-accent:#10b981; --theme-cyan:#34d399; --theme-bg1:#001a0a; --theme-bg2:#000d05; }
-      [data-theme='solar'] { --theme-accent:#f59e0b; --theme-cyan:#fcd34d; --theme-bg1:#1a0f00; --theme-bg2:#0d0800; }
-      [data-theme='void'] { --theme-accent:#6366f1; --theme-cyan:#818cf8; --theme-bg1:#050508; --theme-bg2:#02020a; }
-      #theme-panel { position:fixed;bottom:80px;right:16px;z-index:600;background:rgba(10,6,24,0.97);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:14px;display:none;width:200px;box-shadow:0 20px 50px rgba(0,0,0,0.7); }
-      .theme-chip { display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;cursor:pointer;transition:background 0.15s; }
-      .theme-chip:hover,.theme-chip.cur { background:rgba(255,255,255,0.07); }
-      .theme-dot { width:18px;height:18px;border-radius:50%;flex-shrink:0; }
-      .theme-name { font-size:0.72rem;font-weight:700;color:rgba(255,255,255,0.65); }
-      .theme-chip.cur .theme-name { color:#fff; }
+      :root {
+        --theme-accent: #a855f7;
+        --theme-cyan: #00e5ff;
+        --theme-bg1: #0a0014;
+        --theme-bg2: #030014;
+      }
+      [data-theme="emerald"] {
+        --theme-accent: #10b981;
+        --theme-cyan: #34d399;
+        --theme-bg1: #001a0a;
+        --theme-bg2: #000d05;
+      }
+      [data-theme="solar"] {
+        --theme-accent: #f59e0b;
+        --theme-cyan: #fcd34d;
+        --theme-bg1: #1a0f00;
+        --theme-bg2: #0d0800;
+      }
+      [data-theme="void"] {
+        --theme-accent: #6366f1;
+        --theme-cyan: #818cf8;
+        --theme-bg1: #050508;
+        --theme-bg2: #02020a;
+      }
+      #theme-panel {
+        position: fixed;
+        bottom: 80px;
+        right: 16px;
+        z-index: 600;
+        background: rgba(10, 6, 24, 0.97);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 14px;
+        padding: 14px;
+        display: none;
+        width: 200px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+      }
+      .theme-chip {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 10px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+      .theme-chip:hover,
+      .theme-chip.cur {
+        background: rgba(255, 255, 255, 0.07);
+      }
+      .theme-dot {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+      .theme-name {
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: rgba(255, 255, 255, 0.65);
+      }
+      .theme-chip.cur .theme-name {
+        color: #fff;
+      }
 
       /* Episode Guide */
       #guide-overlay {
-        position: fixed; inset: 0; z-index: 800;
+        position: fixed;
+        inset: 0;
+        z-index: 800;
       }
       #guide-back {
-        position: absolute; inset: 0; background: rgba(0,0,0,0.72); backdrop-filter: blur(6px);
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.72);
+        backdrop-filter: blur(6px);
       }
       #guide-panel {
-        position: absolute; right: 0; top: 0; bottom: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
         width: min(560px, 100vw);
-        background: linear-gradient(160deg,#0f0a24,#0a0a1a);
-        border-left: 1px solid rgba(255,255,255,0.07);
-        overflow-y: auto; display: flex; flex-direction: column;
-        animation: guideSlide 0.3s cubic-bezier(0.25,0.46,0.45,0.94);
+        background: linear-gradient(160deg, #0f0a24, #0a0a1a);
+        border-left: 1px solid rgba(255, 255, 255, 0.07);
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        animation: guideSlide 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       }
-      @keyframes guideSlide { from { transform: translateX(40px); opacity:0; } to { transform: translateX(0); opacity:1; } }
+      @keyframes guideSlide {
+        from {
+          transform: translateX(40px);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
       #guide-header {
-        display: flex; justify-content: space-between; align-items: flex-start;
-        padding: 32px 28px 16px; border-bottom: 1px solid rgba(255,255,255,0.06);
-        position: sticky; top:0; background: linear-gradient(160deg,#0f0a24,#0a0a1a); z-index:2;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 32px 28px 16px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        position: sticky;
+        top: 0;
+        background: linear-gradient(160deg, #0f0a24, #0a0a1a);
+        z-index: 2;
       }
       #guide-season-label {
-        font-size: 0.6rem; font-weight: 900; letter-spacing: 0.2em;
-        color: rgba(255,255,255,0.3); text-transform: uppercase; margin-bottom: 4px;
+        font-size: 0.6rem;
+        font-weight: 900;
+        letter-spacing: 0.2em;
+        color: rgba(255, 255, 255, 0.3);
+        text-transform: uppercase;
+        margin-bottom: 4px;
       }
       #guide-title {
-        font-size: 1.3rem; font-weight: 800; color: #e8e8f0; margin: 0;
+        font-size: 1.3rem;
+        font-weight: 800;
+        color: #e8e8f0;
+        margin: 0;
       }
       #guide-close {
-        background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
-        border-radius: 50%; width: 36px; height: 36px; color: rgba(255,255,255,0.6);
-        font-size: 16px; cursor: pointer; transition: all 0.15s; flex-shrink:0; margin-top:2px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.15s;
+        flex-shrink: 0;
+        margin-top: 2px;
       }
-      #guide-close:hover { background: rgba(255,255,255,0.12); color:#fff; }
+      #guide-close:hover {
+        background: rgba(255, 255, 255, 0.12);
+        color: #fff;
+      }
       #guide-tabs {
-        display: flex; gap: 8px; padding: 14px 28px;
-        border-bottom: 1px solid rgba(255,255,255,0.06);
+        display: flex;
+        gap: 8px;
+        padding: 14px 28px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
       }
       .guide-tab {
-        padding: 6px 16px; border-radius: 20px; font-size: 0.7rem; font-weight: 800;
-        letter-spacing: 0.1em; cursor: pointer; transition: all 0.15s;
-        background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
-        color: rgba(255,255,255,0.45);
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 0.7rem;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        cursor: pointer;
+        transition: all 0.15s;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: rgba(255, 255, 255, 0.45);
       }
-      .guide-tab.active { background: rgba(168,85,247,0.18); border-color: rgba(168,85,247,0.45); color: #c084fc; }
-      #guide-ep-list { padding: 16px 20px 40px; display: flex; flex-direction: column; gap: 12px; }
+      .guide-tab.active {
+        background: rgba(168, 85, 247, 0.18);
+        border-color: rgba(168, 85, 247, 0.45);
+        color: #c084fc;
+      }
+      #guide-ep-list {
+        padding: 16px 20px 40px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
       .guide-ep-card {
-        display: flex; gap: 14px; align-items: flex-start;
-        padding: 14px; border-radius: 10px;
-        background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
-        cursor: pointer; transition: background 0.15s, border-color 0.15s;
+        display: flex;
+        gap: 14px;
+        align-items: flex-start;
+        padding: 14px;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        cursor: pointer;
+        transition:
+          background 0.15s,
+          border-color 0.15s;
       }
-      .guide-ep-card:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.12); }
+      .guide-ep-card:hover {
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(255, 255, 255, 0.12);
+      }
       .guide-ep-thumb {
-        flex-shrink:0; width:110px; height:66px; border-radius:6px;
-        display:flex; align-items:center; justify-content:center; font-size:1.8rem;
-        position: relative; overflow: hidden;
+        flex-shrink: 0;
+        width: 110px;
+        height: 66px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        position: relative;
+        overflow: hidden;
       }
       .guide-ep-prog {
-        position:absolute; bottom:0; left:0; right:0; height:3px; background:rgba(255,255,255,0.1);
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: rgba(255, 255, 255, 0.1);
       }
-      .guide-ep-prog-fill { height:100%; transition: width 0.3s; }
-      .guide-ep-body { flex:1; min-width:0; }
-      .guide-ep-num { font-size:0.6rem; font-weight:900; letter-spacing:0.15em; color:rgba(255,255,255,0.3); margin-bottom:3px; }
-      .guide-ep-name { font-size:0.85rem; font-weight:700; color:#e8e8f0; margin-bottom:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-      .guide-ep-meta { font-size:0.65rem; color:rgba(255,255,255,0.35); margin-bottom:6px; }
-      .guide-ep-desc { font-size:0.68rem; color:rgba(255,255,255,0.45); line-height:1.5; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
-      .guide-ep-actions { display:flex; gap:8px; margin-top:8px; }
+      .guide-ep-prog-fill {
+        height: 100%;
+        transition: width 0.3s;
+      }
+      .guide-ep-body {
+        flex: 1;
+        min-width: 0;
+      }
+      .guide-ep-num {
+        font-size: 0.6rem;
+        font-weight: 900;
+        letter-spacing: 0.15em;
+        color: rgba(255, 255, 255, 0.3);
+        margin-bottom: 3px;
+      }
+      .guide-ep-name {
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #e8e8f0;
+        margin-bottom: 4px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .guide-ep-meta {
+        font-size: 0.65rem;
+        color: rgba(255, 255, 255, 0.35);
+        margin-bottom: 6px;
+      }
+      .guide-ep-desc {
+        font-size: 0.68rem;
+        color: rgba(255, 255, 255, 0.45);
+        line-height: 1.5;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      .guide-ep-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 8px;
+      }
       .guide-ep-play {
-        font-size:0.65rem; font-weight:800; padding:5px 14px; border-radius:20px;
-        background:rgba(168,85,247,0.22); border:1px solid rgba(168,85,247,0.4);
-        color:#c084fc; cursor:pointer; transition:all 0.15s; letter-spacing:0.06em;
+        font-size: 0.65rem;
+        font-weight: 800;
+        padding: 5px 14px;
+        border-radius: 20px;
+        background: rgba(168, 85, 247, 0.22);
+        border: 1px solid rgba(168, 85, 247, 0.4);
+        color: #c084fc;
+        cursor: pointer;
+        transition: all 0.15s;
+        letter-spacing: 0.06em;
       }
-      .guide-ep-play:hover { background:rgba(168,85,247,0.38); color:#fff; }
+      .guide-ep-play:hover {
+        background: rgba(168, 85, 247, 0.38);
+        color: #fff;
+      }
       .guide-ep-info-btn {
-        font-size:0.65rem; font-weight:800; padding:5px 12px; border-radius:20px;
-        background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08);
-        color:rgba(255,255,255,0.4); cursor:pointer; transition:all 0.15s;
+        font-size: 0.65rem;
+        font-weight: 800;
+        padding: 5px 12px;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: rgba(255, 255, 255, 0.4);
+        cursor: pointer;
+        transition: all 0.15s;
       }
-      .guide-ep-info-btn:hover { background:rgba(255,255,255,0.09); color:#fff; }
+      .guide-ep-info-btn:hover {
+        background: rgba(255, 255, 255, 0.09);
+        color: #fff;
+      }
 
       /* Star rating */
       .star-btn {
-        background: none; border: none; cursor: pointer;
-        font-size: 1.3rem; line-height: 1; padding: 2px;
-        color: rgba(255,255,255,0.18); transition: color 0.12s, transform 0.1s;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1.3rem;
+        line-height: 1;
+        padding: 2px;
+        color: rgba(255, 255, 255, 0.18);
+        transition:
+          color 0.12s,
+          transform 0.1s;
       }
-      .star-btn:hover, .star-btn.lit { color: #f59e0b; }
-      .star-btn:hover { transform: scale(1.2); }
+      .star-btn:hover,
+      .star-btn.lit {
+        color: #f59e0b;
+      }
+      .star-btn:hover {
+        transform: scale(1.2);
+      }
 
       /* More Like This mini cards */
       .more-card {
-        border-radius: 8px; overflow: hidden; cursor: pointer;
-        transition: transform 0.18s; background: rgba(255,255,255,0.03);
-        border: 1px solid rgba(255,255,255,0.06);
+        border-radius: 8px;
+        overflow: hidden;
+        cursor: pointer;
+        transition: transform 0.18s;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.06);
       }
-      .more-card:hover { transform: scale(1.04); }
+      .more-card:hover {
+        transform: scale(1.04);
+      }
       .more-thumb {
-        height: 62px; display: flex; align-items: center; justify-content: center;
+        height: 62px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         font-size: 1.6rem;
       }
-      .more-info { padding: 6px 7px; }
-      .more-title { font-size: 0.65rem; font-weight: 700; color: #e8e8f0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-      .more-sub { font-size: 0.58rem; color: rgba(255,255,255,0.3); margin-top:2px; }
+      .more-info {
+        padding: 6px 7px;
+      }
+      .more-title {
+        font-size: 0.65rem;
+        font-weight: 700;
+        color: #e8e8f0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .more-sub {
+        font-size: 0.58rem;
+        color: rgba(255, 255, 255, 0.3);
+        margin-top: 2px;
+      }
       .card-live-cv {
         position: absolute;
         inset: 0;
@@ -2296,27 +2784,98 @@
 
       /* Notification Panel */
       #notif-panel {
-        position: fixed; top: 60px; right: 12px; width: 320px;
-        max-height: 480px; overflow-y: auto;
-        background: #0d0a1a; border: 1px solid rgba(120,80,255,0.22);
-        border-radius: 14px; z-index: 3500;
-        box-shadow: 0 16px 48px rgba(0,0,0,0.7);
-        transform: translateY(-8px) scale(0.97); opacity: 0;
-        pointer-events: none; transition: opacity 0.22s, transform 0.22s;
+        position: fixed;
+        top: 60px;
+        right: 12px;
+        width: 320px;
+        max-height: 480px;
+        overflow-y: auto;
+        background: #0d0a1a;
+        border: 1px solid rgba(120, 80, 255, 0.22);
+        border-radius: 14px;
+        z-index: 3500;
+        box-shadow: 0 16px 48px rgba(0, 0, 0, 0.7);
+        transform: translateY(-8px) scale(0.97);
+        opacity: 0;
+        pointer-events: none;
+        transition:
+          opacity 0.22s,
+          transform 0.22s;
       }
-      #notif-panel.open { opacity: 1; transform: none; pointer-events: all; }
-      .np-hdr { padding: 14px 16px 10px; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.12em; color: rgba(255,255,255,0.4); display:flex; justify-content:space-between; align-items:center; }
-      .np-hdr button { background:none; border:none; color:rgba(255,255,255,0.3); font-size:0.65rem; cursor:pointer; letter-spacing:0.08em; font-weight:700; }
-      .np-hdr button:hover { color:#a78bfa; }
-      .np-item { display:flex; gap:10px; align-items:flex-start; padding:12px 16px; border-top:1px solid rgba(255,255,255,0.05); cursor:pointer; transition:background 0.15s; }
-      .np-item:hover { background:rgba(255,255,255,0.04); }
-      .np-item.unread .np-dot { background:#a78bfa; }
-      .np-dot { width:7px; height:7px; border-radius:50%; background:rgba(255,255,255,0.15); flex-shrink:0; margin-top:5px; }
-      .np-body { flex:1; }
-      .np-title { font-size:0.78rem; font-weight:700; color:#e8e8f0; line-height:1.3; }
-      .np-sub { font-size:0.65rem; color:rgba(255,255,255,0.35); margin-top:2px; }
-      .np-icon { font-size:1.4rem; flex-shrink:0; }
-      .np-empty { padding:24px; text-align:center; font-size:0.75rem; color:rgba(255,255,255,0.25); }
+      #notif-panel.open {
+        opacity: 1;
+        transform: none;
+        pointer-events: all;
+      }
+      .np-hdr {
+        padding: 14px 16px 10px;
+        font-size: 0.7rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        color: rgba(255, 255, 255, 0.4);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .np-hdr button {
+        background: none;
+        border: none;
+        color: rgba(255, 255, 255, 0.3);
+        font-size: 0.65rem;
+        cursor: pointer;
+        letter-spacing: 0.08em;
+        font-weight: 700;
+      }
+      .np-hdr button:hover {
+        color: #a78bfa;
+      }
+      .np-item {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        padding: 12px 16px;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+      .np-item:hover {
+        background: rgba(255, 255, 255, 0.04);
+      }
+      .np-item.unread .np-dot {
+        background: #a78bfa;
+      }
+      .np-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.15);
+        flex-shrink: 0;
+        margin-top: 5px;
+      }
+      .np-body {
+        flex: 1;
+      }
+      .np-title {
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: #e8e8f0;
+        line-height: 1.3;
+      }
+      .np-sub {
+        font-size: 0.65rem;
+        color: rgba(255, 255, 255, 0.35);
+        margin-top: 2px;
+      }
+      .np-icon {
+        font-size: 1.4rem;
+        flex-shrink: 0;
+      }
+      .np-empty {
+        padding: 24px;
+        text-align: center;
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.25);
+      }
       /* Cinema mode */
       #player.cinema-mode #player-top,
       #player.cinema-mode #player-bottom,
@@ -2789,13 +3348,13 @@
           <a
             href="/aiosdream"
             data-row="season1"
-            onclick="openGuide('origins',event)"
+            onclick="openGuide('origins', event)"
             >S1: Origins</a
           >
           <a
             href="/aiosdream"
             data-row="season2"
-            onclick="openGuide('emergence',event)"
+            onclick="openGuide('emergence', event)"
             style="color: #00e5ff"
             >S2: Emergence
             <span
@@ -2911,13 +3470,36 @@
           </button>
           <span class="q-badge" id="q-badge">0</span>
         </div>
-        <div style="position:relative;display:inline-flex">
-          <button class="nav-icon-btn" title="Notifications" onclick="_openNotif()" style="font-size:16px;opacity:0.7">🔔</button>
-          <span class="q-badge" id="notif-badge" style="background:#f59e0b"></span>
+        <div style="position: relative; display: inline-flex">
+          <button
+            class="nav-icon-btn"
+            title="Notifications"
+            onclick="_openNotif()"
+            style="font-size: 16px; opacity: 0.7"
+          >
+            🔔
+          </button>
+          <span
+            class="q-badge"
+            id="notif-badge"
+            style="background: #f59e0b"
+          ></span>
         </div>
-        <div style="position:relative;display:inline-flex">
-          <button class="nav-icon-btn" id="amb-btn" title="Ambient Mixer (A)" onclick="_openAmb()" style="font-size:16px;opacity:0.55">🎛</button>
-          <span class="q-badge" id="amb-badge" style="background:#10b981;display:none"></span>
+        <div style="position: relative; display: inline-flex">
+          <button
+            class="nav-icon-btn"
+            id="amb-btn"
+            title="Ambient Mixer (A)"
+            onclick="_openAmb()"
+            style="font-size: 16px; opacity: 0.55"
+          >
+            🎛
+          </button>
+          <span
+            class="q-badge"
+            id="amb-badge"
+            style="background: #10b981; display: none"
+          ></span>
         </div>
         <button
           class="nav-icon-btn"
@@ -2935,7 +3517,14 @@
         >
           ?
         </button>
-        <button class="nav-icon-btn" title="Color Theme" onclick="_toggleThemePanel()" style="font-size:14px;opacity:0.55">🎨</button>
+        <button
+          class="nav-icon-btn"
+          title="Color Theme"
+          onclick="_toggleThemePanel()"
+          style="font-size: 14px; opacity: 0.55"
+        >
+          🎨
+        </button>
         <div style="position: relative">
           <div
             class="nav-avatar signed-out"
@@ -3071,8 +3660,12 @@
           <div class="kbd-row"><span class="kbd-key">B</span> Mini Player</div>
           <div class="kbd-row"><span class="kbd-key">R</span> React</div>
           <div class="kbd-row"><span class="kbd-key">C</span> Cinema Mode</div>
-          <div class="kbd-row"><span class="kbd-key">A</span> Ambient Mixer</div>
-          <div class="kbd-row"><span class="kbd-key">/ or Ctrl K</span> Command Palette</div>
+          <div class="kbd-row">
+            <span class="kbd-key">A</span> Ambient Mixer
+          </div>
+          <div class="kbd-row">
+            <span class="kbd-key">/ or Ctrl K</span> Command Palette
+          </div>
           <div class="kbd-row">
             <span class="kbd-key">Esc</span> Close Player
           </div>
@@ -3113,16 +3706,20 @@
 
     <!-- ── NOTIFICATIONS PANEL ── -->
     <div id="notif-panel">
-      <div class="np-hdr">NOTIFICATIONS <button onclick="_markAllRead()">MARK ALL READ</button></div>
+      <div class="np-hdr">
+        NOTIFICATIONS <button onclick="_markAllRead()">MARK ALL READ</button>
+      </div>
       <div id="notif-list"></div>
     </div>
 
     <!-- ── WATCH STATS MODAL ── -->
-    <div id="stats-modal" onclick="if(event.target===this)closeStats()">
+    <div id="stats-modal" onclick="if (event.target === this) closeStats();">
       <div class="stats-box">
         <button class="stats-close" onclick="closeStats()">✕</button>
         <div class="stats-title">⊡ WATCH STATS</div>
-        <div class="stats-sub" id="stats-since">Your viewing history at a glance.</div>
+        <div class="stats-sub" id="stats-since">
+          Your viewing history at a glance.
+        </div>
         <div class="stats-grid" id="stats-grid"></div>
         <div id="stats-rows"></div>
         <div class="stats-rxn-row" id="stats-rxn"></div>
@@ -3399,10 +3996,30 @@
                 ⬡ BINE
               </button>
               <div class="bine-popup" id="bine-popup">
-                <button class="bine-opt cur" data-hz="4"  onclick="_setBineMode(4)" >Θ Theta · 4 Hz</button>
-                <button class="bine-opt"     data-hz="8"  onclick="_setBineMode(8)" >α Alpha · 8 Hz</button>
-                <button class="bine-opt"     data-hz="14" onclick="_setBineMode(14)">β Beta · 14 Hz</button>
-                <button class="bine-opt"     data-hz="40" onclick="_setBineMode(40)">γ Gamma · 40 Hz</button>
+                <button
+                  class="bine-opt cur"
+                  data-hz="4"
+                  onclick="_setBineMode(4)"
+                >
+                  Θ Theta · 4 Hz
+                </button>
+                <button class="bine-opt" data-hz="8" onclick="_setBineMode(8)">
+                  α Alpha · 8 Hz
+                </button>
+                <button
+                  class="bine-opt"
+                  data-hz="14"
+                  onclick="_setBineMode(14)"
+                >
+                  β Beta · 14 Hz
+                </button>
+                <button
+                  class="bine-opt"
+                  data-hz="40"
+                  onclick="_setBineMode(40)"
+                >
+                  γ Gamma · 40 Hz
+                </button>
               </div>
             </div>
             <div class="speed-wrap">
@@ -3818,42 +4435,186 @@
             "
           ></div>
           <!-- Star rating -->
-          <div id="modal-rating-row" style="margin-top:18px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;gap:12px">
-            <span style="font-size:0.65rem;font-weight:800;letter-spacing:0.14em;color:rgba(255,255,255,0.3)">RATE</span>
-            <div id="modal-stars" style="display:flex;gap:4px"></div>
-            <span id="modal-rating-lbl" style="font-size:0.65rem;color:rgba(255,255,255,0.25);letter-spacing:0.08em"></span>
+          <div
+            id="modal-rating-row"
+            style="
+              margin-top: 18px;
+              padding-top: 16px;
+              border-top: 1px solid rgba(255, 255, 255, 0.07);
+              display: flex;
+              align-items: center;
+              gap: 12px;
+            "
+          >
+            <span
+              style="
+                font-size: 0.65rem;
+                font-weight: 800;
+                letter-spacing: 0.14em;
+                color: rgba(255, 255, 255, 0.3);
+              "
+              >RATE</span
+            >
+            <div id="modal-stars" style="display: flex; gap: 4px"></div>
+            <span
+              id="modal-rating-lbl"
+              style="
+                font-size: 0.65rem;
+                color: rgba(255, 255, 255, 0.25);
+                letter-spacing: 0.08em;
+              "
+            ></span>
           </div>
           <!-- More Like This -->
-          <div id="modal-more-wrap" style="margin-top:22px;padding-top:18px;border-top:1px solid rgba(255,255,255,0.07);display:none">
-            <div style="font-size:0.65rem;font-weight:800;letter-spacing:0.14em;color:rgba(255,255,255,0.3);margin-bottom:12px">MORE LIKE THIS</div>
-            <div id="modal-more-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px"></div>
+          <div
+            id="modal-more-wrap"
+            style="
+              margin-top: 22px;
+              padding-top: 18px;
+              border-top: 1px solid rgba(255, 255, 255, 0.07);
+              display: none;
+            "
+          >
+            <div
+              style="
+                font-size: 0.65rem;
+                font-weight: 800;
+                letter-spacing: 0.14em;
+                color: rgba(255, 255, 255, 0.3);
+                margin-bottom: 12px;
+              "
+            >
+              MORE LIKE THIS
+            </div>
+            <div
+              id="modal-more-grid"
+              style="
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+              "
+            ></div>
           </div>
         </div>
       </div>
     </div>
 
     <!-- ── AMBIENT MIXER ── -->
-    <div id="amb-panel" style="
-      position:fixed;top:60px;right:12px;z-index:600;
-      width:290px;background:rgba(8,4,20,0.97);
-      border:1px solid rgba(16,185,129,0.25);border-radius:14px;
-      padding:18px 16px 14px;display:none;
-      box-shadow:0 20px 50px rgba(0,0,0,0.7),0 0 0 0.5px rgba(16,185,129,0.1);
-      animation:ambSlide 0.22s ease">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-        <span style="font-size:0.65rem;font-weight:900;letter-spacing:0.18em;color:rgba(16,185,129,0.8)">AMBIENT MIXER</span>
-        <button onclick="_closeAmb()" style="background:none;border:none;color:rgba(255,255,255,0.4);font-size:14px;cursor:pointer">✕</button>
+    <div
+      id="amb-panel"
+      style="
+        position: fixed;
+        top: 60px;
+        right: 12px;
+        z-index: 600;
+        width: 290px;
+        background: rgba(8, 4, 20, 0.97);
+        border: 1px solid rgba(16, 185, 129, 0.25);
+        border-radius: 14px;
+        padding: 18px 16px 14px;
+        display: none;
+        box-shadow:
+          0 20px 50px rgba(0, 0, 0, 0.7),
+          0 0 0 0.5px rgba(16, 185, 129, 0.1);
+        animation: ambSlide 0.22s ease;
+      "
+    >
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 14px;
+        "
+      >
+        <span
+          style="
+            font-size: 0.65rem;
+            font-weight: 900;
+            letter-spacing: 0.18em;
+            color: rgba(16, 185, 129, 0.8);
+          "
+          >AMBIENT MIXER</span
+        >
+        <button
+          onclick="_closeAmb()"
+          style="
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 14px;
+            cursor: pointer;
+          "
+        >
+          ✕
+        </button>
       </div>
       <div id="amb-channels"></div>
-      <div style="margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.06);display:flex;gap:8px">
-        <button onclick="_ambAllOff()" style="flex:1;padding:6px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.45);font-size:0.65rem;font-weight:800;letter-spacing:0.1em;cursor:pointer">ALL OFF</button>
-        <button onclick="_ambPreset('focus')" style="flex:1;padding:6px;border-radius:8px;border:1px solid rgba(16,185,129,0.2);background:rgba(16,185,129,0.06);color:rgba(16,185,129,0.7);font-size:0.65rem;font-weight:800;letter-spacing:0.1em;cursor:pointer">FOCUS</button>
-        <button onclick="_ambPreset('sleep')" style="flex:1;padding:6px;border-radius:8px;border:1px solid rgba(99,102,241,0.2);background:rgba(99,102,241,0.06);color:rgba(99,102,241,0.7);font-size:0.65rem;font-weight:800;letter-spacing:0.1em;cursor:pointer">SLEEP</button>
+      <div
+        style="
+          margin-top: 12px;
+          padding-top: 10px;
+          border-top: 1px solid rgba(255, 255, 255, 0.06);
+          display: flex;
+          gap: 8px;
+        "
+      >
+        <button
+          onclick="_ambAllOff()"
+          style="
+            flex: 1;
+            padding: 6px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.04);
+            color: rgba(255, 255, 255, 0.45);
+            font-size: 0.65rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+          "
+        >
+          ALL OFF
+        </button>
+        <button
+          onclick="_ambPreset('focus')"
+          style="
+            flex: 1;
+            padding: 6px;
+            border-radius: 8px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            background: rgba(16, 185, 129, 0.06);
+            color: rgba(16, 185, 129, 0.7);
+            font-size: 0.65rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+          "
+        >
+          FOCUS
+        </button>
+        <button
+          onclick="_ambPreset('sleep')"
+          style="
+            flex: 1;
+            padding: 6px;
+            border-radius: 8px;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            background: rgba(99, 102, 241, 0.06);
+            color: rgba(99, 102, 241, 0.7);
+            font-size: 0.65rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+          "
+        >
+          SLEEP
+        </button>
       </div>
     </div>
 
     <!-- ── EPISODE GUIDE ── -->
-    <div id="guide-overlay" style="display:none">
+    <div id="guide-overlay" style="display: none">
       <div id="guide-back" onclick="closeGuide()"></div>
       <div id="guide-panel">
         <div id="guide-header">
@@ -3874,7 +4635,12 @@
       <div id="cmd-box">
         <div id="cmd-input-wrap">
           <span id="cmd-icon">⌘</span>
-          <input id="cmd-input" placeholder="Search programmes, actions…" autocomplete="off" spellcheck="false"/>
+          <input
+            id="cmd-input"
+            placeholder="Search programmes, actions…"
+            autocomplete="off"
+            spellcheck="false"
+          />
         </div>
         <div id="cmd-results"></div>
         <div id="cmd-footer">
@@ -3887,21 +4653,55 @@
 
     <!-- ── THEME PANEL ── -->
     <div id="theme-panel">
-      <div style="font-size:0.6rem;font-weight:900;letter-spacing:0.18em;color:rgba(255,255,255,0.3);margin-bottom:10px">COLOR THEME</div>
-      <div class="theme-chip" onclick="_setTheme('default')" data-theme-id="default">
-        <div class="theme-dot" style="background:linear-gradient(135deg,#a855f7,#6366f1)"></div>
+      <div
+        style="
+          font-size: 0.6rem;
+          font-weight: 900;
+          letter-spacing: 0.18em;
+          color: rgba(255, 255, 255, 0.3);
+          margin-bottom: 10px;
+        "
+      >
+        COLOR THEME
+      </div>
+      <div
+        class="theme-chip"
+        onclick="_setTheme('default')"
+        data-theme-id="default"
+      >
+        <div
+          class="theme-dot"
+          style="background: linear-gradient(135deg, #a855f7, #6366f1)"
+        ></div>
         <span class="theme-name">Cosmic Purple</span>
       </div>
-      <div class="theme-chip" onclick="_setTheme('emerald')" data-theme-id="emerald">
-        <div class="theme-dot" style="background:linear-gradient(135deg,#10b981,#34d399)"></div>
+      <div
+        class="theme-chip"
+        onclick="_setTheme('emerald')"
+        data-theme-id="emerald"
+      >
+        <div
+          class="theme-dot"
+          style="background: linear-gradient(135deg, #10b981, #34d399)"
+        ></div>
         <span class="theme-name">Neon Emerald</span>
       </div>
-      <div class="theme-chip" onclick="_setTheme('solar')" data-theme-id="solar">
-        <div class="theme-dot" style="background:linear-gradient(135deg,#f59e0b,#fcd34d)"></div>
+      <div
+        class="theme-chip"
+        onclick="_setTheme('solar')"
+        data-theme-id="solar"
+      >
+        <div
+          class="theme-dot"
+          style="background: linear-gradient(135deg, #f59e0b, #fcd34d)"
+        ></div>
         <span class="theme-name">Solar Gold</span>
       </div>
       <div class="theme-chip" onclick="_setTheme('void')" data-theme-id="void">
-        <div class="theme-dot" style="background:linear-gradient(135deg,#6366f1,#818cf8)"></div>
+        <div
+          class="theme-dot"
+          style="background: linear-gradient(135deg, #6366f1, #818cf8)"
+        ></div>
         <span class="theme-name">Void Indigo</span>
       </div>
     </div>
@@ -6214,6 +7014,7 @@
         document.getElementById('stats-modal').classList.add('open');
       }
       function closeStats() { document.getElementById('stats-modal').classList.remove('open'); }
+      function saveProgress() {
         if (!currentProg) return;
         const key = currentProg.id;
         progress[key] = { scene: currentScene, elapsed: playerElapsed, ts: Date.now() };
@@ -7797,19 +8598,15 @@
         { id:'thunder', label:'⚡ Thunder',     color:'#fbbf24' },
       ];
       const _ambState = {}; // { id: { gain, active, vol } }
-      let _ambAudioCtx = null;
-
-      function _ambGetCtx() {
-        if (!_ambAudioCtx) _ambAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        if (_ambAudioCtx.state === 'suspended') _ambAudioCtx.resume();
-        return _ambAudioCtx;
-      }
 
       function _buildAmbChannel(ch) {
-        const ctx = _ambGetCtx();
+        _ensureAudio();
+        const ctx = _audioCtx;
+        if (ctx.state === 'suspended') ctx.resume();
+        const dest = _analyserNode || ctx.destination;
         const masterGain = ctx.createGain();
         masterGain.gain.value = (_ambState[ch.id]||{}).vol || 0.4;
-        masterGain.connect(ctx.destination);
+        masterGain.connect(dest);
         let nodes = [];
 
         if (ch.id === 'rain') {
