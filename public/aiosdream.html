@@ -9793,7 +9793,7 @@
               var p = CATALOGUE[Math.floor(Math.random() * CATALOGUE.length)];
               var n = Math.floor(Math.random() * 48) + 1;
               return { title: n + ' viewer' + (n !== 1 ? 's' : '') + ' just started "' + p.title + '"',
-                       sub: p.cat + ' · Scene ' + (Math.floor(Math.random() * (p.scenes ? p.scenes.length : 3)) + 1) };
+                       sub: (p.genre && p.genre[0] || 'AIOS') + ' · Scene ' + (Math.floor(Math.random() * (p.scenes ? p.scenes.length : 3)) + 1) };
           }},
           { icon: '⬡', cat: 'lattice', gen: function() {
               var hz = [396, 417, 528, 639, 741, 852, 963];
@@ -9806,7 +9806,7 @@
               var p = CATALOGUE[Math.floor(Math.random() * CATALOGUE.length)];
               var fps = (55 + Math.random() * 9).toFixed(1);
               return { title: '"' + p.title + '" rendering at ' + fps + ' fps',
-                       sub: 'Canvas renderer · ' + p.cat };
+                       sub: 'Canvas renderer · ' + (p.genre && p.genre[0] || 'AIOS') };
           }},
           { icon: '💾', cat: 'progress', gen: function() {
               var keys = Object.keys(progress);
