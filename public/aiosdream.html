@@ -781,6 +781,20 @@
       .ctrl-btn.xl {
         font-size: 34px;
       }
+      /* Binaural pill button — sits inline with ctrl-btns */
+      #ctrl-binaural {
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        padding: 3px 10px;
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 4px;
+        color: rgba(255,255,255,0.45);
+        transition: color 0.2s, border-color 0.2s, text-shadow 0.2s;
+      }
+      #ctrl-binaural:hover { color: #00e5ff; border-color: rgba(0,229,255,0.3); }
+      /* Row header BINGE button active state */
+      .binge-active { background: rgba(0,229,255,0.25) !important; color: #fff !important; }
       .ctrl-sp {
         flex: 1;
       }
@@ -1985,6 +1999,12 @@
                 value="0.7"
               />
             </div>
+            <button
+              class="ctrl-btn"
+              id="ctrl-binaural"
+              title="Binaural Entrainment ±4Hz (N)"
+              style="font-size:11px;letter-spacing:0.12em;font-weight:800;padding:0 8px"
+            >⬡ BINE</button>
             <div class="speed-wrap">
               <button class="ctrl-btn" id="ctrl-speed" title="Speed">1×</button>
               <div class="speed-popup" id="speed-popup">
@@ -4281,6 +4301,7 @@
       let heroRenderer = null;
       let modalRenderer = null;
       let modalProg = null;
+      let _bingeMode = false;      // auto-advance episodes in a season
       let myList = JSON.parse(localStorage.getItem('aios_mylist') || '[]');
       const progress = JSON.parse(localStorage.getItem('aios_progress') || '{}');
 
@@ -4368,10 +4389,14 @@
           const div = document.createElement('div');
           div.className = 'row';
           div.id = `row-${row.id}`;
+          const isSeason = row.id && row.id.startsWith('season');
           div.innerHTML = `
             <div class="row-header">
               <span class="row-title">${row.title}</span>
-              <span class="row-see-all">See all →</span>
+              <div style="display:flex;align-items:center;gap:0.5rem">
+                ${isSeason ? `<button onclick="startBinge('${row.id}')" style="background:rgba(0,229,255,0.10);border:1px solid rgba(0,229,255,0.25);color:#00e5ff;font-size:0.6rem;font-weight:800;letter-spacing:0.14em;padding:0.22rem 0.75rem;border-radius:4px;cursor:pointer;transition:all 0.2s" onmouseover="this.style.background='rgba(0,229,255,0.2)'" onmouseout="this.style.background='rgba(0,229,255,0.10)'">▶▶ BINGE</button>` : ''}
+                <span class="row-see-all">See all →</span>
+              </div>
             </div>
             <div class="row-wrap">
               <div class="row-arrow lft" onclick="scrollRow('${trackId}',-1)">‹</div>
@@ -4420,9 +4445,11 @@
         const content = document.getElementById('hero-content');
         content.classList.add('fading');
         setTimeout(() => {
-          document.getElementById('hero-eyebrow').textContent = prog.genre[0] + ' · ' + prog.year;
-          document.getElementById('hero-eyebrow').style.color = prog.accent;
-          document.getElementById('hero-eyebrow').style.setProperty('--accent', prog.accent);
+          const eyebrow = document.getElementById('hero-eyebrow');
+          const seasonBadge = prog.season ? `<span style="background:rgba(0,229,255,0.15);border:1px solid rgba(0,229,255,0.3);border-radius:4px;padding:0 6px;font-size:0.8em;font-weight:900;letter-spacing:0.08em;margin-right:6px">⬡ S1</span>` : '';
+          eyebrow.innerHTML = seasonBadge + prog.genre[0] + ' · ' + prog.year;
+          eyebrow.style.color = prog.accent;
+          eyebrow.style.setProperty('--accent', prog.accent);
           document.getElementById('hero-title').textContent = prog.title;
           document.getElementById('hero-desc').textContent = prog.desc;
           const meta = document.getElementById('hero-meta');
@@ -4475,6 +4502,8 @@
         updateSceneUI();
         startRenderer();
         startAmbientAudio(prog.id);
+        // Re-sync binaural to new programme's base Hz if already active
+        if (_binauralActive) _startBinaural(prog.id);
         startPlayback();
         showPlayerUI();
         updateGeoPanel(prog);
@@ -4615,6 +4644,8 @@
         saveProgress();
         stopAmbientAudio();
         pausePlayback();
+        // Stop binaural when player closes
+        if (_binauralActive) { _stopBinaural(); _binauralActive = false; _setBinauralBtn(false); }
         if (window._activePlayerRenderer) {
           try { window._activePlayerRenderer.stop(); } catch(_) {}
           window._activePlayerRenderer = null;
@@ -4777,6 +4808,7 @@
           case 'ArrowDown':  e.preventDefault(); jumpToScene(currentScene+1); showPlayerUI(); break;
           case 'f': case 'F': document.getElementById('ctrl-fs').click(); break;
           case 'm': case 'M': document.getElementById('ctrl-vol-btn').click(); showPlayerUI(); break;
+          case 'n': case 'N': toggleBinaural(); break;
           case 'p': case 'P': _togglePiP(); break;
           case 'b': case 'B': _toggleMiniPlayer(); break;
           case 'j': case 'J': _skip10(-1); break;
@@ -5131,7 +5163,78 @@
         if (v && v.srcObject) { v.srcObject.getTracks().forEach(t => t.stop()); v.srcObject = null; }
       });
 
-      // ── Mini Player ─────────────────────────────────────────────────────────
+      // ── Binaural Audio Engine (L/R ±4 Hz offset) ────────────────────────────
+      let _binauralActive = false;
+      let _binauralNodes = [];
+      function _setBinauralBtn(on) {
+        const btn = document.getElementById('ctrl-binaural');
+        if (!btn) return;
+        btn.style.color = on ? '#00e5ff' : '';
+        btn.style.textShadow = on ? '0 0 8px rgba(0,229,255,0.7)' : '';
+        btn.style.borderColor = on ? 'rgba(0,229,255,0.4)' : '';
+      }
+      function toggleBinaural() {
+        _binauralActive = !_binauralActive;
+        _setBinauralBtn(_binauralActive);
+        if (_binauralActive) {
+          const id = currentProg ? currentProg.id : 'merkaba';
+          _startBinaural(id);
+          toast('⬡ Binaural ON — ' + ((PROG_AUDIO_CFG[id] || {}).hz || 528) + ' Hz ±4');
+        } else {
+          _stopBinaural();
+          toast('⬡ Binaural OFF');
+        }
+      }
+      function _startBinaural(progId) {
+        _stopBinaural();
+        if (!_audioCtx) return;
+        const cfg = PROG_AUDIO_CFG[progId] || PROG_AUDIO_CFG.merkaba;
+        const baseHz = cfg.hz || 528;
+        const ctx = _audioCtx;
+        const master = ctx.createGain();
+        master.gain.value = 0.07;
+        master.connect(_analyserNode);
+        // Left channel: baseHz − 4
+        const lOsc = ctx.createOscillator();
+        const lPan = ctx.createStereoPanner ? ctx.createStereoPanner() : null;
+        lOsc.type = 'sine'; lOsc.frequency.value = baseHz - 4;
+        lOsc.connect(master);
+        if (lPan) { lPan.pan.value = -1; lOsc.connect(lPan); lPan.connect(master); lOsc.disconnect(master); }
+        lOsc.start();
+        // Right channel: baseHz + 4
+        const rOsc = ctx.createOscillator();
+        const rPan = ctx.createStereoPanner ? ctx.createStereoPanner() : null;
+        rOsc.type = 'sine'; rOsc.frequency.value = baseHz + 4;
+        rOsc.connect(master);
+        if (rPan) { rPan.pan.value = 1; rOsc.connect(rPan); rPan.connect(master); rOsc.disconnect(master); }
+        rOsc.start();
+        _binauralNodes.push(lOsc, rOsc, master);
+        if (lPan) _binauralNodes.push(lPan);
+        if (rPan) _binauralNodes.push(rPan);
+      }
+      function _stopBinaural() {
+        const nodes = _binauralNodes.splice(0);
+        nodes.forEach(n => {
+          try { if (n.stop) n.stop(); } catch(_) {}
+          try { n.disconnect(); } catch(_) {}
+        });
+      }
+      document.getElementById('ctrl-binaural').addEventListener('click', toggleBinaural);
+
+      // ── Binge Season ─────────────────────────────────────────────────────────
+      window.startBinge = function(rowId) {
+        // rowId e.g. 'season1' → find all progs with season='origins' (ep-sorted)
+        const seasonKey = rowId === 'season1' ? 'origins' : rowId;
+        const episodes = CATALOGUE.filter(p => p.season === seasonKey).sort((a, b) => (a.ep || 0) - (b.ep || 0));
+        if (!episodes.length) return;
+        _bingeMode = true;
+        toast('▶▶ BINGE MODE — Season starts now');
+        setTimeout(() => openPlayer(episodes[0].id, 0), 300);
+        const btn = document.querySelector(`#row-${rowId} button`);
+        if (btn) { btn.style.background = 'rgba(0,229,255,0.28)'; btn.style.color = '#fff'; }
+      };
+
+
       function _toggleMiniPlayer() {
         document.getElementById('player').classList.contains('mini')
           ? _expandMiniPlayer() : _activateMiniPlayer();
@@ -5300,7 +5403,10 @@
           aurora:'LOCATION · 417',cosmos3d:'NARRATIVE · 963',dna:'ACTION · 528',
           kaleidoscope:'ACTION · 528',plasma:'ENTITY · 396',lightning:'PHYSICS · 852',
           vortex:'DIALOGUE · 639',fractal:'EMOTION · 741',fire:'ENTITY · 396',
-          waterwave:'LOCATION · 417',circuit:'PHYSICS · 852',galaxy:'NARRATIVE · 963',mandala:'ACTION · 528'
+          waterwave:'LOCATION · 417',circuit:'PHYSICS · 852',galaxy:'NARRATIVE · 963',mandala:'ACTION · 528',
+          orig_void:'ENTITY · 396',orig_geometry:'HOLOGRAPHIC · 432',orig_light:'ACTION · 528',
+          orig_sound:'DIALOGUE · 432',orig_crystal:'ENTITY · 639',orig_attractor:'EMOTION · 741',
+          orig_transit:'NARRATIVE · 852',orig_storm:'PHYSICS · 963'
         };
         const hz = GEO_HZ[prog.id] || 528;
         const geoqode = GEO_GEOQODE[prog.id] || 'PHYSICS · 852';
