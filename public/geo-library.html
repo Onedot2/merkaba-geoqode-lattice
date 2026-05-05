@@ -169,19 +169,32 @@
         margin: 0 auto 1.5rem;
         padding: 0 2rem;
         display: flex;
-        gap: 0.5rem;
-        flex-wrap: wrap;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .filter-row {
+        display: flex;
         align-items: center;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+      .filter-group-label {
+        font-size: 0.66rem;
+        letter-spacing: 0.12em;
+        color: rgba(237,244,255,0.28);
+        font-weight: 700;
+        white-space: nowrap;
+        margin-right: 2px;
       }
       .filter-btn {
         background: var(--surface);
         border: 1px solid var(--border);
         color: var(--muted);
-        padding: 0.35rem 0.9rem;
+        padding: 0.3rem 0.8rem;
         border-radius: 20px;
-        font-size: 0.78rem;
+        font-size: 0.74rem;
         cursor: pointer;
-        transition: all 0.2s;
+        transition: all 0.18s;
         font-family: inherit;
       }
       .filter-btn:hover {
@@ -189,47 +202,131 @@
         color: var(--cyan);
       }
       .filter-btn.active {
-        background: linear-gradient(
-          135deg,
-          rgba(0, 212, 255, 0.15),
-          rgba(155, 77, 255, 0.15)
-        );
+        background: linear-gradient(135deg, rgba(0,212,255,0.15), rgba(155,77,255,0.15));
         border-color: var(--cyan);
         color: var(--text);
       }
+      /* Renderer engine chips — indigo accent */
+      .renderer-chip {
+        background: rgba(91,33,182,0.12);
+        border: 1px solid rgba(139,92,246,0.22);
+        color: rgba(196,181,253,0.75);
+        padding: 0.22rem 0.6rem;
+        border-radius: 20px;
+        font-size: 0.66rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        cursor: pointer;
+        transition: all 0.18s;
+        font-family: inherit;
+        text-transform: uppercase;
+      }
+      .renderer-chip:hover {
+        border-color: rgba(139,92,246,0.6);
+        color: #c4b5fd;
+        background: rgba(91,33,182,0.22);
+      }
+      .renderer-chip.active {
+        background: rgba(91,33,182,0.28);
+        border-color: #8b5cf6;
+        color: #e9d5ff;
+      }
+      /* Sort buttons — amber/gold accent */
+      .sort-btn {
+        background: rgba(251,191,36,0.07);
+        border: 1px solid rgba(251,191,36,0.18);
+        color: rgba(251,191,36,0.6);
+        padding: 0.26rem 0.65rem;
+        border-radius: 20px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.18s;
+        font-family: inherit;
+        white-space: nowrap;
+      }
+      .sort-btn:hover {
+        border-color: var(--gold);
+        color: var(--gold);
+      }
+      .sort-btn.active {
+        background: rgba(251,191,36,0.16);
+        border-color: var(--gold);
+        color: var(--gold);
+      }
+      /* Search wrapper */
+      .search-wrap {
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
+      .search-icon {
+        position: absolute;
+        left: 10px;
+        font-size: 1rem;
+        color: var(--muted);
+        pointer-events: none;
+        line-height: 1;
+      }
       .filter-search {
-        flex: 1;
-        max-width: 220px;
         background: var(--surface);
         border: 1px solid var(--border);
         color: var(--text);
-        padding: 0.35rem 0.8rem;
+        padding: 0.35rem 2rem 0.35rem 2rem;
         border-radius: 20px;
         font-size: 0.78rem;
         font-family: inherit;
         outline: none;
+        width: 220px;
+        transition: border-color 0.2s, width 0.25s;
       }
       .filter-search:focus {
         border-color: var(--cyan);
+        width: 270px;
       }
-      .filter-search::placeholder {
+      .filter-search::placeholder { color: var(--muted); }
+      .search-clear {
+        position: absolute;
+        right: 8px;
+        background: none;
+        border: none;
         color: var(--muted);
+        cursor: pointer;
+        font-size: 0.75rem;
+        line-height: 1;
+        padding: 2px 4px;
+        display: none;
+        transition: color 0.15s;
+      }
+      .search-clear:hover { color: var(--text); }
+      .search-clear.visible { display: block; }
+      /* Result count */
+      .result-count {
+        font-size: 0.72rem;
+        color: rgba(237,244,255,0.3);
+        letter-spacing: 0.04em;
+        white-space: nowrap;
+        margin-left: 4px;
+      }
+      .result-count em {
+        color: var(--cyan);
+        font-style: normal;
+        font-weight: 700;
       }
       .refresh-btn {
         margin-left: auto;
-        background: rgba(0, 212, 255, 0.1);
-        border: 1px solid rgba(0, 212, 255, 0.3);
+        background: rgba(0,212,255,0.1);
+        border: 1px solid rgba(0,212,255,0.3);
         color: var(--cyan);
-        padding: 0.35rem 0.9rem;
+        padding: 0.32rem 0.8rem;
         border-radius: 20px;
         font-size: 0.75rem;
         cursor: pointer;
         font-family: inherit;
         transition: all 0.2s;
+        white-space: nowrap;
       }
-      .refresh-btn:hover {
-        background: rgba(0, 212, 255, 0.2);
-      }
+      .refresh-btn:hover { background: rgba(0,212,255,0.2); }
 
       /* GRID */
       .library {
@@ -526,21 +623,41 @@
     </div>
 
     <div class="filter-bar">
-      <button class="filter-btn active" data-genre="ALL">All Titles</button>
-      <button class="filter-btn" data-genre="Quantum">Quantum</button>
-      <button class="filter-btn" data-genre="Cosmic">Cosmic</button>
-      <button class="filter-btn" data-genre="Cinematic">Cinematic</button>
-      <button class="filter-btn" data-genre="Neural">Neural</button>
-      <button class="filter-btn" data-genre="Ambient">Ambient</button>
-      <button class="filter-btn" data-genre="Meditation">Meditation</button>
-      <button class="filter-btn" data-genre="Aurora">Aurora</button>
-      <input
-        class="filter-search"
-        type="text"
-        placeholder="Search titles…"
-        id="search-input"
-      />
-      <button class="refresh-btn" id="refresh-btn">↻ Refresh</button>
+      <!-- Row 1: Search + sort + result count + refresh -->
+      <div class="filter-row">
+        <div class="search-wrap">
+          <span class="search-icon">⌕</span>
+          <input class="filter-search" type="text" placeholder="Search titles, renderers… (press /)" id="search-input" autocomplete="off" />
+          <button class="search-clear" id="search-clear" title="Clear search">✕</button>
+        </div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap" id="sort-btns">
+          <button class="sort-btn active" data-sort="newest">Newest</button>
+          <button class="sort-btn" data-sort="longest">Longest</button>
+          <button class="sort-btn" data-sort="shortest">Shortest</button>
+          <button class="sort-btn" data-sort="hz-hi">Hz ↑</button>
+          <button class="sort-btn" data-sort="size-lo">Smallest</button>
+        </div>
+        <span class="result-count" id="result-count">— programmes</span>
+        <button class="refresh-btn" id="refresh-btn">↻</button>
+      </div>
+      <!-- Row 2: Genre filter chips -->
+      <div class="filter-row" id="genre-row">
+        <span class="filter-group-label">GENRE:</span>
+        <button class="filter-btn active" data-genre="ALL">All</button>
+        <button class="filter-btn" data-genre="Quantum">Quantum</button>
+        <button class="filter-btn" data-genre="Cosmic">Cosmic</button>
+        <button class="filter-btn" data-genre="Cinematic">Cinematic</button>
+        <button class="filter-btn" data-genre="Neural">Neural</button>
+        <button class="filter-btn" data-genre="Ambient">Ambient</button>
+        <button class="filter-btn" data-genre="Meditation">Meditation</button>
+        <button class="filter-btn" data-genre="Aurora">Aurora</button>
+        <button class="filter-btn" data-genre="Fractal">Fractal</button>
+        <button class="filter-btn" data-genre="Binaural">Binaural</button>
+      </div>
+      <!-- Row 3: Renderer engine chips (auto-populated from catalogue) -->
+      <div class="filter-row" id="renderer-row" style="display:none">
+        <!-- populated by populateRendererChips() after fetch -->
+      </div>
     </div>
 
     <div class="library" id="library"></div>
@@ -832,9 +949,12 @@
       let allProgrammes = [];
       let filteredProgrammes = [];
       let activeGenre = "ALL";
+      let activeRenderer = "ALL";
+      let activeSort = "newest";
       let searchQuery = "";
       let cardTimers = [];
       let cardFrameT = {};
+      let _searchDebounce = null;
 
       // ── Catalogue Fetch ────────────────────────────────────────────────────────────
       async function fetchCatalogue() {
@@ -871,6 +991,7 @@
             `New programme every ${Math.round((data.intervalMs || 120000) / 60000)} min`;
 
           applyFilter();
+          populateRendererChips();
 
           if (isNew)
             showToast(
@@ -895,22 +1016,85 @@
         } catch (_) {}
       }
 
-      // ── Filter / Search ────────────────────────────────────────────────────────────
-      function applyFilter() {
-        const q = searchQuery.toLowerCase();
-        filteredProgrammes = allProgrammes.filter((p) => {
-          const genreMatch =
-            activeGenre === "ALL" ||
-            (p.genre || []).some(
-              (g) => g.toLowerCase() === activeGenre.toLowerCase(),
-            );
-          const searchMatch =
-            !q ||
-            p.title.toLowerCase().includes(q) ||
-            (p.subtitle || "").toLowerCase().includes(q) ||
-            (p.renderer?.type || "").includes(q);
-          return genreMatch && searchMatch;
+      // ── Renderer Chip Population ──────────────────────────────────────────────────
+      function populateRendererChips() {
+        var renderers = [];
+        var seen = {};
+        allProgrammes.forEach(function(p) {
+          var t = (p.renderer && p.renderer.type) ? p.renderer.type : 'quantum';
+          if (!seen[t]) { seen[t] = true; renderers.push(t); }
         });
+        renderers.sort();
+        var row = document.getElementById('renderer-row');
+        if (!renderers.length || renderers.length < 2) { row.style.display = 'none'; return; }
+        row.style.display = 'flex';
+        row.innerHTML = '<span class="filter-group-label">ENGINE:</span>';
+        // ALL chip
+        var allChip = document.createElement('button');
+        allChip.className = 'renderer-chip' + (activeRenderer === 'ALL' ? ' active' : '');
+        allChip.textContent = 'All';
+        allChip.onclick = function() {
+          activeRenderer = 'ALL';
+          row.querySelectorAll('.renderer-chip').forEach(function(c){ c.classList.remove('active'); });
+          allChip.classList.add('active');
+          applyFilter();
+        };
+        row.appendChild(allChip);
+        renderers.forEach(function(r) {
+          var chip = document.createElement('button');
+          chip.className = 'renderer-chip' + (activeRenderer === r ? ' active' : '');
+          chip.textContent = r.toUpperCase();
+          chip.dataset.renderer = r;
+          chip.onclick = function() {
+            activeRenderer = r;
+            row.querySelectorAll('.renderer-chip').forEach(function(c){ c.classList.remove('active'); });
+            chip.classList.add('active');
+            applyFilter();
+          };
+          row.appendChild(chip);
+        });
+      }
+
+      // ── Sort ─────────────────────────────────────────────────────────────────────
+      function applySort(progs) {
+        var s = progs.slice();
+        switch (activeSort) {
+          case 'newest':   return s;
+          case 'oldest':   return s.reverse();
+          case 'longest':  return s.sort(function(a,b){ return (b.duration||0)-(a.duration||0); });
+          case 'shortest': return s.sort(function(a,b){ return (a.duration||0)-(b.duration||0); });
+          case 'hz-hi':    return s.sort(function(a,b){ return ((b.audio&&b.audio.hz)||528)-((a.audio&&a.audio.hz)||528); });
+          case 'size-lo':  return s.sort(function(a,b){ return (a.fileSizeBytes||0)-(b.fileSizeBytes||0); });
+          default:         return s;
+        }
+      }
+
+      // ── Filter / Search ───────────────────────────────────────────────────────────
+      function applyFilter() {
+        var q = searchQuery.toLowerCase().trim();
+        var result = allProgrammes.filter(function(p) {
+          var genreMatch = activeGenre === 'ALL' ||
+            (p.genre || []).some(function(g){ return g.toLowerCase() === activeGenre.toLowerCase(); });
+          var rendType = (p.renderer && p.renderer.type) ? p.renderer.type : 'quantum';
+          var rendMatch = activeRenderer === 'ALL' || rendType === activeRenderer;
+          var searchMatch = !q ||
+            p.title.toLowerCase().includes(q) ||
+            (p.subtitle || '').toLowerCase().includes(q) ||
+            rendType.toLowerCase().includes(q) ||
+            (p.genre || []).some(function(g){ return g.toLowerCase().includes(q); });
+          return genreMatch && rendMatch && searchMatch;
+        });
+        result = applySort(result);
+        filteredProgrammes = result;
+        var rc = document.getElementById('result-count');
+        if (rc) {
+          if (allProgrammes.length === 0) { rc.textContent = '— programmes'; }
+          else if (filteredProgrammes.length === allProgrammes.length) {
+            rc.innerHTML = '<em>' + filteredProgrammes.length + '</em> programmes';
+          } else {
+            rc.innerHTML = '<em>' + filteredProgrammes.length + '</em> of ' + allProgrammes.length;
+          }
+        }
         renderGrid();
       }
 
@@ -1017,31 +1201,64 @@
         setTimeout(() => t.classList.remove("show"), 3500);
       }
 
-      // ── Filter Buttons ─────────────────────────────────────────────────────────────
-      document.querySelectorAll(".filter-btn").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          document
-            .querySelectorAll(".filter-btn")
-            .forEach((b) => b.classList.remove("active"));
-          btn.classList.add("active");
+      // ── Genre filter buttons ──────────────────────────────────────────────────────
+      document.getElementById('genre-row').querySelectorAll('.filter-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          document.getElementById('genre-row').querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+          btn.classList.add('active');
           activeGenre = btn.dataset.genre;
           applyFilter();
         });
       });
 
-      document.getElementById("search-input").addEventListener("input", (e) => {
+      // ── Sort buttons ──────────────────────────────────────────────────────────────
+      document.getElementById('sort-btns').querySelectorAll('.sort-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          document.getElementById('sort-btns').querySelectorAll('.sort-btn').forEach(function(b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+          activeSort = btn.dataset.sort;
+          applyFilter();
+        });
+      });
+
+      // ── Search: debounced input + clear button + / keyboard shortcut ──────────────
+      var _searchInp   = document.getElementById('search-input');
+      var _searchClear = document.getElementById('search-clear');
+
+      _searchInp.addEventListener('input', function(e) {
         searchQuery = e.target.value;
+        _searchClear.classList.toggle('visible', searchQuery.length > 0);
+        clearTimeout(_searchDebounce);
+        _searchDebounce = setTimeout(applyFilter, 280);
+      });
+
+      _searchClear.addEventListener('click', function() {
+        _searchInp.value = '';
+        searchQuery = '';
+        _searchClear.classList.remove('visible');
+        _searchInp.focus();
         applyFilter();
       });
 
-      document.getElementById("refresh-btn").addEventListener("click", () => {
-        fetchCatalogue();
-        showToast("↻ Refreshing catalogue…");
+      // Press '/' anywhere (not inside an input) to jump to search
+      document.addEventListener('keydown', function(e) {
+        if (e.key === '/' && document.activeElement !== _searchInp && document.activeElement.tagName !== 'INPUT') {
+          e.preventDefault();
+          _searchInp.focus();
+          _searchInp.select();
+        }
+        if (e.key === 'Escape' && document.activeElement === _searchInp) {
+          _searchInp.blur();
+        }
       });
 
-      // ── Init ───────────────────────────────────────────────────────────────────────
+      document.getElementById('refresh-btn').addEventListener('click', function() {
+        fetchCatalogue();
+        showToast('↻ Refreshing catalogue…');
+      });
+
+      // ── Init ──────────────────────────────────────────────────────────────────────
       fetchCatalogue();
-      // Auto-refresh every 30s
       setInterval(fetchCatalogue, 30_000);
     </script>
   </body>
