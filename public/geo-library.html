@@ -181,7 +181,7 @@
       .filter-group-label {
         font-size: 0.66rem;
         letter-spacing: 0.12em;
-        color: rgba(237,244,255,0.28);
+        color: rgba(237, 244, 255, 0.28);
         font-weight: 700;
         white-space: nowrap;
         margin-right: 2px;
@@ -202,15 +202,19 @@
         color: var(--cyan);
       }
       .filter-btn.active {
-        background: linear-gradient(135deg, rgba(0,212,255,0.15), rgba(155,77,255,0.15));
+        background: linear-gradient(
+          135deg,
+          rgba(0, 212, 255, 0.15),
+          rgba(155, 77, 255, 0.15)
+        );
         border-color: var(--cyan);
         color: var(--text);
       }
       /* Renderer engine chips — indigo accent */
       .renderer-chip {
-        background: rgba(91,33,182,0.12);
-        border: 1px solid rgba(139,92,246,0.22);
-        color: rgba(196,181,253,0.75);
+        background: rgba(91, 33, 182, 0.12);
+        border: 1px solid rgba(139, 92, 246, 0.22);
+        color: rgba(196, 181, 253, 0.75);
         padding: 0.22rem 0.6rem;
         border-radius: 20px;
         font-size: 0.66rem;
@@ -222,20 +226,20 @@
         text-transform: uppercase;
       }
       .renderer-chip:hover {
-        border-color: rgba(139,92,246,0.6);
+        border-color: rgba(139, 92, 246, 0.6);
         color: #c4b5fd;
-        background: rgba(91,33,182,0.22);
+        background: rgba(91, 33, 182, 0.22);
       }
       .renderer-chip.active {
-        background: rgba(91,33,182,0.28);
+        background: rgba(91, 33, 182, 0.28);
         border-color: #8b5cf6;
         color: #e9d5ff;
       }
       /* Sort buttons — amber/gold accent */
       .sort-btn {
-        background: rgba(251,191,36,0.07);
-        border: 1px solid rgba(251,191,36,0.18);
-        color: rgba(251,191,36,0.6);
+        background: rgba(251, 191, 36, 0.07);
+        border: 1px solid rgba(251, 191, 36, 0.18);
+        color: rgba(251, 191, 36, 0.6);
         padding: 0.26rem 0.65rem;
         border-radius: 20px;
         font-size: 0.7rem;
@@ -250,7 +254,7 @@
         color: var(--gold);
       }
       .sort-btn.active {
-        background: rgba(251,191,36,0.16);
+        background: rgba(251, 191, 36, 0.16);
         border-color: var(--gold);
         color: var(--gold);
       }
@@ -278,13 +282,17 @@
         font-family: inherit;
         outline: none;
         width: 220px;
-        transition: border-color 0.2s, width 0.25s;
+        transition:
+          border-color 0.2s,
+          width 0.25s;
       }
       .filter-search:focus {
         border-color: var(--cyan);
         width: 270px;
       }
-      .filter-search::placeholder { color: var(--muted); }
+      .filter-search::placeholder {
+        color: var(--muted);
+      }
       .search-clear {
         position: absolute;
         right: 8px;
@@ -298,12 +306,16 @@
         display: none;
         transition: color 0.15s;
       }
-      .search-clear:hover { color: var(--text); }
-      .search-clear.visible { display: block; }
+      .search-clear:hover {
+        color: var(--text);
+      }
+      .search-clear.visible {
+        display: block;
+      }
       /* Result count */
       .result-count {
         font-size: 0.72rem;
-        color: rgba(237,244,255,0.3);
+        color: rgba(237, 244, 255, 0.3);
         letter-spacing: 0.04em;
         white-space: nowrap;
         margin-left: 4px;
@@ -315,8 +327,8 @@
       }
       .refresh-btn {
         margin-left: auto;
-        background: rgba(0,212,255,0.1);
-        border: 1px solid rgba(0,212,255,0.3);
+        background: rgba(0, 212, 255, 0.1);
+        border: 1px solid rgba(0, 212, 255, 0.3);
         color: var(--cyan);
         padding: 0.32rem 0.8rem;
         border-radius: 20px;
@@ -326,7 +338,9 @@
         transition: all 0.2s;
         white-space: nowrap;
       }
-      .refresh-btn:hover { background: rgba(0,212,255,0.2); }
+      .refresh-btn:hover {
+        background: rgba(0, 212, 255, 0.2);
+      }
 
       /* GRID */
       .library {
@@ -580,7 +594,30 @@
       <a href="/geo-library" class="nav-link active">Library</a>
       <a href="/geo-codec" class="nav-link">Standard</a>
       <a href="/aiosdream" class="nav-cta">▶ Watch Now</a>
-      <a href="/live" style="display:inline-flex;align-items:center;gap:4px;font-size:0.78rem;font-weight:800;color:#ef4444;text-decoration:none;margin-left:0.5rem;animation:none"><span style="width:6px;height:6px;border-radius:50%;background:#ef4444;display:inline-block"></span>LIVE</a>
+      <a
+        href="/live"
+        style="
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          font-size: 0.78rem;
+          font-weight: 800;
+          color: #ef4444;
+          text-decoration: none;
+          margin-left: 0.5rem;
+          animation: none;
+        "
+        ><span
+          style="
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #ef4444;
+            display: inline-block;
+          "
+        ></span
+        >LIVE</a
+      >
     </nav>
 
     <div class="lib-header">
@@ -627,10 +664,18 @@
       <div class="filter-row">
         <div class="search-wrap">
           <span class="search-icon">⌕</span>
-          <input class="filter-search" type="text" placeholder="Search titles, renderers… (press /)" id="search-input" autocomplete="off" />
-          <button class="search-clear" id="search-clear" title="Clear search">✕</button>
+          <input
+            class="filter-search"
+            type="text"
+            placeholder="Search titles, renderers… (press /)"
+            id="search-input"
+            autocomplete="off"
+          />
+          <button class="search-clear" id="search-clear" title="Clear search">
+            ✕
+          </button>
         </div>
-        <div style="display:flex;gap:4px;flex-wrap:wrap" id="sort-btns">
+        <div style="display: flex; gap: 4px; flex-wrap: wrap" id="sort-btns">
           <button class="sort-btn active" data-sort="newest">Newest</button>
           <button class="sort-btn" data-sort="longest">Longest</button>
           <button class="sort-btn" data-sort="shortest">Shortest</button>
@@ -655,7 +700,7 @@
         <button class="filter-btn" data-genre="Binaural">Binaural</button>
       </div>
       <!-- Row 3: Renderer engine chips (auto-populated from catalogue) -->
-      <div class="filter-row" id="renderer-row" style="display:none">
+      <div class="filter-row" id="renderer-row" style="display: none">
         <!-- populated by populateRendererChips() after fetch -->
       </div>
     </div>
@@ -1020,35 +1065,47 @@
       function populateRendererChips() {
         var renderers = [];
         var seen = {};
-        allProgrammes.forEach(function(p) {
-          var t = (p.renderer && p.renderer.type) ? p.renderer.type : 'quantum';
-          if (!seen[t]) { seen[t] = true; renderers.push(t); }
+        allProgrammes.forEach(function (p) {
+          var t = p.renderer && p.renderer.type ? p.renderer.type : "quantum";
+          if (!seen[t]) {
+            seen[t] = true;
+            renderers.push(t);
+          }
         });
         renderers.sort();
-        var row = document.getElementById('renderer-row');
-        if (!renderers.length || renderers.length < 2) { row.style.display = 'none'; return; }
-        row.style.display = 'flex';
+        var row = document.getElementById("renderer-row");
+        if (!renderers.length || renderers.length < 2) {
+          row.style.display = "none";
+          return;
+        }
+        row.style.display = "flex";
         row.innerHTML = '<span class="filter-group-label">ENGINE:</span>';
         // ALL chip
-        var allChip = document.createElement('button');
-        allChip.className = 'renderer-chip' + (activeRenderer === 'ALL' ? ' active' : '');
-        allChip.textContent = 'All';
-        allChip.onclick = function() {
-          activeRenderer = 'ALL';
-          row.querySelectorAll('.renderer-chip').forEach(function(c){ c.classList.remove('active'); });
-          allChip.classList.add('active');
+        var allChip = document.createElement("button");
+        allChip.className =
+          "renderer-chip" + (activeRenderer === "ALL" ? " active" : "");
+        allChip.textContent = "All";
+        allChip.onclick = function () {
+          activeRenderer = "ALL";
+          row.querySelectorAll(".renderer-chip").forEach(function (c) {
+            c.classList.remove("active");
+          });
+          allChip.classList.add("active");
           applyFilter();
         };
         row.appendChild(allChip);
-        renderers.forEach(function(r) {
-          var chip = document.createElement('button');
-          chip.className = 'renderer-chip' + (activeRenderer === r ? ' active' : '');
+        renderers.forEach(function (r) {
+          var chip = document.createElement("button");
+          chip.className =
+            "renderer-chip" + (activeRenderer === r ? " active" : "");
           chip.textContent = r.toUpperCase();
           chip.dataset.renderer = r;
-          chip.onclick = function() {
+          chip.onclick = function () {
             activeRenderer = r;
-            row.querySelectorAll('.renderer-chip').forEach(function(c){ c.classList.remove('active'); });
-            chip.classList.add('active');
+            row.querySelectorAll(".renderer-chip").forEach(function (c) {
+              c.classList.remove("active");
+            });
+            chip.classList.add("active");
             applyFilter();
           };
           row.appendChild(chip);
@@ -1059,40 +1116,72 @@
       function applySort(progs) {
         var s = progs.slice();
         switch (activeSort) {
-          case 'newest':   return s;
-          case 'oldest':   return s.reverse();
-          case 'longest':  return s.sort(function(a,b){ return (b.duration||0)-(a.duration||0); });
-          case 'shortest': return s.sort(function(a,b){ return (a.duration||0)-(b.duration||0); });
-          case 'hz-hi':    return s.sort(function(a,b){ return ((b.audio&&b.audio.hz)||528)-((a.audio&&a.audio.hz)||528); });
-          case 'size-lo':  return s.sort(function(a,b){ return (a.fileSizeBytes||0)-(b.fileSizeBytes||0); });
-          default:         return s;
+          case "newest":
+            return s;
+          case "oldest":
+            return s.reverse();
+          case "longest":
+            return s.sort(function (a, b) {
+              return (b.duration || 0) - (a.duration || 0);
+            });
+          case "shortest":
+            return s.sort(function (a, b) {
+              return (a.duration || 0) - (b.duration || 0);
+            });
+          case "hz-hi":
+            return s.sort(function (a, b) {
+              return (
+                ((b.audio && b.audio.hz) || 528) -
+                ((a.audio && a.audio.hz) || 528)
+              );
+            });
+          case "size-lo":
+            return s.sort(function (a, b) {
+              return (a.fileSizeBytes || 0) - (b.fileSizeBytes || 0);
+            });
+          default:
+            return s;
         }
       }
 
       // ── Filter / Search ───────────────────────────────────────────────────────────
       function applyFilter() {
         var q = searchQuery.toLowerCase().trim();
-        var result = allProgrammes.filter(function(p) {
-          var genreMatch = activeGenre === 'ALL' ||
-            (p.genre || []).some(function(g){ return g.toLowerCase() === activeGenre.toLowerCase(); });
-          var rendType = (p.renderer && p.renderer.type) ? p.renderer.type : 'quantum';
-          var rendMatch = activeRenderer === 'ALL' || rendType === activeRenderer;
-          var searchMatch = !q ||
+        var result = allProgrammes.filter(function (p) {
+          var genreMatch =
+            activeGenre === "ALL" ||
+            (p.genre || []).some(function (g) {
+              return g.toLowerCase() === activeGenre.toLowerCase();
+            });
+          var rendType =
+            p.renderer && p.renderer.type ? p.renderer.type : "quantum";
+          var rendMatch =
+            activeRenderer === "ALL" || rendType === activeRenderer;
+          var searchMatch =
+            !q ||
             p.title.toLowerCase().includes(q) ||
-            (p.subtitle || '').toLowerCase().includes(q) ||
+            (p.subtitle || "").toLowerCase().includes(q) ||
             rendType.toLowerCase().includes(q) ||
-            (p.genre || []).some(function(g){ return g.toLowerCase().includes(q); });
+            (p.genre || []).some(function (g) {
+              return g.toLowerCase().includes(q);
+            });
           return genreMatch && rendMatch && searchMatch;
         });
         result = applySort(result);
         filteredProgrammes = result;
-        var rc = document.getElementById('result-count');
+        var rc = document.getElementById("result-count");
         if (rc) {
-          if (allProgrammes.length === 0) { rc.textContent = '— programmes'; }
-          else if (filteredProgrammes.length === allProgrammes.length) {
-            rc.innerHTML = '<em>' + filteredProgrammes.length + '</em> programmes';
+          if (allProgrammes.length === 0) {
+            rc.textContent = "— programmes";
+          } else if (filteredProgrammes.length === allProgrammes.length) {
+            rc.innerHTML =
+              "<em>" + filteredProgrammes.length + "</em> programmes";
           } else {
-            rc.innerHTML = '<em>' + filteredProgrammes.length + '</em> of ' + allProgrammes.length;
+            rc.innerHTML =
+              "<em>" +
+              filteredProgrammes.length +
+              "</em> of " +
+              allProgrammes.length;
           }
         }
         renderGrid();
@@ -1202,60 +1291,82 @@
       }
 
       // ── Genre filter buttons ──────────────────────────────────────────────────────
-      document.getElementById('genre-row').querySelectorAll('.filter-btn').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-          document.getElementById('genre-row').querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
-          btn.classList.add('active');
-          activeGenre = btn.dataset.genre;
-          applyFilter();
+      document
+        .getElementById("genre-row")
+        .querySelectorAll(".filter-btn")
+        .forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            document
+              .getElementById("genre-row")
+              .querySelectorAll(".filter-btn")
+              .forEach(function (b) {
+                b.classList.remove("active");
+              });
+            btn.classList.add("active");
+            activeGenre = btn.dataset.genre;
+            applyFilter();
+          });
         });
-      });
 
       // ── Sort buttons ──────────────────────────────────────────────────────────────
-      document.getElementById('sort-btns').querySelectorAll('.sort-btn').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-          document.getElementById('sort-btns').querySelectorAll('.sort-btn').forEach(function(b) { b.classList.remove('active'); });
-          btn.classList.add('active');
-          activeSort = btn.dataset.sort;
-          applyFilter();
+      document
+        .getElementById("sort-btns")
+        .querySelectorAll(".sort-btn")
+        .forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            document
+              .getElementById("sort-btns")
+              .querySelectorAll(".sort-btn")
+              .forEach(function (b) {
+                b.classList.remove("active");
+              });
+            btn.classList.add("active");
+            activeSort = btn.dataset.sort;
+            applyFilter();
+          });
         });
-      });
 
       // ── Search: debounced input + clear button + / keyboard shortcut ──────────────
-      var _searchInp   = document.getElementById('search-input');
-      var _searchClear = document.getElementById('search-clear');
+      var _searchInp = document.getElementById("search-input");
+      var _searchClear = document.getElementById("search-clear");
 
-      _searchInp.addEventListener('input', function(e) {
+      _searchInp.addEventListener("input", function (e) {
         searchQuery = e.target.value;
-        _searchClear.classList.toggle('visible', searchQuery.length > 0);
+        _searchClear.classList.toggle("visible", searchQuery.length > 0);
         clearTimeout(_searchDebounce);
         _searchDebounce = setTimeout(applyFilter, 280);
       });
 
-      _searchClear.addEventListener('click', function() {
-        _searchInp.value = '';
-        searchQuery = '';
-        _searchClear.classList.remove('visible');
+      _searchClear.addEventListener("click", function () {
+        _searchInp.value = "";
+        searchQuery = "";
+        _searchClear.classList.remove("visible");
         _searchInp.focus();
         applyFilter();
       });
 
       // Press '/' anywhere (not inside an input) to jump to search
-      document.addEventListener('keydown', function(e) {
-        if (e.key === '/' && document.activeElement !== _searchInp && document.activeElement.tagName !== 'INPUT') {
+      document.addEventListener("keydown", function (e) {
+        if (
+          e.key === "/" &&
+          document.activeElement !== _searchInp &&
+          document.activeElement.tagName !== "INPUT"
+        ) {
           e.preventDefault();
           _searchInp.focus();
           _searchInp.select();
         }
-        if (e.key === 'Escape' && document.activeElement === _searchInp) {
+        if (e.key === "Escape" && document.activeElement === _searchInp) {
           _searchInp.blur();
         }
       });
 
-      document.getElementById('refresh-btn').addEventListener('click', function() {
-        fetchCatalogue();
-        showToast('↻ Refreshing catalogue…');
-      });
+      document
+        .getElementById("refresh-btn")
+        .addEventListener("click", function () {
+          fetchCatalogue();
+          showToast("↻ Refreshing catalogue…");
+        });
 
       // ── Init ──────────────────────────────────────────────────────────────────────
       fetchCatalogue();
