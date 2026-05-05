@@ -8405,7 +8405,15 @@
           try { window._activePlayerRenderer.stop(); } catch(_) {}
           window._activePlayerRenderer = null;
         }
-        document.getElementById('player').classList.remove('active');
+        // Bug 19 fix: clean up mini-player listeners/state if closed directly while in mini mode
+        const _cpEl = document.getElementById('player');
+        if (_cpEl.classList.contains('mini')) {
+          if (_cpEl._miniClick) { _cpEl.removeEventListener('click', _cpEl._miniClick); _cpEl._miniClick = null; }
+          if (_miniDragCleanup) { _miniDragCleanup(); _miniDragCleanup = null; }
+          _cpEl.classList.remove('mini');
+          _cpEl.style.top = ''; _cpEl.style.left = ''; _cpEl.style.bottom = ''; _cpEl.style.right = '';
+        }
+        _cpEl.classList.remove('active');
         document.body.style.overflow = '';
         currentProg = null;
 
@@ -9066,7 +9074,7 @@
           stopAmbientAudio();
           if (_audioCtx.state === 'suspended') _audioCtx.resume();
           _startVuRing();
-          setTimeout(_startTlWave, 200); // slight delay so analyser has data
+          setTimeout(function() { if (_ambientNodes.length) _startTlWave(); }, 200); // guard: if audio stopped before 200ms, don't start TL wave
           var cfg = PROG_AUDIO_CFG[progId] || PROG_AUDIO_CFG.merkaba;
           var ctx = _audioCtx;
           var now = ctx.currentTime;
