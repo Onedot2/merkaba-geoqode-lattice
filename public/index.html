@@ -2601,7 +2601,7 @@
             placeholder="What do you want to build with AIOS?"
           />
           <button class="form-submit" id="c-submit" type="button">
-            Request Early Access ?
+            Request Early Access →
           </button>
           <p class="form-note">
             No spam. No noise. Early access notifications only.
@@ -3784,7 +3784,7 @@
               if (result.ok || result.data.ok) {
                 formEl.style.display = "none";
                 successEl.classList.add("visible");
-                showToast("? You're on the AIOS waitlist!", "success");
+                showToast("✓ You're on the AIOS waitlist!", "success");
               } else {
                 showToast(
                   result.data.error ||
