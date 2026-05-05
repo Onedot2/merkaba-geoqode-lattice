@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
     <title>AIOSdream — Generative Cinema · realaios.com</title>
     <meta
       name="description"
@@ -1948,12 +1948,69 @@
           padding: 18px 20px 48px;
         }
         .player-bottom {
-          padding: 40px 20px 24px;
+          padding: 40px 20px calc(24px + env(safe-area-inset-bottom, 0px));
         }
         .modal-body {
           padding: 0 20px 36px;
         }
       }
+
+      /* ── TOUCH GESTURE OVERLAYS (mobile) ── */
+      #swipe-hint {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%) scale(0.6);
+        font-size: 3rem;
+        color: rgba(255,255,255,0.9);
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.12s, transform 0.12s;
+        z-index: 20;
+        text-shadow: 0 2px 16px rgba(0,0,0,0.9);
+        font-weight: 300;
+      }
+      #swipe-hint.show {
+        opacity: 1;
+        transform: translate(-50%,-50%) scale(1);
+      }
+      #pinch-hint {
+        position: absolute;
+        bottom: 90px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0,0,0,0.72);
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 20px;
+        padding: 6px 16px;
+        font-size: 0.74rem;
+        color: rgba(255,255,255,0.78);
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.3s;
+        z-index: 20;
+        white-space: nowrap;
+      }
+      #pinch-hint.show { opacity: 1; }
+      #landscape-nudge {
+        position: absolute;
+        top: 64px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0,0,0,0.7);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 20px;
+        padding: 5px 14px;
+        font-size: 0.7rem;
+        color: rgba(255,255,255,0.55);
+        pointer-events: none;
+        opacity: 0;
+        display: none;
+        transition: opacity 0.4s;
+        z-index: 20;
+        white-space: nowrap;
+      }
+      #landscape-nudge.show { display: block; opacity: 1; }
 
       /* ── FULLSCREEN ── */
       #player:-webkit-full-screen {
@@ -2229,6 +2286,10 @@
 
     <!-- ── PLAYER ── -->
     <div id="player">
+      <!-- Touch gesture overlays (mobile) -->
+      <div id="swipe-hint"></div>
+      <div id="pinch-hint"></div>
+      <div id="landscape-nudge">↻ Rotate for best experience</div>
       <canvas id="player-canvas"></canvas>
       <canvas id="player-canvas-fade"></canvas>
       <canvas id="player-bloom-cv"></canvas>
@@ -5226,7 +5287,100 @@
       }
 
       document.getElementById('player').addEventListener('mousemove', showPlayerUI);
-      document.getElementById('player').addEventListener('touchstart', showPlayerUI);
+
+      // ── Mobile Touch Gestures ─────────────────────────────────────────────────
+      (function() {
+        var _pl     = document.getElementById('player');
+        var _sx     = 0, _sy = 0, _st = 0, _sd = 0;
+        var _tapTmo = null;
+        var SWIPE_MIN = 55;  // px
+        var SWIPE_MS  = 380; // ms
+
+        function _pinchDist(e) {
+          var dx = e.touches[1].clientX - e.touches[0].clientX;
+          var dy = e.touches[1].clientY - e.touches[0].clientY;
+          return Math.sqrt(dx*dx + dy*dy);
+        }
+
+        _pl.addEventListener('touchstart', function(e) {
+          showPlayerUI();
+          if (e.touches.length === 1) {
+            _sx = e.touches[0].clientX;
+            _sy = e.touches[0].clientY;
+            _st = Date.now();
+          } else if (e.touches.length === 2) {
+            _sd = _pinchDist(e);
+          }
+        }, { passive: true });
+
+        _pl.addEventListener('touchend', function(e) {
+          if (!currentProg || e.changedTouches.length !== 1) return;
+          var dx  = e.changedTouches[0].clientX - _sx;
+          var dy  = e.changedTouches[0].clientY - _sy;
+          var dt  = Date.now() - _st;
+          var adx = Math.abs(dx), ady = Math.abs(dy);
+
+          if (dt < SWIPE_MS && adx > SWIPE_MIN && adx > ady * 1.5) {
+            // Horizontal swipe — prev/next scene
+            if (dx < 0) {
+              if (currentScene < currentProg.scenes.length - 1) {
+                jumpToScene(currentScene + 1); _swipeFlash('\u27E9');
+              } else { _swipeFlash('END'); }
+            } else {
+              if (currentScene > 0) {
+                jumpToScene(currentScene - 1); _swipeFlash('\u27E8');
+              } else { _swipeFlash('START'); }
+            }
+          } else if (dt < 200 && adx < 14 && ady < 14) {
+            // Short tap — toggle play/pause (delay lets double-tap cancel if needed)
+            clearTimeout(_tapTmo);
+            _tapTmo = setTimeout(function() { togglePlay(); }, 120);
+          }
+        }, { passive: true });
+
+        _pl.addEventListener('touchmove', function(e) {
+          if (e.touches.length !== 2 || _sd === 0) return;
+          var dist  = _pinchDist(e);
+          var scale = dist / _sd;
+          if (Math.abs(scale - 1) > 0.18) {
+            _pinchFlash(scale > 1 ? '\u2295 Use fullscreen for best view' : '\u2296');
+            _sd = dist;
+          }
+        }, { passive: true });
+
+        function _swipeFlash(lbl) {
+          var h = document.getElementById('swipe-hint');
+          if (!h) return;
+          h.textContent = lbl;
+          h.classList.add('show');
+          setTimeout(function(){ h.classList.remove('show'); }, 480);
+        }
+
+        function _pinchFlash(msg) {
+          var h = document.getElementById('pinch-hint');
+          if (!h) return;
+          h.textContent = msg;
+          h.classList.add('show');
+          clearTimeout(h._t);
+          h._t = setTimeout(function(){ h.classList.remove('show'); }, 1400);
+        }
+
+        // Landscape nudge: appears when player is open + portrait on small screen
+        function _orientCheck() {
+          var nudge = document.getElementById('landscape-nudge');
+          if (!nudge) return;
+          var narrow   = window.innerWidth < 700;
+          var portrait = window.innerHeight > window.innerWidth;
+          var open     = document.getElementById('player').classList.contains('active');
+          nudge.classList.toggle('show', open && narrow && portrait);
+        }
+        window.addEventListener('resize', _orientCheck);
+        // Re-check when player opens/closes
+        var _origOpen = openPlayer;
+        openPlayer = function() { _origOpen.apply(this, arguments); setTimeout(_orientCheck, 200); };
+        var _origClose = closePlayer;
+        closePlayer = function() { _origClose.apply(this, arguments); setTimeout(_orientCheck, 200); };
+      })();
 
       // Player controls
       document.getElementById('ctrl-play').addEventListener('click', togglePlay);
