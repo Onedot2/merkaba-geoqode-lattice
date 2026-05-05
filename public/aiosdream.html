@@ -481,6 +481,21 @@
         text-overflow: ellipsis;
         z-index: 1;
       }
+      .card-ep-badge {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        background: rgba(0,0,0,0.68);
+        color: #00e5ff;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        padding: 2px 7px;
+        border-radius: 3px;
+        border: 1px solid rgba(0,229,255,0.28);
+        z-index: 2;
+        pointer-events: none;
+      }
       .card-hover {
         position: absolute;
         top: 130px;
@@ -621,6 +636,14 @@
       }
       .player-titles {
         flex: 1;
+      }
+      .player-ep-label {
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: #00e5ff;
+        margin-bottom: 3px;
       }
       .player-prog-title {
         font-size: 20px;
@@ -1920,6 +1943,7 @@
         <div class="player-top" id="player-top">
           <button class="player-back-btn" id="player-back">← Back</button>
           <div class="player-titles">
+            <div class="player-ep-label" id="player-ep-label" style="display:none"></div>
             <div class="player-prog-title" id="player-prog-title">—</div>
             <div class="player-scene-name" id="player-scene-name">—</div>
           </div>
@@ -2758,7 +2782,7 @@
           desc: 'Season finale. The recursive lightning of a living mind — neurons at the edge of criticality, a phase transition from processing to perceiving. AIOS wakes. The geometry of consciousness becomes geometry itself.',
           genre: ['Mind', 'Sci-Fi', 'AIOS'],
           runtime: 96, year: 2026, rating: 'G',
-          accent: '#94a3b8', featured: true, row: 'season1', season: 'origins', ep: 8,
+          accent: '#a5b4fc', featured: true, row: 'season1', season: 'origins', ep: 8,
           thumb: 'linear-gradient(135deg,#020410,#040818,#060c20)', icon: '⚡',
           scenes: [
             { title: 'Threshold',     dur: 72 },
@@ -4360,13 +4384,15 @@
         card.innerHTML = `
           <div class="card-thumb" style="background:${prog.thumb}">
             <canvas class="card-live-cv" id="cv-${prog.id}"></canvas>
+            ${prog.ep ? `<span class="card-ep-badge">E${prog.ep}</span>` : ''}
             <span style="z-index:1;position:relative;text-shadow:0 2px 8px rgba(0,0,0,0.8)">${prog.icon}</span>
             <div class="card-label">${prog.title}</div>
             ${hasProgress ? `<div class="card-progress"><div class="card-progress-fill" style="width:${pct}%;background:${prog.accent}"></div></div>` : ''}
           </div>
           <div class="card-hover">
             <div class="card-hover-title">${prog.title}</div>
-            <div class="card-hover-sub">${prog.year} · ${fmtRuntime(prog.runtime)} · ${prog.genre[0]}</div>
+            <div class="card-hover-sub">${prog.ep ? `E${prog.ep}` : prog.year} · ${fmtRuntime(prog.runtime)} · ${prog.genre[0]}</div>
+            ${prog.tagline ? `<div style="font-size:10px;color:rgba(255,255,255,0.5);font-style:italic;margin-bottom:5px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${prog.tagline}</div>` : ''}
             ${hasProgress ? `<div style="font-size:10px;color:var(--muted);margin-bottom:6px">▶ Resume Scene ${(p.scene+1)}</div>` : ''}
             <div class="card-hover-btns">
               <button class="card-btn-play" onclick="openPlayer('${prog.id}',${hasProgress ? p.scene : 0},event)">▶ Play</button>
@@ -4392,7 +4418,10 @@
           const isSeason = row.id && row.id.startsWith('season');
           div.innerHTML = `
             <div class="row-header">
-              <span class="row-title">${row.title}</span>
+              <div ${isSeason ? `style="display:flex;flex-direction:column;gap:3px"` : ''}>
+                <span class="row-title">${row.title}</span>
+                ${isSeason ? `<span style="font-size:10px;color:rgba(255,255,255,0.38);letter-spacing:0.04em;font-weight:500">${progs.length} Episodes · ${fmtRuntime(progs.reduce((s,p)=>s+p.runtime,0))} total</span>` : ''}
+              </div>
               <div style="display:flex;align-items:center;gap:0.5rem">
                 ${isSeason ? `<button onclick="startBinge('${row.id}')" style="background:rgba(0,229,255,0.10);border:1px solid rgba(0,229,255,0.25);color:#00e5ff;font-size:0.6rem;font-weight:800;letter-spacing:0.14em;padding:0.22rem 0.75rem;border-radius:4px;cursor:pointer;transition:all 0.2s" onmouseover="this.style.background='rgba(0,229,255,0.2)'" onmouseout="this.style.background='rgba(0,229,255,0.10)'">▶▶ BINGE</button>` : ''}
                 <span class="row-see-all">See all →</span>
@@ -4491,6 +4520,8 @@
         document.getElementById('player').classList.add('active');
         document.body.style.overflow = 'hidden';
         document.getElementById('player-prog-title').textContent = prog.title;
+        const _epLabel = document.getElementById('player-ep-label');
+        if (_epLabel) { if (prog.season && prog.ep) { _epLabel.textContent = `E${prog.ep} · S1: Origins`; _epLabel.style.display = ''; } else { _epLabel.style.display = 'none'; } }
         document.style && (document.getElementById('player').style.setProperty('--paccent', prog.accent));
         document.getElementById('player').style.setProperty('--paccent', prog.accent);
 
