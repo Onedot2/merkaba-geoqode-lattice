@@ -1139,6 +1139,24 @@
         color: #00e5ff;
         border-color: rgba(0, 229, 255, 0.3);
       }
+      /* Binaural mode popup */
+      .bine-wrap { position: relative; display: flex; align-items: center; }
+      .bine-popup {
+        position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%);
+        background: rgba(10,4,26,0.97); border: 1px solid rgba(0,229,255,0.25);
+        border-radius: 10px; padding: 8px 6px; display: none; z-index: 90;
+        white-space: nowrap; flex-direction: column; gap: 4px; min-width: 140px;
+        box-shadow: 0 8px 28px rgba(0,0,0,0.6);
+      }
+      .bine-popup.vis { display: flex; }
+      .bine-opt {
+        padding: 7px 12px; border-radius: 6px; border: none; cursor: pointer;
+        font-size: 0.7rem; font-weight: 800; letter-spacing: 0.1em;
+        background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.5);
+        text-align: left; transition: all 0.15s;
+      }
+      .bine-opt:hover { background: rgba(0,229,255,0.1); color: #00e5ff; }
+      .bine-opt.cur { background: rgba(0,229,255,0.14); color: #00e5ff; border: 1px solid rgba(0,229,255,0.3); }
       /* Row header BINGE button active state */
       .binge-active {
         background: rgba(0, 229, 255, 0.25) !important;
@@ -3321,19 +3339,27 @@
                 value="0.7"
               />
             </div>
-            <button
-              class="ctrl-btn"
-              id="ctrl-binaural"
-              title="Binaural Entrainment ±4Hz (N)"
-              style="
-                font-size: 11px;
-                letter-spacing: 0.12em;
-                font-weight: 800;
-                padding: 0 8px;
-              "
-            >
-              ⬡ BINE
-            </button>
+            <div class="bine-wrap" id="bine-wrap">
+              <button
+                class="ctrl-btn"
+                id="ctrl-binaural"
+                title="Binaural Entrainment (N) — click to toggle, right-click to choose mode"
+                style="
+                  font-size: 11px;
+                  letter-spacing: 0.12em;
+                  font-weight: 800;
+                  padding: 0 8px;
+                "
+              >
+                ⬡ BINE
+              </button>
+              <div class="bine-popup" id="bine-popup">
+                <button class="bine-opt cur" data-hz="4"  onclick="_setBineMode(4)" >Θ Theta · 4 Hz</button>
+                <button class="bine-opt"     data-hz="8"  onclick="_setBineMode(8)" >α Alpha · 8 Hz</button>
+                <button class="bine-opt"     data-hz="14" onclick="_setBineMode(14)">β Beta · 14 Hz</button>
+                <button class="bine-opt"     data-hz="40" onclick="_setBineMode(40)">γ Gamma · 40 Hz</button>
+              </div>
+            </div>
             <div class="speed-wrap">
               <button class="ctrl-btn" id="ctrl-speed" title="Speed">1×</button>
               <div class="speed-popup" id="speed-popup">
@@ -7551,15 +7577,45 @@
         if (v && v.srcObject) { v.srcObject.getTracks().forEach(t => t.stop()); v.srcObject = null; }
       });
 
-      // ── Binaural Audio Engine (L/R ±4 Hz offset) ────────────────────────────
+      // ── Binaural Audio Engine (L/R ±offset Hz) ───────────────────────────────
       let _binauralActive = false;
       let _binauralNodes = [];
+      let _binauralOffset = 4; // default Theta 4Hz
+      const _BINE_MODES = [
+        { hz:4,  label:'Θ Theta',  desc:'Deep relaxation / sleep' },
+        { hz:8,  label:'α Alpha',  desc:'Calm focus / meditation' },
+        { hz:14, label:'β Beta',   desc:'Active thinking / focus' },
+        { hz:40, label:'γ Gamma',  desc:'Peak cognition / flow' }
+      ];
       function _setBinauralBtn(on) {
         const btn = document.getElementById('ctrl-binaural');
         if (!btn) return;
         btn.style.color = on ? '#00e5ff' : '';
         btn.style.textShadow = on ? '0 0 8px rgba(0,229,255,0.7)' : '';
         btn.style.borderColor = on ? 'rgba(0,229,255,0.4)' : '';
+        const mode = _BINE_MODES.find(m => m.hz === _binauralOffset) || _BINE_MODES[0];
+        btn.textContent = on ? `⬡ ${mode.label}` : '⬡ BINE';
+      }
+      function _setBineMode(hz) {
+        _binauralOffset = hz;
+        // Update popup highlights
+        document.querySelectorAll('.bine-opt').forEach(btn => {
+          btn.classList.toggle('cur', parseInt(btn.dataset.hz) === hz);
+        });
+        const mode = _BINE_MODES.find(m => m.hz === hz);
+        if (_binauralActive) {
+          const id = currentProg ? currentProg.id : 'merkaba';
+          _startBinaural(id);
+        }
+        _setBinauralBtn(_binauralActive);
+        if (mode) toast(`⬡ ${mode.label} · ${hz}Hz — ${mode.desc}`);
+        document.getElementById('bine-popup').classList.remove('vis');
+      }
+      // Right-click on BINE button opens mode popup; left-click toggles
+      function _toggleBinePopup(e) {
+        e.preventDefault();
+        const popup = document.getElementById('bine-popup');
+        popup.classList.toggle('vis');
       }
       function toggleBinaural() {
         _binauralActive = !_binauralActive;
@@ -7567,7 +7623,8 @@
         if (_binauralActive) {
           const id = currentProg ? currentProg.id : 'merkaba';
           _startBinaural(id);
-          toast('⬡ Binaural ON — ' + ((PROG_AUDIO_CFG[id] || {}).hz || 528) + ' Hz ±4');
+          const mode = _BINE_MODES.find(m => m.hz === _binauralOffset) || _BINE_MODES[0];
+          toast(`⬡ ${mode.label} ON — ${((PROG_AUDIO_CFG[id] || {}).hz || 528)} Hz ±${_binauralOffset}`);
         } else {
           _stopBinaural();
           toast('⬡ Binaural OFF');
@@ -7578,21 +7635,22 @@
         if (!_audioCtx) return;
         const cfg = PROG_AUDIO_CFG[progId] || PROG_AUDIO_CFG.merkaba;
         const baseHz = cfg.hz || 528;
+        const offset = _binauralOffset;
         const ctx = _audioCtx;
         const master = ctx.createGain();
         master.gain.value = 0.07;
         master.connect(_analyserNode);
-        // Left channel: baseHz − 4
+        // Left channel: baseHz − offset
         const lOsc = ctx.createOscillator();
         const lPan = ctx.createStereoPanner ? ctx.createStereoPanner() : null;
-        lOsc.type = 'sine'; lOsc.frequency.value = baseHz - 4;
+        lOsc.type = 'sine'; lOsc.frequency.value = baseHz - offset;
         lOsc.connect(master);
         if (lPan) { lPan.pan.value = -1; lOsc.connect(lPan); lPan.connect(master); lOsc.disconnect(master); }
         lOsc.start();
-        // Right channel: baseHz + 4
+        // Right channel: baseHz + offset
         const rOsc = ctx.createOscillator();
         const rPan = ctx.createStereoPanner ? ctx.createStereoPanner() : null;
-        rOsc.type = 'sine'; rOsc.frequency.value = baseHz + 4;
+        rOsc.type = 'sine'; rOsc.frequency.value = baseHz + offset;
         rOsc.connect(master);
         if (rPan) { rPan.pan.value = 1; rOsc.connect(rPan); rPan.connect(master); rOsc.disconnect(master); }
         rOsc.start();
@@ -7608,6 +7666,12 @@
         });
       }
       document.getElementById('ctrl-binaural').addEventListener('click', toggleBinaural);
+      document.getElementById('ctrl-binaural').addEventListener('contextmenu', _toggleBinePopup);
+      // Close bine popup on click outside
+      document.addEventListener('click', function(e) {
+        const wrap = document.getElementById('bine-wrap');
+        if (wrap && !wrap.contains(e.target)) document.getElementById('bine-popup').classList.remove('vis');
+      });
 
       // ── Binge Season ─────────────────────────────────────────────────────────
       window.startBinge = function(rowId) {
