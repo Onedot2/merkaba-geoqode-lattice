@@ -2377,6 +2377,103 @@
         --theme-bg1: #050508;
         --theme-bg2: #02020a;
       }
+      /* ── SCREENSAVER ATTRACT MODE ── */
+      #ss-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 9500;
+        background: #000;
+        display: none;
+        cursor: pointer;
+        overflow: hidden;
+      }
+      #ss-overlay.active { display: block; }
+      #ss-canvas {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+      #ss-info {
+        position: absolute;
+        bottom: 14vh;
+        left: 7vw;
+        right: 7vw;
+        z-index: 2;
+        animation: ss-fade-up 0.9s ease;
+      }
+      @keyframes ss-fade-up {
+        from { opacity: 0; transform: translateY(30px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+      #ss-eyebrow {
+        font-size: 0.65rem;
+        font-weight: 900;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: rgba(255,255,255,0.45);
+        margin-bottom: 10px;
+      }
+      #ss-title {
+        font-size: clamp(2rem, 6vw, 4.5rem);
+        font-weight: 900;
+        letter-spacing: -0.02em;
+        line-height: 1.05;
+        text-shadow: 0 4px 40px rgba(0,0,0,0.9);
+        margin-bottom: 18px;
+      }
+      #ss-sub {
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        color: rgba(255,255,255,0.3);
+        text-transform: uppercase;
+        margin-bottom: 20px;
+      }
+      #ss-play {
+        background: rgba(255,255,255,0.12);
+        border: 1px solid rgba(255,255,255,0.25);
+        color: #fff;
+        font-size: 0.7rem;
+        font-weight: 900;
+        letter-spacing: 0.12em;
+        padding: 0.55rem 1.4rem;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      #ss-play:hover { background: rgba(255,255,255,0.22); }
+      #ss-logo {
+        position: absolute;
+        top: 22px;
+        left: 28px;
+        z-index: 3;
+        font-size: 0.72rem;
+        font-weight: 900;
+        letter-spacing: 0.22em;
+        color: rgba(255,255,255,0.25);
+      }
+      #ss-dots {
+        position: absolute;
+        bottom: 9vh;
+        left: 7vw;
+        z-index: 3;
+        display: flex;
+        gap: 6px;
+      }
+      .ss-dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.2);
+        transition: background 0.4s, transform 0.4s;
+        cursor: default;
+      }
+      .ss-dot.active {
+        background: #fff;
+        transform: scale(1.5);
+      }
+
       #theme-panel {
         position: fixed;
         bottom: 80px;
@@ -4627,6 +4724,19 @@
         <div id="guide-tabs"></div>
         <div id="guide-ep-list"></div>
       </div>
+    </div>
+
+    <!-- ── SCREENSAVER / ATTRACT MODE ── -->
+    <div id="ss-overlay" onclick="_ssDismiss()">
+      <canvas id="ss-canvas"></canvas>
+      <div id="ss-info">
+        <div id="ss-eyebrow"></div>
+        <div id="ss-title"></div>
+        <div id="ss-sub">Touch anywhere to continue</div>
+        <button id="ss-play" onclick="event.stopPropagation();_ssPlay()">▶ Watch Now</button>
+      </div>
+      <div id="ss-logo">⬡ AIOS</div>
+      <div id="ss-dots"></div>
     </div>
 
     <!-- ── COMMAND PALETTE ── -->
@@ -8802,8 +8912,41 @@
           a.title.toLowerCase().includes(lower) || a.sub.toLowerCase().includes(lower)
         ) : _CMD_ACTIONS;
 
+        // Recently watched (only when no query)
+        const recentProgs = !lower ? Object.entries(progress)
+          .sort(([,a],[,b]) => b.ts - a.ts)
+          .slice(0, 4)
+          .map(([id]) => CATALOGUE.find(p => p.id === id))
+          .filter(Boolean) : [];
+
         _cmdItems = [];
         let html = '';
+
+        // Recently watched section
+        if (recentProgs.length) {
+          html += `<div class="cmd-group">Recently Watched</div>`;
+          recentProgs.forEach(p => {
+            const pct = (() => {
+              const s = progress[p.id];
+              if (!s) return 0;
+              const tot = (p.scenes||[]).reduce((a,sc)=>a+sc.dur,0);
+              const done = (p.scenes||[]).slice(0,s.scene||0).reduce((a,sc)=>a+sc.dur,0)+(s.elapsed||0);
+              return Math.min(100,Math.round(done/tot*100));
+            })();
+            _cmdItems.push({ type:'prog', data:p });
+            html += `<div class="cmd-item" data-idx="${_cmdItems.length-1}" onclick="_execCmd(${_cmdItems.length-1})">
+              <div class="cmd-item-icon" style="background:${p.thumb||p.accent||'#0a0a1e'};position:relative">
+                ${p.icon}
+                <div style="position:absolute;bottom:0;left:0;right:0;height:3px;background:rgba(255,255,255,0.1);border-radius:0 0 4px 4px">
+                  <div style="height:3px;width:${pct}%;background:${p.accent};border-radius:0 0 4px 4px;transition:width 0.3s"></div>
+                </div>
+              </div>
+              <div class="cmd-item-text"><div class="cmd-item-title">${p.title}</div><div class="cmd-item-sub">${pct}% watched · ${fmtRuntime(p.runtime)}</div></div>
+              <span class="cmd-item-kbd">Resume</span>
+            </div>`;
+          });
+        }
+
         if (actMatches.length) {
           html += `<div class="cmd-group">Actions</div>`;
           actMatches.forEach(a => {
@@ -8842,7 +8985,11 @@
         if (!item) return;
         _closeCmd();
         if (item.type === 'action') { item.data.action(); }
-        else if (item.type === 'prog') { openPlayer(item.data.id, 0); }
+        else if (item.type === 'prog') {
+          const saved = progress[item.data.id];
+          const scene = saved ? Math.min(saved.scene || 0, (item.data.scenes||[]).length - 1) : 0;
+          openPlayer(item.data.id, scene);
+        }
       }
       document.getElementById('cmd-input').addEventListener('input', e => _renderCmd(e.target.value));
       document.getElementById('cmd-input').addEventListener('keydown', e => {
@@ -8873,6 +9020,96 @@
       (function() {
         const saved = (() => { try { return localStorage.getItem('aios_theme')||'default'; } catch(_){ return 'default'; }})();
         if (saved && saved !== 'default') document.documentElement.setAttribute('data-theme', saved);
+      })();
+
+      // ── Wave 22: Screensaver / Attract Mode ─────────────────────────────────
+      (function() {
+        const SS_DELAY    = 60000; // 60s idle → screensaver
+        const SS_CYCLE    = 8000;  // 8s per programme
+        const SS_PROGS    = CATALOGUE.filter(p => p.featured || p.season);
+
+        let _ssTimer      = null;
+        let _ssCycleTimer = null;
+        let _ssIdx        = 0;
+        let _ssRenderer   = null;
+        let _ssActive     = false;
+        let _ssProgId     = null;
+
+        function _ssReset() {
+          clearTimeout(_ssTimer);
+          if (!_ssActive) _ssTimer = setTimeout(_ssStart, SS_DELAY);
+        }
+
+        function _ssStart() {
+          if (_ssActive) return;
+          // Don't launch if player or any modal is open
+          if (document.getElementById('player-overlay') &&
+              getComputedStyle(document.getElementById('player-overlay')).display !== 'none') return;
+          _ssActive = true;
+          _ssIdx = Math.floor(Math.random() * SS_PROGS.length);
+          const el = document.getElementById('ss-overlay');
+          el.classList.add('active');
+          _ssSetSlide(_ssIdx);
+          _ssCycleTimer = setInterval(() => {
+            _ssIdx = (_ssIdx + 1) % SS_PROGS.length;
+            _ssSetSlide(_ssIdx);
+          }, SS_CYCLE);
+        }
+
+        function _ssSetSlide(idx) {
+          const prog = SS_PROGS[idx];
+          if (!prog) return;
+          _ssProgId = prog.id;
+
+          // dots
+          const dotsEl = document.getElementById('ss-dots');
+          dotsEl.innerHTML = SS_PROGS.map((_, i) =>
+            `<div class="ss-dot${i === idx ? ' active' : ''}"></div>`).join('');
+
+          // text
+          const eyebrow = document.getElementById('ss-eyebrow');
+          eyebrow.textContent = (prog.genre||[])[0] + ' · ' + prog.year;
+          eyebrow.style.color = prog.accent || 'rgba(255,255,255,0.45)';
+          document.getElementById('ss-title').textContent = prog.title;
+          document.getElementById('ss-title').style.color = prog.accent || '#fff';
+
+          // canvas renderer
+          if (_ssRenderer) { try { _ssRenderer.stop(); } catch(_){} _ssRenderer = null; }
+          const canvas = document.getElementById('ss-canvas');
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+          const r = getRenderer(prog.id);
+          if (r) { _ssRenderer = r; r.start(canvas, idx % (prog.scenes||[{}]).length); }
+        }
+
+        window._ssDismiss = function() {
+          if (!_ssActive) return;
+          _ssActive = false;
+          clearInterval(_ssCycleTimer); _ssCycleTimer = null;
+          if (_ssRenderer) { try { _ssRenderer.stop(); } catch(_){} _ssRenderer = null; }
+          document.getElementById('ss-overlay').classList.remove('active');
+          _ssReset();
+        };
+
+        window._ssPlay = function() {
+          const id = _ssProgId;
+          _ssDismiss();
+          if (id) openPlayer(id, 0);
+        };
+
+        // Idle detection: reset on mouse/touch/key
+        ['mousemove','mousedown','keydown','touchstart','scroll'].forEach(ev =>
+          document.addEventListener(ev, _ssReset, { passive: true }));
+
+        // Start the idle timer on page load
+        _ssReset();
+
+        // Resize
+        window.addEventListener('resize', () => {
+          if (!_ssActive) return;
+          const c = document.getElementById('ss-canvas');
+          c.width = window.innerWidth; c.height = window.innerHeight;
+        });
       })();
 
       // ── Binge Season ─────────────────────────────────────────────────────────
