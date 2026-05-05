@@ -8162,7 +8162,8 @@
         }, 350);
 
         // swap hero renderer
-        if (heroRenderer) { try { heroRenderer.stop(); } catch(_){} }
+        if (heroRenderer && heroRenderer !== window._activePlayerRenderer) { try { heroRenderer.stop(); } catch(_){} }
+        heroRenderer = null;
         const canvas = document.getElementById('hero-canvas');
         sizeCanvas(canvas);
         const renderer = getRenderer(prog.id);
@@ -9678,6 +9679,10 @@
           if (document.getElementById('player').classList.contains('active')) return;
           if (document.getElementById('info-modal').classList.contains('active')) return;
           _ssActive = true;
+          // Pause hero rotation — heroTimer fires setHero() which would steal/stop
+          // the screensaver's active renderer and make slides go blank mid-cycle
+          if (heroTimer) { clearInterval(heroTimer); heroTimer = null; }
+          if (heroRenderer) { try { heroRenderer.stop(); } catch(_){} heroRenderer = null; }
           _ssIdx = Math.floor(Math.random() * SS_PROGS.length);
           const el = document.getElementById('ss-overlay');
           el.classList.add('active');
@@ -9706,7 +9711,11 @@
           document.getElementById('ss-title').style.color = prog.accent || '#fff';
 
           // canvas renderer
-          if (_ssRenderer) { try { _ssRenderer.stop(); } catch(_){} _ssRenderer = null; }
+          if (_ssRenderer && _ssRenderer !== window._activePlayerRenderer && _ssRenderer !== heroRenderer) {
+            try { _ssRenderer.stop(); } catch(_){} _ssRenderer = null;
+          } else {
+            _ssRenderer = null;
+          }
           const canvas = document.getElementById('ss-canvas');
           canvas.width = window.innerWidth;
           canvas.height = window.innerHeight;
@@ -9720,6 +9729,20 @@
           clearInterval(_ssCycleTimer); _ssCycleTimer = null;
           if (_ssRenderer) { try { _ssRenderer.stop(); } catch(_){} _ssRenderer = null; }
           document.getElementById('ss-overlay').classList.remove('active');
+          // Restart hero renderer + rotation timer that we paused on entry
+          const _hCanvas = document.getElementById('hero-canvas');
+          sizeCanvas(_hCanvas);
+          const _hProg = FEATURED[heroIndex];
+          if (_hProg) {
+            const _hRend = getRenderer(_hProg.id);
+            if (_hRend && _hRend !== window._activePlayerRenderer) {
+              heroRenderer = _hRend;
+              try { _hRend.start(_hCanvas, 0); } catch(_) {}
+            }
+          }
+          if (!heroTimer) {
+            heroTimer = setInterval(() => setHero((heroIndex + 1) % FEATURED.length), 10000);
+          }
           _ssReset();
         };
 
