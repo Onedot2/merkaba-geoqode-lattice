@@ -575,22 +575,22 @@
         <h1>Merkaba Dimensional Theatre<br />in Virtual Reality</h1>
         <p>
           The same PHI lattice geometry that powers the AIOS intelligence engine
-          — now navigable in full immersive VR. <span id="vr-prog-count">23</span> live programmes across 9
+          — now navigable in full immersive VR.
+          <span id="vr-prog-count">23</span> live programmes across 9
           categories, spatially anchored to the 48-node canonical lattice. Works
           on Meta Quest 2 &amp; 3 via browser. Zero install — no app required.
         </p>
 
-        <!-- WebXR enter button — shown only when supported -->
+        <!-- Enter button — always shown; label updates based on device -->
         <button id="enter-vr-btn" onclick="enterVRScene()">
-          🥽 Enter VR Mode
+          🎬 Enter Cinema Mode
         </button>
 
-        <!-- Fallback message for non-WebXR -->
-        <div class="vr-not-supported" id="vr-not-supported">
-          🥽 <strong>These experiences require a Meta Quest headset.</strong><br />
-          On your Quest, open the browser and navigate to:
+        <!-- Quest VR mode note -->
+        <div class="vr-not-supported" id="vr-not-supported" style="display:none">
+          🎬 <strong>Running in Cinema Mode (desktop).</strong><br />
+          For full spatial VR, open this page on a Meta Quest browser:
           <code>realaios.com/vr</code>
-          Then tap <strong>🥽 Enter VR Mode</strong> on any experience.
         </div>
 
         <p class="vr-quest-hint">
@@ -1253,7 +1253,9 @@
         .then((r) => (r.ok ? r.json() : null))
         .then((d) => {
           if (!d || !d.categories) return;
-          let total = 0, live = 0, cats = 0;
+          let total = 0,
+            live = 0,
+            cats = 0;
           d.categories.forEach((c) => {
             const exp = c.experiences || [];
             const liveN = exp.filter((e) => e.status === "live").length;
@@ -1261,9 +1263,19 @@
             live += liveN;
             if (liveN > 0) cats++;
           });
-          if (total) { const el = document.getElementById("vr-stat-total"); if (el) el.textContent = total; }
-          if (live) { const el = document.getElementById("vr-stat-live"); if (el) el.textContent = live; if (progCountEl) progCountEl.textContent = live; }
-          if (cats) { const el = document.getElementById("vr-stat-cats"); if (el) el.textContent = cats; }
+          if (total) {
+            const el = document.getElementById("vr-stat-total");
+            if (el) el.textContent = total;
+          }
+          if (live) {
+            const el = document.getElementById("vr-stat-live");
+            if (el) el.textContent = live;
+            if (progCountEl) progCountEl.textContent = live;
+          }
+          if (cats) {
+            const el = document.getElementById("vr-stat-cats");
+            if (el) el.textContent = cats;
+          }
         })
         .catch(() => {});
 
@@ -1657,26 +1669,66 @@
         container.style.display = "block";
         document.getElementById("flat-ui").style.display = "none";
 
-        // Inject A-Frame scene
+        const bgColor = "#050a14";
         container.innerHTML =
-          `<button id="vr-exit-btn" onclick="exitVRScene()">✕ Exit VR</button>` +
-          buildAFrameScene(currentProg);
+          `<button id="vr-exit-btn" onclick="exitVRScene()">&#x2715; Exit</button>` +
+          `<div id="vr-loading" style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:${bgColor};color:#00d4ff;font-family:'Courier New',monospace;font-size:1.5rem;z-index:9998;">Loading scene…</div>`;
 
-        // Attach launch button listeners after scene loads
-        const scene = container.querySelector("a-scene");
-        scene.addEventListener("loaded", () => {
-          attachPanelListeners();
-        });
-
-        // Start ambient tone at base frequency (72 Hz)
+        // Determine ambient Hz for this programme
         const semHz = currentProg
-          ? (
-              SEMANTIC[
-                (PROGRAMMES.find((p) => p.name === currentProg) || {}).sem
-              ] || SEMANTIC.HOLOGRAPHIC
-            ).hz
+          ? ((SEMANTIC[(PROGRAMMES.find(p => p.name === currentProg) || {}).sem] || SEMANTIC.HOLOGRAPHIC).hz)
           : BASE_FREQ;
-        startAmbientTone(semHz);
+
+        // Load MAL scene async, fall back to legacy builder on error
+        const malSceneId = MAL_SCENE_MAP[currentProg] || MAL_SCENE_MAP['default'];
+        getMALLoader()
+          .then(({ buildMALScene }) => buildMALScene(malSceneId))
+          .then(({ sceneHTML, narrativeHTML, fogAttr, palette }) => {
+            const exitBtn = container.querySelector('#vr-exit-btn');
+            const isVR = webXRSupported;
+            container.innerHTML =
+              `<button id="vr-exit-btn" onclick="exitVRScene()" style="position:fixed;top:16px;right:16px;z-index:9999;background:rgba(0,0,0,0.7);color:#fff;border:1px solid #444;border-radius:8px;padding:8px 18px;font-size:14px;cursor:pointer;">&#x2715; Exit</button>` +
+              `<a-scene
+                vr-mode-ui="enabled: ${isVR ? 'true' : 'false'}"
+                loading-screen="dotsColor: #00d4ff; backgroundColor: ${palette.bg}"
+                fog="${fogAttr}"
+                renderer="antialias: true; physicallyCorrectLights: true"
+                background="color: ${palette.bg}">
+                <a-entity id="rig" position="0 1.6 4">
+                  <a-camera
+                    look-controls="reverseMouseDrag: false; touchEnabled: true; pointerLockEnabled: false"
+                    wasd-controls="enabled: true; acceleration: 20"
+                    fov="80">
+                    <a-cursor
+                      id="gaze-cursor"
+                      fuse="true"
+                      fuseTimeout="1500"
+                      color="#00d4ff"
+                      opacity="0.85"
+                      position="0 0 -1"
+                      geometry="primitive: ring; radiusInner: 0.012; radiusOuter: 0.016"
+                      material="color: #00d4ff; shader: flat">
+                    </a-cursor>
+                  </a-camera>
+                </a-entity>
+                <a-entity hand-tracking-controls="hand: left"></a-entity>
+                <a-entity hand-tracking-controls="hand: right"></a-entity>
+                ${sceneHTML}
+              </a-scene>` +
+              narrativeHTML;
+            startAmbientTone(semHz);
+          })
+          .catch(() => {
+            // Fallback: legacy sphere/panel scene
+            const loading = container.querySelector('#vr-loading');
+            if (loading) loading.remove();
+            container.innerHTML =
+              `<button id="vr-exit-btn" onclick="exitVRScene()" style="position:fixed;top:16px;right:16px;z-index:9999;background:rgba(0,0,0,0.7);color:#fff;border:1px solid #444;border-radius:8px;padding:8px 18px;font-size:14px;cursor:pointer;">&#x2715; Exit</button>` +
+              buildAFrameScene(currentProg);
+            const scene = container.querySelector('a-scene');
+            if (scene) scene.addEventListener('loaded', () => attachPanelListeners());
+            startAmbientTone(semHz);
+          });
       }
 
       function exitVRScene() {
@@ -1690,16 +1742,8 @@
       function launchProgVR(progName, e) {
         e && e.preventDefault();
         currentProg = progName;
-        if (webXRSupported) {
-          enterVRScene(progName);
-        } else {
-          // Show Meta Quest required banner prominently
-          const noSup = document.getElementById('vr-not-supported');
-          noSup.style.display = 'block';
-          noSup.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          noSup.style.boxShadow = '0 0 0 2px rgba(0, 212, 255, 0.5), 0 0 24px rgba(0, 212, 255, 0.15)';
-          setTimeout(() => { noSup.style.boxShadow = 'none'; }, 2500);
-        }
+        // Always enter — Cinema Mode works on desktop too
+        enterVRScene(progName);
       }
 
       function attachPanelListeners() {
@@ -1722,11 +1766,9 @@
         });
       }
 
-      // ── Auto-enter VR if ?prog= param + WebXR supported ─────────────────
-      if (preselect && navigator.xr) {
-        navigator.xr.isSessionSupported("immersive-vr").then((ok) => {
-          if (ok) enterVRScene(preselect);
-        });
+      // ── Auto-enter if ?prog= param present ───────────────────────────────
+      if (preselect) {
+        enterVRScene(preselect);
       }
     </script>
   </body>
