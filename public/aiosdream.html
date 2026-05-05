@@ -7926,7 +7926,8 @@
       function buildCard(prog, showProgress) {
         const p = progress[prog.id];
         const hasProgress = showProgress && p;
-        const pct = hasProgress ? ((p.scene * 100 / prog.scenes.length) + (p.elapsed / prog.scenes[p.scene].dur / prog.scenes.length * 100)).toFixed(1) : 0;
+        const _pSc = hasProgress ? Math.min(p.scene || 0, prog.scenes.length - 1) : 0;
+        const pct = hasProgress ? ((_pSc * 100 / prog.scenes.length) + ((p.elapsed || 0) / prog.scenes[_pSc].dur / prog.scenes.length * 100)).toFixed(1) : 0;
         const watched = hasProgress && parseFloat(pct) >= 95;
         const _allRatings = (() => { try { return JSON.parse(localStorage.getItem('aios_ratings')||'{}'); } catch(_){return{};} })();
         const starCount = _allRatings[prog.id] || 0;
@@ -7947,15 +7948,15 @@
             <div class="card-hover-title">${prog.title}</div>
             <div class="card-hover-sub">${prog.ep ? `E${prog.ep}` : prog.year} · ${fmtRuntime(prog.runtime)} · ${prog.genre[0]}${starCount ? ` · <span style="color:#f59e0b">${'★'.repeat(starCount)}</span>` : ''}</div>
             ${prog.tagline ? `<div style="font-size:10px;color:rgba(255,255,255,0.5);font-style:italic;margin-bottom:5px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${prog.tagline}</div>` : ''}
-            ${hasProgress ? `<div style="font-size:10px;color:var(--muted);margin-bottom:6px">${watched ? '\u2714 Watched' : '\u25b6 Resume Scene ' + (p.scene+1)}</div>` : ''}
+            ${hasProgress ? `<div style="font-size:10px;color:var(--muted);margin-bottom:6px">${watched ? '\u2714 Watched' : '\u25b6 Resume Scene ' + (_pSc+1)}</div>` : ''}
             <div class="card-hover-btns">
-              <button class="card-btn-play" onclick="openPlayer('${prog.id}',${hasProgress && !watched ? p.scene : 0},event)">▶ Play</button>
+              <button class="card-btn-play" onclick="openPlayer('${prog.id}',${hasProgress && !watched ? _pSc : 0},event)">▶ Play</button>
               <button class="card-btn-info" onclick="openInfo('${prog.id}',event)" title="More Info">ⓘ</button>
               <button class="card-btn-list${myList.includes(prog.id) ? ' active' : ''}" id="list-btn-${prog.id}" onclick="cardToggleList('${prog.id}',event)" title="${myList.includes(prog.id) ? 'Remove from My List' : 'Add to My List'}">${myList.includes(prog.id) ? '♥' : '♡'}</button>
               <button class="card-btn-list" onclick="_queueAdd('${prog.id}',event)" title="Add to Queue" style="font-size:15px;letter-spacing:0">➕</button>
             </div>
           </div>`;
-        card.addEventListener('click', () => openPlayer(prog.id, hasProgress && !watched ? p.scene : 0));
+        card.addEventListener('click', () => openPlayer(prog.id, hasProgress && !watched ? _pSc : 0));
         card.addEventListener('mouseenter', () => _startCardPreview(prog.id));
         card.addEventListener('mouseleave', () => _stopCardPreview(prog.id));
         return card;
@@ -8105,6 +8106,21 @@
                 '<span style="color:rgba(255,255,255,0.45);font-size:10px">▶ ' + v.toLocaleString() + ' plays</span>' +
               '</div>' +
             '</div>';
+          card.addEventListener('mouseenter', () => {
+            const cv = document.getElementById('cv-t-' + prog.id);
+            if (!cv || _previewActive['t:' + prog.id]) return;
+            if (window._activePlayerRenderer === RENDERERS[prog.id] || heroRenderer === RENDERERS[prog.id]) return;
+            cv.width = cv.offsetWidth || 220; cv.height = cv.offsetHeight || 120;
+            const r = RENDERERS[prog.id]; if (!r) return;
+            _previewActive['t:' + prog.id] = true; r.start(cv, 0);
+          });
+          card.addEventListener('mouseleave', () => {
+            if (!_previewActive['t:' + prog.id]) return;
+            _previewActive['t:' + prog.id] = false;
+            const r = RENDERERS[prog.id]; if (!r) return;
+            if (window._activePlayerRenderer === r || heroRenderer === r) return;
+            try { r.stop(); } catch(_) {}
+          });
           track.appendChild(card);
         });
       }
@@ -9833,9 +9849,9 @@
 
         function _liveStart() {
           if (_liveTickInterval) return;
-          // Seed with 8 events immediately
+          // Seed with 8 events immediately — guard: abort if panel closed before timeout fires
           for (var i = 0; i < 8; i++) {
-            setTimeout(function(ii) { _livePushEvent(_liveMakeEvent()); }.bind(null, i), i * 60);
+            setTimeout(function(ii) { if (_liveOpen) _livePushEvent(_liveMakeEvent()); }.bind(null, i), i * 60);
           }
           _liveUpdateViewers();
           // New event every 2.5–4.5s (randomized feel)
