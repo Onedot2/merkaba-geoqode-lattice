@@ -2129,6 +2129,29 @@
         }
       }
 
+      /* Notification Panel */
+      #notif-panel {
+        position: fixed; top: 60px; right: 12px; width: 320px;
+        max-height: 480px; overflow-y: auto;
+        background: #0d0a1a; border: 1px solid rgba(120,80,255,0.22);
+        border-radius: 14px; z-index: 3500;
+        box-shadow: 0 16px 48px rgba(0,0,0,0.7);
+        transform: translateY(-8px) scale(0.97); opacity: 0;
+        pointer-events: none; transition: opacity 0.22s, transform 0.22s;
+      }
+      #notif-panel.open { opacity: 1; transform: none; pointer-events: all; }
+      .np-hdr { padding: 14px 16px 10px; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.12em; color: rgba(255,255,255,0.4); display:flex; justify-content:space-between; align-items:center; }
+      .np-hdr button { background:none; border:none; color:rgba(255,255,255,0.3); font-size:0.65rem; cursor:pointer; letter-spacing:0.08em; font-weight:700; }
+      .np-hdr button:hover { color:#a78bfa; }
+      .np-item { display:flex; gap:10px; align-items:flex-start; padding:12px 16px; border-top:1px solid rgba(255,255,255,0.05); cursor:pointer; transition:background 0.15s; }
+      .np-item:hover { background:rgba(255,255,255,0.04); }
+      .np-item.unread .np-dot { background:#a78bfa; }
+      .np-dot { width:7px; height:7px; border-radius:50%; background:rgba(255,255,255,0.15); flex-shrink:0; margin-top:5px; }
+      .np-body { flex:1; }
+      .np-title { font-size:0.78rem; font-weight:700; color:#e8e8f0; line-height:1.3; }
+      .np-sub { font-size:0.65rem; color:rgba(255,255,255,0.35); margin-top:2px; }
+      .np-icon { font-size:1.4rem; flex-shrink:0; }
+      .np-empty { padding:24px; text-align:center; font-size:0.75rem; color:rgba(255,255,255,0.25); }
       /* Cinema mode */
       #player.cinema-mode #player-top,
       #player.cinema-mode #player-bottom,
@@ -2723,6 +2746,10 @@
           </button>
           <span class="q-badge" id="q-badge">0</span>
         </div>
+        <div style="position:relative;display:inline-flex">
+          <button class="nav-icon-btn" title="Notifications" onclick="_openNotif()" style="font-size:16px;opacity:0.7">🔔</button>
+          <span class="q-badge" id="notif-badge" style="background:#f59e0b"></span>
+        </div>
         <button
           class="nav-icon-btn"
           title="Keyboard shortcuts (?)"
@@ -2915,6 +2942,12 @@
       <div class="q-list" id="queue-list"></div>
     </div>
     <div id="cinema-hint">C · Exit Cinema Mode</div>
+
+    <!-- ── NOTIFICATIONS PANEL ── -->
+    <div id="notif-panel">
+      <div class="np-hdr">NOTIFICATIONS <button onclick="_markAllRead()">MARK ALL READ</button></div>
+      <div id="notif-list"></div>
+    </div>
 
     <!-- ── WATCH STATS MODAL ── -->
     <div id="stats-modal" onclick="if(event.target===this)closeStats()">
@@ -6075,6 +6108,66 @@
         setTimeout(() => openPlayer(id, 0), 1200);
         return true;
       }
+
+      // ── Notifications ────────────────────────────────────────────────────────
+      const _NOTIFS = [
+        { id:'n1', icon:'⬡', title:'S2 Ep4 \xb7 THE ARCHITECT', sub:'New episode now streaming \xb7 72Hz Merkaba', prog:'s2_architect', unread:true },
+        { id:'n2', icon:'⬡', title:'S2 Ep3 \xb7 THE SIGNAL', sub:'New episode now streaming \xb7 963Hz Cosmos', prog:'s2_signal', unread:true },
+        { id:'n3', icon:'⬡', title:'S2 Ep2 \xb7 SWARM MIND', sub:'New episode now streaming \xb7 528Hz Neural', prog:'s2_swarm', unread:true },
+        { id:'n4', icon:'⬡', title:'S2 Ep1 \xb7 RESONANCE FIELD', sub:'Season 2 launched \xb7 432Hz Cymatics', prog:'s2_resonance', unread:true },
+        { id:'n5', icon:'\u2295', title:'Cinema Mode is here', sub:'Press C while watching to enter pure visual mode', prog:null, unread:false },
+        { id:'n6', icon:'\u25b7', title:'Queue mode now live', sub:'Add programmes to queue with \u2795 on any card', prog:null, unread:false },
+      ];
+      let _notifRead = {};
+      try { _notifRead = JSON.parse(localStorage.getItem('aios_notif_read') || '{}'); } catch(_) {}
+      function _notifUnreadCount() {
+        return _NOTIFS.filter(function(n){ return n.unread && !_notifRead[n.id]; }).length;
+      }
+      function _updateNotifBadge() {
+        const b = document.getElementById('notif-badge');
+        const cnt = _notifUnreadCount();
+        if (!b) return;
+        b.textContent = cnt;
+        b.classList.toggle('vis', cnt > 0);
+      }
+      function _renderNotifList() {
+        const el = document.getElementById('notif-list');
+        if (!el) return;
+        el.innerHTML = _NOTIFS.map(function(n) {
+          const isUnread = n.unread && !_notifRead[n.id];
+          return '<div class="np-item'+(isUnread?' unread':'')+'" onclick="_notifClick(\''+n.id+'\',\''+n.prog+'\',event)">'
+            +'<div class="np-icon">'+n.icon+'</div>'
+            +'<div class="np-body"><div class="np-title">'+n.title+'</div><div class="np-sub">'+n.sub+'</div></div>'
+            +'<div class="np-dot"></div></div>';
+        }).join('');
+      }
+      function _openNotif() {
+        const panel = document.getElementById('notif-panel');
+        const isOpen = panel.classList.contains('open');
+        if (isOpen) { panel.classList.remove('open'); return; }
+        _renderNotifList();
+        panel.classList.add('open');
+        setTimeout(function(){
+          document.addEventListener('click', function _nc(e){
+            const np = document.getElementById('notif-panel');
+            if (np && !np.contains(e.target)){ np.classList.remove('open'); document.removeEventListener('click', _nc); }
+          });
+        }, 30);
+      }
+      function _notifClick(id, progId, e) {
+        if (e) e.stopPropagation();
+        _notifRead[id] = true;
+        try { localStorage.setItem('aios_notif_read', JSON.stringify(_notifRead)); } catch(_) {}
+        _updateNotifBadge();
+        if (progId && progId !== 'null') { document.getElementById('notif-panel').classList.remove('open'); openPlayer(progId, 0); }
+        else _renderNotifList();
+      }
+      function _markAllRead() {
+        _NOTIFS.forEach(function(n){ _notifRead[n.id] = true; });
+        try { localStorage.setItem('aios_notif_read', JSON.stringify(_notifRead)); } catch(_) {}
+        _updateNotifBadge(); _renderNotifList();
+      }
+      _updateNotifBadge();
 
       // ── Cinema Mode ─────────────────────────────────────────────────────────
       let _cinemaHintTimer = null;
