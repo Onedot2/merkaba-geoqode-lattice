@@ -972,6 +972,9 @@
       .product-icon.blue {
         background: rgba(59, 130, 246, 0.1);
       }
+      .product-icon.lime {
+        background: rgba(85, 255, 136, 0.1);
+      }
 
       .product-card h3 {
         font-size: 17px;
@@ -1287,7 +1290,18 @@
           margin-left: 0.75rem;
           letter-spacing: 0.05em;
         "
-        ><span style="width:7px;height:7px;border-radius:50%;background:#ef4444;display:inline-block;animation:_aavpulse 1.2s ease-in-out infinite"></span>LIVE</a>
+        ><span
+          style="
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #ef4444;
+            display: inline-block;
+            animation: _aavpulse 1.2s ease-in-out infinite;
+          "
+        ></span
+        >LIVE</a
+      >
     </nav>
 
     <!-- -- HERO -- -->
@@ -1315,7 +1329,9 @@
         The <strong>AI-Native Audiovisual Operating System</strong>.<br />
         25 cinematic renderers. 24/7 .geo production. Infinite art.
       </p>
-      <p class="hero-tagline">Theatre · Library · Studio · Standard · VR — all AI-native, all live.</p>
+      <p class="hero-tagline">
+        Theatre · Library · Studio · Standard · VR — all AI-native, all live.
+      </p>
 
       <!-- PRIMARY CTA: free first -->
       <div
@@ -1327,7 +1343,14 @@
           margin: 2rem 0 1rem;
         "
       >
-        <div style="display:flex;gap:0.75rem;flex-wrap:wrap;justify-content:center">
+        <div
+          style="
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            justify-content: center;
+          "
+        >
           <a
             href="/aiosdream"
             style="
@@ -1340,10 +1363,18 @@
               border-radius: 10px;
               text-decoration: none;
               letter-spacing: 0.02em;
-              transition: opacity 0.2s, transform 0.2s;
+              transition:
+                opacity 0.2s,
+                transform 0.2s;
             "
-            onmouseover="this.style.opacity='.88';this.style.transform='translateY(-2px)'"
-            onmouseout="this.style.opacity='1';this.style.transform=''"
+            onmouseover="
+              this.style.opacity = '.88';
+              this.style.transform = 'translateY(-2px)';
+            "
+            onmouseout="
+              this.style.opacity = '1';
+              this.style.transform = '';
+            "
           >
             ▶ Enter the Theatre →
           </a>
@@ -1351,18 +1382,20 @@
             href="/geo-library"
             style="
               display: inline-block;
-              background: rgba(0,245,212,0.12);
-              border: 1px solid rgba(0,245,212,0.3);
+              background: rgba(0, 245, 212, 0.12);
+              border: 1px solid rgba(0, 245, 212, 0.3);
               color: #00f5d4;
               font-weight: 700;
               font-size: 0.9rem;
               padding: 0.9rem 1.8rem;
               border-radius: 10px;
               text-decoration: none;
-              transition: opacity 0.2s, transform 0.2s;
+              transition:
+                opacity 0.2s,
+                transform 0.2s;
             "
-            onmouseover="this.style.transform='translateY(-2px)'"
-            onmouseout="this.style.transform=''"
+            onmouseover="this.style.transform = 'translateY(-2px)'"
+            onmouseout="this.style.transform = ''"
           >
             📚 Browse Library
           </a>
@@ -1370,74 +1403,206 @@
             href="/vr-hub"
             style="
               display: inline-block;
-              background: rgba(255,255,255,0.06);
-              border: 1px solid rgba(255,255,255,0.12);
-              color: rgba(237,244,255,0.65);
+              background: rgba(255, 255, 255, 0.06);
+              border: 1px solid rgba(255, 255, 255, 0.12);
+              color: rgba(237, 244, 255, 0.65);
               font-weight: 600;
               font-size: 0.85rem;
               padding: 0.9rem 1.5rem;
               border-radius: 10px;
               text-decoration: none;
-              transition: opacity 0.2s, transform 0.2s;
+              transition:
+                opacity 0.2s,
+                transform 0.2s;
             "
-            onmouseover="this.style.transform='translateY(-2px)'"
-            onmouseout="this.style.transform=''"
+            onmouseover="this.style.transform = 'translateY(-2px)'"
+            onmouseout="this.style.transform = ''"
           >
             🥽 VR Hub
           </a>
         </div>
         <p style="font-size: 0.78rem; color: #6b7280; margin: 0">
-          20 AI renderers &middot; 24/7 .geo production &middot; No account needed
+          20 AI renderers &middot; 24/7 .geo production &middot; No account
+          needed
         </p>
       </div>
 
       <!-- LIVE GEO STATS TICKER -->
-      <div id="geo-stats-ticker" style="display:flex;gap:1.8rem;flex-wrap:wrap;justify-content:center;margin:1.4rem 0 0;padding:0.7rem 1.5rem;background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.12);border-radius:30px">
-        <div style="text-align:center">
-          <div id="gs-lib" style="font-size:1.1rem;font-weight:800;color:#00d4ff;letter-spacing:-0.02em">—</div>
-          <div style="font-size:0.65rem;color:rgba(237,244,255,0.4);text-transform:uppercase;letter-spacing:0.1em;margin-top:2px">In Library</div>
+      <div
+        id="geo-stats-ticker"
+        style="
+          display: flex;
+          gap: 1.8rem;
+          flex-wrap: wrap;
+          justify-content: center;
+          margin: 1.4rem 0 0;
+          padding: 0.7rem 1.5rem;
+          background: rgba(0, 212, 255, 0.05);
+          border: 1px solid rgba(0, 212, 255, 0.12);
+          border-radius: 30px;
+        "
+      >
+        <div style="text-align: center">
+          <div
+            id="gs-lib"
+            style="
+              font-size: 1.1rem;
+              font-weight: 800;
+              color: #00d4ff;
+              letter-spacing: -0.02em;
+            "
+          >
+            —
+          </div>
+          <div
+            style="
+              font-size: 0.65rem;
+              color: rgba(237, 244, 255, 0.4);
+              text-transform: uppercase;
+              letter-spacing: 0.1em;
+              margin-top: 2px;
+            "
+          >
+            In Library
+          </div>
         </div>
-        <div style="text-align:center">
-          <div id="gs-prod" style="font-size:1.1rem;font-weight:800;color:#00f5d4;letter-spacing:-0.02em">—</div>
-          <div style="font-size:0.65rem;color:rgba(237,244,255,0.4);text-transform:uppercase;letter-spacing:0.1em;margin-top:2px">Produced Today</div>
+        <div style="text-align: center">
+          <div
+            id="gs-prod"
+            style="
+              font-size: 1.1rem;
+              font-weight: 800;
+              color: #00f5d4;
+              letter-spacing: -0.02em;
+            "
+          >
+            —
+          </div>
+          <div
+            style="
+              font-size: 0.65rem;
+              color: rgba(237, 244, 255, 0.4);
+              text-transform: uppercase;
+              letter-spacing: 0.1em;
+              margin-top: 2px;
+            "
+          >
+            Produced Today
+          </div>
         </div>
-        <div style="text-align:center">
-          <div id="gs-hrs" style="font-size:1.1rem;font-weight:800;color:#a78bfa;letter-spacing:-0.02em">—</div>
-          <div style="font-size:0.65rem;color:rgba(237,244,255,0.4);text-transform:uppercase;letter-spacing:0.1em;margin-top:2px">Hours of Content</div>
+        <div style="text-align: center">
+          <div
+            id="gs-hrs"
+            style="
+              font-size: 1.1rem;
+              font-weight: 800;
+              color: #a78bfa;
+              letter-spacing: -0.02em;
+            "
+          >
+            —
+          </div>
+          <div
+            style="
+              font-size: 0.65rem;
+              color: rgba(237, 244, 255, 0.4);
+              text-transform: uppercase;
+              letter-spacing: 0.1em;
+              margin-top: 2px;
+            "
+          >
+            Hours of Content
+          </div>
         </div>
-        <div style="text-align:center">
-          <div id="gs-next" style="font-size:1.1rem;font-weight:800;color:#fbbf24;letter-spacing:-0.02em">—</div>
-          <div style="font-size:0.65rem;color:rgba(237,244,255,0.4);text-transform:uppercase;letter-spacing:0.1em;margin-top:2px">Next .geo in</div>
+        <div style="text-align: center">
+          <div
+            id="gs-next"
+            style="
+              font-size: 1.1rem;
+              font-weight: 800;
+              color: #fbbf24;
+              letter-spacing: -0.02em;
+            "
+          >
+            —
+          </div>
+          <div
+            style="
+              font-size: 0.65rem;
+              color: rgba(237, 244, 255, 0.4);
+              text-transform: uppercase;
+              letter-spacing: 0.1em;
+              margin-top: 2px;
+            "
+          >
+            Next .geo in
+          </div>
         </div>
-        <div style="text-align:center;display:flex;align-items:center;gap:6px">
-          <span style="width:7px;height:7px;border-radius:50%;background:#00d4ff;display:inline-block;animation:_aavpulse 1.5s ease-in-out infinite"></span>
-          <span style="font-size:0.7rem;color:rgba(237,244,255,0.35);font-weight:600">LIVE</span>
+        <div
+          style="
+            text-align: center;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+          "
+        >
+          <span
+            style="
+              width: 7px;
+              height: 7px;
+              border-radius: 50%;
+              background: #00d4ff;
+              display: inline-block;
+              animation: _aavpulse 1.5s ease-in-out infinite;
+            "
+          ></span>
+          <span
+            style="
+              font-size: 0.7rem;
+              color: rgba(237, 244, 255, 0.35);
+              font-weight: 600;
+            "
+            >LIVE</span
+          >
         </div>
       </div>
       <script>
-      (function() {
-        var INTERVAL_MS = 120000;
-        var lastFetch = 0;
-        var countdown = INTERVAL_MS / 1000;
-        function fmtSec(s) { return s < 60 ? s + 's' : Math.ceil(s/60) + 'm ' + (s%60) + 's'; }
-        function fetchStats() {
-          fetch('/api/geo/stats').then(function(r){return r.json();}).then(function(d){
-            var el = document.getElementById.bind(document);
-            if (el('gs-lib')) el('gs-lib').textContent = d.catalogue != null ? d.catalogue : '—';
-            if (el('gs-prod')) el('gs-prod').textContent = d.productionCount != null ? d.productionCount : '—';
-            if (el('gs-hrs')) el('gs-hrs').textContent = d.totalDurationHours != null ? d.totalDurationHours : '—';
-            lastFetch = Date.now();
-            countdown = INTERVAL_MS / 1000;
-          }).catch(function(){});
-        }
-        fetchStats();
-        setInterval(fetchStats, INTERVAL_MS);
-        setInterval(function() {
-          countdown = Math.max(0, countdown - 1);
-          var el = document.getElementById('gs-next');
-          if (el) el.textContent = countdown + 's';
-        }, 1000);
-      })();
+        (function () {
+          var INTERVAL_MS = 120000;
+          var lastFetch = 0;
+          var countdown = INTERVAL_MS / 1000;
+          function fmtSec(s) {
+            return s < 60 ? s + "s" : Math.ceil(s / 60) + "m " + (s % 60) + "s";
+          }
+          function fetchStats() {
+            fetch("/api/geo/stats")
+              .then(function (r) {
+                return r.json();
+              })
+              .then(function (d) {
+                var el = document.getElementById.bind(document);
+                if (el("gs-lib"))
+                  el("gs-lib").textContent =
+                    d.catalogue != null ? d.catalogue : "—";
+                if (el("gs-prod"))
+                  el("gs-prod").textContent =
+                    d.productionCount != null ? d.productionCount : "—";
+                if (el("gs-hrs"))
+                  el("gs-hrs").textContent =
+                    d.totalDurationHours != null ? d.totalDurationHours : "—";
+                lastFetch = Date.now();
+                countdown = INTERVAL_MS / 1000;
+              })
+              .catch(function () {});
+          }
+          fetchStats();
+          setInterval(fetchStats, INTERVAL_MS);
+          setInterval(function () {
+            countdown = Math.max(0, countdown - 1);
+            var el = document.getElementById("gs-next");
+            if (el) el.textContent = countdown + "s";
+          }, 1000);
+        })();
       </script>
 
       <!-- EMAIL CAPTURE: always visible -->
@@ -1721,292 +1886,945 @@
     </section>
 
     <!-- ── .GEO vs MP4 — THE FORMAT WAR ──────────────────────────────────── -->
-    <section id="geo-vs-mp4" style="padding:5rem 1rem 4.5rem;background:linear-gradient(180deg,#04040e 0%,#060614 100%);position:relative;overflow:hidden">
-      <div style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 80%,rgba(0,212,255,0.035) 0%,transparent 70%);pointer-events:none"></div>
-      <div style="max-width:1000px;margin:0 auto;position:relative">
+    <section
+      id="geo-vs-mp4"
+      style="
+        padding: 5rem 1rem 4.5rem;
+        background: linear-gradient(180deg, #04040e 0%, #060614 100%);
+        position: relative;
+        overflow: hidden;
+      "
+    >
+      <div
+        style="
+          position: absolute;
+          inset: 0;
+          background: radial-gradient(
+            ellipse 70% 50% at 50% 80%,
+            rgba(0, 212, 255, 0.035) 0%,
+            transparent 70%
+          );
+          pointer-events: none;
+        "
+      ></div>
+      <div style="max-width: 1000px; margin: 0 auto; position: relative">
         <!-- Header -->
-        <div style="text-align:center;margin-bottom:3rem">
-          <div style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);padding:0.3rem 0.9rem;border-radius:20px;font-size:0.72rem;font-weight:700;letter-spacing:0.12em;color:#f87171;text-transform:uppercase;margin-bottom:1.2rem">FORMAT MANIFESTO</div>
-          <h2 style="font-size:clamp(2rem,5vw,3.2rem);font-weight:900;letter-spacing:-0.04em;line-height:1.05;margin:0 0 1rem">mp4 stores dead pixels.<br><span style="background:linear-gradient(135deg,#00d4ff,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">.geo renders living reality.</span></h2>
-          <p style="color:rgba(232,232,240,0.45);font-size:1rem;max-width:540px;margin:0 auto;line-height:1.7">Every mp4 you've ever seen was a recording of something that already happened. Every .geo programme is happening right now, for the first time, just for you.</p>
+        <div style="text-align: center; margin-bottom: 3rem">
+          <div
+            style="
+              display: inline-flex;
+              align-items: center;
+              gap: 0.5rem;
+              background: rgba(239, 68, 68, 0.08);
+              border: 1px solid rgba(239, 68, 68, 0.2);
+              padding: 0.3rem 0.9rem;
+              border-radius: 20px;
+              font-size: 0.72rem;
+              font-weight: 700;
+              letter-spacing: 0.12em;
+              color: #f87171;
+              text-transform: uppercase;
+              margin-bottom: 1.2rem;
+            "
+          >
+            FORMAT MANIFESTO
+          </div>
+          <h2
+            style="
+              font-size: clamp(2rem, 5vw, 3.2rem);
+              font-weight: 900;
+              letter-spacing: -0.04em;
+              line-height: 1.05;
+              margin: 0 0 1rem;
+            "
+          >
+            mp4 stores dead pixels.<br /><span
+              style="
+                background: linear-gradient(135deg, #00d4ff, #818cf8);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+              "
+              >.geo renders living reality.</span
+            >
+          </h2>
+          <p
+            style="
+              color: rgba(232, 232, 240, 0.45);
+              font-size: 1rem;
+              max-width: 540px;
+              margin: 0 auto;
+              line-height: 1.7;
+            "
+          >
+            Every mp4 you've ever seen was a recording of something that already
+            happened. Every .geo programme is happening right now, for the first
+            time, just for you.
+          </p>
         </div>
 
         <!-- Comparison table -->
-        <div style="display:grid;grid-template-columns:1fr 60px 1fr;gap:0;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.07)">
+        <div
+          style="
+            display: grid;
+            grid-template-columns: 1fr 60px 1fr;
+            gap: 0;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+          "
+        >
           <!-- mp4 header -->
-          <div style="background:rgba(15,8,8,0.95);padding:1.2rem 1.5rem;border-right:1px solid rgba(255,255,255,0.06)">
-            <div style="font-size:0.68rem;letter-spacing:0.1em;color:rgba(232,232,240,0.35);font-weight:700;text-transform:uppercase;margin-bottom:0.4rem">DEAD FORMAT</div>
-            <div style="font-size:1.4rem;font-weight:900;color:#f87171">mp4 / mov</div>
+          <div
+            style="
+              background: rgba(15, 8, 8, 0.95);
+              padding: 1.2rem 1.5rem;
+              border-right: 1px solid rgba(255, 255, 255, 0.06);
+            "
+          >
+            <div
+              style="
+                font-size: 0.68rem;
+                letter-spacing: 0.1em;
+                color: rgba(232, 232, 240, 0.35);
+                font-weight: 700;
+                text-transform: uppercase;
+                margin-bottom: 0.4rem;
+              "
+            >
+              DEAD FORMAT
+            </div>
+            <div style="font-size: 1.4rem; font-weight: 900; color: #f87171">
+              mp4 / mov
+            </div>
           </div>
           <!-- vs -->
-          <div style="background:rgba(6,4,16,0.98);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:0.75rem;color:rgba(232,232,240,0.25);letter-spacing:0.08em">VS</div>
+          <div
+            style="
+              background: rgba(6, 4, 16, 0.98);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-weight: 900;
+              font-size: 0.75rem;
+              color: rgba(232, 232, 240, 0.25);
+              letter-spacing: 0.08em;
+            "
+          >
+            VS
+          </div>
           <!-- .geo header -->
-          <div style="background:rgba(4,10,20,0.98);padding:1.2rem 1.5rem;border-left:1px solid rgba(255,255,255,0.06)">
-            <div style="font-size:0.68rem;letter-spacing:0.1em;color:rgba(0,212,255,0.6);font-weight:700;text-transform:uppercase;margin-bottom:0.4rem">ALIVE FORMAT</div>
-            <div style="font-size:1.4rem;font-weight:900;color:#00d4ff">.geo</div>
+          <div
+            style="
+              background: rgba(4, 10, 20, 0.98);
+              padding: 1.2rem 1.5rem;
+              border-left: 1px solid rgba(255, 255, 255, 0.06);
+            "
+          >
+            <div
+              style="
+                font-size: 0.68rem;
+                letter-spacing: 0.1em;
+                color: rgba(0, 212, 255, 0.6);
+                font-weight: 700;
+                text-transform: uppercase;
+                margin-bottom: 0.4rem;
+              "
+            >
+              ALIVE FORMAT
+            </div>
+            <div style="font-size: 1.4rem; font-weight: 900; color: #00d4ff">
+              .geo
+            </div>
           </div>
         </div>
 
         <!-- Comparison rows -->
-        <div id="gvmp-rows" style="border:1px solid rgba(255,255,255,0.07);border-top:none;border-radius:0 0 16px 16px;overflow:hidden">
+        <div
+          id="gvmp-rows"
+          style="
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-top: none;
+            border-radius: 0 0 16px 16px;
+            overflow: hidden;
+          "
+        >
           <!-- rows injected by JS -->
         </div>
 
         <!-- Animated mini canvas -->
-        <div style="display:flex;align-items:center;justify-content:center;gap:2.5rem;margin:2.5rem 0 1.5rem;flex-wrap:wrap">
-          <div style="text-align:center">
-            <div style="width:180px;height:102px;background:#0a0a0a;border:1px solid rgba(239,68,68,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative">
-              <div style="color:rgba(239,68,68,0.25);font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-align:center;line-height:1.6">COMPRESSED<br>DEAD PIXELS<br>22.4 GB</div>
-              <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(239,68,68,0.04) 0px,transparent 1px,transparent 4px);pointer-events:none"></div>
+        <div
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2.5rem;
+            margin: 2.5rem 0 1.5rem;
+            flex-wrap: wrap;
+          "
+        >
+          <div style="text-align: center">
+            <div
+              style="
+                width: 180px;
+                height: 102px;
+                background: #0a0a0a;
+                border: 1px solid rgba(239, 68, 68, 0.2);
+                border-radius: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                overflow: hidden;
+                position: relative;
+              "
+            >
+              <div
+                style="
+                  color: rgba(239, 68, 68, 0.25);
+                  font-size: 0.7rem;
+                  font-weight: 700;
+                  letter-spacing: 0.08em;
+                  text-align: center;
+                  line-height: 1.6;
+                "
+              >
+                COMPRESSED<br />DEAD PIXELS<br />22.4 GB
+              </div>
+              <div
+                style="
+                  position: absolute;
+                  inset: 0;
+                  background: repeating-linear-gradient(
+                    0deg,
+                    rgba(239, 68, 68, 0.04) 0px,
+                    transparent 1px,
+                    transparent 4px
+                  );
+                  pointer-events: none;
+                "
+              ></div>
             </div>
-            <div style="font-size:0.72rem;color:rgba(239,68,68,0.6);margin-top:0.5rem;font-weight:700">mp4 · 22.4 GB · Dead</div>
+            <div
+              style="
+                font-size: 0.72rem;
+                color: rgba(239, 68, 68, 0.6);
+                margin-top: 0.5rem;
+                font-weight: 700;
+              "
+            >
+              mp4 · 22.4 GB · Dead
+            </div>
           </div>
-          <div style="font-size:2rem;color:rgba(232,232,240,0.2);font-weight:300">≠</div>
-          <div style="text-align:center">
-            <canvas id="gvmp-cv" width="180" height="102" style="border:1px solid rgba(0,212,255,0.2);border-radius:10px;display:block"></canvas>
-            <div style="font-size:0.72rem;color:rgba(0,212,255,0.7);margin-top:0.5rem;font-weight:700">.geo · 14.2 KB · Alive</div>
+          <div
+            style="
+              font-size: 2rem;
+              color: rgba(232, 232, 240, 0.2);
+              font-weight: 300;
+            "
+          >
+            ≠
+          </div>
+          <div style="text-align: center">
+            <canvas
+              id="gvmp-cv"
+              width="180"
+              height="102"
+              style="
+                border: 1px solid rgba(0, 212, 255, 0.2);
+                border-radius: 10px;
+                display: block;
+              "
+            ></canvas>
+            <div
+              style="
+                font-size: 0.72rem;
+                color: rgba(0, 212, 255, 0.7);
+                margin-top: 0.5rem;
+                font-weight: 700;
+              "
+            >
+              .geo · 14.2 KB · Alive
+            </div>
           </div>
         </div>
 
         <!-- Score bar -->
-        <div style="background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:1.2rem 1.5rem;margin-top:1rem;text-align:center">
-          <div style="font-size:0.7rem;letter-spacing:0.1em;color:rgba(232,232,240,0.35);font-weight:700;text-transform:uppercase;margin-bottom:0.8rem">COMPRESSION ADVANTAGE</div>
-          <div style="position:relative;height:10px;background:rgba(255,255,255,0.06);border-radius:5px;overflow:hidden">
-            <div id="gvmp-bar" style="position:absolute;left:0;top:0;height:100%;width:0%;background:linear-gradient(90deg,#00d4ff,#818cf8);border-radius:5px;transition:width 1.8s cubic-bezier(0.16,1,0.3,1)"></div>
+        <div
+          style="
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 1.2rem 1.5rem;
+            margin-top: 1rem;
+            text-align: center;
+          "
+        >
+          <div
+            style="
+              font-size: 0.7rem;
+              letter-spacing: 0.1em;
+              color: rgba(232, 232, 240, 0.35);
+              font-weight: 700;
+              text-transform: uppercase;
+              margin-bottom: 0.8rem;
+            "
+          >
+            COMPRESSION ADVANTAGE
           </div>
-          <div style="margin-top:0.6rem;font-size:0.8rem;color:rgba(232,232,240,0.5)">.geo is <span id="gvmp-ratio" style="color:#00d4ff;font-weight:800;font-size:1.1rem">0</span>× more efficient than mp4</div>
+          <div
+            style="
+              position: relative;
+              height: 10px;
+              background: rgba(255, 255, 255, 0.06);
+              border-radius: 5px;
+              overflow: hidden;
+            "
+          >
+            <div
+              id="gvmp-bar"
+              style="
+                position: absolute;
+                left: 0;
+                top: 0;
+                height: 100%;
+                width: 0%;
+                background: linear-gradient(90deg, #00d4ff, #818cf8);
+                border-radius: 5px;
+                transition: width 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+              "
+            ></div>
+          </div>
+          <div
+            style="
+              margin-top: 0.6rem;
+              font-size: 0.8rem;
+              color: rgba(232, 232, 240, 0.5);
+            "
+          >
+            .geo is
+            <span
+              id="gvmp-ratio"
+              style="color: #00d4ff; font-weight: 800; font-size: 1.1rem"
+              >0</span
+            >× more efficient than mp4
+          </div>
         </div>
 
         <!-- CTA -->
-        <div style="text-align:center;margin-top:2.5rem;display:flex;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap">
-          <a href="/geo-codec" style="background:rgba(0,212,255,0.12);border:1px solid rgba(0,212,255,0.3);color:#00d4ff;font-weight:700;font-size:0.85rem;padding:0.65rem 1.5rem;border-radius:12px;text-decoration:none;letter-spacing:0.05em;transition:all 0.2s" onmouseover="this.style.background='rgba(0,212,255,0.2)'" onmouseout="this.style.background='rgba(0,212,255,0.12)'">Read the .geo Manifesto →</a>
-          <a href="/aiosdream" style="background:transparent;border:1px solid rgba(255,255,255,0.1);color:rgba(232,232,240,0.7);font-weight:600;font-size:0.85rem;padding:0.65rem 1.5rem;border-radius:12px;text-decoration:none;letter-spacing:0.04em" onmouseover="this.style.borderColor='rgba(255,255,255,0.25)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)'">▶ Watch Live .geo</a>
+        <div
+          style="
+            text-align: center;
+            margin-top: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+          "
+        >
+          <a
+            href="/geo-codec"
+            style="
+              background: rgba(0, 212, 255, 0.12);
+              border: 1px solid rgba(0, 212, 255, 0.3);
+              color: #00d4ff;
+              font-weight: 700;
+              font-size: 0.85rem;
+              padding: 0.65rem 1.5rem;
+              border-radius: 12px;
+              text-decoration: none;
+              letter-spacing: 0.05em;
+              transition: all 0.2s;
+            "
+            onmouseover="this.style.background = 'rgba(0,212,255,0.2)'"
+            onmouseout="this.style.background = 'rgba(0,212,255,0.12)'"
+            >Read the .geo Manifesto →</a
+          >
+          <a
+            href="/aiosdream"
+            style="
+              background: transparent;
+              border: 1px solid rgba(255, 255, 255, 0.1);
+              color: rgba(232, 232, 240, 0.7);
+              font-weight: 600;
+              font-size: 0.85rem;
+              padding: 0.65rem 1.5rem;
+              border-radius: 12px;
+              text-decoration: none;
+              letter-spacing: 0.04em;
+            "
+            onmouseover="this.style.borderColor = 'rgba(255,255,255,0.25)'"
+            onmouseout="this.style.borderColor = 'rgba(255,255,255,0.1)'"
+            >▶ Watch Live .geo</a
+          >
         </div>
       </div>
 
       <script>
-        (function() {
+        (function () {
           var rows = [
-            ['Compression',    '150:1',              '1,600,000:1',     true ],
-            ['File size (60min 4K)', '22.4 GB',     '14.2 KB',          true ],
-            ['Resolution',     'Fixed (4K cap)',     '∞ Render-native',  true ],
-            ['Frame rate',     '120 fps max',        '∞ device rAF',     true ],
-            ['Nature',         'Recorded (dead)',    'Rendered (alive)', true ],
-            ['Personalised',   'No — same for all', 'Yes — unique every time',true],
-            ['Patent-free',    'No',                 'Yes — forever',    true ],
-            ['Evolves',        'No',                 'Yes — every frame',true ],
-            ['File on disk',   'Yes — 22 GB',       'No — 14 KB spec',  true ],
-            ['Generated by',   'Camera + crew',     'AIOSProducerSwarm',true ],
+            ["Compression", "150:1", "1,600,000:1", true],
+            ["File size (60min 4K)", "22.4 GB", "14.2 KB", true],
+            ["Resolution", "Fixed (4K cap)", "∞ Render-native", true],
+            ["Frame rate", "120 fps max", "∞ device rAF", true],
+            ["Nature", "Recorded (dead)", "Rendered (alive)", true],
+            [
+              "Personalised",
+              "No — same for all",
+              "Yes — unique every time",
+              true,
+            ],
+            ["Patent-free", "No", "Yes — forever", true],
+            ["Evolves", "No", "Yes — every frame", true],
+            ["File on disk", "Yes — 22 GB", "No — 14 KB spec", true],
+            ["Generated by", "Camera + crew", "AIOSProducerSwarm", true],
           ];
-          var container = document.getElementById('gvmp-rows');
+          var container = document.getElementById("gvmp-rows");
           if (!container) return;
-          rows.forEach(function(r, i) {
-            var bg = i%2===0 ? 'rgba(0,0,0,0)' : 'rgba(255,255,255,0.016)';
-            container.innerHTML += '<div style="display:grid;grid-template-columns:1fr 60px 1fr;background:'+bg+';border-top:1px solid rgba(255,255,255,0.04)">'
-              +'<div style="padding:0.65rem 1.2rem;font-size:0.82rem;color:rgba(239,68,68,0.7);background:rgba(15,8,8,0.6);border-right:1px solid rgba(255,255,255,0.04)">'+r[1]+'</div>'
-              +'<div style="background:rgba(6,4,16,0.9);border-right:1px solid rgba(255,255,255,0.04);display:flex;align-items:center;justify-content:center"><span style="font-size:0.6rem;font-weight:700;color:rgba(232,232,240,0.15)">'+r[0]+'</span></div>'
-              +'<div style="padding:0.65rem 1.2rem;font-size:0.82rem;color:rgba(0,212,255,0.85);font-weight:600;background:rgba(4,10,20,0.7)">'+r[2]+'</div>'
-              +'</div>';
+          rows.forEach(function (r, i) {
+            var bg = i % 2 === 0 ? "rgba(0,0,0,0)" : "rgba(255,255,255,0.016)";
+            container.innerHTML +=
+              '<div style="display:grid;grid-template-columns:1fr 60px 1fr;background:' +
+              bg +
+              ';border-top:1px solid rgba(255,255,255,0.04)">' +
+              '<div style="padding:0.65rem 1.2rem;font-size:0.82rem;color:rgba(239,68,68,0.7);background:rgba(15,8,8,0.6);border-right:1px solid rgba(255,255,255,0.04)">' +
+              r[1] +
+              "</div>" +
+              '<div style="background:rgba(6,4,16,0.9);border-right:1px solid rgba(255,255,255,0.04);display:flex;align-items:center;justify-content:center"><span style="font-size:0.6rem;font-weight:700;color:rgba(232,232,240,0.15)">' +
+              r[0] +
+              "</span></div>" +
+              '<div style="padding:0.65rem 1.2rem;font-size:0.82rem;color:rgba(0,212,255,0.85);font-weight:600;background:rgba(4,10,20,0.7)">' +
+              r[2] +
+              "</div>" +
+              "</div>";
           });
 
           // Animate ratio counter on scroll
           var animated = false;
           function animateRatio() {
-            if (animated) return; animated = true;
-            var el = document.getElementById('gvmp-ratio');
-            var bar = document.getElementById('gvmp-bar');
-            if (bar) bar.style.width = '99.994%';
-            var start = 0, target = 1600000, dur = 2200, t0 = Date.now();
-            var raf = function() {
-              var p = Math.min(1, (Date.now()-t0)/dur);
-              var val = Math.round(p*p*target);
-              if (el) el.textContent = val >= 1000 ? (val>=1000000?(val/1000000).toFixed(2)+'M':(val/1000).toFixed(0)+'K') : val;
+            if (animated) return;
+            animated = true;
+            var el = document.getElementById("gvmp-ratio");
+            var bar = document.getElementById("gvmp-bar");
+            if (bar) bar.style.width = "99.994%";
+            var start = 0,
+              target = 1600000,
+              dur = 2200,
+              t0 = Date.now();
+            var raf = function () {
+              var p = Math.min(1, (Date.now() - t0) / dur);
+              var val = Math.round(p * p * target);
+              if (el)
+                el.textContent =
+                  val >= 1000
+                    ? val >= 1000000
+                      ? (val / 1000000).toFixed(2) + "M"
+                      : (val / 1000).toFixed(0) + "K"
+                    : val;
               if (p < 1) requestAnimationFrame(raf);
             };
             requestAnimationFrame(raf);
           }
-          var obs = new IntersectionObserver(function(entries){if(entries[0].isIntersecting)animateRatio();},{threshold:0.3});
-          var sec = document.getElementById('geo-vs-mp4');
+          var obs = new IntersectionObserver(
+            function (entries) {
+              if (entries[0].isIntersecting) animateRatio();
+            },
+            { threshold: 0.3 },
+          );
+          var sec = document.getElementById("geo-vs-mp4");
           if (sec) obs.observe(sec);
 
           // .geo live mini canvas
-          var cv = document.getElementById('gvmp-cv');
+          var cv = document.getElementById("gvmp-cv");
           if (!cv) return;
-          var ctx2 = cv.getContext('2d'), W=180, H=102;
-          cv.width=W; cv.height=H;
-          var pts = Array.from({length:60},function(){return{x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-0.5)*0.5,vy:(Math.random()-0.5)*0.5,hue:160+Math.random()*80,r:0.8+Math.random()*1.2};});
-          var T2=0;
-          setInterval(function(){
-            ctx2.fillStyle='rgba(2,8,20,0.18)';ctx2.fillRect(0,0,W,H);
-            for(var i=0;i<pts.length;i++){var p=pts[i];p.x+=p.vx;p.y+=p.vy;
-              if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;
-              ctx2.globalAlpha=0.7+0.3*Math.sin(T2*2+i);ctx2.fillStyle='hsl('+(p.hue+T2*0.3)+',85%,60%)';
-              ctx2.beginPath();ctx2.arc(p.x,p.y,p.r,0,Math.PI*2);ctx2.fill();
+          var ctx2 = cv.getContext("2d"),
+            W = 180,
+            H = 102;
+          cv.width = W;
+          cv.height = H;
+          var pts = Array.from({ length: 60 }, function () {
+            return {
+              x: Math.random() * W,
+              y: Math.random() * H,
+              vx: (Math.random() - 0.5) * 0.5,
+              vy: (Math.random() - 0.5) * 0.5,
+              hue: 160 + Math.random() * 80,
+              r: 0.8 + Math.random() * 1.2,
+            };
+          });
+          var T2 = 0;
+          setInterval(function () {
+            ctx2.fillStyle = "rgba(2,8,20,0.18)";
+            ctx2.fillRect(0, 0, W, H);
+            for (var i = 0; i < pts.length; i++) {
+              var p = pts[i];
+              p.x += p.vx;
+              p.y += p.vy;
+              if (p.x < 0 || p.x > W) p.vx *= -1;
+              if (p.y < 0 || p.y > H) p.vy *= -1;
+              ctx2.globalAlpha = 0.7 + 0.3 * Math.sin(T2 * 2 + i);
+              ctx2.fillStyle = "hsl(" + (p.hue + T2 * 0.3) + ",85%,60%)";
+              ctx2.beginPath();
+              ctx2.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+              ctx2.fill();
             }
-            ctx2.globalAlpha=1;T2+=0.018;
-          },20);
+            ctx2.globalAlpha = 1;
+            T2 += 0.018;
+          }, 20);
         })();
       </script>
     </section>
 
     <!-- -- AIOS AV OS PLATFORM -- -->
-    <section style="background:linear-gradient(180deg,#070710 0%,#0a0a1c 100%);padding:5rem 1rem 4rem;position:relative;overflow:hidden">
-      <div style="position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(0,212,255,0.04) 0%,transparent 70%);pointer-events:none"></div>
-      <div style="max-width:1100px;margin:0 auto;text-align:center;position:relative">
-        <div style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.2);padding:0.3rem 0.9rem;border-radius:20px;font-size:0.72rem;font-weight:700;letter-spacing:0.12em;color:#00d4ff;text-transform:uppercase;margin-bottom:1.2rem">
-          <span style="width:7px;height:7px;border-radius:50%;background:#00d4ff;animation:_aavpulse 2s ease-in-out infinite"></span>
+    <section
+      style="
+        background: linear-gradient(180deg, #070710 0%, #0a0a1c 100%);
+        padding: 5rem 1rem 4rem;
+        position: relative;
+        overflow: hidden;
+      "
+    >
+      <div
+        style="
+          position: absolute;
+          inset: 0;
+          background: radial-gradient(
+            ellipse 80% 60% at 50% 50%,
+            rgba(0, 212, 255, 0.04) 0%,
+            transparent 70%
+          );
+          pointer-events: none;
+        "
+      ></div>
+      <div
+        style="
+          max-width: 1100px;
+          margin: 0 auto;
+          text-align: center;
+          position: relative;
+        "
+      >
+        <div
+          style="
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(0, 212, 255, 0.08);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            padding: 0.3rem 0.9rem;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            color: #00d4ff;
+            text-transform: uppercase;
+            margin-bottom: 1.2rem;
+          "
+        >
+          <span
+            style="
+              width: 7px;
+              height: 7px;
+              border-radius: 50%;
+              background: #00d4ff;
+              animation: _aavpulse 2s ease-in-out infinite;
+            "
+          ></span>
           AIOS AV OS — The AI-Native Audiovisual Platform
         </div>
-        <h2 style="font-size:2.6rem;font-weight:800;letter-spacing:-0.03em;line-height:1.1;margin-bottom:1rem;background:linear-gradient(135deg,#edf4ff 40%,#00d4ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">The World's First AI-Native<br>Audiovisual Operating System</h2>
-        <p style="color:rgba(237,244,255,0.5);font-size:1rem;max-width:580px;margin:0 auto 3rem;line-height:1.7">Five interconnected platforms. Every frame rendered by AI. Every sound generated from solfeggio mathematics. Zero pre-recorded media. Pure intelligence.</p>
+        <h2
+          style="
+            font-size: 2.6rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #edf4ff 40%, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+          "
+        >
+          The World's First AI-Native<br />Audiovisual Operating System
+        </h2>
+        <p
+          style="
+            color: rgba(237, 244, 255, 0.5);
+            font-size: 1rem;
+            max-width: 580px;
+            margin: 0 auto 3rem;
+            line-height: 1.7;
+          "
+        >
+          Five interconnected platforms. Every frame rendered by AI. Every sound
+          generated from solfeggio mathematics. Zero pre-recorded media. Pure
+          intelligence.
+        </p>
 
         <!-- 5 PILLAR CARDS -->
         <style>
-          @keyframes _aavpulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.7)}}
-          .av-pillar{background:rgba(13,13,28,0.9);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:1.5rem;text-align:left;transition:transform 0.25s,border-color 0.25s,box-shadow 0.25s;text-decoration:none;display:block;position:relative;overflow:hidden}
-          .av-pillar:hover{transform:translateY(-5px) scale(1.01);box-shadow:0 14px 48px rgba(0,0,0,0.35);text-decoration:none}
-          .av-pillar-canvas{width:100%;height:110px;border-radius:8px;margin-bottom:1rem;display:block}
-          .av-pillar-icon{font-size:1.6rem;margin-bottom:0.5rem}
-          .av-pillar-title{font-size:1rem;font-weight:700;color:#edf4ff;margin-bottom:0.3rem}
-          .av-pillar-desc{font-size:0.78rem;color:rgba(237,244,255,0.45);line-height:1.55}
-          .av-pillar-badge{position:absolute;top:12px;right:12px;font-size:0.6rem;font-weight:700;padding:0.2rem 0.5rem;border-radius:10px;letter-spacing:0.08em;text-transform:uppercase}
+          @keyframes _aavpulse {
+            0%,
+            100% {
+              opacity: 1;
+              transform: scale(1);
+            }
+            50% {
+              opacity: 0.5;
+              transform: scale(0.7);
+            }
+          }
+          .av-pillar {
+            background: rgba(13, 13, 28, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: left;
+            transition:
+              transform 0.25s,
+              border-color 0.25s,
+              box-shadow 0.25s;
+            text-decoration: none;
+            display: block;
+            position: relative;
+            overflow: hidden;
+          }
+          .av-pillar:hover {
+            transform: translateY(-5px) scale(1.01);
+            box-shadow: 0 14px 48px rgba(0, 0, 0, 0.35);
+            text-decoration: none;
+          }
+          .av-pillar-canvas {
+            width: 100%;
+            height: 110px;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: block;
+          }
+          .av-pillar-icon {
+            font-size: 1.6rem;
+            margin-bottom: 0.5rem;
+          }
+          .av-pillar-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #edf4ff;
+            margin-bottom: 0.3rem;
+          }
+          .av-pillar-desc {
+            font-size: 0.78rem;
+            color: rgba(237, 244, 255, 0.45);
+            line-height: 1.55;
+          }
+          .av-pillar-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            font-size: 0.6rem;
+            font-weight: 700;
+            padding: 0.2rem 0.5rem;
+            border-radius: 10px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+          }
         </style>
 
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-bottom:2.5rem">
-
+        <div
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+          "
+        >
           <!-- THEATRE -->
-          <a href="/aiosdream" class="av-pillar" style="border-color:rgba(0,212,255,0.2)">
-            <div class="av-pillar-badge" style="background:rgba(0,212,255,0.15);border:1px solid rgba(0,212,255,0.3);color:#00d4ff">LIVE</div>
+          <a
+            href="/aiosdream"
+            class="av-pillar"
+            style="border-color: rgba(0, 212, 255, 0.2)"
+          >
+            <div
+              class="av-pillar-badge"
+              style="
+                background: rgba(0, 212, 255, 0.15);
+                border: 1px solid rgba(0, 212, 255, 0.3);
+                color: #00d4ff;
+              "
+            >
+              LIVE
+            </div>
             <canvas class="av-pillar-canvas" id="pcanvas-theatre"></canvas>
             <div class="av-pillar-icon">▶</div>
-            <div class="av-pillar-title" style="color:#00d4ff">Theatre</div>
-            <div class="av-pillar-desc">15 AI-rendered generative films. Zero pixels — pure mathematical art. Stream any time.</div>
+            <div class="av-pillar-title" style="color: #00d4ff">Theatre</div>
+            <div class="av-pillar-desc">
+              15 AI-rendered generative films. Zero pixels — pure mathematical
+              art. Stream any time.
+            </div>
           </a>
 
           <!-- LIBRARY -->
-          <a href="/geo-library" class="av-pillar" style="border-color:rgba(0,245,212,0.15)">
-            <div class="av-pillar-badge" style="background:rgba(0,245,212,0.12);border:1px solid rgba(0,245,212,0.25);color:#00f5d4">24/7</div>
+          <a
+            href="/geo-library"
+            class="av-pillar"
+            style="border-color: rgba(0, 245, 212, 0.15)"
+          >
+            <div
+              class="av-pillar-badge"
+              style="
+                background: rgba(0, 245, 212, 0.12);
+                border: 1px solid rgba(0, 245, 212, 0.25);
+                color: #00f5d4;
+              "
+            >
+              24/7
+            </div>
             <canvas class="av-pillar-canvas" id="pcanvas-library"></canvas>
             <div class="av-pillar-icon">📚</div>
-            <div class="av-pillar-title" style="color:#00f5d4">.geo Library</div>
-            <div class="av-pillar-desc">AIOSProducerSwarm builds new programmes every 2 minutes. A growing Netflix of AI-native content.</div>
+            <div class="av-pillar-title" style="color: #00f5d4">
+              .geo Library
+            </div>
+            <div class="av-pillar-desc">
+              AIOSProducerSwarm builds new programmes every 2 minutes. A growing
+              Netflix of AI-native content.
+            </div>
           </a>
 
           <!-- STUDIO -->
-          <a href="/aios-studio" class="av-pillar" style="border-color:rgba(251,191,36,0.15)">
-            <div class="av-pillar-badge" style="background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.25);color:#fbbf24">SWARM</div>
+          <a
+            href="/aios-studio"
+            class="av-pillar"
+            style="border-color: rgba(251, 191, 36, 0.15)"
+          >
+            <div
+              class="av-pillar-badge"
+              style="
+                background: rgba(251, 191, 36, 0.12);
+                border: 1px solid rgba(251, 191, 36, 0.25);
+                color: #fbbf24;
+              "
+            >
+              SWARM
+            </div>
             <canvas class="av-pillar-canvas" id="pcanvas-studio"></canvas>
             <div class="av-pillar-icon">⚡</div>
-            <div class="av-pillar-title" style="color:#fbbf24">Producer Studio</div>
-            <div class="av-pillar-desc">7-agent production swarm. Like Pixar — but autonomous, infinite, and AI-native all the way down.</div>
+            <div class="av-pillar-title" style="color: #fbbf24">
+              Producer Studio
+            </div>
+            <div class="av-pillar-desc">
+              7-agent production swarm. Like Pixar — but autonomous, infinite,
+              and AI-native all the way down.
+            </div>
           </a>
 
           <!-- GEO STANDARD -->
-          <a href="/geo-codec" class="av-pillar" style="border-color:rgba(155,77,255,0.2)">
-            <div class="av-pillar-badge" style="background:rgba(155,77,255,0.12);border:1px solid rgba(155,77,255,0.25);color:#c084fc">OPEN</div>
+          <a
+            href="/geo-codec"
+            class="av-pillar"
+            style="border-color: rgba(155, 77, 255, 0.2)"
+          >
+            <div
+              class="av-pillar-badge"
+              style="
+                background: rgba(155, 77, 255, 0.12);
+                border: 1px solid rgba(155, 77, 255, 0.25);
+                color: #c084fc;
+              "
+            >
+              OPEN
+            </div>
             <canvas class="av-pillar-canvas" id="pcanvas-geo"></canvas>
             <div class="av-pillar-icon">●</div>
-            <div class="av-pillar-title" style="color:#c084fc">.geo Standard</div>
-            <div class="av-pillar-desc">14 KB vs 22 GB. The AIOS-native format that makes mp4 obsolete. Infinite resolution. Zero waste.</div>
+            <div class="av-pillar-title" style="color: #c084fc">
+              .geo Standard
+            </div>
+            <div class="av-pillar-desc">
+              14 KB vs 22 GB. The AIOS-native format that makes mp4 obsolete.
+              Infinite resolution. Zero waste.
+            </div>
           </a>
 
           <!-- VR OCULIS -->
-          <a href="/vr-hub" class="av-pillar" style="border-color:rgba(129,140,248,0.18)">
-            <div class="av-pillar-badge" style="background:rgba(129,140,248,0.12);border:1px solid rgba(129,140,248,0.25);color:#818cf8">VR</div>
+          <a
+            href="/vr-hub"
+            class="av-pillar"
+            style="border-color: rgba(129, 140, 248, 0.18)"
+          >
+            <div
+              class="av-pillar-badge"
+              style="
+                background: rgba(129, 140, 248, 0.12);
+                border: 1px solid rgba(129, 140, 248, 0.25);
+                color: #818cf8;
+              "
+            >
+              VR
+            </div>
             <canvas class="av-pillar-canvas" id="pcanvas-vr"></canvas>
             <div class="av-pillar-icon">🥽</div>
-            <div class="av-pillar-title" style="color:#818cf8">AIOSOCULIS</div>
-            <div class="av-pillar-desc">23 live WebXR experiences. Open realaios.com/vr on Meta Quest. No install needed.</div>
+            <div class="av-pillar-title" style="color: #818cf8">AIOSOCULIS</div>
+            <div class="av-pillar-desc">
+              23 live WebXR experiences. Open realaios.com/vr on Meta Quest. No
+              install needed.
+            </div>
           </a>
-
         </div>
 
-        <a href="/aiosdream" style="display:inline-block;background:linear-gradient(135deg,#00d4ff,#9b4dff);color:#fff;font-size:0.88rem;font-weight:700;padding:0.7rem 2rem;border-radius:24px;text-decoration:none;letter-spacing:0.04em;box-shadow:0 4px 24px rgba(0,212,255,0.3)">▶ Enter the Theatre →</a>
+        <a
+          href="/aiosdream"
+          style="
+            display: inline-block;
+            background: linear-gradient(135deg, #00d4ff, #9b4dff);
+            color: #fff;
+            font-size: 0.88rem;
+            font-weight: 700;
+            padding: 0.7rem 2rem;
+            border-radius: 24px;
+            text-decoration: none;
+            letter-spacing: 0.04em;
+            box-shadow: 0 4px 24px rgba(0, 212, 255, 0.3);
+          "
+          >▶ Enter the Theatre →</a
+        >
       </div>
 
       <script>
-      // Mini pillar canvas renderers
-      (function() {
-        function mkRenderer(canvasId, renderFn) {
-          var cv = document.getElementById(canvasId);
-          if (!cv) return;
-          var ctx = cv.getContext('2d');
-          var w = cv.width = cv.offsetWidth || 200;
-          var h = cv.height = 110;
-          var t = Math.random() * 100;
-          function loop() {
-            renderFn(ctx, w, h, t);
-            t += 0.06;
-            requestAnimationFrame(loop);
+        // Mini pillar canvas renderers
+        (function () {
+          function mkRenderer(canvasId, renderFn) {
+            var cv = document.getElementById(canvasId);
+            if (!cv) return;
+            var ctx = cv.getContext("2d");
+            var w = (cv.width = cv.offsetWidth || 200);
+            var h = (cv.height = 110);
+            var t = Math.random() * 100;
+            function loop() {
+              renderFn(ctx, w, h, t);
+              t += 0.06;
+              requestAnimationFrame(loop);
+            }
+            loop();
           }
-          loop();
-        }
 
-        mkRenderer('pcanvas-theatre', function(ctx, w, h, t) {
-          ctx.fillStyle = 'rgba(0,0,0,0.15)'; ctx.fillRect(0,0,w,h);
-          var fs = 8, cols = Math.floor(w/fs);
-          if (!ctx._d) ctx._d = Array.from({length:cols},function(){return Math.random()*-h;});
-          ctx.font = fs+'px monospace';
-          ctx._d.forEach(function(y,i){
-            ctx.fillStyle='rgba(0,'+(Math.floor(150+Math.random()*100))+',70,0.85)';
-            ctx.fillText(String.fromCharCode(0x30A0+Math.random()*96),i*fs,y);
-            ctx._d[i]=y>h?0:y+fs*(0.7+Math.random()*0.5);
+          mkRenderer("pcanvas-theatre", function (ctx, w, h, t) {
+            ctx.fillStyle = "rgba(0,0,0,0.15)";
+            ctx.fillRect(0, 0, w, h);
+            var fs = 8,
+              cols = Math.floor(w / fs);
+            if (!ctx._d)
+              ctx._d = Array.from({ length: cols }, function () {
+                return Math.random() * -h;
+              });
+            ctx.font = fs + "px monospace";
+            ctx._d.forEach(function (y, i) {
+              ctx.fillStyle =
+                "rgba(0," + Math.floor(150 + Math.random() * 100) + ",70,0.85)";
+              ctx.fillText(
+                String.fromCharCode(0x30a0 + Math.random() * 96),
+                i * fs,
+                y,
+              );
+              ctx._d[i] = y > h ? 0 : y + fs * (0.7 + Math.random() * 0.5);
+            });
           });
-        });
 
-        mkRenderer('pcanvas-library', function(ctx, w, h, t) {
-          ctx.fillStyle='rgba(0,5,15,0.18)';ctx.fillRect(0,0,w,h);
-          for(var i=0;i<14;i++){
-            var x=(i/14)*w;
-            var shift=Math.sin(t*0.45+i*0.55)*h*0.2;
-            var hue=155+i*7;
-            var alpha=0.35+0.2*Math.sin(t*0.4+i);
-            var g=ctx.createLinearGradient(x,h*0.2+shift,x,h*0.8+shift);
-            g.addColorStop(0,'transparent');
-            g.addColorStop(0.3,'hsla('+hue+',85%,60%,'+alpha+')');
-            g.addColorStop(0.7,'hsla('+(hue+20)+',65%,45%,'+(alpha*0.4)+')');
-            g.addColorStop(1,'transparent');
-            ctx.fillStyle=g;ctx.fillRect(x,0,w/14+1,h);
-          }
-        });
-
-        mkRenderer('pcanvas-studio', function(ctx, w, h, t) {
-          ctx.fillStyle='rgba(0,0,12,0.2)';ctx.fillRect(0,0,w,h);
-          for(var i=0;i<35;i++){
-            var life=((t*0.5+i*0.22)%3)/3;
-            var x=w/2+(Math.sin(i*1.3+t)*w*0.3)*(1-life);
-            var y=h-(life*h);
-            var g2=Math.floor(life*255);
-            ctx.fillStyle='rgba(255,'+g2+',0,'+(0.6*(1-life))+')';
-            ctx.beginPath();ctx.arc(x,y,2+life*3,0,Math.PI*2);ctx.fill();
-          }
-        });
-
-        mkRenderer('pcanvas-geo', function(ctx, w, h, t) {
-          ctx.fillStyle='rgba(0,0,12,0.2)';ctx.fillRect(0,0,w,h);
-          var cx=w/2,cy=h/2;
-          for(var r=0;r<4;r++){
-            var rad=10+r*12,speed=(4-r)*0.1,off=r*Math.PI/3;
-            var px=cx+rad*Math.cos(t*speed+off),py=cy+rad*Math.sin(t*speed*0.618+off);
-            var g3=ctx.createRadialGradient(px,py,0,px,py,10);
-            g3.addColorStop(0,'rgba(155,77,255,0.9)');g3.addColorStop(1,'transparent');
-            ctx.fillStyle=g3;ctx.beginPath();ctx.arc(px,py,10,0,Math.PI*2);ctx.fill();
-          }
-        });
-
-        mkRenderer('pcanvas-vr', function(ctx, w, h, t) {
-          ctx.fillStyle='rgba(0,0,14,0.18)';ctx.fillRect(0,0,w,h);
-          if(!ctx._stars){ctx._stars=Array.from({length:60},function(){return{x:(Math.random()-0.5)*w*2,y:(Math.random()-0.5)*h*2,z:Math.random()*w,pz:0};});}
-          ctx._stars.forEach(function(s){
-            s.pz=s.z;s.z-=4;if(s.z<=0){s.x=(Math.random()-0.5)*w*2;s.y=(Math.random()-0.5)*h*2;s.z=w;s.pz=w;}
-            var sx=s.x/s.z*w+w/2,sy=s.y/s.z*h+h/2;
-            var px=s.x/s.pz*w+w/2,py=s.y/s.pz*h+h/2;
-            var br=Math.max(0,1-s.z/w);
-            ctx.strokeStyle='rgba(160,180,255,'+(br*0.7)+')';ctx.lineWidth=br*1.2;
-            ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(sx,sy);ctx.stroke();
+          mkRenderer("pcanvas-library", function (ctx, w, h, t) {
+            ctx.fillStyle = "rgba(0,5,15,0.18)";
+            ctx.fillRect(0, 0, w, h);
+            for (var i = 0; i < 14; i++) {
+              var x = (i / 14) * w;
+              var shift = Math.sin(t * 0.45 + i * 0.55) * h * 0.2;
+              var hue = 155 + i * 7;
+              var alpha = 0.35 + 0.2 * Math.sin(t * 0.4 + i);
+              var g = ctx.createLinearGradient(
+                x,
+                h * 0.2 + shift,
+                x,
+                h * 0.8 + shift,
+              );
+              g.addColorStop(0, "transparent");
+              g.addColorStop(0.3, "hsla(" + hue + ",85%,60%," + alpha + ")");
+              g.addColorStop(
+                0.7,
+                "hsla(" + (hue + 20) + ",65%,45%," + alpha * 0.4 + ")",
+              );
+              g.addColorStop(1, "transparent");
+              ctx.fillStyle = g;
+              ctx.fillRect(x, 0, w / 14 + 1, h);
+            }
           });
-        });
-      })();
+
+          mkRenderer("pcanvas-studio", function (ctx, w, h, t) {
+            ctx.fillStyle = "rgba(0,0,12,0.2)";
+            ctx.fillRect(0, 0, w, h);
+            for (var i = 0; i < 35; i++) {
+              var life = ((t * 0.5 + i * 0.22) % 3) / 3;
+              var x = w / 2 + Math.sin(i * 1.3 + t) * w * 0.3 * (1 - life);
+              var y = h - life * h;
+              var g2 = Math.floor(life * 255);
+              ctx.fillStyle = "rgba(255," + g2 + ",0," + 0.6 * (1 - life) + ")";
+              ctx.beginPath();
+              ctx.arc(x, y, 2 + life * 3, 0, Math.PI * 2);
+              ctx.fill();
+            }
+          });
+
+          mkRenderer("pcanvas-geo", function (ctx, w, h, t) {
+            ctx.fillStyle = "rgba(0,0,12,0.2)";
+            ctx.fillRect(0, 0, w, h);
+            var cx = w / 2,
+              cy = h / 2;
+            for (var r = 0; r < 4; r++) {
+              var rad = 10 + r * 12,
+                speed = (4 - r) * 0.1,
+                off = (r * Math.PI) / 3;
+              var px = cx + rad * Math.cos(t * speed + off),
+                py = cy + rad * Math.sin(t * speed * 0.618 + off);
+              var g3 = ctx.createRadialGradient(px, py, 0, px, py, 10);
+              g3.addColorStop(0, "rgba(155,77,255,0.9)");
+              g3.addColorStop(1, "transparent");
+              ctx.fillStyle = g3;
+              ctx.beginPath();
+              ctx.arc(px, py, 10, 0, Math.PI * 2);
+              ctx.fill();
+            }
+          });
+
+          mkRenderer("pcanvas-vr", function (ctx, w, h, t) {
+            ctx.fillStyle = "rgba(0,0,14,0.18)";
+            ctx.fillRect(0, 0, w, h);
+            if (!ctx._stars) {
+              ctx._stars = Array.from({ length: 60 }, function () {
+                return {
+                  x: (Math.random() - 0.5) * w * 2,
+                  y: (Math.random() - 0.5) * h * 2,
+                  z: Math.random() * w,
+                  pz: 0,
+                };
+              });
+            }
+            ctx._stars.forEach(function (s) {
+              s.pz = s.z;
+              s.z -= 4;
+              if (s.z <= 0) {
+                s.x = (Math.random() - 0.5) * w * 2;
+                s.y = (Math.random() - 0.5) * h * 2;
+                s.z = w;
+                s.pz = w;
+              }
+              var sx = (s.x / s.z) * w + w / 2,
+                sy = (s.y / s.z) * h + h / 2;
+              var px = (s.x / s.pz) * w + w / 2,
+                py = (s.y / s.pz) * h + h / 2;
+              var br = Math.max(0, 1 - s.z / w);
+              ctx.strokeStyle = "rgba(160,180,255," + br * 0.7 + ")";
+              ctx.lineWidth = br * 1.2;
+              ctx.beginPath();
+              ctx.moveTo(px, py);
+              ctx.lineTo(sx, sy);
+              ctx.stroke();
+            });
+          });
+        })();
       </script>
     </section>
 
@@ -2117,6 +2935,22 @@
             </p>
             <a href="/waitlist" class="product-cta" data-product="FreqMatch"
               >Join Waitlist</a
+            >
+          </div>
+
+          <!-- NEXGEN Gaming Hub -->
+          <div class="product-card">
+            <div class="product-card-header">
+              <div class="product-icon lime">🎮</div>
+              <h3>NEXGEN Gaming Hub</h3>
+            </div>
+            <p class="product-tagline">
+              Sentient Player Characters powered by the Merkaba lattice. D8, D26
+              &amp; D48 agent arenas, Resonance Match, Cluster Builder, Chaos
+              Mode, Music Mode, and live Data Adventures — all inside AIOS.
+            </p>
+            <a href="/aios-playground" class="product-cta" style="background: rgba(85,255,136,0.15); color: #55ff88; border-color: rgba(85,255,136,0.3)"
+              >Play Now →</a
             >
           </div>
         </div>
@@ -3254,7 +4088,9 @@
               >
             </li>
             <li>
-              <a href="/news" style="color: #00d4ff">📰 AIOS News — build log</a>
+              <a href="/news" style="color: #00d4ff"
+                >📰 AIOS News — build log</a
+              >
             </li>
             <li>
               <a href="mailto:storm.s4ai@gmail.com" style="color: #00d4ff"
@@ -3666,6 +4502,7 @@
         <a href="/news">News</a>
         <a href="/aiosdream">✨ AIOSdream</a>
         <a href="/plaistore">🛍️ PLAIstore</a>
+        <a href="/aios-playground">🎮 NEXGEN</a>
         <a href="/products">📦 Products</a>
         <a href="/ai">For AIs</a>
         <a
