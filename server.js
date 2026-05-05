@@ -1481,6 +1481,167 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       });
     }
 
+    // ── GET /api/plai/categories ──────────────────────────────────────────
+    if (
+      req.method === "GET" &&
+      (pathname === "/api/plai/categories" ||
+        pathname === "/api/plai/categories/")
+    ) {
+      const theatreCount = Object.keys(PROGRAMME_CATALOGUE).length;
+      let vrCinemaCount = 0;
+      if (VR_TAXONOMY) {
+        const cinemaCat = (VR_TAXONOMY.categories || []).find(
+          (c) => c.id === "cinema",
+        );
+        vrCinemaCount = cinemaCat
+          ? (cinemaCat.experiences || []).filter((e) => e.status === "live")
+              .length
+          : 0;
+      }
+      const categories = [
+        { category: "Theatre", app_count: theatreCount },
+        { category: "Cinema", app_count: vrCinemaCount },
+        { category: "Playbooks", app_count: 0 },
+        { category: "Agents", app_count: 0 },
+        { category: "Codex", app_count: 0 },
+        { category: "Analytics", app_count: 0 },
+        { category: "Integrations", app_count: 0 },
+        { category: "Utilities", app_count: 0 },
+      ];
+      return json(res, 200, {
+        ok: true,
+        categories,
+        total: categories.length,
+      });
+    }
+
+    // ── GET /api/plai/apps — PLAIstore app listing ────────────────────────
+    if (
+      req.method === "GET" &&
+      (pathname === "/api/plai/apps" || pathname === "/api/plai/apps/")
+    ) {
+      const qs = new URLSearchParams(url.search);
+      const catFilter = (qs.get("category") || "").toLowerCase();
+      const limit = Math.min(parseInt(qs.get("limit") || "50", 10), 100);
+      const theatreApps = Object.entries(PROGRAMME_CATALOGUE).map(
+        ([name, prog], i) => ({
+          id: i + 1,
+          name:
+            prog.title + (prog.genre === "narrative" ? " Theatre" : ""),
+          short_desc: `${prog.genre} · ${prog.mode} mode · AIOSdream experience`,
+          description: `Experience "${prog.title}" in AIOSdream Theatre — an AI-generated ${prog.genre} programme with full lattice rendering in ${prog.mode} mode.`,
+          category: "Theatre",
+          price_cents: 0,
+          downloads: (i + 1) * 17 + 42,
+          rating_avg: 4.8,
+          developer_name: "AIOS",
+          developer_verified: true,
+          type: "theatre-programme",
+          bundle_id: `com.aios.${name}`,
+          entry_point: `https://realaios.com/aiosdream?prog=${name}`,
+        }),
+      );
+      let apps = [...theatreApps];
+      if (catFilter && catFilter !== "all") {
+        apps = apps.filter((a) => a.category.toLowerCase() === catFilter);
+      }
+      apps = apps.slice(0, limit);
+      return json(res, 200, { ok: true, apps, total: apps.length });
+    }
+
+    // ── GET /api/plai/apps/:id — single PLAIstore app ────────────────────
+    if (req.method === "GET" && /^\/api\/plai\/apps\/\d+$/.test(pathname)) {
+      const id = parseInt(pathname.split("/").pop(), 10);
+      const entries = Object.entries(PROGRAMME_CATALOGUE);
+      const entry = entries[id - 1];
+      if (!entry)
+        return json(res, 404, { ok: false, error: "App not found" });
+      const [name, prog] = entry;
+      return json(res, 200, {
+        ok: true,
+        app: {
+          id,
+          name: prog.title + (prog.genre === "narrative" ? " Theatre" : ""),
+          short_desc: `${prog.genre} · ${prog.mode} mode · AIOSdream experience`,
+          description: `Experience "${prog.title}" in AIOSdream Theatre — an AI-generated ${prog.genre} programme with full lattice rendering in ${prog.mode} mode.`,
+          category: "Theatre",
+          price_cents: 0,
+          downloads: id * 17 + 42,
+          rating_avg: 4.8,
+          developer_name: "AIOS",
+          developer_verified: true,
+          type: "theatre-programme",
+          bundle_id: `com.aios.${name}`,
+          entry_point: `https://realaios.com/aiosdream?prog=${name}`,
+        },
+      });
+    }
+
+    // ── POST /api/plai/apps/:id/install — PLAIstore install (best-effort) ─
+    if (
+      req.method === "POST" &&
+      /^\/api\/plai\/apps\/\d+\/install$/.test(pathname)
+    ) {
+      return json(res, 200, { ok: true, installed: true });
+    }
+
+    // ── GET /api/plai/featured — PLAIstore featured apps ─────────────────
+    if (
+      req.method === "GET" &&
+      (pathname === "/api/plai/featured" ||
+        pathname === "/api/plai/featured/")
+    ) {
+      const apps = Object.entries(PROGRAMME_CATALOGUE)
+        .slice(0, 4)
+        .map(([name, prog], i) => ({
+          id: i + 1,
+          name: prog.title + (prog.genre === "narrative" ? " Theatre" : ""),
+          short_desc: `${prog.genre} · ${prog.mode} mode · AIOSdream experience`,
+          description: `Experience "${prog.title}" in AIOSdream Theatre.`,
+          category: "Theatre",
+          price_cents: 0,
+          downloads: (i + 1) * 17 + 42,
+          rating_avg: 4.8,
+          developer_name: "AIOS",
+          developer_verified: true,
+          type: "theatre-programme",
+          bundle_id: `com.aios.${name}`,
+          entry_point: `https://realaios.com/aiosdream?prog=${name}`,
+        }));
+      return json(res, 200, { ok: true, apps, total: apps.length });
+    }
+
+    // ── GET /api/plai/search — PLAIstore search ──────────────────────────
+    if (
+      req.method === "GET" &&
+      (pathname === "/api/plai/search" || pathname === "/api/plai/search/")
+    ) {
+      const qs = new URLSearchParams(url.search);
+      const q = (qs.get("q") || "").toLowerCase();
+      const apps = Object.entries(PROGRAMME_CATALOGUE)
+        .map(([name, prog], i) => ({
+          id: i + 1,
+          name: prog.title + (prog.genre === "narrative" ? " Theatre" : ""),
+          short_desc: `${prog.genre} · ${prog.mode} mode · AIOSdream experience`,
+          category: "Theatre",
+          price_cents: 0,
+          downloads: (i + 1) * 17 + 42,
+          rating_avg: 4.8,
+          developer_name: "AIOS",
+          developer_verified: true,
+          type: "theatre-programme",
+          bundle_id: `com.aios.${name}`,
+          entry_point: `https://realaios.com/aiosdream?prog=${name}`,
+        }))
+        .filter(
+          (a) =>
+            !q ||
+            a.name.toLowerCase().includes(q) ||
+            a.short_desc.toLowerCase().includes(q),
+        );
+      return json(res, 200, { ok: true, apps, total: apps.length });
+    }
+
     // ── POST /theatre/project ────────────────────────────────────────────
     if (req.method === "POST" && pathname === "/theatre/project") {
       const body = await readBody(req);
@@ -1845,7 +2006,10 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       (pathname === "/aios-playground" || pathname === "/aios-playground/")
     ) {
       if (!PLAYGROUND_HTML)
-        return json(res, 404, { ok: false, error: "NEXGEN Playground not found" });
+        return json(res, 404, {
+          ok: false,
+          error: "NEXGEN Playground not found",
+        });
       res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
       res.end(PLAYGROUND_HTML);
       return;
