@@ -2571,7 +2571,7 @@ function filterXP(cat, btn) {
         "Service-Worker-Allowed": "/",
       });
       res.end(
-        `const CACHE='aios-v1';const PRE=['/aiosdream','/geo-codec','/aios-studio','/geo-library','/live'];self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(PRE).catch(()=>{})).then(()=>self.skipWaiting())));self.addEventListener('activate',e=>e.waitUntil(clients.claim()));self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;e.respondWith(caches.match(e.request).then(h=>h||fetch(e.request).then(r=>{if(r.ok){const c=r.clone();caches.open(CACHE).then(x=>x.put(e.request,c));}return r;}).catch(()=>h)));});`,
+        `const CACHE='aios-v2';const PRE=['/aiosdream','/geo-codec','/aios-studio','/geo-library','/live'];self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(PRE).catch(()=>{})).then(()=>self.skipWaiting())));self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>clients.claim())));self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;e.respondWith(caches.match(e.request).then(h=>h||fetch(e.request).then(r=>{if(r.ok){const c=r.clone();caches.open(CACHE).then(x=>x.put(e.request,c));}return r;}).catch(()=>h)));});`,
       );
       return;
     }
