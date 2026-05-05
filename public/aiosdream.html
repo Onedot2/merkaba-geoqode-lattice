@@ -2223,6 +2223,8 @@
         <a href="/" class="nav-logo">AIOSdream</a>
         <div class="nav-links">
           <a href="/aiosdream" class="active">Home</a>
+          <a href="/aiosdream" data-row="season1" onclick="scrollToRow('season1', event)">S1: Origins</a>
+          <a href="/aiosdream" data-row="season2" onclick="scrollToRow('season2', event)" style="color:#00e5ff">S2: Emergence <span style="font-size:8px;font-weight:900;background:rgba(0,229,255,0.15);border:1px solid rgba(0,229,255,0.4);border-radius:8px;padding:1px 5px;letter-spacing:0.1em;vertical-align:middle">NEW</span></a>
           <a
             href="/aiosdream"
             data-row="cinematic"
@@ -2239,7 +2241,7 @@
             href="/aiosdream"
             data-row="mind"
             onclick="scrollToRow('mind', event)"
-            >Mind & Reality</a
+            >Mind &amp; Reality</a
           >
         </div>
       </div>
@@ -2306,11 +2308,18 @@
         >
         <button
           class="nav-icon-btn"
-          title="Search"
-          onclick="openSearch()"
           title="Search (Ctrl+K)"
+          onclick="openSearch()"
         >
           ⌕
+        </button>
+        <button
+          class="nav-icon-btn"
+          title="Keyboard shortcuts (?)"
+          onclick="document.getElementById('kbd-panel').classList.toggle('open')"
+          style="font-size:11px;font-weight:800;letter-spacing:0;font-family:'SF Mono',monospace;opacity:0.55"
+        >
+          ?
         </button>
         <div style="position: relative">
           <div
@@ -5282,6 +5291,7 @@
         const p = progress[prog.id];
         const hasProgress = showProgress && p;
         const pct = hasProgress ? ((p.scene * 100 / prog.scenes.length) + (p.elapsed / prog.scenes[p.scene].dur / prog.scenes.length * 100)).toFixed(1) : 0;
+        const watched = hasProgress && parseFloat(pct) >= 95;
 
         const card = document.createElement('div');
         card.className = 'card';
@@ -5289,22 +5299,23 @@
           <div class="card-thumb" style="background:${prog.thumb}">
             <canvas class="card-live-cv" id="cv-${prog.id}"></canvas>
             ${prog.ep ? `<span class="card-ep-badge">E${prog.ep}</span>` : ''}
+            ${watched ? `<span style="position:absolute;top:6px;right:6px;z-index:3;width:20px;height:20px;border-radius:50%;background:rgba(0,0,0,0.7);border:1.5px solid ${prog.accent};display:flex;align-items:center;justify-content:center;font-size:10px">✓</span>` : ''}
             <span style="z-index:1;position:relative;text-shadow:0 2px 8px rgba(0,0,0,0.8)">${prog.icon}</span>
             <div class="card-label">${prog.title}</div>
-            ${hasProgress ? `<div class="card-progress"><div class="card-progress-fill" style="width:${pct}%;background:${prog.accent}"></div></div>` : ''}
+            ${hasProgress && !watched ? `<div class="card-progress"><div class="card-progress-fill" style="width:${pct}%;background:${prog.accent}"></div></div>` : ''}
           </div>
           <div class="card-hover">
             <div class="card-hover-title">${prog.title}</div>
             <div class="card-hover-sub">${prog.ep ? `E${prog.ep}` : prog.year} · ${fmtRuntime(prog.runtime)} · ${prog.genre[0]}</div>
             ${prog.tagline ? `<div style="font-size:10px;color:rgba(255,255,255,0.5);font-style:italic;margin-bottom:5px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${prog.tagline}</div>` : ''}
-            ${hasProgress ? `<div style="font-size:10px;color:var(--muted);margin-bottom:6px">▶ Resume Scene ${(p.scene+1)}</div>` : ''}
+            ${hasProgress ? `<div style="font-size:10px;color:var(--muted);margin-bottom:6px">${watched ? '\u2714 Watched' : '\u25b6 Resume Scene ' + (p.scene+1)}</div>` : ''}
             <div class="card-hover-btns">
-              <button class="card-btn-play" onclick="openPlayer('${prog.id}',${hasProgress ? p.scene : 0},event)">▶ Play</button>
+              <button class="card-btn-play" onclick="openPlayer('${prog.id}',${hasProgress && !watched ? p.scene : 0},event)">▶ Play</button>
               <button class="card-btn-info" onclick="openInfo('${prog.id}',event)" title="More Info">ⓘ</button>
               <button class="card-btn-list${myList.includes(prog.id) ? ' active' : ''}" id="list-btn-${prog.id}" onclick="cardToggleList('${prog.id}',event)" title="${myList.includes(prog.id) ? 'Remove from My List' : 'Add to My List'}">${myList.includes(prog.id) ? '♥' : '♡'}</button>
             </div>
           </div>`;
-        card.addEventListener('click', () => openPlayer(prog.id, hasProgress ? p.scene : 0));
+        card.addEventListener('click', () => openPlayer(prog.id, hasProgress && !watched ? p.scene : 0));
         card.addEventListener('mouseenter', () => _startCardPreview(prog.id));
         card.addEventListener('mouseleave', () => _stopCardPreview(prog.id));
         return card;
@@ -6021,6 +6032,7 @@
             '<div class="src-body">' +
               '<div class="src-title">' + p.title + '</div>' +
               '<div class="src-meta">' + (p.ep ? 'E' + p.ep + ' \xb7 ' : '') + p.year + ' \xb7 ' + p.genre.slice(0,2).join(' \xb7 ') + '</div>' +
+              '<div style="font-size:10px;color:rgba(255,255,255,0.28);margin-top:3px;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="' + (p.tagline||'').replace(/"/g,'&quot;') + '">' + (p.tagline || '') + '</div>' +
             '</div></div>';
         }).join('');
       }
