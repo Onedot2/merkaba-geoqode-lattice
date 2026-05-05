@@ -2762,6 +2762,9 @@
           </div>
         </div>
       </div>
+      <!-- ── SKIP INTRO ── -->
+      <button id="skip-intro" onclick="_skipIntro()" style="display:none;position:absolute;bottom:96px;right:24px;z-index:850;background:rgba(10,12,28,0.88);border:1px solid rgba(255,255,255,0.25);color:#fff;font-size:12px;font-weight:800;letter-spacing:0.1em;padding:9px 20px;border-radius:8px;cursor:pointer;backdrop-filter:blur(8px);transition:opacity 0.2s,background 0.15s">SKIP INTRO ›</button>
+
       <!-- ── UP NEXT ── -->
       <div id="up-next">
         <div class="un-kicker">Up Next</div>
@@ -5501,6 +5504,9 @@
         startPlayback();
         showPlayerUI();
         updateGeoPanel(prog);
+        // Show Skip Intro on scene 0 if programme has multiple scenes
+        if (currentScene === 0 && prog.scenes.length > 1) { _showSkipIntro(); }
+        else { _hideSkipIntro(); }
       }
 
       function buildSceneChips(prog) {
@@ -5639,6 +5645,9 @@
         buildSceneChips(currentProg);
         updateSceneUI();
         if (wasPlaying) startPlayback();
+        // Skip Intro: show only on scene 0, hide on any other scene
+        if (sceneIdx === 0 && currentProg.scenes.length > 1) { _showSkipIntro(); }
+        else { _hideSkipIntro(); }
       }
 
       function closePlayer() {
@@ -5647,6 +5656,7 @@
         pausePlayback();
         _dismissUpNext();
         _dismissNeCard();
+        _hideSkipIntro();
         // Stop binaural when player closes
         if (_binauralActive) { _stopBinaural(); _binauralActive = false; _setBinauralBtn(false); }
         if (window._activePlayerRenderer) {
@@ -6514,6 +6524,28 @@
         if (_neTimer) { clearInterval(_neTimer); _neTimer = null; }
         const card = document.getElementById('next-ep-card');
         if (card) card.style.display = 'none';
+      }
+
+      // ── Skip Intro ───────────────────────────────────────────────────────────
+      let _skipIntroTimer = null;
+      function _showSkipIntro() {
+        const btn = document.getElementById('skip-intro');
+        if (!btn) return;
+        btn.style.display = '';
+        btn.style.opacity = '1';
+        if (_skipIntroTimer) clearTimeout(_skipIntroTimer);
+        _skipIntroTimer = setTimeout(function() { _hideSkipIntro(); }, 28000);
+      }
+      function _hideSkipIntro() {
+        if (_skipIntroTimer) { clearTimeout(_skipIntroTimer); _skipIntroTimer = null; }
+        const btn = document.getElementById('skip-intro');
+        if (btn) btn.style.display = 'none';
+      }
+      function _skipIntro() {
+        _hideSkipIntro();
+        if (!currentProg || currentProg.scenes.length < 2) return;
+        jumpToScene(1);
+        toast('Skipped intro \u2192 Scene 2');
       }
 
       // ── Share Deeplink ───────────────────────────────────────────────────────
