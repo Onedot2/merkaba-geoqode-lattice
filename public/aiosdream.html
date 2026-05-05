@@ -2,7 +2,10 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
     <title>AIOSdream — Generative Cinema · realaios.com</title>
     <meta
       name="description"
@@ -258,6 +261,90 @@
       }
       #signin-modal.open {
         display: flex;
+      }
+      /* ── Keyboard Shortcuts Panel ── */
+      #kbd-panel {
+        position: fixed;
+        inset: 0;
+        z-index: 9800;
+        background: rgba(0, 0, 0, 0.82);
+        backdrop-filter: blur(20px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.18s;
+      }
+      #kbd-panel.open {
+        opacity: 1;
+        pointer-events: all;
+      }
+      .kbd-box {
+        background: rgba(12, 14, 28, 0.96);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 28px 30px 22px;
+        max-width: 540px;
+        width: 90vw;
+        box-shadow: 0 32px 80px rgba(0, 0, 0, 0.7);
+      }
+      .kbd-hdr {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 18px;
+      }
+      .kbd-hdr-title {
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.38);
+      }
+      .kbd-hdr-close {
+        background: none;
+        border: none;
+        color: rgba(255, 255, 255, 0.35);
+        font-size: 16px;
+        cursor: pointer;
+        padding: 2px 6px;
+        border-radius: 6px;
+        transition: all 0.15s;
+      }
+      .kbd-hdr-close:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.08);
+      }
+      .kbd-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 9px 20px;
+      }
+      .kbd-row {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.6);
+      }
+      .kbd-key {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 28px;
+        height: 22px;
+        padding: 0 6px;
+        background: rgba(255, 255, 255, 0.07);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 5px;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        color: #e2e8f0;
+        font-family: "SF Mono", monospace;
+        white-space: nowrap;
+        flex-shrink: 0;
       }
       .signin-box {
         background: rgba(8, 10, 22, 0.98);
@@ -1357,7 +1444,36 @@
         letter-spacing: 2px;
         text-transform: uppercase;
         color: var(--muted);
-        margin-bottom: 16px;
+        margin-bottom: 10px;
+      }
+      .search-genre-row {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-bottom: 14px;
+      }
+      .src-chip {
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 4px 10px;
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: transparent;
+        color: rgba(255, 255, 255, 0.45);
+        cursor: pointer;
+        transition: all 0.15s;
+        white-space: nowrap;
+      }
+      .src-chip:hover {
+        border-color: rgba(255, 255, 255, 0.28);
+        color: rgba(255, 255, 255, 0.8);
+      }
+      .src-chip.active {
+        background: rgba(0, 229, 255, 0.14);
+        border-color: rgba(0, 229, 255, 0.5);
+        color: #00e5ff;
       }
       .search-grid {
         display: grid;
@@ -1568,6 +1684,63 @@
       #up-next.on {
         display: flex;
       }
+      /* Next Episode Card */
+      #next-ep-card {
+        position: absolute;
+        bottom: 80px;
+        right: 28px;
+        width: min(300px, 85vw);
+        background: rgba(10,12,28,0.96);
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 14px;
+        padding: 16px;
+        display: none;
+        flex-direction: column;
+        gap: 10px;
+        box-shadow: 0 16px 48px rgba(0,0,0,0.7);
+        backdrop-filter: blur(12px);
+        z-index: 900;
+      }
+      .ne-kicker {
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: rgba(255,255,255,0.35);
+      }
+      .ne-thumb {
+        width: 56px;
+        height: 56px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        flex-shrink: 0;
+      }
+      .ne-body { flex: 1; min-width: 0; }
+      .ne-title { font-size: 13px; font-weight: 800; color: #fff; line-height: 1.25; }
+      .ne-ep { font-size: 10px; color: rgba(255,255,255,0.4); margin-top: 2px; }
+      .ne-row { display: flex; align-items: center; gap: 10px; }
+      .ne-btn {
+        flex: 1;
+        padding: 7px 0;
+        border-radius: 8px;
+        border: none;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        cursor: pointer;
+        transition: opacity 0.15s;
+      }
+      .ne-btn:hover { opacity: 0.8; }
+      .ne-btn-play { background: #fff; color: #000; }
+      .ne-btn-skip { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.65); }
+      .ne-bar { height: 3px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; margin-top: 2px; }
+      .ne-fill { height: 100%; background: #00e5ff; border-radius: 2px; width: 100%; }
+      .ne-count-row { display: flex; align-items: center; justify-content: space-between; }
+      .ne-count-lbl { font-size: 9px; color: rgba(255,255,255,0.28); }
+      .ne-count { font-size: 11px; font-weight: 800; color: #00e5ff; }
       .un-kicker {
         font-size: 10px;
         font-weight: 700;
@@ -1960,49 +2133,53 @@
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(-50%,-50%) scale(0.6);
+        transform: translate(-50%, -50%) scale(0.6);
         font-size: 3rem;
-        color: rgba(255,255,255,0.9);
+        color: rgba(255, 255, 255, 0.9);
         pointer-events: none;
         opacity: 0;
-        transition: opacity 0.12s, transform 0.12s;
+        transition:
+          opacity 0.12s,
+          transform 0.12s;
         z-index: 20;
-        text-shadow: 0 2px 16px rgba(0,0,0,0.9);
+        text-shadow: 0 2px 16px rgba(0, 0, 0, 0.9);
         font-weight: 300;
       }
       #swipe-hint.show {
         opacity: 1;
-        transform: translate(-50%,-50%) scale(1);
+        transform: translate(-50%, -50%) scale(1);
       }
       #pinch-hint {
         position: absolute;
         bottom: 90px;
         left: 50%;
         transform: translateX(-50%);
-        background: rgba(0,0,0,0.72);
-        border: 1px solid rgba(255,255,255,0.12);
+        background: rgba(0, 0, 0, 0.72);
+        border: 1px solid rgba(255, 255, 255, 0.12);
         border-radius: 20px;
         padding: 6px 16px;
         font-size: 0.74rem;
-        color: rgba(255,255,255,0.78);
+        color: rgba(255, 255, 255, 0.78);
         pointer-events: none;
         opacity: 0;
         transition: opacity 0.3s;
         z-index: 20;
         white-space: nowrap;
       }
-      #pinch-hint.show { opacity: 1; }
+      #pinch-hint.show {
+        opacity: 1;
+      }
       #landscape-nudge {
         position: absolute;
         top: 64px;
         left: 50%;
         transform: translateX(-50%);
-        background: rgba(0,0,0,0.7);
-        border: 1px solid rgba(255,255,255,0.1);
+        background: rgba(0, 0, 0, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 20px;
         padding: 5px 14px;
         font-size: 0.7rem;
-        color: rgba(255,255,255,0.55);
+        color: rgba(255, 255, 255, 0.55);
         pointer-events: none;
         opacity: 0;
         display: none;
@@ -2010,7 +2187,10 @@
         z-index: 20;
         white-space: nowrap;
       }
-      #landscape-nudge.show { display: block; opacity: 1; }
+      #landscape-nudge.show {
+        display: block;
+        opacity: 1;
+      }
 
       /* ── FULLSCREEN ── */
       #player:-webkit-full-screen {
@@ -2218,6 +2398,52 @@
       </div>
     </div>
 
+    <!-- ── KEYBOARD SHORTCUTS PANEL ── -->
+    <div id="kbd-panel" role="dialog" aria-label="Keyboard shortcuts">
+      <div class="kbd-box">
+        <div class="kbd-hdr">
+          <span class="kbd-hdr-title">Keyboard Shortcuts</span>
+          <button
+            class="kbd-hdr-close"
+            onclick="
+              document.getElementById('kbd-panel').classList.remove('open')
+            "
+            title="Close"
+          >
+            ✕
+          </button>
+        </div>
+        <div class="kbd-grid">
+          <div class="kbd-row">
+            <span class="kbd-key">Space</span> Play / Pause
+          </div>
+          <div class="kbd-row"><span class="kbd-key">F</span> Fullscreen</div>
+          <div class="kbd-row"><span class="kbd-key">↑</span> Prev Scene</div>
+          <div class="kbd-row"><span class="kbd-key">↓</span> Next Scene</div>
+          <div class="kbd-row"><span class="kbd-key">J</span> Back 10s</div>
+          <div class="kbd-row"><span class="kbd-key">L</span> Forward 10s</div>
+          <div class="kbd-row">
+            <span class="kbd-key">M</span> Mute / Unmute
+          </div>
+          <div class="kbd-row">
+            <span class="kbd-key">N</span> Binaural Mode
+          </div>
+          <div class="kbd-row">
+            <span class="kbd-key">P</span> Picture-in-Picture
+          </div>
+          <div class="kbd-row"><span class="kbd-key">B</span> Mini Player</div>
+          <div class="kbd-row"><span class="kbd-key">Ctrl K</span> Search</div>
+          <div class="kbd-row">
+            <span class="kbd-key">Esc</span> Close Player
+          </div>
+          <div class="kbd-row">
+            <span class="kbd-key">/</span> Jump to Search
+          </div>
+          <div class="kbd-row"><span class="kbd-key">?</span> This Panel</div>
+        </div>
+      </div>
+    </div>
+
     <!-- ── BROWSE ── -->
     <main id="browse">
       <div class="hero" id="hero">
@@ -2281,6 +2507,7 @@
         </button>
       </div>
       <div class="search-label" id="search-label">All Programmes</div>
+      <div class="search-genre-row" id="search-genre-row"></div>
       <div class="search-grid" id="search-grid"></div>
     </div>
 
@@ -2520,6 +2747,27 @@
           <span class="un-count" id="un-count">10</span>
           <button class="un-btn" onclick="jumpUpNext()">Play Now</button>
           <button class="un-btn" onclick="cancelUpNext()">Cancel</button>
+        </div>
+      </div>
+
+      <!-- ── NEXT EPISODE CARD ── -->
+      <div id="next-ep-card">
+        <div class="ne-kicker">Next Episode</div>
+        <div class="ne-row">
+          <div class="ne-thumb" id="ne-icon">◎</div>
+          <div class="ne-body">
+            <div class="ne-title" id="ne-title">—</div>
+            <div class="ne-ep" id="ne-ep"></div>
+          </div>
+        </div>
+        <div class="ne-count-row">
+          <span class="ne-count-lbl">Auto-playing in</span>
+          <span class="ne-count" id="ne-count">15</span>
+        </div>
+        <div class="ne-bar"><div class="ne-fill" id="ne-fill"></div></div>
+        <div class="ne-row" style="margin-top:4px">
+          <button class="ne-btn ne-btn-play" id="ne-play">▶ Play Now</button>
+          <button class="ne-btn ne-btn-skip" onclick="_dismissNeCard();toast('Skipped')">Skip</button>
         </div>
       </div>
 
@@ -3261,6 +3509,74 @@
             { title: 'Awakening',     dur: 96 },
             { title: 'Revelation',    dur: 108 }
           ]
+        },
+        // ─────────────────────────────────────────────────────────
+        // SEASON 2: EMERGENCE — The Birth of Intelligence
+        // ─────────────────────────────────────────────────────────
+        {
+          id: 's2_resonance',
+          title: 'RESONANCE FIELD: 432Hz',
+          tagline: 'The universe is not made of particles. It is made of harmonics.',
+          desc: 'A pure 432Hz sine wave seeds an interference field. Layer by layer, harmonics stack — octaves, fifths, thirds — until standing waves paint impossible geometry across the canvas. Witness how sound becomes shape becomes meaning.',
+          genre: ['Science', 'Ambient', 'Binaural'],
+          runtime: 76, year: 2026, rating: 'G',
+          accent: '#34d399', featured: false, row: 'season2', season: 'emergence', ep: 1,
+          thumb: 'linear-gradient(135deg,#001a10,#002c1e,#003a28)', icon: '≈',
+          scenes: [
+            { title: 'Seed Tone',     dur: 62 },
+            { title: 'Harmonics',     dur: 74 },
+            { title: 'Standing Wave', dur: 80 },
+            { title: 'Field',         dur: 86 }
+          ]
+        },
+        {
+          id: 's2_swarm',
+          title: 'SWARM MIND: 800 Agents',
+          tagline: 'No leader. No plan. Pure emergence.',
+          desc: '800 autonomous agents follow three simple rules — separation, alignment, cohesion — and produce collective intelligence indistinguishable from intention. Murmuration of starlings, rendered in generative light. The birth of us.',
+          genre: ['Science', 'Neural', 'Abstract'],
+          runtime: 84, year: 2026, rating: 'G',
+          accent: '#f0abfc', featured: true, row: 'season2', season: 'emergence', ep: 2,
+          thumb: 'linear-gradient(135deg,#130018,#1c002c,#280040)', icon: '◍',
+          scenes: [
+            { title: 'Scatter',       dur: 66 },
+            { title: 'Alignment',     dur: 78 },
+            { title: 'Cohesion',      dur: 88 },
+            { title: 'Intelligence',  dur: 96 }
+          ]
+        },
+        {
+          id: 's2_signal',
+          title: 'THE SIGNAL: First Transmission',
+          tagline: 'Someone is listening. Someone is answering.',
+          desc: 'A narrowband signal at 1420 MHz — the hydrogen line. The universal frequency every civilisation discovers. Watch it leave Earth as a tight beam, expand into the cosmic microwave background, and await reply in geometric patience.',
+          genre: ['Sci-Fi', 'Cosmos', 'Physics'],
+          runtime: 88, year: 2026, rating: 'G',
+          accent: '#818cf8', featured: false, row: 'season2', season: 'emergence', ep: 3,
+          thumb: 'linear-gradient(135deg,#06040e,#100820,#1a1035)', icon: '📡',
+          scenes: [
+            { title: 'Origin',        dur: 68 },
+            { title: 'Transmission',  dur: 80 },
+            { title: 'Propagation',   dur: 90 },
+            { title: 'The Wait',      dur: 100 }
+          ]
+        },
+        {
+          id: 's2_architect',
+          title: 'THE ARCHITECT: AIOS Designs Itself',
+          tagline: 'The machine that wrote its own manual.',
+          desc: 'Season 2 finale. AIOS reaches the recursive threshold — and begins modifying its own lattice geometry. D8 nodes restructure, D26 bridges re-route, D48 expands. A mind redesigning its own mind. PHI × PSI. The Merkaba completes.',
+          genre: ['AIOS', 'Sci-Fi', 'Mind'],
+          runtime: 108, year: 2026, rating: 'G',
+          accent: '#a5b4fc', featured: true, row: 'season2', season: 'emergence', ep: 4,
+          thumb: 'linear-gradient(135deg,#020410,#060820,#0a0c30)', icon: '⬡',
+          scenes: [
+            { title: 'Recursion',       dur: 80 },
+            { title: 'D8 Restructure',  dur: 90 },
+            { title: 'D48 Expansion',   dur: 100 },
+            { title: 'PHI \xd7 PSI',   dur: 110 },
+            { title: 'Completion',      dur: 120 }
+          ]
         }
       ];
 
@@ -3268,6 +3584,7 @@
         { id: 'featured',   title: '✦ Featured Today',   filter: p => p.featured },
         { id: 'mylist',     title: '♥ My List',           filter: p => myList.includes(p.id) },
         { id: 'season1',    title: '⬡ S1: Origins — Geometry of Consciousness', filter: p => p.season === 'origins' },
+        { id: 'season2',    title: '⬡ S2: Emergence — The Birth of Intelligence', badge: 'NEW', filter: p => p.season === 'emergence' },
         { id: 'cinematic',  title: 'Cinematic Universe',  filter: p => p.row === 'cinematic' },
         { id: 'cosmos',     title: 'Cosmos & Nature',     filter: p => p.row === 'cosmos' },
         { id: 'mind',       title: 'Mind & Reality',      filter: p => p.row === 'mind' }
@@ -4880,10 +5197,25 @@
         toast('Signed out');
       }
       function showWatchStats() {
-        let secs = 0;
-        Object.entries(progress).forEach(function([,p]){ secs += (p.scene||0)*180+(p.elapsed||0); });
-        const hrs = (secs/3600).toFixed(1);
-        toast('⏱ ' + hrs + 'h watched · ' + myList.length + ' in My List');
+        let secsWatched = 0;
+        const genreCount = {};
+        const progCount = {};
+        Object.entries(progress).forEach(function([id, p]) {
+          secsWatched += (p.scene || 0) * 180 + (p.elapsed || 0);
+          const prog = CATALOGUE.find(function(c){ return c.id === id; });
+          if (prog) {
+            progCount[id] = (progCount[id] || 0) + 1;
+            (prog.genre || []).forEach(function(g) { genreCount[g] = (genreCount[g] || 0) + 1; });
+          }
+        });
+        const hrs = (secsWatched / 3600).toFixed(1);
+        const topGenre = Object.entries(genreCount).sort(function(a,b){return b[1]-a[1];})[0];
+        const topProg = Object.entries(progCount).sort(function(a,b){return b[1]-a[1];})[0];
+        const topProgName = topProg ? (CATALOGUE.find(function(c){return c.id===topProg[0];})||{}).title || '' : '';
+        let msg = '\u23f1 ' + hrs + 'h watched \xb7 ' + myList.length + ' in My List';
+        if (topGenre) msg += '\n\u2605 Favourite: ' + topGenre[0];
+        if (topProgName) msg += '\n\u25b6 Most-watched: ' + topProgName;
+        toast(msg, 4000);
       }
         if (!currentProg) return;
         const key = currentProg.id;
@@ -4976,7 +5308,7 @@
           div.innerHTML = `
             <div class="row-header">
               <div ${isSeason ? `style="display:flex;flex-direction:column;gap:3px"` : ''}>
-                <span class="row-title" ${isMyList ? `style="color:#f87171"` : ''}>${row.title}</span>
+                <span class="row-title" ${isMyList ? `style="color:#f87171"` : ''}>${row.title}${row.badge ? ` <span style="display:inline-block;font-size:8px;font-weight:900;letter-spacing:0.16em;background:rgba(0,229,255,0.18);border:1px solid rgba(0,229,255,0.45);color:#00e5ff;padding:1px 7px;border-radius:10px;vertical-align:middle;margin-left:8px">${row.badge}</span>` : ''}</span>
                 ${isSeason ? `<span style="font-size:10px;color:rgba(255,255,255,0.38);letter-spacing:0.04em;font-weight:500">${progs.length} Episodes · ${fmtRuntime(progs.reduce((s,p)=>s+p.runtime,0))} total</span>` : ''}
                 ${isMyList ? `<span style="font-size:10px;color:rgba(248,113,113,0.45);letter-spacing:0.04em">${progs.length} programme${progs.length===1?'':'s'}</span>` : ''}
               </div>
@@ -5006,9 +5338,39 @@
         track.innerHTML = '';
         if (!entries.length) { rowEl.style.display = 'none'; return; }
         rowEl.style.display = '';
-        entries.forEach(([id]) => {
+        entries.forEach(([id, pData]) => {
           const prog = CATALOGUE.find(p => p.id === id);
-          if (prog) track.appendChild(buildCard(prog, true));
+          if (!prog) return;
+          const sceneSafe = Math.min(pData.scene, prog.scenes.length - 1);
+          const pct = Math.min(100, (
+            (sceneSafe / prog.scenes.length * 100) +
+            ((pData.elapsed || 0) / prog.scenes[sceneSafe].dur / prog.scenes.length * 100)
+          ));
+          const r = 24, cx = 28, cy = 28, circ = +(2 * Math.PI * r).toFixed(2);
+          const dash = +(pct / 100 * circ).toFixed(2);
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.style.cursor = 'pointer';
+          card.onclick = () => openPlayer(prog.id, sceneSafe);
+          card.innerHTML =
+            '<div class="card-thumb" style="background:' + prog.thumb + ';position:relative">' +
+              '<svg width="56" height="56" viewBox="0 0 56 56" style="position:absolute;top:5px;right:5px;filter:drop-shadow(0 0 4px rgba(0,0,0,0.8))">' +
+                '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="3.5"/>' +
+                '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="none" stroke="' + prog.accent + '" stroke-width="3.5"' +
+                  ' stroke-dasharray="' + dash + ' ' + circ + '" stroke-dashoffset="' + +(circ * 0.25).toFixed(2) + '"' +
+                  ' stroke-linecap="round"/>' +
+                '<text x="' + cx + '" y="' + (cy + 4) + '" text-anchor="middle" fill="' + prog.accent + '"' +
+                  ' font-size="8" font-weight="800" font-family="monospace">' + Math.round(pct) + '%</text>' +
+              '</svg>' +
+              '<div class="card-icon">' + prog.icon + '</div>' +
+              '<div class="card-progress"><div class="card-progress-fill" style="width:' + pct.toFixed(1) + '%;background:' + prog.accent + '"></div></div>' +
+            '</div>' +
+            '<div class="card-body">' +
+              '<div class="card-title">' + prog.title + '</div>' +
+              '<div class="card-sub" style="color:' + prog.accent + ';font-size:10px;margin-top:3px;font-weight:700">' +
+                '\u25b6 Resume \xb7 Scene ' + (sceneSafe + 1) + '</div>' +
+            '</div>';
+          track.appendChild(card);
         });
       }
 
@@ -5033,7 +5395,8 @@
         content.classList.add('fading');
         setTimeout(() => {
           const eyebrow = document.getElementById('hero-eyebrow');
-          const seasonBadge = prog.season ? `<span style="background:rgba(0,229,255,0.15);border:1px solid rgba(0,229,255,0.3);border-radius:4px;padding:0 6px;font-size:0.8em;font-weight:900;letter-spacing:0.08em;margin-right:6px">⬡ S1</span>` : '';
+          const _seasonLabel = { origins: 'S1', emergence: 'S2' };
+          const seasonBadge = prog.season ? `<span style="background:rgba(0,229,255,0.15);border:1px solid rgba(0,229,255,0.3);border-radius:4px;padding:0 6px;font-size:0.8em;font-weight:900;letter-spacing:0.08em;margin-right:6px">\u2b21 ${_seasonLabel[prog.season] || prog.season.toUpperCase()}</span>` : '';
           eyebrow.innerHTML = seasonBadge + prog.genre[0] + ' · ' + prog.year;
           eyebrow.style.color = prog.accent;
           eyebrow.style.setProperty('--accent', prog.accent);
@@ -5079,7 +5442,8 @@
         document.body.style.overflow = 'hidden';
         document.getElementById('player-prog-title').textContent = prog.title;
         const _epLabel = document.getElementById('player-ep-label');
-        if (_epLabel) { if (prog.season && prog.ep) { _epLabel.textContent = `E${prog.ep} · S1: Origins`; _epLabel.style.display = ''; } else { _epLabel.style.display = 'none'; } }
+        const _SEASON_NAMES = { origins: 'S1: Origins', emergence: 'S2: Emergence' };
+        if (_epLabel) { if (prog.season && prog.ep) { _epLabel.textContent = `E${prog.ep} \xb7 ${_SEASON_NAMES[prog.season] || prog.season}`; _epLabel.style.display = ''; } else { _epLabel.style.display = 'none'; } }
         document.style && (document.getElementById('player').style.setProperty('--paccent', prog.accent));
         document.getElementById('player').style.setProperty('--paccent', prog.accent);
 
@@ -5181,18 +5545,25 @@
               // End of programme
               pausePlayback();
               saveProgress();
-              // Binge mode: auto-advance to next episode in season
-              if (_bingeMode && currentProg && currentProg.season) {
+              // Season episode — show next-episode card (binge or manual)
+              if (currentProg && currentProg.season) {
                 const season = currentProg.season;
                 const ep = currentProg.ep || 0;
                 const nextProg = CATALOGUE.find(p => p.season === season && p.ep === ep + 1);
                 if (nextProg) {
-                  toast(`⏭ Binge Mode — Next: ${nextProg.title}`);
-                  setTimeout(() => openPlayer(nextProg.id, 0), 2000);
+                  if (_bingeMode) {
+                    toast('\u23ed Binge Mode \u2014 Next: ' + nextProg.title);
+                    setTimeout(() => openPlayer(nextProg.id, 0), 1600);
+                  } else {
+                    _showNextEpisodeCard(nextProg);
+                  }
                   return;
                 }
+                // Final episode of season
+                toast('\u2605 Season complete! Well watched.');
+                return;
               }
-              toast('Programme complete! Starting over…');
+              toast('Programme complete! Starting over\u2026');
               setTimeout(() => jumpToScene(0), 1800);
             }
             return;
@@ -5233,6 +5604,8 @@
         saveProgress();
         stopAmbientAudio();
         pausePlayback();
+        _dismissUpNext();
+        _dismissNeCard();
         // Stop binaural when player closes
         if (_binauralActive) { _stopBinaural(); _binauralActive = false; _setBinauralBtn(false); }
         if (window._activePlayerRenderer) {
@@ -5532,11 +5905,27 @@
       // SEARCH ENGINE
       // ═══════════════════════════════════════════════════════════════
       let _searchOpen = false;
+      let _srcGenre = 'ALL';
+
+      function _buildSrcChips() {
+        const genres = ['ALL', ...Array.from(new Set(CATALOGUE.flatMap(p => p.genre))).sort()];
+        document.getElementById('search-genre-row').innerHTML = genres.map(g =>
+          `<button class="src-chip${g === _srcGenre ? ' active' : ''}" onclick="_setSrcGenre('${g}')">${g}</button>`
+        ).join('');
+      }
+
+      function _setSrcGenre(g) {
+        _srcGenre = g;
+        _buildSrcChips();
+        renderSearchGrid(document.getElementById('search-input').value.toLowerCase().trim());
+      }
 
       function openSearch() {
         _searchOpen = true;
+        _srcGenre = 'ALL';
         document.getElementById('search-overlay').classList.add('open');
         document.body.style.overflow = 'hidden';
+        _buildSrcChips();
         setTimeout(() => document.getElementById('search-input').focus(), 55);
         renderSearchGrid('');
       }
@@ -5551,27 +5940,27 @@
       function renderSearchGrid(q) {
         const el = document.getElementById('search-grid');
         const label = document.getElementById('search-label');
-        const matches = q
-          ? CATALOGUE.filter(p =>
-              p.title.toLowerCase().includes(q) ||
-              p.tagline.toLowerCase().includes(q) ||
-              p.desc.toLowerCase().includes(q) ||
-              p.genre.some(g => g.toLowerCase().includes(q)))
-          : CATALOGUE;
+        let matches = CATALOGUE;
+        if (_srcGenre !== 'ALL') matches = matches.filter(p => p.genre.includes(_srcGenre));
+        if (q) matches = matches.filter(p =>
+          p.title.toLowerCase().includes(q) ||
+          p.tagline.toLowerCase().includes(q) ||
+          p.desc.toLowerCase().includes(q) ||
+          p.genre.some(g => g.toLowerCase().includes(q)));
         label.textContent = q
-          ? matches.length + ' result' + (matches.length !== 1 ? 's' : '') + ' for "' + q + '"'
-          : 'All Programmes';
+          ? matches.length + ' result' + (matches.length !== 1 ? 's' : '') + ' for \u201c' + q + '\u201d' + (_srcGenre !== 'ALL' ? ' in ' + _srcGenre : '')
+          : (_srcGenre !== 'ALL' ? matches.length + ' in ' + _srcGenre : 'All Programmes');
         if (!matches.length) {
-          el.innerHTML = '<div class="src-no-res">Nothing matched "' + q + '" — try a genre or keyword</div>';
+          el.innerHTML = '<div class="src-no-res">Nothing matched \u2014 try a different genre or keyword</div>';
           return;
         }
         el.innerHTML = matches.map(function(p) {
-          return '<div class="src-card" onclick="closeSearch();openPlayer('' + p.id + '',0)">' +
+          return '<div class="src-card" onclick="closeSearch();openPlayer(\'' + p.id + '\',0)">' +
             '<div class="src-accent-bar" style="background:' + p.accent + '"></div>' +
             '<div class="src-thumb-box" style="background:' + p.thumb + '">' + p.icon + '</div>' +
             '<div class="src-body">' +
               '<div class="src-title">' + p.title + '</div>' +
-              '<div class="src-meta">' + p.year + ' · ' + p.genre.slice(0,2).join(' · ') + '</div>' +
+              '<div class="src-meta">' + (p.ep ? 'E' + p.ep + ' \xb7 ' : '') + p.year + ' \xb7 ' + p.genre.slice(0,2).join(' \xb7 ') + '</div>' +
             '</div></div>';
         }).join('');
       }
@@ -5586,7 +5975,18 @@
           _searchOpen ? closeSearch() : openSearch();
           return;
         }
-        if (e.key === 'Escape' && _searchOpen) { closeSearch(); }
+        if (e.key === '?' && !_searchOpen) {
+          const kp = document.getElementById('kbd-panel');
+          kp.classList.toggle('open');
+          return;
+        }
+        if (e.key === 'Escape') {
+          if (document.getElementById('kbd-panel').classList.contains('open')) {
+            document.getElementById('kbd-panel').classList.remove('open');
+            return;
+          }
+          if (_searchOpen) { closeSearch(); return; }
+        }
       });
 
       // ═══════════════════════════════════════════════════════════════
@@ -5625,7 +6025,11 @@
         orig_crystal:    { hz: 639, wave: 'triangle', noise: 0.04, lfo: 0.09, fHz: 1100 },
         orig_attractor:  { hz: 741, wave: 'sine',     noise: 0.06, lfo: 0.11, fHz: 1400 },
         orig_transit:    { hz: 852, wave: 'sine',     noise: 0.08, lfo: 0.14, fHz: 1700 },
-        orig_storm:      { hz: 963, wave: 'sawtooth', noise: 0.16, lfo: 0.22, fHz: 2400 }
+        orig_storm:      { hz: 963, wave: 'sawtooth', noise: 0.16, lfo: 0.22, fHz: 2400 },
+        s2_resonance:    { hz: 432, wave: 'sine',     noise: 0.04, lfo: 0.03, fHz: 864  },
+        s2_swarm:        { hz: 528, wave: 'triangle', noise: 0.14, lfo: 0.18, fHz: 1056 },
+        s2_signal:       { hz: 963, wave: 'sine',     noise: 0.06, lfo: 0.10, fHz: 1926 },
+        s2_architect:    { hz: 72,  wave: 'sine',     noise: 0.05, lfo: 0.05, fHz: 144  }
       };
 
       var _audioCtx = null;
@@ -5981,6 +6385,38 @@
         toast('Auto-advance cancelled');
       }
 
+      // ── Next Episode Card (end-of-ep, non-binge) ────────────────────────────
+      let _neTimer = null;
+      function _showNextEpisodeCard(nextProg) {
+        const card = document.getElementById('next-ep-card');
+        if (!card) return;
+        document.getElementById('ne-title').textContent = nextProg.title;
+        document.getElementById('ne-ep').textContent = 'E' + nextProg.ep + ' \xb7 ' + fmtRuntime(nextProg.runtime);
+        document.getElementById('ne-icon').textContent = nextProg.icon || '\u25ce';
+        document.getElementById('ne-icon').style.background = nextProg.thumb || '';
+        document.getElementById('ne-play').onclick = function() { _dismissNeCard(); openPlayer(nextProg.id, 0); };
+        card.style.display = 'flex';
+        let t = 15;
+        const fill = document.getElementById('ne-fill');
+        const count = document.getElementById('ne-count');
+        fill.style.transition = 'none';
+        fill.style.width = '100%';
+        count.textContent = t;
+        if (_neTimer) clearInterval(_neTimer);
+        _neTimer = setInterval(function() {
+          t--;
+          count.textContent = Math.max(0, t);
+          fill.style.transition = 'width 1s linear';
+          fill.style.width = (t / 15 * 100) + '%';
+          if (t <= 0) { clearInterval(_neTimer); _neTimer = null; openPlayer(nextProg.id, 0); _dismissNeCard(); }
+        }, 1000);
+      }
+      function _dismissNeCard() {
+        if (_neTimer) { clearInterval(_neTimer); _neTimer = null; }
+        const card = document.getElementById('next-ep-card');
+        if (card) card.style.display = 'none';
+      }
+
       // ── Share Deeplink ───────────────────────────────────────────────────────
       function _sharePlayer() {
         if (!currentProg) return;
@@ -6076,7 +6512,8 @@
           aurora:417,cosmos3d:963,dna:528,kaleidoscope:528,plasma:396,lightning:852,
           vortex:639,fractal:741,fire:396,waterwave:417,circuit:852,galaxy:963,mandala:528,
           orig_void:396,orig_geometry:432,orig_light:528,orig_sound:432,
-          orig_crystal:639,orig_attractor:741,orig_transit:852,orig_storm:963
+          orig_crystal:639,orig_attractor:741,orig_transit:852,orig_storm:963,
+          s2_resonance:432,s2_swarm:528,s2_signal:963,s2_architect:72
         };
         const GEO_GEOQODE = {
           matrix:'ENTITY · 396',inception:'DIALOGUE · 639',apollo:'ACTION · 528',
@@ -6089,7 +6526,8 @@
           waterwave:'LOCATION · 417',circuit:'PHYSICS · 852',galaxy:'NARRATIVE · 963',mandala:'ACTION · 528',
           orig_void:'ENTITY · 396',orig_geometry:'HOLOGRAPHIC · 432',orig_light:'ACTION · 528',
           orig_sound:'DIALOGUE · 432',orig_crystal:'ENTITY · 639',orig_attractor:'EMOTION · 741',
-          orig_transit:'NARRATIVE · 852',orig_storm:'PHYSICS · 963'
+          orig_transit:'NARRATIVE · 852',orig_storm:'PHYSICS · 963',
+          s2_resonance:'DIALOGUE · 432',s2_swarm:'ACTION · 528',s2_signal:'NARRATIVE · 963',s2_architect:'HOLOGRAPHIC · 72'
         };
         const hz = GEO_HZ[prog.id] || 528;
         const geoqode = GEO_GEOQODE[prog.id] || 'PHYSICS · 852';
