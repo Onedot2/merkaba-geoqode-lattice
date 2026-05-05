@@ -1515,8 +1515,14 @@
         opacity: 0;
         transition: opacity 0.22s;
       }
-      .src-card:hover .src-preview-cv { display: block; opacity: 1; }
-      .src-card:hover .src-icon-lbl { opacity: 0; transition: opacity 0.18s; }
+      .src-card:hover .src-preview-cv {
+        display: block;
+        opacity: 1;
+      }
+      .src-card:hover .src-icon-lbl {
+        opacity: 0;
+        transition: opacity 0.18s;
+      }
       .src-body {
         padding: 10px 12px 14px;
       }
@@ -1703,14 +1709,14 @@
         bottom: 80px;
         right: 28px;
         width: min(300px, 85vw);
-        background: rgba(10,12,28,0.96);
-        border: 1px solid rgba(255,255,255,0.12);
+        background: rgba(10, 12, 28, 0.96);
+        border: 1px solid rgba(255, 255, 255, 0.12);
         border-radius: 14px;
         padding: 16px;
         display: none;
         flex-direction: column;
         gap: 10px;
-        box-shadow: 0 16px 48px rgba(0,0,0,0.7);
+        box-shadow: 0 16px 48px rgba(0, 0, 0, 0.7);
         backdrop-filter: blur(12px);
         z-index: 900;
       }
@@ -1719,7 +1725,7 @@
         font-weight: 800;
         letter-spacing: 0.2em;
         text-transform: uppercase;
-        color: rgba(255,255,255,0.35);
+        color: rgba(255, 255, 255, 0.35);
       }
       .ne-thumb {
         width: 56px;
@@ -1731,10 +1737,26 @@
         font-size: 22px;
         flex-shrink: 0;
       }
-      .ne-body { flex: 1; min-width: 0; }
-      .ne-title { font-size: 13px; font-weight: 800; color: #fff; line-height: 1.25; }
-      .ne-ep { font-size: 10px; color: rgba(255,255,255,0.4); margin-top: 2px; }
-      .ne-row { display: flex; align-items: center; gap: 10px; }
+      .ne-body {
+        flex: 1;
+        min-width: 0;
+      }
+      .ne-title {
+        font-size: 13px;
+        font-weight: 800;
+        color: #fff;
+        line-height: 1.25;
+      }
+      .ne-ep {
+        font-size: 10px;
+        color: rgba(255, 255, 255, 0.4);
+        margin-top: 2px;
+      }
+      .ne-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
       .ne-btn {
         flex: 1;
         padding: 7px 0;
@@ -1746,14 +1768,44 @@
         cursor: pointer;
         transition: opacity 0.15s;
       }
-      .ne-btn:hover { opacity: 0.8; }
-      .ne-btn-play { background: #fff; color: #000; }
-      .ne-btn-skip { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.65); }
-      .ne-bar { height: 3px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; margin-top: 2px; }
-      .ne-fill { height: 100%; background: #00e5ff; border-radius: 2px; width: 100%; }
-      .ne-count-row { display: flex; align-items: center; justify-content: space-between; }
-      .ne-count-lbl { font-size: 9px; color: rgba(255,255,255,0.28); }
-      .ne-count { font-size: 11px; font-weight: 800; color: #00e5ff; }
+      .ne-btn:hover {
+        opacity: 0.8;
+      }
+      .ne-btn-play {
+        background: #fff;
+        color: #000;
+      }
+      .ne-btn-skip {
+        background: rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 0.65);
+      }
+      .ne-bar {
+        height: 3px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 2px;
+        overflow: hidden;
+        margin-top: 2px;
+      }
+      .ne-fill {
+        height: 100%;
+        background: #00e5ff;
+        border-radius: 2px;
+        width: 100%;
+      }
+      .ne-count-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .ne-count-lbl {
+        font-size: 9px;
+        color: rgba(255, 255, 255, 0.28);
+      }
+      .ne-count {
+        font-size: 11px;
+        font-weight: 800;
+        color: #00e5ff;
+      }
       .un-kicker {
         font-size: 10px;
         font-weight: 700;
@@ -1837,31 +1889,54 @@
       #np-bar {
         position: fixed;
         bottom: -72px;
-        left: 0; right: 0;
+        left: 0;
+        right: 0;
         height: 62px;
-        background: rgba(6,6,24,0.96);
+        background: rgba(6, 6, 24, 0.96);
         backdrop-filter: blur(20px) saturate(1.6);
-        border-top: 1px solid rgba(255,255,255,0.07);
+        border-top: 1px solid rgba(255, 255, 255, 0.07);
         z-index: 490;
         display: flex;
         align-items: center;
         gap: 12px;
         padding: 0 18px;
-        transition: bottom 0.35s cubic-bezier(0.22,0.61,0.36,1);
-        box-shadow: 0 -6px 40px rgba(0,0,0,0.6);
+        transition: bottom 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
+        box-shadow: 0 -6px 40px rgba(0, 0, 0, 0.6);
       }
-      #np-bar.active { bottom: 0; }
+      #np-bar.active {
+        bottom: 0;
+      }
       #np-thumb {
-        width: 44px; height: 44px; border-radius: 8px;
-        flex-shrink: 0; display: flex; align-items: center; justify-content: center;
-        font-size: 22px; overflow: hidden;
+        width: 44px;
+        height: 44px;
+        border-radius: 8px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        overflow: hidden;
       }
-      #np-info { flex: 1; min-width: 0; }
-      #np-title { font-size: 12px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-      #np-sub { font-size: 10px; color: rgba(255,255,255,0.38); margin-top: 1px; }
+      #np-info {
+        flex: 1;
+        min-width: 0;
+      }
+      #np-title {
+        font-size: 12px;
+        font-weight: 700;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      #np-sub {
+        font-size: 10px;
+        color: rgba(255, 255, 255, 0.38);
+        margin-top: 1px;
+      }
       #np-progress {
         position: absolute;
-        bottom: 0; left: 0;
+        bottom: 0;
+        left: 0;
         height: 2px;
         background: var(--paccent, #00d4ff);
         width: 0%;
@@ -1869,11 +1944,23 @@
         border-radius: 1px;
       }
       .np-btn {
-        background: none; border: none; color: #fff;
-        font-size: 18px; cursor: pointer; padding: 6px; opacity: 0.7;
-        border-radius: 6px; transition: opacity 0.15s, background 0.15s; flex-shrink: 0;
+        background: none;
+        border: none;
+        color: #fff;
+        font-size: 18px;
+        cursor: pointer;
+        padding: 6px;
+        opacity: 0.7;
+        border-radius: 6px;
+        transition:
+          opacity 0.15s,
+          background 0.15s;
+        flex-shrink: 0;
       }
-      .np-btn:hover { opacity: 1; background: rgba(255,255,255,0.08); }
+      .np-btn:hover {
+        opacity: 1;
+        background: rgba(255, 255, 255, 0.08);
+      }
       /* PiP proxy video */
       #pip-video {
         position: absolute;
@@ -2264,8 +2351,32 @@
         <a href="/" class="nav-logo">AIOSdream</a>
         <div class="nav-links">
           <a href="/aiosdream" class="active">Home</a>
-          <a href="/aiosdream" data-row="season1" onclick="scrollToRow('season1', event)">S1: Origins</a>
-          <a href="/aiosdream" data-row="season2" onclick="scrollToRow('season2', event)" style="color:#00e5ff">S2: Emergence <span style="font-size:8px;font-weight:900;background:rgba(0,229,255,0.15);border:1px solid rgba(0,229,255,0.4);border-radius:8px;padding:1px 5px;letter-spacing:0.1em;vertical-align:middle">NEW</span></a>
+          <a
+            href="/aiosdream"
+            data-row="season1"
+            onclick="scrollToRow('season1', event)"
+            >S1: Origins</a
+          >
+          <a
+            href="/aiosdream"
+            data-row="season2"
+            onclick="scrollToRow('season2', event)"
+            style="color: #00e5ff"
+            >S2: Emergence
+            <span
+              style="
+                font-size: 8px;
+                font-weight: 900;
+                background: rgba(0, 229, 255, 0.15);
+                border: 1px solid rgba(0, 229, 255, 0.4);
+                border-radius: 8px;
+                padding: 1px 5px;
+                letter-spacing: 0.1em;
+                vertical-align: middle;
+              "
+              >NEW</span
+            ></a
+          >
           <a
             href="/aiosdream"
             data-row="cinematic"
@@ -2357,8 +2468,16 @@
         <button
           class="nav-icon-btn"
           title="Keyboard shortcuts (?)"
-          onclick="document.getElementById('kbd-panel').classList.toggle('open')"
-          style="font-size:11px;font-weight:800;letter-spacing:0;font-family:'SF Mono',monospace;opacity:0.55"
+          onclick="
+            document.getElementById('kbd-panel').classList.toggle('open')
+          "
+          style="
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0;
+            font-family: &quot;SF Mono&quot;, monospace;
+            opacity: 0.55;
+          "
         >
           ?
         </button>
@@ -2512,7 +2631,22 @@
       <div class="hero" id="hero">
         <canvas id="hero-canvas"></canvas>
         <!-- Audio visualiser ring (bottom-right corner, pulses with ambient audio) -->
-        <canvas id="hero-vu-ring" width="80" height="80" style="position:absolute;bottom:20px;right:24px;width:80px;height:80px;opacity:0;transition:opacity 0.6s;pointer-events:none;z-index:4"></canvas>
+        <canvas
+          id="hero-vu-ring"
+          width="80"
+          height="80"
+          style="
+            position: absolute;
+            bottom: 20px;
+            right: 24px;
+            width: 80px;
+            height: 80px;
+            opacity: 0;
+            transition: opacity 0.6s;
+            pointer-events: none;
+            z-index: 4;
+          "
+        ></canvas>
         <div class="hero-grad"></div>
         <div class="hero-content" id="hero-content">
           <div class="hero-eyebrow" id="hero-eyebrow">Featured</div>
@@ -2639,6 +2773,7 @@
           <div class="tl-row">
             <span class="tl-time" id="tl-cur">0:00</span>
             <div class="tl-bar-wrap" id="tl-bar">
+              <canvas id="tl-wave-cv" style="position:absolute;inset:0;width:100%;height:100%;opacity:0.35;pointer-events:none;border-radius:4px"></canvas>
               <div class="tl-bg"></div>
               <div class="tl-fill" id="tl-fill"></div>
               <div class="tl-chapters" id="tl-chapters"></div>
@@ -2804,7 +2939,32 @@
         </div>
       </div>
       <!-- ── SKIP INTRO ── -->
-      <button id="skip-intro" onclick="_skipIntro()" style="display:none;position:absolute;bottom:96px;right:24px;z-index:850;background:rgba(10,12,28,0.88);border:1px solid rgba(255,255,255,0.25);color:#fff;font-size:12px;font-weight:800;letter-spacing:0.1em;padding:9px 20px;border-radius:8px;cursor:pointer;backdrop-filter:blur(8px);transition:opacity 0.2s,background 0.15s">SKIP INTRO ›</button>
+      <button
+        id="skip-intro"
+        onclick="_skipIntro()"
+        style="
+          display: none;
+          position: absolute;
+          bottom: 96px;
+          right: 24px;
+          z-index: 850;
+          background: rgba(10, 12, 28, 0.88);
+          border: 1px solid rgba(255, 255, 255, 0.25);
+          color: #fff;
+          font-size: 12px;
+          font-weight: 800;
+          letter-spacing: 0.1em;
+          padding: 9px 20px;
+          border-radius: 8px;
+          cursor: pointer;
+          backdrop-filter: blur(8px);
+          transition:
+            opacity 0.2s,
+            background 0.15s;
+        "
+      >
+        SKIP INTRO ›
+      </button>
 
       <!-- ── UP NEXT ── -->
       <div id="up-next">
@@ -2833,9 +2993,17 @@
           <span class="ne-count" id="ne-count">15</span>
         </div>
         <div class="ne-bar"><div class="ne-fill" id="ne-fill"></div></div>
-        <div class="ne-row" style="margin-top:4px">
+        <div class="ne-row" style="margin-top: 4px">
           <button class="ne-btn ne-btn-play" id="ne-play">▶ Play Now</button>
-          <button class="ne-btn ne-btn-skip" onclick="_dismissNeCard();toast('Skipped')">Skip</button>
+          <button
+            class="ne-btn ne-btn-skip"
+            onclick="
+              _dismissNeCard();
+              toast('Skipped');
+            "
+          >
+            Skip
+          </button>
         </div>
       </div>
 
@@ -2858,10 +3026,39 @@
         <div id="np-title">—</div>
         <div id="np-sub">—</div>
       </div>
-      <button class="np-btn" id="np-btn-play" title="Play/Pause" onclick="_npTogglePlay()">▶</button>
-      <button class="np-btn" id="np-btn-next" title="Next Scene" onclick="_npNextScene()" style="font-size:14px">⏭</button>
-      <button class="np-btn" title="Expand" onclick="_npExpand()" style="font-size:14px">⊝</button>
-      <button class="np-btn" title="Close" onclick="closePlayer()" style="font-size:13px;opacity:0.4">✕</button>
+      <button
+        class="np-btn"
+        id="np-btn-play"
+        title="Play/Pause"
+        onclick="_npTogglePlay()"
+      >
+        ▶
+      </button>
+      <button
+        class="np-btn"
+        id="np-btn-next"
+        title="Next Scene"
+        onclick="_npNextScene()"
+        style="font-size: 14px"
+      >
+        ⏭
+      </button>
+      <button
+        class="np-btn"
+        title="Expand"
+        onclick="_npExpand()"
+        style="font-size: 14px"
+      >
+        ⊝
+      </button>
+      <button
+        class="np-btn"
+        title="Close"
+        onclick="closePlayer()"
+        style="font-size: 13px; opacity: 0.4"
+      >
+        ✕
+      </button>
       <div id="np-progress"></div>
     </div>
 
@@ -3017,7 +3214,15 @@
           <div class="modal-scenes-h">Episodes &amp; Scenes</div>
           <div id="modal-scene-list"></div>
           <!-- Season context: ep progress + next ep -->
-          <div id="modal-season-ctx" style="display:none;margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.07)"></div>
+          <div
+            id="modal-season-ctx"
+            style="
+              display: none;
+              margin-top: 16px;
+              padding-top: 16px;
+              border-top: 1px solid rgba(255, 255, 255, 0.07);
+            "
+          ></div>
         </div>
       </div>
     </div>
@@ -6249,6 +6454,7 @@
           stopAmbientAudio();
           if (_audioCtx.state === 'suspended') _audioCtx.resume();
           _startVuRing();
+          setTimeout(_startTlWave, 200); // slight delay so analyser has data
           var cfg = PROG_AUDIO_CFG[progId] || PROG_AUDIO_CFG.merkaba;
           var ctx = _audioCtx;
           var now = ctx.currentTime;
@@ -6324,6 +6530,7 @@
 
       function stopAmbientAudio() {
         _stopVuRing();
+        _stopTlWave();
         var nodes = _ambientNodes.splice(0);
         for (var i = 0; i < nodes.length; i++) {
           try { if (nodes[i].stop) nodes[i].stop(); } catch (e) {}
@@ -6541,6 +6748,42 @@
       function _npTogglePlay() { togglePlay(); document.getElementById('np-btn-play').textContent = playerPlaying ? '⏸' : '▶'; }
       function _npNextScene() { if (!currentProg) return; jumpToScene(currentScene + 1); _syncNpBar(); }
       function _npExpand() { _expandMiniPlayer(); }
+
+      // ── Timeline waveform ─────────────────────────────────────────────────
+      let _tlWaveRaf = null;
+      function _startTlWave() {
+        if (_tlWaveRaf) return;
+        const cv = document.getElementById('tl-wave-cv');
+        if (!cv || !window._analyserNode) return;
+        const wrap = document.getElementById('tl-bar');
+        function _drawWave() {
+          _tlWaveRaf = requestAnimationFrame(_drawWave);
+          if (!wrap) return;
+          const w = wrap.offsetWidth || 400, h = wrap.offsetHeight || 8;
+          if (cv.width !== w) cv.width = w;
+          if (cv.height !== h * 2) cv.height = h * 2; // 2x for retina-ish quality
+          const ctx = cv.getContext('2d');
+          ctx.clearRect(0, 0, w, h * 2);
+          const analyser = window._analyserNode;
+          const bins = analyser.frequencyBinCount;
+          const data = new Uint8Array(bins);
+          analyser.getByteFrequencyData(data);
+          const barW = Math.max(1, Math.floor(w / 64));
+          const accent = (currentProg && currentProg.accent) || '#00d4ff';
+          ctx.fillStyle = accent;
+          for (let i = 0; i < 64; i++) {
+            const v = data[Math.floor(i * bins / 64)] / 255;
+            const barH = v * h * 2;
+            ctx.fillRect(i * (w / 64), h * 2 - barH, barW - 1, barH);
+          }
+        }
+        _drawWave();
+      }
+      function _stopTlWave() {
+        if (_tlWaveRaf) { cancelAnimationFrame(_tlWaveRaf); _tlWaveRaf = null; }
+        const cv = document.getElementById('tl-wave-cv');
+        if (cv) { const ctx = cv.getContext('2d'); ctx && ctx.clearRect(0, 0, cv.width, cv.height); }
+      }
       document.getElementById('ctrl-mini').addEventListener('click', e => { e.stopPropagation(); _toggleMiniPlayer(); });
       document.getElementById('mini-expand').addEventListener('click', e => { e.stopPropagation(); _expandMiniPlayer(); });
       document.getElementById('mini-close').addEventListener('click', e => { e.stopPropagation(); closePlayer(); });
