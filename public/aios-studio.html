@@ -560,6 +560,7 @@
         <a href="/vr-hub">AIOSOCULIS</a>
         <a href="/aios-studio" class="active">STUDIO</a>
         <a href="/geo-codec">STANDARD</a>
+        <a href="#" onclick="toggleCompose(event)" style="color:var(--cyan);border:1px solid rgba(0,229,255,0.28);padding:2px 10px;border-radius:4px;font-weight:700">COMPOSE</a>
       </nav>
       <div class="live-badge">
         <div class="live-dot"></div>
@@ -728,18 +729,11 @@
 
       // ── Programme catalogue ──────────────────────────────────────────────────────
       const RENDERERS_LIST = [
-        "matrix",
-        "inception",
-        "apollo",
-        "hyperspace",
-        "nebula",
-        "neural",
-        "quantum",
-        "merkaba",
-        "phoenix",
-        "ocean",
-        "escher",
-        "chronos",
+        "matrix","inception","apollo","hyperspace","nebula","neural","quantum","merkaba",
+        "phoenix","ocean","escher","chronos","aurora","cosmos3d","dna","kaleidoscope",
+        "plasma","lightning","vortex","fractal","fire","waterwave","circuit","galaxy",
+        "mandala","prism","blackhole","cymatics","dmt","solar","crystal",
+        "wormhole","butterfly","tide","storm",
       ];
       const FREQ_MAP = {
         ENTITY: 396,
@@ -1533,6 +1527,191 @@
         if (_previewRaf) cancelAnimationFrame(_previewRaf);
         startPreviewRenderer();
       });
+
+      // ── COMPOSE MODAL ────────────────────────────────────────────────────────────
+      const CMP_ALL = ["matrix","inception","apollo","hyperspace","nebula","neural","quantum","merkaba","phoenix","ocean","escher","chronos","aurora","cosmos3d","dna","kaleidoscope","plasma","lightning","vortex","fractal","fire","waterwave","circuit","galaxy","mandala","prism","blackhole","cymatics","dmt","solar","crystal","wormhole","butterfly","tide","storm"];
+      const CMP_HZ_LIST = [396,417,432,528,639,741,852,963];
+      const CMP_WAVES = ["sine","triangle","sawtooth"];
+      const CMP_SCENE_NAMES = ["Genesis","Expansion","Zenith","Dissolution","Unity","Silence","Surge","Echo","Origin","Ascent","Peak","Bloom","Fade","Return"];
+
+      let cmpState = { renderer:"quantum", hz:528, wave:"sine", scenes:[], previewRaf:null, lastGeo:null };
+
+      function toggleCompose(e) {
+        if (e) e.preventDefault();
+        const m = document.getElementById("cmp-modal");
+        const open = m.style.display !== "none";
+        m.style.display = open ? "none" : "block";
+        if (!open) { cmpState.scenes=[{name:"Genesis",dur:120},{name:"Expansion",dur:180},{name:"Zenith",dur:240},{name:"Dissolution",dur:120},{name:"Unity",dur:60}]; cmpInit(); }
+        else if (cmpState.previewRaf) { cancelAnimationFrame(cmpState.previewRaf); cmpState.previewRaf = null; }
+      }
+      window.toggleCompose = toggleCompose;
+
+      function cmpInit() {
+        // Hz buttons
+        const hzEl = document.getElementById("cmp-hz-btns"); hzEl.innerHTML = "";
+        CMP_HZ_LIST.forEach(function(hz) {
+          const btn = document.createElement("button"); btn.textContent = hz+" Hz";
+          const on = hz===cmpState.hz;
+          btn.style.cssText = "background:"+(on?"rgba(0,229,255,0.14)":"rgba(0,229,255,0.04)")+";border:1px solid "+(on?"rgba(0,229,255,0.5)":"rgba(0,229,255,0.12)")+";color:"+(on?"var(--cyan)":"var(--dim)")+";font-family:inherit;font-size:8px;letter-spacing:1px;padding:4px 8px;border-radius:3px;cursor:pointer";
+          btn.onclick = function(){ cmpState.hz=hz; cmpInit(); cmpBuild(); };
+          hzEl.appendChild(btn);
+        });
+        // Wave buttons
+        const wEl = document.getElementById("cmp-wave-btns"); wEl.innerHTML = "";
+        CMP_WAVES.forEach(function(w) {
+          const btn = document.createElement("button"); btn.textContent = w.toUpperCase();
+          const on = w===cmpState.wave;
+          btn.style.cssText = "background:"+(on?"rgba(124,58,237,0.14)":"rgba(124,58,237,0.04)")+";border:1px solid "+(on?"rgba(124,58,237,0.5)":"rgba(124,58,237,0.15)")+";color:"+(on?"#a78bfa":"var(--dim)")+";font-family:inherit;font-size:8px;letter-spacing:2px;padding:4px 10px;border-radius:3px;cursor:pointer";
+          btn.onclick = function(){ cmpState.wave=w; cmpInit(); cmpBuild(); };
+          wEl.appendChild(btn);
+        });
+        // Renderer grid
+        const rEl = document.getElementById("cmp-renderer-grid"); rEl.innerHTML = "";
+        CMP_ALL.forEach(function(r) {
+          const btn = document.createElement("button"); btn.textContent = r;
+          const on = r===cmpState.renderer;
+          btn.style.cssText = "background:"+(on?"rgba(0,229,255,0.12)":"rgba(255,255,255,0.03)")+";border:1px solid "+(on?"rgba(0,229,255,0.4)":"rgba(255,255,255,0.07)")+";color:"+(on?"var(--cyan)":"var(--dim)")+";font-family:inherit;font-size:8px;letter-spacing:1px;padding:4px 9px;border-radius:3px;cursor:pointer;text-transform:uppercase";
+          btn.onclick = function(){ cmpState.renderer=r; document.getElementById("cmp-rend-label").textContent=r.toUpperCase(); cmpInit(); cmpBuild(); cmpPreview(); };
+          rEl.appendChild(btn);
+        });
+        cmpRenderScenes(); cmpPreview(); cmpBuild();
+      }
+
+      function cmpRenderScenes() {
+        const el = document.getElementById("cmp-scenes"); el.innerHTML = "";
+        cmpState.scenes.forEach(function(sc, i) {
+          const div = document.createElement("div");
+          div.style.cssText = "display:flex;align-items:center;gap:8px;background:rgba(0,229,255,0.04);border:1px solid rgba(0,229,255,0.1);border-radius:3px;padding:7px 10px";
+          div.innerHTML = '<span style="font-size:9px;color:var(--cyan);min-width:16px;text-align:center">'+(i+1)+'</span>'+
+            '<input value="'+sc.name+'" style="flex:1;background:none;border:none;color:var(--text);font-family:inherit;font-size:9px;letter-spacing:1px;outline:none" placeholder="Scene name"/>'+
+            '<input type="number" value="'+sc.dur+'" min="30" max="3600" style="width:50px;background:rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.08);color:var(--cyan);font-family:inherit;font-size:9px;text-align:center;padding:2px;border-radius:2px;outline:none"/>'+
+            '<span style="font-size:8px;color:var(--dim)">s</span>'+
+            '<button style="background:none;border:none;color:var(--dim);cursor:pointer;font-size:12px;line-height:1;padding:0 2px" onclick="cmpRemoveScene('+i+')">✕</button>';
+          div.querySelector('input[type="text"]').oninput = function(e){ sc.name=e.target.value; cmpBuild(); };
+          div.querySelector('input[type="number"]').oninput = function(e){ sc.dur=parseInt(e.target.value)||60; cmpBuild(); };
+          el.appendChild(div);
+        });
+      }
+      window.cmpRenderScenes = cmpRenderScenes;
+
+      window.cmpAddScene = function() { cmpState.scenes.push({name:CMP_SCENE_NAMES[cmpState.scenes.length%CMP_SCENE_NAMES.length],dur:120}); cmpRenderScenes(); cmpBuild(); };
+      window.cmpRemoveScene = function(i) { cmpState.scenes.splice(i,1); cmpRenderScenes(); cmpBuild(); };
+
+      function cmpBuild() {
+        const inp = document.getElementById("cmp-name");
+        const name = (inp&&inp.value.trim()) || "Untitled Programme";
+        const geo = {
+          format:"aios-geo-v2", id:"cmp_"+Math.random().toString(36).slice(2,10), title:name,
+          renderer:{ type:cmpState.renderer, palette:["#00e5ff","#7c3aed","#00ff7a"], intensity:0.88 },
+          audio:{ hz:cmpState.hz, wave:cmpState.wave, lfoRate:parseFloat((1/PHI).toFixed(3)), drone:true },
+          scenes:cmpState.scenes.map(function(s){ return {name:s.name,dur:s.dur,intensity:0.85}; }),
+          geoqode:{ architectureSignature:"8,26,48:480", frequency:cmpState.hz, phiCoefficient:PHI },
+          swarm:{ studio:"AIOSProducerSwarm", composed:"manual", composedAt:new Date().toISOString() }
+        };
+        cmpState.lastGeo = geo;
+        const pre = document.getElementById("cmp-output");
+        if (pre) pre.textContent = JSON.stringify(geo, null, 2);
+      }
+
+      function cmpPreview() {
+        const cv = document.getElementById("cmp-cv"); if (!cv) return;
+        if (cmpState.previewRaf) { cancelAnimationFrame(cmpState.previewRaf); cmpState.previewRaf = null; }
+        const p = cv.parentElement; cv.width = p.offsetWidth||360; cv.height = Math.round(cv.width*9/16);
+        const c = cv.getContext("2d"); const W=cv.width,H=cv.height,cx=W/2,cy=H/2; let t=0;
+        const r = cmpState.renderer;
+        function loop() {
+          if (r==="wormhole") {
+            c.fillStyle="rgba(0,0,10,0.22)";c.fillRect(0,0,W,H);
+            for(var i=0;i<30;i++){var d=((i+t*8)%30)/30,per=1-Math.pow(d,0.72);c.strokeStyle="hsla("+((d*360+t*80)%360)+",88%,65%,"+(0.07+per*0.25)+")";c.lineWidth=0.5+per*1.8;c.beginPath();c.ellipse(cx,cy,Math.max(1,per*W*0.46),Math.max(1,per*H*0.46),t*0.04,0,Math.PI*2);c.stroke();}
+          } else if (r==="storm") {
+            c.fillStyle="rgba(2,4,14,0.24)";c.fillRect(0,0,W,H);
+            if(Math.random()<0.12){function sb(x0,y0,x1,y1,d){if(d<1)return;var mx=(x0+x1)/2+(Math.random()-0.5)*60,my=(y0+y1)/2+(Math.random()-0.5)*40;c.strokeStyle="rgba(180,190,255,"+(d/4*0.6)+")";c.lineWidth=d*0.5;c.beginPath();c.moveTo(x0,y0);c.lineTo(mx,my);c.stroke();c.beginPath();c.moveTo(mx,my);c.lineTo(x1,y1);c.stroke();sb(x0,y0,mx,my,d-1);sb(mx,my,x1,y1,d-1);}sb(Math.random()*W,0,Math.random()*W,H*0.6+Math.random()*H*0.3,3);}
+          } else if (r==="solar") {
+            c.fillStyle="rgba(2,1,0,0.16)";c.fillRect(0,0,W,H);var RS=Math.min(W,H)*0.18;
+            for(var j=0;j<48;j++){var ra=(j/48)*Math.PI*2+t*0.003,rl=RS*(1.2+0.5*Math.sin(t*2+j*0.3));c.strokeStyle="rgba(255,"+(140+Math.floor(Math.sin(j+t)*50))+",0,0.07)";c.lineWidth=0.7;c.beginPath();c.moveTo(cx,cy);c.lineTo(cx+Math.cos(ra)*rl,cy+Math.sin(ra)*rl);c.stroke();}
+            var sg=c.createRadialGradient(cx,cy,0,cx,cy,RS);sg.addColorStop(0,"rgba(255,255,220,1)");sg.addColorStop(0.6,"rgba(255,170,20,0.9)");sg.addColorStop(1,"transparent");c.fillStyle=sg;c.beginPath();c.arc(cx,cy,RS,0,Math.PI*2);c.fill();
+          } else {
+            c.fillStyle="rgba(2,2,10,0.11)";c.fillRect(0,0,W,H);
+            if(!loop._pts)loop._pts=Array.from({length:80},function(){return{x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-0.5)*0.4,vy:(Math.random()-0.5)*0.4,h:Math.random()*360,r:1+Math.random()*2,ph:Math.random()*Math.PI*2};});
+            loop._pts.forEach(function(p){p.x+=p.vx;p.y+=p.vy;p.ph+=0.02;if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;c.globalAlpha=(0.4+0.4*Math.sin(p.ph))*0.8;c.fillStyle="hsl("+(p.h+t*5)+",80%,62%)";c.beginPath();c.arc(p.x,p.y,p.r,0,Math.PI*2);c.fill();});
+            c.globalAlpha=1;
+          }
+          t+=0.016; cmpState.previewRaf=requestAnimationFrame(loop);
+        }
+        loop();
+      }
+
+      window.cmpExport = function() {
+        cmpBuild(); const geo=cmpState.lastGeo; if(!geo)return;
+        const blob=new Blob([JSON.stringify(geo,null,2)],{type:"application/json"});
+        const url=URL.createObjectURL(blob); const a=document.createElement("a");
+        a.href=url; a.download=(geo.title||"programme").replace(/\s+/g,"-").toLowerCase()+".geo"; a.click(); URL.revokeObjectURL(url);
+      };
+      window.cmpSendToTheatre = function() { window.open("/aiosdream","_blank"); };
     </script>
+
+    <!-- ── COMPOSE MODAL ─────────────────────────────────────────────────────── -->
+    <div id="cmp-modal" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,12,0.97);backdrop-filter:blur(16px);overflow-y:auto">
+      <div style="max-width:880px;margin:0 auto;padding:28px 20px 60px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;border-bottom:1px solid rgba(0,229,255,0.1);padding-bottom:14px">
+          <div>
+            <div style="font-size:10px;letter-spacing:4px;color:var(--cyan);font-weight:700">⬡ COMPOSE</div>
+            <div style="font-size:10px;color:var(--dim);margin-top:3px;letter-spacing:2px">BUILD YOUR .GEO PROGRAMME</div>
+          </div>
+          <button onclick="toggleCompose()" style="background:none;border:1px solid rgba(255,255,255,0.1);color:var(--dim);font-size:10px;letter-spacing:2px;padding:5px 14px;border-radius:4px;cursor:pointer;font-family:inherit">✕ CLOSE</button>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+          <!-- LEFT -->
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <div>
+              <div style="font-size:8px;letter-spacing:3px;color:var(--dim);margin-bottom:6px">PROGRAMME NAME</div>
+              <input id="cmp-name" type="text" placeholder="Quantum Emergence" oninput="cmpBuild()" style="width:100%;background:rgba(0,229,255,0.04);border:1px solid rgba(0,229,255,0.14);color:var(--text);font-family:inherit;font-size:11px;letter-spacing:1px;padding:8px 11px;border-radius:4px;outline:none"/>
+            </div>
+            <div>
+              <div style="font-size:8px;letter-spacing:3px;color:var(--dim);margin-bottom:6px">AUDIO FREQUENCY</div>
+              <div style="display:flex;flex-wrap:wrap;gap:5px" id="cmp-hz-btns"></div>
+            </div>
+            <div>
+              <div style="font-size:8px;letter-spacing:3px;color:var(--dim);margin-bottom:6px">WAVE TYPE</div>
+              <div style="display:flex;gap:6px" id="cmp-wave-btns"></div>
+            </div>
+            <div>
+              <div style="font-size:8px;letter-spacing:3px;color:var(--dim);margin-bottom:7px">RENDERER — 35 AVAILABLE</div>
+              <div style="display:flex;flex-wrap:wrap;gap:4px;max-height:188px;overflow-y:auto;padding-right:4px" id="cmp-renderer-grid"></div>
+            </div>
+          </div>
+
+          <!-- RIGHT -->
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div>
+              <div style="font-size:8px;letter-spacing:3px;color:var(--dim);margin-bottom:6px">LIVE PREVIEW</div>
+              <div style="position:relative;aspect-ratio:16/9;background:#000;border:1px solid rgba(0,229,255,0.12);border-radius:4px;overflow:hidden">
+                <canvas id="cmp-cv" style="width:100%;height:100%;display:block"></canvas>
+                <div id="cmp-rend-label" style="position:absolute;bottom:7px;left:8px;font-size:8px;letter-spacing:2px;color:var(--cyan);background:rgba(0,0,0,0.75);padding:2px 7px;border-radius:2px">QUANTUM</div>
+              </div>
+            </div>
+            <div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:7px">
+                <div style="font-size:8px;letter-spacing:3px;color:var(--dim)">SCENES</div>
+                <button onclick="cmpAddScene()" style="background:rgba(0,229,255,0.07);border:1px solid rgba(0,229,255,0.18);color:var(--cyan);font-family:inherit;font-size:8px;letter-spacing:2px;padding:3px 10px;border-radius:3px;cursor:pointer">+ ADD</button>
+              </div>
+              <div id="cmp-scenes" style="display:flex;flex-direction:column;gap:5px;max-height:190px;overflow-y:auto"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- .geo output -->
+        <div style="margin-top:22px;background:#060810;border:1px solid rgba(0,229,255,0.09);border-radius:4px;padding:12px;max-height:160px;overflow:auto">
+          <div style="font-size:8px;letter-spacing:3px;color:var(--dim);margin-bottom:7px">.GEO PAYLOAD PREVIEW</div>
+          <pre id="cmp-output" style="font-size:8.5px;color:#94a3b8;line-height:1.55;margin:0;white-space:pre-wrap">Building programme…</pre>
+        </div>
+
+        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
+          <button onclick="cmpExport()" style="flex:1;background:linear-gradient(135deg,rgba(0,229,255,0.11),rgba(124,58,237,0.09));border:1px solid rgba(0,229,255,0.28);color:var(--cyan);font-family:inherit;font-size:10px;font-weight:700;letter-spacing:3px;padding:12px;border-radius:4px;cursor:pointer">⬇ EXPORT .GEO</button>
+          <button onclick="cmpSendToTheatre()" style="flex:1;background:rgba(0,255,122,0.06);border:1px solid rgba(0,255,122,0.22);color:var(--green);font-family:inherit;font-size:10px;font-weight:700;letter-spacing:3px;padding:12px;border-radius:4px;cursor:pointer">▶ OPEN IN THEATRE</button>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

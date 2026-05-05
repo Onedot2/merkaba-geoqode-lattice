@@ -3303,6 +3303,16 @@ const _GEO_RENDERERS = [
   "circuit",
   "galaxy",
   "mandala",
+  "prism",
+  "blackhole",
+  "cymatics",
+  "dmt",
+  "solar",
+  "crystal",
+  "wormhole",
+  "butterfly",
+  "tide",
+  "storm",
 ];
 const _GEO_GENRES = [
   ["Quantum", "Meditation"],
