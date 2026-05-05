@@ -4477,6 +4477,14 @@
             >
               ＋ My List
             </button>
+            <button
+              class="btn-info"
+              id="modal-share"
+              style="font-size: 14px; padding: 12px 18px"
+              title="Share"
+            >
+              ↗ Share
+            </button>
           </div>
           <div class="reaction-strip" id="reaction-strip">
             <button
@@ -7898,7 +7906,7 @@
       (function() {
         var _pl     = document.getElementById('player');
         var _sx     = 0, _sy = 0, _st = 0, _sd = 0;
-        var _tapTmo = null;
+        var _tapTmo = null, _lastTapX, _lastTapTime = 0;
         var SWIPE_MIN = 55;  // px
         var SWIPE_MS  = 380; // ms
 
@@ -7937,10 +7945,38 @@
                 jumpToScene(currentScene - 1); _swipeFlash('\u27E8');
               } else { _swipeFlash('START'); }
             }
+          } else if (dt < SWIPE_MS && ady > SWIPE_MIN && ady > adx * 1.5) {
+            // Vertical swipe — volume
+            var slider = document.getElementById('vol-slider');
+            if (slider) {
+              var cur = parseFloat(slider.value);
+              var delta = dy > 0 ? -0.12 : 0.12;
+              var next = Math.max(0, Math.min(1, cur + delta));
+              slider.value = next;
+              slider.dispatchEvent(new Event('input'));
+              _swipeFlash(dy > 0 ? '\uD83D\uDD09 Vol' : '\uD83D\uDD0A Vol');
+            }
           } else if (dt < 200 && adx < 14 && ady < 14) {
-            // Short tap — toggle play/pause (delay lets double-tap cancel if needed)
+            // Short tap — double-tap left/right edge to skip 10s, center = pause
+            var screenW = window.innerWidth;
+            var tapX    = e.changedTouches[0].clientX;
             clearTimeout(_tapTmo);
             _tapTmo = setTimeout(function() { togglePlay(); }, 120);
+            // Use double-tap detection
+            if (_lastTapX !== undefined && Date.now() - _lastTapTime < 300) {
+              clearTimeout(_tapTmo);
+              if (tapX < screenW * 0.35) {
+                _skip10(-1); _swipeFlash('\u21BA 10s');
+              } else if (tapX > screenW * 0.65) {
+                _skip10(1); _swipeFlash('10s \u21BB');
+              } else {
+                togglePlay();
+              }
+              _lastTapX = undefined;
+            } else {
+              _lastTapX = tapX;
+              _lastTapTime = Date.now();
+            }
           }
         }, { passive: true });
 
@@ -8065,6 +8101,7 @@
 
         document.getElementById('modal-play').onclick = () => { closeModal(); openPlayer(prog.id, 0); };
         document.getElementById('modal-list').onclick = () => toggleMyList(prog.id);
+        document.getElementById('modal-share').onclick = () => _shareProgram(prog);
         updateMyListBtn(prog.id);
 
         // ── Star rating ──
@@ -8130,6 +8167,35 @@
         if (modalRenderer) { try { modalRenderer.stop(); } catch(_) {} modalRenderer = null; }
         document.getElementById('info-modal').classList.remove('active');
       }
+
+      // ── Wave 24: Share Programme ─────────────────────────────────────────────
+      function _shareProgram(prog) {
+        const url = location.origin + location.pathname + '?watch=' + prog.id;
+        const title = prog.title + ' · AIOS';
+        const text = prog.tagline || prog.desc.slice(0, 100);
+        if (navigator.share) {
+          navigator.share({ title, text, url }).catch(() => {});
+        } else {
+          // fallback: copy to clipboard
+          navigator.clipboard.writeText(url).then(() => {
+            toast('🔗 Link copied to clipboard');
+          }).catch(() => {
+            toast('Share: ' + url);
+          });
+        }
+      }
+
+      // ── Watch URL ?watch= param handler ─────────────────────────────────────
+      (function() {
+        const params = new URLSearchParams(location.search);
+        const watchId = params.get('watch');
+        if (watchId) {
+          // clean URL without reload
+          history.replaceState({}, '', location.pathname);
+          const prog = CATALOGUE.find(p => p.id === watchId);
+          if (prog) setTimeout(() => openInfo(prog.id), 600);
+        }
+      })();
 
       function toggleMyList(progId) {
         const idx = myList.indexOf(progId);
