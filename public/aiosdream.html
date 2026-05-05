@@ -3870,6 +3870,7 @@
       ];
 
       const ROWS = [
+        { id: 'continue',   title: '▶ Continue Watching',   filter: p => { const pg = progress[p.id]; if (!pg) return false; const pct = (pg.scene * 100 / p.scenes.length) + (pg.elapsed / p.scenes[pg.scene].dur / p.scenes.length * 100); return pct > 1 && pct < 95; }, dynamic: true },
         { id: 'featured',   title: '✦ Featured Today',   filter: p => p.featured },
         { id: 'mylist',     title: '♥ My List',           filter: p => myList.includes(p.id) },
         { id: 'season1',    title: '⬡ S1: Origins — Geometry of Consciousness', filter: p => p.season === 'origins' },
