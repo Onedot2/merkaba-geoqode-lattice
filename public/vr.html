@@ -190,7 +190,7 @@
 
       /* ── VR Entry Button ── */
       #enter-vr-btn {
-        display: none; /* shown only when WebXR supported */
+        display: flex; /* always shown; label upgrades on Quest */
         align-items: center;
         gap: 0.6rem;
         background: linear-gradient(135deg, #7c3aed, #a855f7, #00d4ff);
@@ -1368,22 +1368,20 @@
       const noSupportEl = document.getElementById("vr-not-supported");
       let webXRSupported = false;
 
+      // Always show the enter button — Cinema Mode works on any device.
+      // Upgrade label to "🥽 Enter VR Mode" if Quest WebXR is detected.
+      enterBtn.style.display = "flex";
+
       if (navigator.xr) {
         navigator.xr
           .isSessionSupported("immersive-vr")
           .then((supported) => {
             webXRSupported = supported;
             if (supported) {
-              enterBtn.style.display = "flex";
-            } else {
-              noSupportEl.style.display = "block";
+              enterBtn.textContent = "🥽 Enter VR Mode";
             }
           })
-          .catch(() => {
-            noSupportEl.style.display = "block";
-          });
-      } else {
-        noSupportEl.style.display = "block";
+          .catch(() => {});
       }
 
       // ── A-Frame Scene Builder ────────────────────────────────────────────
