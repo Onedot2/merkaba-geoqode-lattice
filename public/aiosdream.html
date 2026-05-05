@@ -58,7 +58,7 @@
         --pink: #d946ef;
         --gold: #f5a623;
         --border: rgba(255, 255, 255, 0.08);
-        --nav-h: 68px;
+        --nav-h: 72px;
       }
       html,
       body {
@@ -133,7 +133,7 @@
       }
       .nav-links a {
         color: rgba(229, 229, 229, 0.65);
-        font-size: 14px;
+        font-size: 15px;
         font-weight: 500;
         transition: color 0.2s;
       }
@@ -144,30 +144,30 @@
       .nav-right {
         display: flex;
         align-items: center;
-        gap: 18px;
+        gap: 16px;
       }
       .nav-icon-btn {
         background: none;
         border: none;
         color: rgba(229, 229, 229, 0.6);
-        font-size: 20px;
+        font-size: 22px;
         cursor: pointer;
         transition: color 0.2s;
         line-height: 1;
-        padding: 4px;
+        padding: 5px;
       }
       .nav-icon-btn:hover {
         color: #fff;
       }
       .nav-avatar {
-        width: 32px;
-        height: 32px;
-        border-radius: 6px;
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
         background: linear-gradient(135deg, var(--cyan), var(--purple));
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 12px;
+        font-size: 14px;
         font-weight: 800;
         color: #000;
         cursor: pointer;
@@ -181,7 +181,7 @@
       .nav-avatar.signed-out {
         background: rgba(255, 255, 255, 0.09);
         border: 1px solid rgba(255, 255, 255, 0.15);
-        font-size: 16px;
+        font-size: 18px;
         color: rgba(255, 255, 255, 0.5);
       }
       /* Profile dropdown */
@@ -3858,42 +3858,42 @@
       <div class="nav-right">
         <a
           href="/vr-hub"
-          style="font-size: 13px; color: var(--muted); transition: color 0.2s"
+          style="font-size: 15px; color: var(--muted); transition: color 0.2s"
           onmouseover="this.style.color = '#fff'"
           onmouseout="this.style.color = 'var(--muted)'"
           >🥽 VR Hub</a
         >
         <a
           href="/aios-studio"
-          style="font-size: 13px; color: var(--muted); transition: color 0.2s"
+          style="font-size: 15px; color: var(--muted); transition: color 0.2s"
           onmouseover="this.style.color = '#fff'"
           onmouseout="this.style.color = 'var(--muted)'"
           >⚡ Studio</a
         >
         <a
           href="/geo-codec"
-          style="font-size: 13px; color: var(--muted); transition: color 0.2s"
+          style="font-size: 15px; color: var(--muted); transition: color 0.2s"
           onmouseover="this.style.color = '#fff'"
           onmouseout="this.style.color = 'var(--muted)'"
           >● .geo</a
         >
         <a
           href="/geo-library"
-          style="font-size: 13px; color: var(--muted); transition: color 0.2s"
+          style="font-size: 15px; color: var(--muted); transition: color 0.2s"
           onmouseover="this.style.color = '#fff'"
           onmouseout="this.style.color = 'var(--muted)'"
           >📚 Library</a
         >
         <a
           href="/plaistore"
-          style="font-size: 13px; color: var(--muted); transition: color 0.2s"
+          style="font-size: 15px; color: var(--muted); transition: color 0.2s"
           onmouseover="this.style.color = '#fff'"
           onmouseout="this.style.color = 'var(--muted)'"
           >PLAIstore</a
         >
         <a
           href="/aios-playground"
-          style="font-size: 13px; color: var(--muted); transition: color 0.2s"
+          style="font-size: 15px; color: var(--muted); transition: color 0.2s"
           onmouseover="this.style.color = '#fff'"
           onmouseout="this.style.color = 'var(--muted)'"
           >🎮 NEXGEN</a
@@ -3905,7 +3905,7 @@
             _openLivePanel();
           "
           style="
-            font-size: 13px;
+            font-size: 15px;
             font-weight: 700;
             color: #ef4444;
             transition: color 0.2s;
@@ -3939,7 +3939,7 @@
             class="nav-icon-btn"
             title="Queue"
             onclick="_openQueue()"
-            style="font-size: 14px"
+            style="font-size: 20px"
           >
             ▷
           </button>
@@ -3950,7 +3950,7 @@
             class="nav-icon-btn"
             title="Notifications"
             onclick="_openNotif()"
-            style="font-size: 16px; opacity: 0.7"
+            style="font-size: 21px; opacity: 0.7"
           >
             🔔
           </button>
@@ -3966,7 +3966,7 @@
             id="amb-btn"
             title="Ambient Mixer (A)"
             onclick="_openAmb()"
-            style="font-size: 16px; opacity: 0.55"
+            style="font-size: 21px; opacity: 0.55"
           >
             🎛
           </button>
@@ -3983,7 +3983,7 @@
             document.getElementById('kbd-panel').classList.toggle('open')
           "
           style="
-            font-size: 11px;
+            font-size: 15px;
             font-weight: 800;
             letter-spacing: 0;
             font-family: &quot;SF Mono&quot;, monospace;
@@ -3996,7 +3996,7 @@
           class="nav-icon-btn"
           title="Color Theme"
           onclick="_toggleThemePanel()"
-          style="font-size: 14px; opacity: 0.55"
+          style="font-size: 20px; opacity: 0.55"
         >
           🎨
         </button>
