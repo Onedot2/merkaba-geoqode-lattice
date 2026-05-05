@@ -8395,6 +8395,7 @@
         _dismissUpNext();
         _dismissNeCard();
         _hideSkipIntro();
+        _bingeMode = false; // reset so manual episode opens don't auto-advance
         // Exit cinema mode on close
         if (_cinemaMode) { _cinemaMode = false; document.getElementById('player').classList.remove('cinema-mode'); const h=document.getElementById('cinema-hint'); if(h) h.classList.remove('vis'); }
         document.getElementById('np-bar').classList.remove('active');
