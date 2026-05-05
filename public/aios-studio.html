@@ -1523,8 +1523,7 @@
         // Pre-fill queue
         queuedGeos = [makeGeo(), makeGeo(), makeGeo()];
         const firstGeo = makeGeo();
-        startProduction(firstGeo);
-        startPreviewRenderer();
+        startProduction(firstGeo); // startProduction → updatePreviewRenderer → startPreviewRenderer (one RAF loop only)
 
         // Pre-seed released list with some placeholder entries for instant content
         const seeds = [
