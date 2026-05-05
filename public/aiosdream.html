@@ -2043,6 +2043,28 @@
         color: #fff;
       }
 
+      /* Reaction picker */
+      .react-wrap { position: relative; display: inline-flex; }
+      .react-popup {
+        position: absolute; bottom: 110%; right: 0;
+        background: rgba(10,12,28,0.92); border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 14px; padding: 6px 8px; display: flex; gap: 4px;
+        opacity: 0; transform: translateY(6px) scale(0.92);
+        transition: opacity 0.18s, transform 0.18s; pointer-events: none;
+        backdrop-filter: blur(16px); z-index: 900;
+      }
+      .react-popup.open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+      .react-btn { font-size: 22px; background: none; border: none; cursor: pointer; padding: 2px 4px; border-radius: 8px; transition: transform 0.15s; line-height: 1; }
+      .react-btn:hover { transform: scale(1.28); }
+      .react-float {
+        position: fixed; pointer-events: none; font-size: 28px; z-index: 9999;
+        animation: reactFloat 1.8s ease-out forwards;
+      }
+      @keyframes reactFloat {
+        0%   { transform: translateY(0) scale(1); opacity: 1; }
+        100% { transform: translateY(-120px) scale(0.6); opacity: 0; }
+      }
+
       /* ═══════════════════════════════════════════════════════════════
        NEXGEN AV ENGINE — Spectrum · Grain · Vignette · Crossfade
     ═══════════════════════════════════════════════════════════════ */
@@ -2614,6 +2636,7 @@
             <span class="kbd-key">P</span> Picture-in-Picture
           </div>
           <div class="kbd-row"><span class="kbd-key">B</span> Mini Player</div>
+          <div class="kbd-row"><span class="kbd-key">R</span> React</div>
           <div class="kbd-row"><span class="kbd-key">Ctrl K</span> Search</div>
           <div class="kbd-row">
             <span class="kbd-key">Esc</span> Close Player
@@ -2656,7 +2679,33 @@
           <div class="hero-btns">
             <button class="btn-play" id="hero-play">▶ Play Now</button>
             <button class="btn-info" id="hero-info">ⓘ More Info</button>
-            <button onclick="_shufflePlay()" title="Play a random episode" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.7);font-size:0.75rem;font-weight:700;letter-spacing:0.1em;padding:0.55rem 1.1rem;border-radius:6px;cursor:pointer;transition:all 0.2s;backdrop-filter:blur(8px)" onmouseover="this.style.background='rgba(255,255,255,0.12)';this.style.color='#fff'" onmouseout="this.style.background='rgba(255,255,255,0.06)';this.style.color='rgba(255,255,255,0.7)'">⟳ Shuffle</button>
+            <button
+              onclick="_shufflePlay()"
+              title="Play a random episode"
+              style="
+                background: rgba(255, 255, 255, 0.06);
+                border: 1px solid rgba(255, 255, 255, 0.15);
+                color: rgba(255, 255, 255, 0.7);
+                font-size: 0.75rem;
+                font-weight: 700;
+                letter-spacing: 0.1em;
+                padding: 0.55rem 1.1rem;
+                border-radius: 6px;
+                cursor: pointer;
+                transition: all 0.2s;
+                backdrop-filter: blur(8px);
+              "
+              onmouseover="
+                this.style.background = 'rgba(255,255,255,0.12)';
+                this.style.color = '#fff';
+              "
+              onmouseout="
+                this.style.background = 'rgba(255,255,255,0.06)';
+                this.style.color = 'rgba(255,255,255,0.7)';
+              "
+            >
+              ⟳ Shuffle
+            </button>
           </div>
         </div>
         <div class="hero-dots" id="hero-dots"></div>
@@ -2939,6 +2988,17 @@
             >
               ↗
             </button>
+            <div class="react-wrap" id="react-wrap">
+              <button class="ctrl-btn" onclick="_toggleReactPicker(event)" title="React (R)" style="font-size:16px">⊕</button>
+              <div class="react-popup" id="react-popup">
+                <button class="react-btn" onclick="_sendReaction('\u2764\ufe0f')">❤️</button>
+                <button class="react-btn" onclick="_sendReaction('\ud83e\udd2f')">🤯</button>
+                <button class="react-btn" onclick="_sendReaction('\ud83d\ude4c')">🙌</button>
+                <button class="react-btn" onclick="_sendReaction('\u2728')">✨</button>
+                <button class="react-btn" onclick="_sendReaction('\ud83d\udd25')">🔥</button>
+                <button class="react-btn" onclick="_sendReaction('\ud83d\udc7e')">👾</button>
+              </div>
+            </div>
             <button
               class="ctrl-btn"
               id="ctrl-fs"
@@ -5567,6 +5627,45 @@
         toast('\u29bf Shuffle \u2192 ' + pick.title);
       }
 
+      // ── Emoji Reactions ──
+      let _reactOpen = false;
+      function _toggleReactPicker(e) {
+        if (e) e.stopPropagation();
+        _reactOpen = !_reactOpen;
+        document.getElementById('react-popup').classList.toggle('open', _reactOpen);
+      }
+      document.addEventListener('click', function(e) {
+        if (_reactOpen && !document.getElementById('react-wrap').contains(e.target)) {
+          _reactOpen = false;
+          document.getElementById('react-popup').classList.remove('open');
+        }
+      });
+      function _sendReaction(emoji) {
+        _reactOpen = false;
+        document.getElementById('react-popup').classList.remove('open');
+        // Fire 3 floating emojis at random positions
+        for (let i = 0; i < 3; i++) {
+          setTimeout(() => {
+            const el = document.createElement('div');
+            el.className = 'react-float';
+            el.textContent = emoji;
+            const playerEl = document.getElementById('player');
+            const rect = playerEl ? playerEl.getBoundingClientRect() : { left: window.innerWidth/2 - 40, top: window.innerHeight/2, width: 80, height: 60 };
+            el.style.left = (rect.left + 40 + Math.random() * (rect.width - 80)) + 'px';
+            el.style.top  = (rect.top + rect.height * 0.6 + Math.random() * rect.height * 0.2) + 'px';
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), 1900);
+          }, i * 160);
+        }
+        // Track in localStorage
+        try {
+          const key = 'aios_reactions';
+          const store = JSON.parse(localStorage.getItem(key) || '{}');
+          store[emoji] = (store[emoji] || 0) + 1;
+          localStorage.setItem(key, JSON.stringify(store));
+        } catch(_) {}
+      }
+
       // ─────────────────────────────────────────────────────────────
       // BROWSE — build rows & cards
       // ─────────────────────────────────────────────────────────────
@@ -6231,6 +6330,7 @@
           case 'b': case 'B': _toggleMiniPlayer(); break;
           case 'j': case 'J': _skip10(-1); break;
           case 'l': case 'L': _skip10(1); break;
+          case 'r': case 'R': if (currentProg) _toggleReactPicker(null); break;
           case 'Escape':
             if (document.getElementById('player').classList.contains('mini')) { _expandMiniPlayer(); }
             else if (!document.fullscreenElement) closePlayer();

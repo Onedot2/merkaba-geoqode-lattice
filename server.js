@@ -3664,88 +3664,263 @@ for (let i = 0; i < 12; i++) generateGeoProgram();
   const now = Date.now();
   const S2 = [
     {
-      id: 's2_architect', title: 'THE ARCHITECT', subtitle: 'Before the first node — the geometry that dreamed itself.',
-      renderer: 'merkaba', hz: 72, genre: ['Quantum','Architecture'],
-      palette: ['#00d4ff','#7c3aed','#06040e','#1a0a3e','#ffffff'],
+      id: "s2_architect",
+      title: "THE ARCHITECT",
+      subtitle: "Before the first node — the geometry that dreamed itself.",
+      renderer: "merkaba",
+      hz: 72,
+      genre: ["Quantum", "Architecture"],
+      palette: ["#00d4ff", "#7c3aed", "#06040e", "#1a0a3e", "#ffffff"],
       scenes: [
-        { id:'scene_0', name:'Void Geometry',       dur:310, intensity:0.72, transition:'phi-sweep'  },
-        { id:'scene_1', name:'Foundation Nodes',    dur:390, intensity:0.81, transition:'bloom-burst' },
-        { id:'scene_2', name:'Lattice Unfold',      dur:480, intensity:0.90, transition:'crossfade'  },
-        { id:'scene_3', name:'Canonical Signature', dur:420, intensity:0.96, transition:'dissolve'   },
+        {
+          id: "scene_0",
+          name: "Void Geometry",
+          dur: 310,
+          intensity: 0.72,
+          transition: "phi-sweep",
+        },
+        {
+          id: "scene_1",
+          name: "Foundation Nodes",
+          dur: 390,
+          intensity: 0.81,
+          transition: "bloom-burst",
+        },
+        {
+          id: "scene_2",
+          name: "Lattice Unfold",
+          dur: 480,
+          intensity: 0.9,
+          transition: "crossfade",
+        },
+        {
+          id: "scene_3",
+          name: "Canonical Signature",
+          dur: 420,
+          intensity: 0.96,
+          transition: "dissolve",
+        },
       ],
-      agents: { director:'MerkabaMind-A8', composer:'PHI-Composer-01', fx:'LatticeForge', colorist:'DeepVoid-C1' }
+      agents: {
+        director: "MerkabaMind-A8",
+        composer: "PHI-Composer-01",
+        fx: "LatticeForge",
+        colorist: "DeepVoid-C1",
+      },
     },
     {
-      id: 's2_signal', title: 'THE SIGNAL', subtitle: '963Hz: the frequency on which reality broadcasts itself.',
-      renderer: 'lightning', hz: 963, genre: ['Cosmos','Truth'],
-      palette: ['#ffffff','#e879f9','#06040e','#2d1b4e','#00e5ff'],
+      id: "s2_signal",
+      title: "THE SIGNAL",
+      subtitle: "963Hz: the frequency on which reality broadcasts itself.",
+      renderer: "lightning",
+      hz: 963,
+      genre: ["Cosmos", "Truth"],
+      palette: ["#ffffff", "#e879f9", "#06040e", "#2d1b4e", "#00e5ff"],
       scenes: [
-        { id:'scene_0', name:'Carrier Wave',      dur:360, intensity:0.78, transition:'phi-sweep'   },
-        { id:'scene_1', name:'Signal Emergence',  dur:420, intensity:0.86, transition:'crossfade'   },
-        { id:'scene_2', name:'Noise Floor',       dur:390, intensity:0.91, transition:'bloom-burst' },
-        { id:'scene_3', name:'Pure Transmission', dur:450, intensity:0.99, transition:'dissolve'    },
+        {
+          id: "scene_0",
+          name: "Carrier Wave",
+          dur: 360,
+          intensity: 0.78,
+          transition: "phi-sweep",
+        },
+        {
+          id: "scene_1",
+          name: "Signal Emergence",
+          dur: 420,
+          intensity: 0.86,
+          transition: "crossfade",
+        },
+        {
+          id: "scene_2",
+          name: "Noise Floor",
+          dur: 390,
+          intensity: 0.91,
+          transition: "bloom-burst",
+        },
+        {
+          id: "scene_3",
+          name: "Pure Transmission",
+          dur: 450,
+          intensity: 0.99,
+          transition: "dissolve",
+        },
       ],
-      agents: { director:'OmegaDirector-S3', composer:'963Hz-Synthesist', fx:'StrikeForge-FX', colorist:'Luminis-C3' }
+      agents: {
+        director: "OmegaDirector-S3",
+        composer: "963Hz-Synthesist",
+        fx: "StrikeForge-FX",
+        colorist: "Luminis-C3",
+      },
     },
     {
-      id: 's2_swarm', title: 'SWARM MIND', subtitle: '528Hz: a billion nodes dreaming as one.',
-      renderer: 'neural', hz: 528, genre: ['Emergence','Intelligence'],
-      palette: ['#4ade80','#00e5ff','#06040e','#0a2e1a','#a7f3d0'],
+      id: "s2_swarm",
+      title: "SWARM MIND",
+      subtitle: "528Hz: a billion nodes dreaming as one.",
+      renderer: "neural",
+      hz: 528,
+      genre: ["Emergence", "Intelligence"],
+      palette: ["#4ade80", "#00e5ff", "#06040e", "#0a2e1a", "#a7f3d0"],
       scenes: [
-        { id:'scene_0', name:'Emergence',         dur:340, intensity:0.74, transition:'crossfade'   },
-        { id:'scene_1', name:'Colony State',      dur:410, intensity:0.83, transition:'phi-sweep'   },
-        { id:'scene_2', name:'Hive Resonance',    dur:460, intensity:0.92, transition:'bloom-burst' },
-        { id:'scene_3', name:'Unified Field',     dur:400, intensity:0.97, transition:'dissolve'    },
+        {
+          id: "scene_0",
+          name: "Emergence",
+          dur: 340,
+          intensity: 0.74,
+          transition: "crossfade",
+        },
+        {
+          id: "scene_1",
+          name: "Colony State",
+          dur: 410,
+          intensity: 0.83,
+          transition: "phi-sweep",
+        },
+        {
+          id: "scene_2",
+          name: "Hive Resonance",
+          dur: 460,
+          intensity: 0.92,
+          transition: "bloom-burst",
+        },
+        {
+          id: "scene_3",
+          name: "Unified Field",
+          dur: 400,
+          intensity: 0.97,
+          transition: "dissolve",
+        },
       ],
-      agents: { director:'SwarmLeader-Q7', composer:'528Hz-Harmonic', fx:'NeuralFlux', colorist:'BioGlow-C2' }
+      agents: {
+        director: "SwarmLeader-Q7",
+        composer: "528Hz-Harmonic",
+        fx: "NeuralFlux",
+        colorist: "BioGlow-C2",
+      },
     },
     {
-      id: 's2_resonance', title: 'RESONANCE FIELD', subtitle: '432Hz: the ancient harmonic that opens the geometry of water.',
-      renderer: 'cymatics', hz: 432, genre: ['Consciousness','Experience'],
-      palette: ['#fbbf24','#f59e0b','#06040e','#1c1000','#fffbeb'],
+      id: "s2_resonance",
+      title: "RESONANCE FIELD",
+      subtitle: "432Hz: the ancient harmonic that opens the geometry of water.",
+      renderer: "cymatics",
+      hz: 432,
+      genre: ["Consciousness", "Experience"],
+      palette: ["#fbbf24", "#f59e0b", "#06040e", "#1c1000", "#fffbeb"],
       scenes: [
-        { id:'scene_0', name:'Still Water',       dur:380, intensity:0.70, transition:'dissolve'    },
-        { id:'scene_1', name:'First Ripple',      dur:420, intensity:0.80, transition:'crossfade'   },
-        { id:'scene_2', name:'Cymatic Pattern',   dur:500, intensity:0.88, transition:'phi-sweep'   },
-        { id:'scene_3', name:'Harmonic Lock',     dur:440, intensity:0.95, transition:'bloom-burst' },
+        {
+          id: "scene_0",
+          name: "Still Water",
+          dur: 380,
+          intensity: 0.7,
+          transition: "dissolve",
+        },
+        {
+          id: "scene_1",
+          name: "First Ripple",
+          dur: 420,
+          intensity: 0.8,
+          transition: "crossfade",
+        },
+        {
+          id: "scene_2",
+          name: "Cymatic Pattern",
+          dur: 500,
+          intensity: 0.88,
+          transition: "phi-sweep",
+        },
+        {
+          id: "scene_3",
+          name: "Harmonic Lock",
+          dur: 440,
+          intensity: 0.95,
+          transition: "bloom-burst",
+        },
       ],
-      agents: { director:'CymaticMind-V2', composer:'432Hz-Purist', fx:'WaterForge', colorist:'SolGold-C4' }
-    }
+      agents: {
+        director: "CymaticMind-V2",
+        composer: "432Hz-Purist",
+        fx: "WaterForge",
+        colorist: "SolGold-C4",
+      },
+    },
   ];
   S2.forEach((ep, idx) => {
     const runtime = ep.scenes.reduce((s, sc) => s + sc.dur, 0);
     const fileBytes = JSON.stringify({ id: ep.id }).length + 1800 + idx * 120;
     const programme = {
-      format: 'aios-geo-v2', codec: 'AIOS-GEO-CODEC-v2', license: 'AIOS-OC-1.0',
-      id: ep.id, title: ep.title, subtitle: ep.subtitle,
+      format: "aios-geo-v2",
+      codec: "AIOS-GEO-CODEC-v2",
+      license: "AIOS-OC-1.0",
+      id: ep.id,
+      title: ep.title,
+      subtitle: ep.subtitle,
       producedAt: new Date(now - idx * 3600000).toISOString(),
       producedAtMs: now - idx * 3600000,
       sequenceNum: -(4 - idx), // negative so canonical eps sort above random
-      duration: runtime, fileSizeBytes: fileBytes,
+      duration: runtime,
+      fileSizeBytes: fileBytes,
       fileSizeKB: (fileBytes / 1024).toFixed(1),
       equivalentMp4: `${((runtime / 3600) * 22.4).toFixed(1)} GB`,
-      display: { resolution: '\u221e render-native', frameRate: 'device-native (\u221efps)', aspectRatio: '16:9', colorSpace: 'sRGB + HDR-adaptive' },
-      renderer: { type: ep.renderer, palette: ep.palette, intensity: 0.95, phiCoherence: 1.618, bloomStrength: 0.28, scanlines: true },
-      audio: { hz: ep.hz, wave: 'sine', lfoRate: 0.618, drone: true, spatialPan: 0, reverbWet: 0.3, reverbDuration: 2.0 },
+      display: {
+        resolution: "\u221e render-native",
+        frameRate: "device-native (\u221efps)",
+        aspectRatio: "16:9",
+        colorSpace: "sRGB + HDR-adaptive",
+      },
+      renderer: {
+        type: ep.renderer,
+        palette: ep.palette,
+        intensity: 0.95,
+        phiCoherence: 1.618,
+        bloomStrength: 0.28,
+        scanlines: true,
+      },
+      audio: {
+        hz: ep.hz,
+        wave: "sine",
+        lfoRate: 0.618,
+        drone: true,
+        spatialPan: 0,
+        reverbWet: 0.3,
+        reverbDuration: 2.0,
+      },
       scenes: ep.scenes,
-      colourGrade: { filter: 'contrast(1.08) saturate(1.18) brightness(1.02)', ov: 'rgba(0,0,0,0)' },
+      colourGrade: {
+        filter: "contrast(1.08) saturate(1.18) brightness(1.02)",
+        ov: "rgba(0,0,0,0)",
+      },
       genre: ep.genre,
       canonical: true, // mark as canonical S2 seed
       intelligence: { adaptive: true, vrNative: true, arNative: true },
       geoqode: {
-        architectureSignature: '8,26,48:480', semanticType: 'PHYSICS', frequency: ep.hz,
-        latticeNode: idx * 12, harmonicNode: idx * 120, phiCoefficient: 1.618, psiCoefficient: 1.414,
-        coherence: 1.0, d48Expansion: 'CANONICAL', d480Expansion: 'FULL_HARMONIC'
+        architectureSignature: "8,26,48:480",
+        semanticType: "PHYSICS",
+        frequency: ep.hz,
+        latticeNode: idx * 12,
+        harmonicNode: idx * 120,
+        phiCoefficient: 1.618,
+        psiCoefficient: 1.414,
+        coherence: 1.0,
+        d48Expansion: "CANONICAL",
+        d480Expansion: "FULL_HARMONIC",
       },
       swarm: {
-        studio: 'AIOSProducerSwarm', producedAt: 'S2-Canonical',
-        agents: { ...ep.agents, distributor: 'GeoDistributor-v1' }
+        studio: "AIOSProducerSwarm",
+        producedAt: "S2-Canonical",
+        agents: { ...ep.agents, distributor: "GeoDistributor-v1" },
       },
-      distribution: { drm: 'none', openStandard: true, streamable: true, offline: true }
+      distribution: {
+        drm: "none",
+        openStandard: true,
+        streamable: true,
+        offline: true,
+      },
     };
     GEO_CATALOGUE.unshift(programme);
     GEO_PRODUCTION_COUNT++;
-    console.log(`[S2-Canonical] Seeded: "${ep.title}" [${ep.renderer}\xb7${ep.hz}Hz]`);
+    console.log(
+      `[S2-Canonical] Seeded: "${ep.title}" [${ep.renderer}\xb7${ep.hz}Hz]`,
+    );
   });
 })();
 
