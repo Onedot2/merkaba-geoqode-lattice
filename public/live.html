@@ -129,6 +129,11 @@
       <div class="player-aspect">
         <canvas id="live-canvas"></canvas>
         <div class="player-overlay"></div>
+        <!-- GeoQode Hz overlay — Hebrew letter + frequency label -->
+        <div id="hz-overlay" style="position:absolute;bottom:4.5rem;right:0.75rem;text-align:center;pointer-events:none;z-index:4;user-select:none">
+          <div class="hz-letter" style="font-size:2.2rem;color:rgba(255,255,255,0.16);font-family:serif;line-height:1;text-shadow:0 0 22px rgba(0,212,255,0.35)">&#x05D4;</div>
+          <div class="hz-label" style="font-size:0.48rem;color:rgba(255,255,255,0.2);letter-spacing:0.08em;white-space:nowrap;margin-top:0.2rem;text-transform:uppercase">528 Hz &middot; Hey &middot; Activation</div>
+        </div>
         <div class="channel-badge">
           <div class="ch-live"><span style="width:6px;height:6px;border-radius:50%;background:#fff;display:inline-block;animation:livePulse 1s ease-in-out infinite"></span>LIVE</div>
           <div class="ch-num">CH 01 · AIOS</div>
@@ -377,6 +382,32 @@ const RENDERERS = {
 };
 const RENDERER_KEYS = Object.keys(RENDERERS);
 
+// ── GeoQode Hz → Hebrew letter + canvas colour modulation ────────────────
+// Each Solfeggio frequency maps to a Hebrew letter (gematria operator) and a
+// hue-rotate angle so the entire renderer canvas shifts to the correct colour
+// band.  528 Hz (ACTION / Hey / gematria 5) is the visual baseline: 0° shift.
+const HZ_GEOQODE = {
+  396: { letter: '\u05D0', name: 'Aleph', gematria:   1, meaning: 'Liberation',     hueShift:  45 },
+  417: { letter: '\u05D1', name: 'Bet',   gematria:   2, meaning: 'Transformation', hueShift: -60 },
+  528: { letter: '\u05D4', name: 'Hey',   gematria:   5, meaning: 'Activation',     hueShift:   0 },
+  639: { letter: '\u05D5', name: 'Vav',   gematria:   6, meaning: 'Connection',     hueShift: 100 },
+  741: { letter: '\u05D9', name: 'Yod',   gematria:  10, meaning: 'Awakening',      hueShift:  30 },
+  852: { letter: '\u05DC', name: 'Lamed', gematria:  30, meaning: 'Order',          hueShift: -90 },
+  963: { letter: '\u05EA', name: 'Tav',   gematria: 400, meaning: 'Oneness',        hueShift: 140 },
+   72: { letter: '\u05E9', name: 'Shin',  gematria: 300, meaning: 'Holographic',    hueShift:   0 },
+};
+
+function applyHzVisuals(hz) {
+  const info = HZ_GEOQODE[hz] || HZ_GEOQODE[528];
+  // Shift entire renderer canvas to the frequency's colour band
+  cv.style.filter = `hue-rotate(${info.hueShift}deg) saturate(1.12)`;
+  // Update Hebrew letter overlay
+  const ov = document.getElementById('hz-overlay');
+  if (!ov) return;
+  ov.querySelector('.hz-letter').textContent = info.letter;
+  ov.querySelector('.hz-label').textContent  = `${hz} Hz \u00B7 ${info.name} \u00B7 ${info.meaning}`;
+}
+
 // ── STATE ──────────────────────────────────────────────────────────────────
 let activeRenderer = 'matrix';
 let rendererHandle = null;
@@ -487,6 +518,7 @@ function setNowPlaying(p) {
     const fallbacks = { apollo:'aurora', escher:'mandala', chronos:'merkaba', dna:'galaxy', cosmos3d:'galaxy', neural:'circuit', quantum:'hyperspace', inception:'hyperspace', phoenix:'fire', ocean:'aurora', vortex:'nebula', fractal:'mandala', plasma:'nebula', lightning:'matrix', kaleidoscope:'mandala', waterwave:'aurora', circuit:'merkaba' };
     startRenderer(fallbacks[r] || RENDERER_KEYS[Math.floor(Math.random()*RENDERER_KEYS.length)]);
   }
+  applyHzVisuals(parseInt(p.hz, 10) || 528);
 }
 
 function jumpToSlot(idx) {
