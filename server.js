@@ -2064,6 +2064,29 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       });
     }
 
+    // ── POST /api/aios/user/register — localStorage-first user account (best-effort) ──
+    if (req.method === "POST" && pathname === "/api/aios/user/register") {
+      let body = "";
+      req.on("data", (chunk) => { body += chunk; });
+      req.on("end", () => {
+        try {
+          const { email, name } = JSON.parse(body || "{}");
+          if (!email || typeof email !== "string" || !email.includes("@")) {
+            return json(res, 400, { ok: false, error: "Invalid email" });
+          }
+          // Sanitise: no control chars, max 320 chars
+          const safeEmail = email.replace(/[^\x20-\x7E@.]/g, "").slice(0, 320);
+          const safeName  = (name || safeEmail.split("@")[0]).replace(/[^\x20-\x7E]/g, "").slice(0, 80);
+          // Stateless token — base64(name:email:timestamp) — no server state needed
+          const token = Buffer.from(`${safeName}:${safeEmail}:${Date.now()}`).toString("base64");
+          return json(res, 200, { ok: true, token, name: safeName, email: safeEmail });
+        } catch (_) {
+          return json(res, 400, { ok: false, error: "Bad request" });
+        }
+      });
+      return;
+    }
+
     // ── GET /vr-experience/:id — SEO landing page per experience ──────────
     if (req.method === "GET" && pathname.startsWith("/vr-experience/")) {
       const xpId = pathname

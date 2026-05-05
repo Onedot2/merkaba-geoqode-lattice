@@ -168,6 +168,145 @@
         font-weight: 800;
         color: #000;
         cursor: pointer;
+        position: relative;
+        user-select: none;
+        transition: transform 0.15s;
+      }
+      .nav-avatar:hover { transform: scale(1.08); }
+      .nav-avatar.signed-out {
+        background: rgba(255,255,255,0.09);
+        border: 1px solid rgba(255,255,255,0.15);
+        font-size: 16px;
+        color: rgba(255,255,255,0.5);
+      }
+      /* Profile dropdown */
+      #profile-drop {
+        display: none;
+        position: absolute;
+        top: calc(100% + 10px);
+        right: 0;
+        width: 220px;
+        background: rgba(8,10,22,0.97);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 8px;
+        backdrop-filter: blur(20px);
+        box-shadow: 0 16px 48px rgba(0,0,0,0.7);
+        overflow: hidden;
+        z-index: 500;
+      }
+      #profile-drop.open { display: block; }
+      .pdrop-header {
+        padding: 14px 16px;
+        border-bottom: 1px solid rgba(255,255,255,0.07);
+      }
+      .pdrop-name { font-size: 13px; font-weight: 700; color: #fff; letter-spacing: 0.02em; }
+      .pdrop-email { font-size: 10px; color: rgba(255,255,255,0.35); margin-top: 2px; letter-spacing: 0.03em; }
+      .pdrop-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 11px 16px;
+        font-size: 11px;
+        color: rgba(255,255,255,0.65);
+        cursor: pointer;
+        letter-spacing: 0.03em;
+        transition: background 0.15s, color 0.15s;
+        border: none;
+        background: none;
+        width: 100%;
+        font-family: inherit;
+        text-align: left;
+      }
+      .pdrop-row:hover { background: rgba(255,255,255,0.06); color: #fff; }
+      .pdrop-row + .pdrop-row { border-top: 1px solid rgba(255,255,255,0.04); }
+      .pdrop-stat { font-size:9px; color:rgba(255,255,255,0.28); margin-left:auto; }
+      /* Sign-in modal */
+      #signin-modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 600;
+        background: rgba(0,0,12,0.92);
+        backdrop-filter: blur(18px);
+        align-items: center;
+        justify-content: center;
+      }
+      #signin-modal.open { display: flex; }
+      .signin-box {
+        background: rgba(8,10,22,0.98);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 12px;
+        padding: 36px 32px;
+        width: min(440px,92vw);
+        box-shadow: 0 32px 80px rgba(0,0,0,0.8);
+      }
+      .signin-logo { font-size: 11px; letter-spacing: 4px; color: var(--cyan); font-weight: 900; margin-bottom: 22px; }
+      .signin-title { font-size: 22px; font-weight: 800; color: #fff; letter-spacing: -0.02em; margin-bottom: 6px; }
+      .signin-sub { font-size: 12px; color: rgba(255,255,255,0.38); margin-bottom: 28px; line-height: 1.5; }
+      .signin-label { font-size: 9px; letter-spacing: 3px; color: rgba(255,255,255,0.4); margin-bottom: 6px; display: block; }
+      .signin-inp {
+        width: 100%;
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.1);
+        color: #fff;
+        font-family: inherit;
+        font-size: 14px;
+        padding: 11px 14px;
+        border-radius: 6px;
+        outline: none;
+        box-sizing: border-box;
+        margin-bottom: 14px;
+        transition: border-color 0.2s;
+      }
+      .signin-inp:focus { border-color: rgba(0,229,255,0.5); }
+      .signin-btn {
+        width: 100%;
+        background: linear-gradient(135deg, rgba(0,229,255,0.18), rgba(124,58,237,0.22));
+        border: 1px solid rgba(0,229,255,0.3);
+        color: #fff;
+        font-family: inherit;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 3px;
+        padding: 14px;
+        border-radius: 6px;
+        cursor: pointer;
+        margin-top: 4px;
+        transition: background 0.2s;
+      }
+      .signin-btn:hover { background: linear-gradient(135deg,rgba(0,229,255,0.28),rgba(124,58,237,0.32)); }
+      .signin-close {
+        float: right;
+        background: none;
+        border: none;
+        color: rgba(255,255,255,0.3);
+        font-size: 20px;
+        cursor: pointer;
+        line-height: 1;
+        padding: 0;
+        transition: color 0.15s;
+      }
+      .signin-close:hover { color: rgba(255,255,255,0.7); }
+      /* My List ❤ button in card hover */
+      .card-btn-list {
+        background: rgba(255,255,255,0.07);
+        border: 1px solid rgba(255,255,255,0.14);
+        color: rgba(255,255,255,0.6);
+        font-size: 14px;
+        width: 30px;
+        height: 30px;
+        border-radius: 4px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.18s;
+        flex-shrink: 0;
+      }
+      .card-btn-list:hover, .card-btn-list.active {
+        background: rgba(248,113,113,0.18);
+        border-color: rgba(248,113,113,0.5);
+        color: #f87171;
       }
 
       /* ── HERO ── */
@@ -1849,9 +1988,39 @@
         >
           ⌕
         </button>
-        <div class="nav-avatar" title="Profile">A</div>
+        <div style="position:relative">
+          <div class="nav-avatar signed-out" id="nav-avatar" title="Profile" onclick="onAvatarClick()">⊕</div>
+          <!-- Profile dropdown -->
+          <div id="profile-drop">
+            <div class="pdrop-header">
+              <div class="pdrop-name" id="pdrop-name">Guest</div>
+              <div class="pdrop-email" id="pdrop-email">Not signed in</div>
+            </div>
+            <button class="pdrop-row" onclick="closeDrop();document.getElementById('rows-container').scrollIntoView({behavior:'smooth'})">♥ My List <span class="pdrop-stat" id="pdrop-list-count">0</span></button>
+            <button class="pdrop-row" onclick="closeDrop();showWatchStats()">⏱ Watch Stats <span class="pdrop-stat" id="pdrop-hrs">0h</span></button>
+            <button class="pdrop-row" onclick="closeDrop();signOut()" style="color:rgba(248,113,113,0.75)">↩ Sign Out</button>
+          </div>
+        </div>
       </div>
     </nav>
+
+    <!-- ── SIGN-IN MODAL ──────────────────────────────────────── -->
+    <div id="signin-modal">
+      <div class="signin-box">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px">
+          <div class="signin-logo">AIOSdream</div>
+          <button class="signin-close" onclick="closeSignIn()">✕</button>
+        </div>
+        <div class="signin-title">Welcome back.</div>
+        <div class="signin-sub">Your list, progress and settings live here — across every session.</div>
+        <label class="signin-label">YOUR NAME</label>
+        <input class="signin-inp" id="si-name" type="text" placeholder="Ada" autocomplete="name" />
+        <label class="signin-label">EMAIL ADDRESS</label>
+        <input class="signin-inp" id="si-email" type="email" placeholder="you@example.com" autocomplete="email" />
+        <button class="signin-btn" onclick="doSignIn()">CONTINUE →</button>
+        <div style="font-size:9px;color:rgba(255,255,255,0.2);text-align:center;margin-top:16px;line-height:1.5">No password needed. Your data is stored locally on this device.</div>
+      </div>
+    </div>
 
     <!-- ── BROWSE ── -->
     <main id="browse">
@@ -2796,6 +2965,7 @@
 
       const ROWS = [
         { id: 'featured',   title: '✦ Featured Today',   filter: p => p.featured },
+        { id: 'mylist',     title: '♥ My List',           filter: p => myList.includes(p.id) },
         { id: 'season1',    title: '⬡ S1: Origins — Geometry of Consciousness', filter: p => p.season === 'origins' },
         { id: 'cinematic',  title: 'Cinematic Universe',  filter: p => p.row === 'cinematic' },
         { id: 'cosmos',     title: 'Cosmos & Nature',     filter: p => p.row === 'cosmos' },
@@ -4328,8 +4498,92 @@
       let _bingeMode = false;      // auto-advance episodes in a season
       let myList = JSON.parse(localStorage.getItem('aios_mylist') || '[]');
       const progress = JSON.parse(localStorage.getItem('aios_progress') || '{}');
+      // ── User account
+      let _user = null;
+      try { _user = JSON.parse(localStorage.getItem('aios_user') || 'null'); } catch(_){}
 
-      function saveProgress() {
+      function _userInitials(name) {
+        if (!name) return '⊕';
+        const parts = name.trim().split(/\s+/);
+        return (parts[0][0] + (parts[1] ? parts[1][0] : '')).toUpperCase();
+      }
+      function _totalWatchedHrs() {
+        let secs = 0;
+        Object.values(progress).forEach(function(p){
+          const prog = CATALOGUE.find(function(c){ return c.id === Object.keys(progress).find(function(k){return progress[k]===p;}); });
+          secs += (p.scene||0) * 180 + (p.elapsed||0);
+        });
+        return (secs/3600).toFixed(1);
+      }
+      function refreshUserUI() {
+        const av = document.getElementById('nav-avatar');
+        const nm = document.getElementById('pdrop-name');
+        const em = document.getElementById('pdrop-email');
+        const lc = document.getElementById('pdrop-list-count');
+        const hc = document.getElementById('pdrop-hrs');
+        if (!av) return;
+        if (_user) {
+          av.textContent = _userInitials(_user.name);
+          av.classList.remove('signed-out');
+          av.title = _user.name + ' — click for profile';
+          if (nm) nm.textContent = _user.name;
+          if (em) em.textContent = _user.email;
+        } else {
+          av.textContent = '⊕'; av.classList.add('signed-out'); av.title = 'Sign in';
+          if (nm) nm.textContent = 'Guest';
+          if (em) em.textContent = 'Not signed in';
+        }
+        if (lc) lc.textContent = myList.length;
+        // estimate hours from progress keys (rough: each scene ≈3 min)
+        let secs = 0;
+        Object.entries(progress).forEach(function([,p]){ secs += (p.scene||0)*180+(p.elapsed||0); });
+        if (hc) hc.textContent = (secs/3600).toFixed(1)+'h';
+      }
+
+      function onAvatarClick() {
+        if (!_user) { openSignIn(); return; }
+        const drop = document.getElementById('profile-drop');
+        drop.classList.toggle('open');
+        if (drop.classList.contains('open')) {
+          refreshUserUI();
+          setTimeout(function(){
+            document.addEventListener('click', function _oc(e){
+              if (!document.getElementById('profile-drop').contains(e.target) && !document.getElementById('nav-avatar').contains(e.target)){
+                closeDrop(); document.removeEventListener('click', _oc);
+              }
+            });
+          }, 10);
+        }
+      }
+      function closeDrop() { document.getElementById('profile-drop').classList.remove('open'); }
+      function openSignIn() { document.getElementById('signin-modal').classList.add('open'); document.getElementById('si-name').focus(); }
+      function closeSignIn() { document.getElementById('signin-modal').classList.remove('open'); }
+      function doSignIn() {
+        const name = document.getElementById('si-name').value.trim();
+        const email = document.getElementById('si-email').value.trim();
+        if (!email || !email.includes('@')) { toast('Please enter a valid email'); return; }
+        _user = { name: name || email.split('@')[0], email: email, createdAt: Date.now() };
+        localStorage.setItem('aios_user', JSON.stringify(_user));
+        closeSignIn();
+        refreshUserUI();
+        buildRows(); // re-render to reflect My List row
+        toast('✓ Welcome, ' + _user.name);
+        // fire-and-forget to server (best-effort, no blocking)
+        try { fetch('/api/aios/user/register', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({name:_user.name,email:_user.email}) }); } catch(_){}
+      }
+      function signOut() {
+        _user = null;
+        localStorage.removeItem('aios_user');
+        refreshUserUI();
+        buildRows();
+        toast('Signed out');
+      }
+      function showWatchStats() {
+        let secs = 0;
+        Object.entries(progress).forEach(function([,p]){ secs += (p.scene||0)*180+(p.elapsed||0); });
+        const hrs = (secs/3600).toFixed(1);
+        toast('⏱ ' + hrs + 'h watched · ' + myList.length + ' in My List');
+      }
         if (!currentProg) return;
         const key = currentProg.id;
         progress[key] = { scene: currentScene, elapsed: playerElapsed, ts: Date.now() };
@@ -4397,6 +4651,7 @@
             <div class="card-hover-btns">
               <button class="card-btn-play" onclick="openPlayer('${prog.id}',${hasProgress ? p.scene : 0},event)">▶ Play</button>
               <button class="card-btn-info" onclick="openInfo('${prog.id}',event)" title="More Info">ⓘ</button>
+              <button class="card-btn-list${myList.includes(prog.id) ? ' active' : ''}" id="list-btn-${prog.id}" onclick="cardToggleList('${prog.id}',event)" title="${myList.includes(prog.id) ? 'Remove from My List' : 'Add to My List'}">${myList.includes(prog.id) ? '♥' : '♡'}</button>
             </div>
           </div>`;
         card.addEventListener('click', () => openPlayer(prog.id, hasProgress ? p.scene : 0));
@@ -4415,12 +4670,14 @@
           const div = document.createElement('div');
           div.className = 'row';
           div.id = `row-${row.id}`;
+          const isMyList = row.id === 'mylist';
           const isSeason = row.id && row.id.startsWith('season');
           div.innerHTML = `
             <div class="row-header">
               <div ${isSeason ? `style="display:flex;flex-direction:column;gap:3px"` : ''}>
-                <span class="row-title">${row.title}</span>
+                <span class="row-title" ${isMyList ? `style="color:#f87171"` : ''}>${row.title}</span>
                 ${isSeason ? `<span style="font-size:10px;color:rgba(255,255,255,0.38);letter-spacing:0.04em;font-weight:500">${progs.length} Episodes · ${fmtRuntime(progs.reduce((s,p)=>s+p.runtime,0))} total</span>` : ''}
+                ${isMyList ? `<span style="font-size:10px;color:rgba(248,113,113,0.45);letter-spacing:0.04em">${progs.length} programme${progs.length===1?'':'s'}</span>` : ''}
               </div>
               <div style="display:flex;align-items:center;gap:0.5rem">
                 ${isSeason ? `<button onclick="startBinge('${row.id}')" style="background:rgba(0,229,255,0.10);border:1px solid rgba(0,229,255,0.25);color:#00e5ff;font-size:0.6rem;font-weight:800;letter-spacing:0.14em;padding:0.22rem 0.75rem;border-radius:4px;cursor:pointer;transition:all 0.2s" onmouseover="this.style.background='rgba(0,229,255,0.2)'" onmouseout="this.style.background='rgba(0,229,255,0.10)'">▶▶ BINGE</button>` : ''}
@@ -4868,6 +5125,7 @@
       // ─────────────────────────────────────────────────────────────
       buildRows();
       buildContinueWatching();
+      refreshUserUI(); // init avatar state from localStorage
       initHero();
 
       // Check for ?prog= param
