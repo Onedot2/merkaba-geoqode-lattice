@@ -262,6 +262,32 @@
       #signin-modal.open {
         display: flex;
       }
+      /* ── Watch Stats Modal ── */
+      #stats-modal {
+        display: none; position: fixed; inset: 0; z-index: 650;
+        background: rgba(0,0,12,0.92); backdrop-filter: blur(18px);
+        align-items: center; justify-content: center;
+      }
+      #stats-modal.open { display: flex; }
+      .stats-box {
+        background: #0d0a1a; border: 1px solid rgba(120,80,255,0.25);
+        border-radius: 16px; width: min(92vw, 480px); padding: 32px;
+        position: relative; color: #e8e8f0;
+      }
+      .stats-title { font-size: 1.1rem; font-weight: 900; letter-spacing: 0.12em; color: #a78bfa; margin-bottom: 6px; }
+      .stats-sub { font-size: 0.72rem; color: rgba(255,255,255,0.35); margin-bottom: 28px; letter-spacing: 0.08em; }
+      .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 24px; }
+      .stat-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 16px 18px; }
+      .stat-val { font-size: 1.8rem; font-weight: 900; color: #c4b5fd; line-height: 1; }
+      .stat-lbl { font-size: 0.62rem; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; margin-top: 4px; text-transform: uppercase; }
+      .stats-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.8rem; }
+      .stats-row:last-child { border-bottom: none; }
+      .stats-row-lbl { color: rgba(255,255,255,0.45); }
+      .stats-row-val { font-weight: 700; color: #e8e8f0; text-align: right; max-width: 58%; }
+      .stats-rxn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+      .stats-rxn-chip { background: rgba(255,255,255,0.05); border-radius: 20px; padding: 5px 12px; font-size: 0.8rem; }
+      .stats-close { position: absolute; top: 16px; right: 18px; background: none; border: none; color: rgba(255,255,255,0.35); font-size: 1.2rem; cursor: pointer; }
+      .stats-close:hover { color: #fff; }
       /* ── Keyboard Shortcuts Panel ── */
       #kbd-panel {
         position: fixed;
@@ -2107,15 +2133,30 @@
       #player.cinema-mode #player-top,
       #player.cinema-mode #player-bottom,
       #player.cinema-mode .gb-bar,
-      #player.cinema-mode #player-quality { opacity: 0 !important; pointer-events: none !important; }
-      #cinema-hint {
-        position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
-        background: rgba(0,0,0,0.7); color: rgba(255,255,255,0.6);
-        font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em;
-        padding: 6px 18px; border-radius: 20px; z-index: 3000;
-        pointer-events: none; opacity: 0; transition: opacity 0.4s;
+      #player.cinema-mode #player-quality {
+        opacity: 0 !important;
+        pointer-events: none !important;
       }
-      #cinema-hint.vis { opacity: 1; }
+      #cinema-hint {
+        position: fixed;
+        bottom: 28px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.7);
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        padding: 6px 18px;
+        border-radius: 20px;
+        z-index: 3000;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.4s;
+      }
+      #cinema-hint.vis {
+        opacity: 1;
+      }
 
       #queue-panel {
         position: fixed;
@@ -2874,6 +2915,18 @@
       <div class="q-list" id="queue-list"></div>
     </div>
     <div id="cinema-hint">C · Exit Cinema Mode</div>
+
+    <!-- ── WATCH STATS MODAL ── -->
+    <div id="stats-modal" onclick="if(event.target===this)closeStats()">
+      <div class="stats-box">
+        <button class="stats-close" onclick="closeStats()">✕</button>
+        <div class="stats-title">⊡ WATCH STATS</div>
+        <div class="stats-sub" id="stats-since">Your viewing history at a glance.</div>
+        <div class="stats-grid" id="stats-grid"></div>
+        <div id="stats-rows"></div>
+        <div class="stats-rxn-row" id="stats-rxn"></div>
+      </div>
+    </div>
 
     <!-- ── BROWSE ── -->
     <main id="browse">
@@ -5820,26 +5873,49 @@
         toast('Signed out');
       }
       function showWatchStats() {
+        closeDrop();
         let secsWatched = 0;
         const genreCount = {};
-        const progCount = {};
+        const progWatched = {};
+        const progSecs = {};
         Object.entries(progress).forEach(function([id, p]) {
-          secsWatched += (p.scene || 0) * 180 + (p.elapsed || 0);
+          const s = (p.scene || 0) * 180 + (p.elapsed || 0);
+          secsWatched += s;
+          progWatched[id] = true;
+          progSecs[id] = s;
           const prog = CATALOGUE.find(function(c){ return c.id === id; });
-          if (prog) {
-            progCount[id] = (progCount[id] || 0) + 1;
-            (prog.genre || []).forEach(function(g) { genreCount[g] = (genreCount[g] || 0) + 1; });
-          }
+          if (prog) (prog.genre || []).forEach(function(g){ genreCount[g] = (genreCount[g] || 0) + 1; });
         });
         const hrs = (secsWatched / 3600).toFixed(1);
-        const topGenre = Object.entries(genreCount).sort(function(a,b){return b[1]-a[1];})[0];
-        const topProg = Object.entries(progCount).sort(function(a,b){return b[1]-a[1];})[0];
-        const topProgName = topProg ? (CATALOGUE.find(function(c){return c.id===topProg[0];})||{}).title || '' : '';
-        let msg = '\u23f1 ' + hrs + 'h watched \xb7 ' + myList.length + ' in My List';
-        if (topGenre) msg += '\n\u2605 Favourite: ' + topGenre[0];
-        if (topProgName) msg += '\n\u25b6 Most-watched: ' + topProgName;
-        toast(msg, 4000);
+        const progCount = Object.keys(progWatched).length;
+        const topGenres = Object.entries(genreCount).sort(function(a,b){return b[1]-a[1];}).slice(0,3);
+        const topProg = Object.entries(progSecs).sort(function(a,b){return b[1]-a[1];})[0];
+        const topProgTitle = topProg ? ((CATALOGUE.find(function(c){return c.id===topProg[0];})||{}).title||topProg[0]) : 'None yet';
+        // Reactions
+        let rxnData = {};
+        try { rxnData = JSON.parse(localStorage.getItem('aios_reactions') || '{}'); } catch(_){}
+        const rxnTotals = {};
+        Object.values(rxnData).forEach(function(d){
+          if (typeof d === 'object') Object.entries(d).forEach(function([emoji,n]){ rxnTotals[emoji]=(rxnTotals[emoji]||0)+n; });
+        });
+        const topRxn = Object.entries(rxnTotals).sort(function(a,b){return b[1]-a[1];});
+        // Build modal content
+        document.getElementById('stats-grid').innerHTML =
+          '<div class="stat-card"><div class="stat-val">'+hrs+'h</div><div class="stat-lbl">Total Watched</div></div>' +
+          '<div class="stat-card"><div class="stat-val">'+progCount+'</div><div class="stat-lbl">Programmes</div></div>' +
+          '<div class="stat-card"><div class="stat-val">'+myList.length+'</div><div class="stat-lbl">In My List</div></div>' +
+          '<div class="stat-card"><div class="stat-val">'+(topRxn.length ? topRxn[0][0] : '\u2014')+'</div><div class="stat-lbl">Top Reaction</div></div>';
+        document.getElementById('stats-rows').innerHTML =
+          '<div class="stats-row"><span class="stats-row-lbl">Top programme</span><span class="stats-row-val">'+topProgTitle+'</span></div>' +
+          '<div class="stats-row"><span class="stats-row-lbl">Favourite genres</span><span class="stats-row-val">'+
+            (topGenres.length ? topGenres.map(function(g){return g[0];}).join(' · ') : 'Watch more to find out') +
+          '</span></div>';
+        document.getElementById('stats-rxn').innerHTML = topRxn.slice(0,6).map(function(r){
+          return '<div class="stats-rxn-chip">'+r[0]+' <strong>'+r[1]+'</strong></div>';
+        }).join('');
+        document.getElementById('stats-modal').classList.add('open');
       }
+      function closeStats() { document.getElementById('stats-modal').classList.remove('open'); }
         if (!currentProg) return;
         const key = currentProg.id;
         progress[key] = { scene: currentScene, elapsed: playerElapsed, ts: Date.now() };
