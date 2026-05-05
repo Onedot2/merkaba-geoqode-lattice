@@ -3634,7 +3634,7 @@ function generateGeoProgram() {
       agents: {
         director: _rnd(_GEO_AGENTS.directors),
         composer: _rnd(_GEO_AGENTS.composers),
-        fx: _rnd(_GEO_agents ? [] : _GEO_AGENTS.fx),
+        fx: _rnd(_GEO_AGENTS.fx),
         colorist: _rnd(_GEO_AGENTS.colorists),
         distributor: "GeoDistributor-v1",
       },
@@ -3646,9 +3646,6 @@ function generateGeoProgram() {
       offline: true,
     },
   };
-
-  // Fix the _GEO_agents typo:
-  programme.swarm.agents.fx = _rnd(_GEO_AGENTS.fx);
 
   GEO_CATALOGUE.unshift(programme);
   if (GEO_CATALOGUE.length > GEO_CATALOGUE_MAX) GEO_CATALOGUE.pop();
