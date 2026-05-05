@@ -1313,6 +1313,9 @@
           What you see below is a .geo programme decoding in real-time.<br />Not
           one pixel was stored. This entire experience is 14 KB.
         </p>
+        <div style="display:flex;align-items:center;justify-content:center;gap:0.75rem;margin-top:1.2rem;flex-wrap:wrap" id="renderer-switcher">
+          <!-- pills injected by JS -->
+        </div>
       </div>
       <div class="demo-grid">
         <canvas id="demo-cv"></canvas>
@@ -1324,7 +1327,7 @@
           </div>
           <div class="dp-row">
             <span class="dp-key">Codec</span
-            ><span class="dp-val">QUANTUM-3D</span>
+            ><span class="dp-val" id="dp-codec">QUANTUM-3D</span>
           </div>
           <div class="dp-row">
             <span class="dp-key">File size</span
@@ -1347,7 +1350,7 @@
           </div>
           <div class="dp-row">
             <span class="dp-key">Audio Hz</span
-            ><span class="dp-val o">528 Hz</span>
+            ><span class="dp-val o" id="dp-hz">528 Hz</span>
           </div>
           <div class="dp-row">
             <span class="dp-key">GeoQode</span
@@ -1373,8 +1376,11 @@
       </div>
       <div class="geo-file-card">
         <div class="gfc-header">
-          <div class="gfc-name">quantum-emergence.geo</div>
-          <div class="gfc-size">14.2 KB · Decoding above ↑</div>
+          <div class="gfc-name" id="gfc-name">quantum-emergence.geo</div>
+          <div style="display:flex;align-items:center;gap:0.75rem">
+            <div class="gfc-size" id="gfc-size">14.2 KB · Decoding above ↑</div>
+            <button id="download-geo-btn" onclick="downloadGeo()" style="background:rgba(0,212,255,0.12);border:1px solid rgba(0,212,255,0.3);color:#00d4ff;font-size:0.72rem;font-weight:700;padding:0.25rem 0.75rem;border-radius:8px;cursor:pointer;letter-spacing:0.06em;transition:all 0.2s" onmouseover="this.style.background='rgba(0,212,255,0.22)'" onmouseout="this.style.background='rgba(0,212,255,0.12)'">⬇ Download .geo</button>
+          </div>
         </div>
         <div class="gfc-body" id="geo-file-display">Loading…</div>
       </div>
@@ -1555,97 +1561,326 @@
       })();
 
       // ─────────────────────────────────────────────────────────────
-      // LIVE DEMO CANVAS — hyperspace streaks
+      // LIVE DEMO — 25-renderer switcher + download .geo
       // ─────────────────────────────────────────────────────────────
       (function () {
         var cv = document.getElementById("demo-cv");
         if (!cv) return;
         var ctx = cv.getContext("2d");
-        var PHI = 1.618,
-          w,
-          h,
-          streaks = [];
+        var PHI = 1.618;
+        var w, h;
+        var _handle = null;
 
         function resize() {
           w = cv.width = cv.offsetWidth;
           h = cv.height = cv.offsetHeight;
-          if (!streaks.length) init();
         }
-
-        function init() {
-          streaks = Array.from({ length: 150 }, function (_, i) {
-            return {
-              angle: (i / 150) * Math.PI * 2 + Math.random() * 0.25,
-              dist: Math.random() * 0.72 + 0.04,
-              spd: Math.random() * 0.019 * PHI + 0.004,
-              len: Math.random() * 0.15 + 0.04,
-              hue: 185 + Math.random() * 65,
-              bright: Math.random(),
-            };
-          });
-        }
-
-        function draw(t) {
-          var cx = w / 2,
-            cy = h / 2;
-          var boost = 1 + Math.sin(t * 0.0004) * 0.22;
-          ctx.fillStyle = "rgba(5,5,16,0.18)";
-          ctx.fillRect(0, 0, w, h);
-
-          streaks.forEach(function (s) {
-            s.dist += s.spd * boost;
-            if (s.dist > 1.18) {
-              s.dist = 0.012;
-              s.angle = Math.random() * Math.PI * 2;
-              s.spd = Math.random() * 0.019 * PHI + 0.004;
-              s.hue = 185 + Math.random() * 65;
-            }
-            var rx = w * 0.52,
-              ry = h * 0.52;
-            var x1 = cx + Math.cos(s.angle) * s.dist * rx;
-            var y1 = cy + Math.sin(s.angle) * s.dist * ry;
-            var d0 = Math.max(0.01, s.dist - s.len);
-            var x0 = cx + Math.cos(s.angle) * d0 * rx;
-            var y0 = cy + Math.sin(s.angle) * d0 * ry;
-            var alpha = Math.min(1, s.dist * 1.35);
-            if (s.dist > 0.5) {
-              ctx.shadowBlur = 8;
-              ctx.shadowColor = "hsla(" + s.hue + ",100%,70%,0.65)";
-            }
-            ctx.beginPath();
-            ctx.moveTo(x0, y0);
-            ctx.lineTo(x1, y1);
-            ctx.strokeStyle =
-              "hsla(" +
-              s.hue +
-              ",100%," +
-              (60 + s.bright * 28) +
-              "%," +
-              alpha +
-              ")";
-            ctx.lineWidth = s.dist * 2.5 * boost;
-            ctx.stroke();
-            ctx.shadowBlur = 0;
-          });
-
-          var grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, 55);
-          grd.addColorStop(0, "rgba(0,212,255,0.38)");
-          grd.addColorStop(1, "rgba(0,212,255,0)");
-          ctx.beginPath();
-          ctx.arc(cx, cy, 55, 0, Math.PI * 2);
-          ctx.fillStyle = grd;
-          ctx.fill();
-
-          requestAnimationFrame(draw);
-        }
-
-        window.addEventListener("resize", resize);
+        window.addEventListener("resize", function() { resize(); startRenderer(_activeKey); });
         resize();
-        requestAnimationFrame(draw);
+
+        // ── ALL 25 RENDERER DEFINITIONS ──────────────────────────────
+        var DEFS = {
+          matrix:    { label:'Matrix',     hz:528, codec:'MATRIX-RAIN-8X',   col:'#00ff41' },
+          nebula:    { label:'Nebula',     hz:396, codec:'NEBULA-FIELD-3D',  col:'#a78bfa' },
+          hyperspace:{ label:'Hyperspace', hz:852, codec:'HYPERSPACE-DRIFT', col:'#00d4ff' },
+          quantum:   { label:'Quantum',    hz:528, codec:'QUANTUM-3D',       col:'#00d4ff' },
+          merkaba:   { label:'Merkaba',    hz:639, codec:'MERKABA-GEO-8',    col:'#fbbf24' },
+          aurora:    { label:'Aurora',     hz:417, codec:'AURORA-LATTICE-7', col:'#34d399' },
+          phoenix:   { label:'Phoenix',    hz:396, codec:'PHOENIX-RISE-5',   col:'#f97316' },
+          ocean:     { label:'Ocean',      hz:417, codec:'OCEAN-GERSTNER-8', col:'#22d3ee' },
+          neural:    { label:'Neural',     hz:741, codec:'NEURAL-NET-DEEP',  col:'#818cf8' },
+          inception: { label:'Inception',  hz:528, codec:'INCEPTION-DEPTH',  col:'#e879f9' },
+          apollo:    { label:'Apollo',     hz:528, codec:'APOLLO-SOLAR-3',   col:'#fde68a' },
+          dna:       { label:'DNA',        hz:528, codec:'DNA-HELIX-PHI',    col:'#4ade80' },
+          cosmos3d:  { label:'Cosmos3D',   hz:963, codec:'COSMOS-3D-SPIRAL', col:'#818cf8' },
+          chronos:   { label:'Chronos',    hz:852, codec:'CHRONOS-TEMPORAL', col:'#94a3b8' },
+          escher:    { label:'Escher',     hz:741, codec:'ESCHER-TESSELLATE',col:'#c084fc' },
+          kaleidoscope:{label:'Kaleido',   hz:528, codec:'KALEIDO-FOLD-12',  col:'#f472b6' },
+          plasma:    { label:'Plasma',     hz:396, codec:'PLASMA-FIELD-4X',  col:'#fb923c' },
+          lightning: { label:'Lightning',  hz:852, codec:'LIGHTNING-ARC-V2', col:'#facc15' },
+          vortex:    { label:'Vortex',     hz:639, codec:'VORTEX-PHI-SPIN',  col:'#38bdf8' },
+          fractal:   { label:'Fractal',    hz:741, codec:'FRACTAL-MANDEL-64',col:'#a3e635' },
+          fire:      { label:'Fire',       hz:396, codec:'FIRE-CONVECTION-N',col:'#ef4444' },
+          waterwave: { label:'Wave',       hz:417, codec:'WAVE-GERSTNER-8',  col:'#06b6d4' },
+          circuit:   { label:'Circuit',    hz:852, codec:'CIRCUIT-NODE-28',  col:'#22c55e' },
+          galaxy:    { label:'Galaxy',     hz:963, codec:'GALAXY-SPIRAL-LOG',col:'#93c5fd' },
+          mandala:   { label:'Mandala',    hz:528, codec:'MANDALA-FOLD-12',  col:'#f0abfc' },
+        };
+        var KEYS = Object.keys(DEFS);
+        var _activeKey = 'quantum';
+
+        // ── RENDERER DRAW FUNCTIONS ──────────────────────────────────
+        function drawMatrix(t) {
+          var cols = Math.floor(w/14), drops = Array(cols).fill(1);
+          var chars = 'アイウエオカキクケコ0123456789ABCDEF';
+          return setInterval(function(){
+            ctx.fillStyle='rgba(0,0,0,0.07)';ctx.fillRect(0,0,w,h);
+            ctx.fillStyle='#00ff41';ctx.font='13px monospace';
+            for(var i=0;i<drops.length;i++){
+              ctx.fillText(chars[Math.floor(Math.random()*chars.length)],i*14,drops[i]*14);
+              if(drops[i]*14>h&&Math.random()>0.975)drops[i]=0;drops[i]++;
+            }
+          },40);
+        }
+        function drawHyperspace(t) {
+          var N=180,stars=Array.from({length:N},function(){return{x:Math.random()*w-w/2,y:Math.random()*h-h/2,z:Math.random()*w,pz:0};});
+          return setInterval(function(){
+            ctx.fillStyle='rgba(0,0,12,0.22)';ctx.fillRect(0,0,w,h);
+            for(var i=0;i<stars.length;i++){var s=stars[i];s.pz=s.z;s.z-=5;
+              if(s.z<=0){s.x=Math.random()*w-w/2;s.y=Math.random()*h-h/2;s.z=w;s.pz=s.z;}
+              var sx=s.x/s.z*w+w/2,sy=s.y/s.z*h+h/2,px=s.x/s.pz*w+w/2,py=s.y/s.pz*h+h/2;
+              var b=1-s.z/w;
+              ctx.strokeStyle='rgba('+(Math.floor(b*80+160))+','+(Math.floor(b*120+80))+',255,'+b+')';
+              ctx.lineWidth=b*2.2;ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(sx,sy);ctx.stroke();
+            }
+          },20);
+        }
+        function drawNebula() {
+          var N=500,pts=Array.from({length:N},function(){return{x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-0.5)*0.4,vy:(Math.random()-0.5)*0.4,hue:Math.random()*360,r:0.6+Math.random()*1.8,life:Math.random()};});
+          var T=0;
+          return setInterval(function(){
+            ctx.fillStyle='rgba(4,0,10,0.13)';ctx.fillRect(0,0,w,h);
+            for(var i=0;i<pts.length;i++){var p=pts[i];p.x+=p.vx;p.y+=p.vy;p.life+=0.002;
+              if(p.x<0||p.x>w)p.vx*=-1;if(p.y<0||p.y>h)p.vy*=-1;
+              ctx.globalAlpha=0.6+0.4*Math.sin(p.life*3);ctx.fillStyle='hsl('+(p.hue+T*0.2)+',78%,62%)';
+              ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();
+            }
+            ctx.globalAlpha=1;T++;
+          },22);
+        }
+        function drawAurora() {
+          var T=0;
+          return setInterval(function(){
+            ctx.fillStyle='rgba(0,8,16,0.14)';ctx.fillRect(0,0,w,h);
+            for(var i=0;i<18;i++){
+              var x=(i/18)*w,shift=Math.sin(T*0.4+i*0.6)*h*0.22,hue=155+i*6;
+              var g=ctx.createLinearGradient(x,h*0.1+shift,x,h*0.85+shift);
+              g.addColorStop(0,'transparent');g.addColorStop(0.35,'hsla('+hue+',85%,58%,0.38)');g.addColorStop(1,'transparent');
+              ctx.fillStyle=g;ctx.fillRect(x,0,w/18+2,h);
+            }
+            T+=0.016;
+          },20);
+        }
+        function drawMerkaba() {
+          var cx=w/2,cy=h/2,R=Math.min(w,h)*0.36,T=0;
+          function tri(ang,dir,col){
+            ctx.save();ctx.translate(cx,cy);ctx.rotate(ang);
+            ctx.strokeStyle=col;ctx.lineWidth=1.6;ctx.globalAlpha=0.8;
+            ctx.beginPath();
+            for(var v=0;v<3;v++){var a=v*(Math.PI*2/3),x=Math.cos(a)*R,y=Math.sin(a)*R*dir;v===0?ctx.moveTo(x,y):ctx.lineTo(x,y);}
+            ctx.closePath();ctx.stroke();ctx.restore();
+          }
+          return setInterval(function(){
+            ctx.fillStyle='rgba(10,5,30,0.18)';ctx.fillRect(0,0,w,h);
+            tri(T,1,'rgba(0,212,255,0.9)');tri(-T+Math.PI/3,-1,'rgba(167,139,250,0.9)');
+            for(var r=1;r<=4;r++){ctx.beginPath();ctx.arc(cx,cy,R*(r/4),0,Math.PI*2);ctx.strokeStyle='rgba(255,200,100,'+(0.07*r)+')';ctx.lineWidth=0.7;ctx.stroke();}
+            T+=0.009;
+          },20);
+        }
+        function drawMandala() {
+          var cx=w/2,cy=h/2,R=Math.min(w,h)*0.42,FOLDS=12,LAYERS=7;
+          var pal=['#f472b6','#e879f9','#a855f7','#818cf8','#67e8f9'];var T=0;
+          return setInterval(function(){
+            ctx.fillStyle='rgba(8,0,16,0.2)';ctx.fillRect(0,0,w,h);
+            ctx.save();ctx.translate(cx,cy);
+            for(var fold=0;fold<FOLDS;fold++){
+              ctx.save();ctx.rotate((fold/FOLDS)*Math.PI*2);
+              for(var layer=1;layer<=LAYERS;layer++){
+                var lr=(layer/LAYERS)*R,ph=T*0.35*(layer%2===0?1:-1)+fold*(Math.PI/FOLDS);
+                ctx.globalAlpha=0.5-layer*0.04;ctx.strokeStyle=pal[layer%pal.length];ctx.lineWidth=1.1;
+                ctx.beginPath();ctx.arc(0,-lr*0.5,lr*0.52,-Math.PI*0.6+Math.sin(ph)*0.35,Math.PI*0.6+Math.sin(ph)*0.35);ctx.stroke();
+              }
+              ctx.restore();
+            }
+            ctx.globalAlpha=1;var jg=ctx.createRadialGradient(0,0,0,0,0,R*0.1);
+            jg.addColorStop(0,'rgba(255,255,255,0.9)');jg.addColorStop(1,'rgba(0,0,0,0)');
+            ctx.fillStyle=jg;ctx.beginPath();ctx.arc(0,0,R*0.1,0,Math.PI*2);ctx.fill();
+            ctx.restore();T+=0.016;
+          },20);
+        }
+        function drawGalaxy() {
+          var cx=w/2,cy=h/2,sc=Math.min(w,h)*0.42,N=1200;
+          function tc(t){if(t>0.85)return'hsl(210,90%,88%)';if(t>0.6)return'hsl(60,10%,92%)';if(t>0.4)return'hsl(40,70%,82%)';if(t>0.2)return'hsl(18,80%,68%)';return'hsl(4,75%,58%)';}
+          var stars=Array.from({length:N},function(_,i){
+            var arm=Math.floor(Math.random()*2),inBar=Math.random()<0.2,r,theta;
+            if(inBar){r=Math.random()*0.18;theta=(Math.random()-0.5)*0.5;}
+            else{r=0.18+Math.pow(Math.random(),0.65)*0.82;theta=arm*Math.PI+Math.log(r+0.1)*3.5+(Math.random()-0.5)*0.6;}
+            if(Math.random()<0.12){r=Math.random()*0.08;theta=Math.random()*Math.PI*2;}
+            var temp=Math.random();
+            return{r:r,theta0:theta,temp:temp,col:tc(temp),brightness:0.4+Math.random()*0.6,size:temp>0.7?1.2+Math.random()*0.6:0.5+Math.random()*0.5,dTheta:(0.3+(1-r)*0.5)*0.00015};
+          });
+          var T=0;
+          return setInterval(function(){
+            ctx.fillStyle='rgba(2,2,14,0.2)';ctx.fillRect(0,0,w,h);
+            for(var i=0;i<stars.length;i++){var s=stars[i];s.theta0+=s.dTheta;
+              var x=cx+Math.cos(s.theta0)*s.r*sc,y=cy+Math.sin(s.theta0)*s.r*sc*0.42;
+              ctx.globalAlpha=Math.max(0,s.brightness*(0.7+0.3*Math.sin(T*3+s.r*20)));
+              ctx.fillStyle=s.col;ctx.beginPath();ctx.arc(x,y,s.size,0,Math.PI*2);ctx.fill();
+            }
+            ctx.globalAlpha=1;T+=0.016;
+          },20);
+        }
+        function drawFire() {
+          var N=1000,pts=Array.from({length:N},function(){return{x:(0.2+Math.random()*0.6)*w,y:h,vy:-(1+Math.random()*2.5),vx:(Math.random()-0.5)*0.8,life:Math.random(),maxLife:0.6+Math.random()*0.5,size:1.5+Math.random()*2.5};});
+          return setInterval(function(){
+            ctx.fillStyle='rgba(0,0,0,0.14)';ctx.fillRect(0,0,w,h);
+            for(var i=0;i<pts.length;i++){var p=pts[i];p.life+=0.013;
+              if(p.life>p.maxLife){p.x=(0.15+Math.random()*0.7)*w;p.y=h-Math.random()*h*0.08;p.vy=-(1+Math.random()*2.5);p.vx=(Math.random()-0.5)*0.8;p.life=0;p.size=1.5+Math.random()*2.5;}
+              var ratio=p.life/p.maxLife;p.vx+=(Math.random()-0.5)*0.14;p.vx*=0.97;p.x+=p.vx;p.y+=p.vy*(1-ratio*0.4);
+              var r=255,g=255,b=255,a=1-ratio;
+              if(ratio<0.3){g=220+Math.floor(ratio/0.3*35);b=Math.floor((1-ratio/0.3)*255);}
+              else if(ratio<0.6){g=Math.floor(255-((ratio-0.3)/0.3)*165);b=0;}
+              else{r=255;g=Math.floor(90-((ratio-0.6)/0.4)*90);b=0;a*=(1-(ratio-0.6)/0.4*0.6);}
+              ctx.globalAlpha=Math.max(0,a*0.8);ctx.fillStyle='rgb('+r+','+g+','+b+')';
+              ctx.beginPath();ctx.arc(p.x,p.y,p.size*(1-ratio*0.5),0,Math.PI*2);ctx.fill();
+            }
+            ctx.globalAlpha=1;
+          },20);
+        }
+        function drawGenericStreaks(hueBase) {
+          var N=150,streaks=Array.from({length:N},function(_,i){return{angle:(i/N)*Math.PI*2+Math.random()*0.25,dist:Math.random()*0.72+0.04,spd:Math.random()*0.019*PHI+0.004,len:Math.random()*0.15+0.04,hue:hueBase+Math.random()*65,bright:Math.random()};});
+          return setInterval(function(){
+            var cx=w/2,cy=h/2,boost=1+Math.sin(Date.now()*0.0004)*0.22;
+            ctx.fillStyle='rgba(5,5,16,0.18)';ctx.fillRect(0,0,w,h);
+            for(var i=0;i<streaks.length;i++){var s=streaks[i];s.dist+=s.spd*boost;
+              if(s.dist>1.18){s.dist=0.012;s.angle=Math.random()*Math.PI*2;s.spd=Math.random()*0.019*PHI+0.004;s.hue=hueBase+Math.random()*65;}
+              var rx=w*0.52,ry=h*0.52;
+              var x1=cx+Math.cos(s.angle)*s.dist*rx,y1=cy+Math.sin(s.angle)*s.dist*ry;
+              var d0=Math.max(0.01,s.dist-s.len);
+              var x0=cx+Math.cos(s.angle)*d0*rx,y0=cy+Math.sin(s.angle)*d0*ry;
+              var alpha=Math.min(1,s.dist*1.35);
+              if(s.dist>0.5){ctx.shadowBlur=8;ctx.shadowColor='hsla('+s.hue+',100%,70%,0.65)';}
+              ctx.beginPath();ctx.moveTo(x0,y0);ctx.lineTo(x1,y1);
+              ctx.strokeStyle='hsla('+s.hue+',100%,'+(60+s.bright*28)+'%,'+alpha+')';
+              ctx.lineWidth=s.dist*2.5*boost;ctx.stroke();ctx.shadowBlur=0;
+            }
+          },20);
+        }
+
+        var DRAW_FNS = {
+          matrix:     function(){ return drawMatrix(); },
+          nebula:     function(){ return drawNebula(); },
+          hyperspace: function(){ return drawHyperspace(); },
+          quantum:    function(){ return drawGenericStreaks(185); },
+          merkaba:    function(){ return drawMerkaba(); },
+          aurora:     function(){ return drawAurora(); },
+          phoenix:    function(){ return drawFire(); },
+          ocean:      function(){ return drawAurora(); },
+          neural:     function(){ return drawGenericStreaks(260); },
+          inception:  function(){ return drawHyperspace(); },
+          apollo:     function(){ return drawGenericStreaks(50); },
+          dna:        function(){ return drawNebula(); },
+          cosmos3d:   function(){ return drawGalaxy(); },
+          chronos:    function(){ return drawHyperspace(); },
+          escher:     function(){ return drawMandala(); },
+          kaleidoscope:function(){ return drawMandala(); },
+          plasma:     function(){ return drawNebula(); },
+          lightning:  function(){ return drawGenericStreaks(50); },
+          vortex:     function(){ return drawGenericStreaks(200); },
+          fractal:    function(){ return drawGenericStreaks(90); },
+          fire:       function(){ return drawFire(); },
+          waterwave:  function(){ return drawAurora(); },
+          circuit:    function(){ return drawMerkaba(); },
+          galaxy:     function(){ return drawGalaxy(); },
+          mandala:    function(){ return drawMandala(); },
+        };
+
+        function startRenderer(key) {
+          if (_handle !== null) clearInterval(_handle);
+          _activeKey = key;
+          ctx.clearRect(0,0,w,h);
+          _handle = DRAW_FNS[key] ? DRAW_FNS[key]() : drawGenericStreaks(185);
+          // Update codec label
+          var d = DEFS[key] || {};
+          var cEl = document.getElementById('dp-codec');
+          if (cEl) cEl.textContent = d.codec || 'AIOS-GEO-V2';
+          // Update audio Hz
+          var hzEl = document.getElementById('dp-hz');
+          if (hzEl && d.hz) hzEl.textContent = d.hz + ' Hz';
+          // Update pill active state
+          document.querySelectorAll('.r-sw-pill').forEach(function(p){
+            p.style.background = p.dataset.r === key ? 'rgba(0,212,255,0.18)' : 'transparent';
+            p.style.borderColor = p.dataset.r === key ? 'rgba(0,212,255,0.5)' : 'rgba(255,255,255,0.1)';
+            p.style.color = p.dataset.r === key ? '#00d4ff' : 'rgba(232,232,240,0.45)';
+          });
+          // Update filename
+          var nm = document.getElementById('gfc-name');
+          if (nm) nm.textContent = key + '-' + Date.now().toString(36) + '.geo';
+          // Update JSON display
+          updateGeoDisplay(key);
+        }
+
+        // Build renderer switcher pills
+        var sw = document.getElementById('renderer-switcher');
+        if (sw) {
+          KEYS.forEach(function(k) {
+            var d = DEFS[k];
+            var b = document.createElement('button');
+            b.className = 'r-sw-pill';
+            b.dataset.r = k;
+            b.textContent = d.label;
+            b.style.cssText = 'padding:0.22rem 0.65rem;border-radius:16px;font-size:0.72rem;font-weight:600;border:1px solid rgba(255,255,255,0.1);cursor:pointer;transition:all 0.18s;background:transparent;color:rgba(232,232,240,0.45);';
+            b.onclick = function() { startRenderer(k); };
+            sw.appendChild(b);
+          });
+        }
+
+        // ── GEO JSON BUILDER ─────────────────────────────────────────
+        var _currentSpec = null;
+        function buildGeoSpec(key) {
+          var d = DEFS[key] || {};
+          var id = key + '-' + Date.now().toString(36);
+          _currentSpec = {
+            format: 'aios-geo-v2', codec: 'AIOS-GEO-CODEC-v2', license: 'AIOS-OC-1.0',
+            id: 'geo_' + id, title: (d.label || key) + ' — ' + ['Emergence','Ascension','Resonance','Awakening','The Infinite'][Math.floor(Math.random()*5)],
+            created: new Date().toISOString().split('T')[0],
+            duration: 3600, fileSize: '14.2KB', equivalentMp4Size: '22.4GB',
+            compressionRatio: '1600000:1',
+            display: { resolution: '∞ render-native', aspectRatio: '16:9', frameRate: 'device-native (∞fps)' },
+            renderer: { type: key, phiCoherence: 1.618, codec: d.codec || 'AIOS-GEO-V2' },
+            audio: { hz: d.hz || 528, wave: 'sine', lfoRate: 0.618, drone: true },
+            geoqode: { architectureSignature: '8,26,48:480', semanticType: 'PHYSICS', frequency: 852, phiCoefficient: 1.618, coherence: 0.97 },
+            swarm: { studio: 'AIOSProducerSwarm', agents: { director: 'AIOSDirector-v3', composer: 'HarmonicForge-v4' } },
+            distribution: { drm: 'none', openStandard: true, streamable: true },
+          };
+          return _currentSpec;
+        }
+
+        function hi(json) {
+          return json.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+            .replace(/("[\w∞φ:\-→·. ]+")(\s*:)/g,'<span style="color:#7dd3fc">$1</span>$2')
+            .replace(/: ("(?:[^"\\]|\\.)*")/g,': <span style="color:#86efac">$1</span>')
+            .replace(/: (-?[\d.]+)/g,': <span style="color:#fbbf24">$1</span>')
+            .replace(/: (true|false|null)/g,': <span style="color:#f472b6">$1</span>');
+        }
+
+        function updateGeoDisplay(key) {
+          var spec = buildGeoSpec(key);
+          var raw = JSON.stringify(spec, null, 2);
+          var gf = document.getElementById('geo-file-display');
+          if (gf) gf.innerHTML = hi(raw);
+        }
+
+        // ── DOWNLOAD .GEO ────────────────────────────────────────────
+        window.downloadGeo = function() {
+          var spec = _currentSpec || buildGeoSpec(_activeKey);
+          var json = JSON.stringify(spec, null, 2);
+          var blob = new Blob([json], { type: 'application/json' });
+          var url = URL.createObjectURL(blob);
+          var a = document.createElement('a');
+          a.href = url; a.download = spec.id + '.geo';
+          document.body.appendChild(a); a.click();
+          document.body.removeChild(a); URL.revokeObjectURL(url);
+          var btn = document.getElementById('download-geo-btn');
+          if (btn) { btn.textContent = '✓ Downloaded!'; setTimeout(function(){ btn.textContent = '⬇ Download .geo'; }, 2000); }
+        };
+
+        // Start with quantum
+        startRenderer('quantum');
       })();
 
       // ─────────────────────────────────────────────────────────────
-      // SPEC JSON — syntax-highlighted display
+      // SPEC JSON — populate #spec-display (canonical reference panel)
       // ─────────────────────────────────────────────────────────────
       (function () {
         var spec = {
@@ -1786,8 +2021,7 @@
         var hraw = hi(raw);
         var sd = document.getElementById("spec-display");
         if (sd) sd.innerHTML = hraw;
-        var gf = document.getElementById("geo-file-display");
-        if (gf) gf.innerHTML = hraw;
+        // #geo-file-display is managed by the renderer switcher above
       })();
     </script>
   </body>

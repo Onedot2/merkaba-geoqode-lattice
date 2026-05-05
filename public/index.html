@@ -1723,6 +1723,135 @@
       </div>
     </section>
 
+    <!-- ── .GEO vs MP4 — THE FORMAT WAR ──────────────────────────────────── -->
+    <section id="geo-vs-mp4" style="padding:5rem 1rem 4.5rem;background:linear-gradient(180deg,#04040e 0%,#060614 100%);position:relative;overflow:hidden">
+      <div style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 80%,rgba(0,212,255,0.035) 0%,transparent 70%);pointer-events:none"></div>
+      <div style="max-width:1000px;margin:0 auto;position:relative">
+        <!-- Header -->
+        <div style="text-align:center;margin-bottom:3rem">
+          <div style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);padding:0.3rem 0.9rem;border-radius:20px;font-size:0.72rem;font-weight:700;letter-spacing:0.12em;color:#f87171;text-transform:uppercase;margin-bottom:1.2rem">FORMAT MANIFESTO</div>
+          <h2 style="font-size:clamp(2rem,5vw,3.2rem);font-weight:900;letter-spacing:-0.04em;line-height:1.05;margin:0 0 1rem">mp4 stores dead pixels.<br><span style="background:linear-gradient(135deg,#00d4ff,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">.geo renders living reality.</span></h2>
+          <p style="color:rgba(232,232,240,0.45);font-size:1rem;max-width:540px;margin:0 auto;line-height:1.7">Every mp4 you've ever seen was a recording of something that already happened. Every .geo programme is happening right now, for the first time, just for you.</p>
+        </div>
+
+        <!-- Comparison table -->
+        <div style="display:grid;grid-template-columns:1fr 60px 1fr;gap:0;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.07)">
+          <!-- mp4 header -->
+          <div style="background:rgba(15,8,8,0.95);padding:1.2rem 1.5rem;border-right:1px solid rgba(255,255,255,0.06)">
+            <div style="font-size:0.68rem;letter-spacing:0.1em;color:rgba(232,232,240,0.35);font-weight:700;text-transform:uppercase;margin-bottom:0.4rem">DEAD FORMAT</div>
+            <div style="font-size:1.4rem;font-weight:900;color:#f87171">mp4 / mov</div>
+          </div>
+          <!-- vs -->
+          <div style="background:rgba(6,4,16,0.98);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:0.75rem;color:rgba(232,232,240,0.25);letter-spacing:0.08em">VS</div>
+          <!-- .geo header -->
+          <div style="background:rgba(4,10,20,0.98);padding:1.2rem 1.5rem;border-left:1px solid rgba(255,255,255,0.06)">
+            <div style="font-size:0.68rem;letter-spacing:0.1em;color:rgba(0,212,255,0.6);font-weight:700;text-transform:uppercase;margin-bottom:0.4rem">ALIVE FORMAT</div>
+            <div style="font-size:1.4rem;font-weight:900;color:#00d4ff">.geo</div>
+          </div>
+        </div>
+
+        <!-- Comparison rows -->
+        <div id="gvmp-rows" style="border:1px solid rgba(255,255,255,0.07);border-top:none;border-radius:0 0 16px 16px;overflow:hidden">
+          <!-- rows injected by JS -->
+        </div>
+
+        <!-- Animated mini canvas -->
+        <div style="display:flex;align-items:center;justify-content:center;gap:2.5rem;margin:2.5rem 0 1.5rem;flex-wrap:wrap">
+          <div style="text-align:center">
+            <div style="width:180px;height:102px;background:#0a0a0a;border:1px solid rgba(239,68,68,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative">
+              <div style="color:rgba(239,68,68,0.25);font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-align:center;line-height:1.6">COMPRESSED<br>DEAD PIXELS<br>22.4 GB</div>
+              <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(239,68,68,0.04) 0px,transparent 1px,transparent 4px);pointer-events:none"></div>
+            </div>
+            <div style="font-size:0.72rem;color:rgba(239,68,68,0.6);margin-top:0.5rem;font-weight:700">mp4 · 22.4 GB · Dead</div>
+          </div>
+          <div style="font-size:2rem;color:rgba(232,232,240,0.2);font-weight:300">≠</div>
+          <div style="text-align:center">
+            <canvas id="gvmp-cv" width="180" height="102" style="border:1px solid rgba(0,212,255,0.2);border-radius:10px;display:block"></canvas>
+            <div style="font-size:0.72rem;color:rgba(0,212,255,0.7);margin-top:0.5rem;font-weight:700">.geo · 14.2 KB · Alive</div>
+          </div>
+        </div>
+
+        <!-- Score bar -->
+        <div style="background:rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:1.2rem 1.5rem;margin-top:1rem;text-align:center">
+          <div style="font-size:0.7rem;letter-spacing:0.1em;color:rgba(232,232,240,0.35);font-weight:700;text-transform:uppercase;margin-bottom:0.8rem">COMPRESSION ADVANTAGE</div>
+          <div style="position:relative;height:10px;background:rgba(255,255,255,0.06);border-radius:5px;overflow:hidden">
+            <div id="gvmp-bar" style="position:absolute;left:0;top:0;height:100%;width:0%;background:linear-gradient(90deg,#00d4ff,#818cf8);border-radius:5px;transition:width 1.8s cubic-bezier(0.16,1,0.3,1)"></div>
+          </div>
+          <div style="margin-top:0.6rem;font-size:0.8rem;color:rgba(232,232,240,0.5)">.geo is <span id="gvmp-ratio" style="color:#00d4ff;font-weight:800;font-size:1.1rem">0</span>× more efficient than mp4</div>
+        </div>
+
+        <!-- CTA -->
+        <div style="text-align:center;margin-top:2.5rem;display:flex;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap">
+          <a href="/geo-codec" style="background:rgba(0,212,255,0.12);border:1px solid rgba(0,212,255,0.3);color:#00d4ff;font-weight:700;font-size:0.85rem;padding:0.65rem 1.5rem;border-radius:12px;text-decoration:none;letter-spacing:0.05em;transition:all 0.2s" onmouseover="this.style.background='rgba(0,212,255,0.2)'" onmouseout="this.style.background='rgba(0,212,255,0.12)'">Read the .geo Manifesto →</a>
+          <a href="/aiosdream" style="background:transparent;border:1px solid rgba(255,255,255,0.1);color:rgba(232,232,240,0.7);font-weight:600;font-size:0.85rem;padding:0.65rem 1.5rem;border-radius:12px;text-decoration:none;letter-spacing:0.04em" onmouseover="this.style.borderColor='rgba(255,255,255,0.25)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)'">▶ Watch Live .geo</a>
+        </div>
+      </div>
+
+      <script>
+        (function() {
+          var rows = [
+            ['Compression',    '150:1',              '1,600,000:1',     true ],
+            ['File size (60min 4K)', '22.4 GB',     '14.2 KB',          true ],
+            ['Resolution',     'Fixed (4K cap)',     '∞ Render-native',  true ],
+            ['Frame rate',     '120 fps max',        '∞ device rAF',     true ],
+            ['Nature',         'Recorded (dead)',    'Rendered (alive)', true ],
+            ['Personalised',   'No — same for all', 'Yes — unique every time',true],
+            ['Patent-free',    'No',                 'Yes — forever',    true ],
+            ['Evolves',        'No',                 'Yes — every frame',true ],
+            ['File on disk',   'Yes — 22 GB',       'No — 14 KB spec',  true ],
+            ['Generated by',   'Camera + crew',     'AIOSProducerSwarm',true ],
+          ];
+          var container = document.getElementById('gvmp-rows');
+          if (!container) return;
+          rows.forEach(function(r, i) {
+            var bg = i%2===0 ? 'rgba(0,0,0,0)' : 'rgba(255,255,255,0.016)';
+            container.innerHTML += '<div style="display:grid;grid-template-columns:1fr 60px 1fr;background:'+bg+';border-top:1px solid rgba(255,255,255,0.04)">'
+              +'<div style="padding:0.65rem 1.2rem;font-size:0.82rem;color:rgba(239,68,68,0.7);background:rgba(15,8,8,0.6);border-right:1px solid rgba(255,255,255,0.04)">'+r[1]+'</div>'
+              +'<div style="background:rgba(6,4,16,0.9);border-right:1px solid rgba(255,255,255,0.04);display:flex;align-items:center;justify-content:center"><span style="font-size:0.6rem;font-weight:700;color:rgba(232,232,240,0.15)">'+r[0]+'</span></div>'
+              +'<div style="padding:0.65rem 1.2rem;font-size:0.82rem;color:rgba(0,212,255,0.85);font-weight:600;background:rgba(4,10,20,0.7)">'+r[2]+'</div>'
+              +'</div>';
+          });
+
+          // Animate ratio counter on scroll
+          var animated = false;
+          function animateRatio() {
+            if (animated) return; animated = true;
+            var el = document.getElementById('gvmp-ratio');
+            var bar = document.getElementById('gvmp-bar');
+            if (bar) bar.style.width = '99.994%';
+            var start = 0, target = 1600000, dur = 2200, t0 = Date.now();
+            var raf = function() {
+              var p = Math.min(1, (Date.now()-t0)/dur);
+              var val = Math.round(p*p*target);
+              if (el) el.textContent = val >= 1000 ? (val>=1000000?(val/1000000).toFixed(2)+'M':(val/1000).toFixed(0)+'K') : val;
+              if (p < 1) requestAnimationFrame(raf);
+            };
+            requestAnimationFrame(raf);
+          }
+          var obs = new IntersectionObserver(function(entries){if(entries[0].isIntersecting)animateRatio();},{threshold:0.3});
+          var sec = document.getElementById('geo-vs-mp4');
+          if (sec) obs.observe(sec);
+
+          // .geo live mini canvas
+          var cv = document.getElementById('gvmp-cv');
+          if (!cv) return;
+          var ctx2 = cv.getContext('2d'), W=180, H=102;
+          cv.width=W; cv.height=H;
+          var pts = Array.from({length:60},function(){return{x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-0.5)*0.5,vy:(Math.random()-0.5)*0.5,hue:160+Math.random()*80,r:0.8+Math.random()*1.2};});
+          var T2=0;
+          setInterval(function(){
+            ctx2.fillStyle='rgba(2,8,20,0.18)';ctx2.fillRect(0,0,W,H);
+            for(var i=0;i<pts.length;i++){var p=pts[i];p.x+=p.vx;p.y+=p.vy;
+              if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;
+              ctx2.globalAlpha=0.7+0.3*Math.sin(T2*2+i);ctx2.fillStyle='hsl('+(p.hue+T2*0.3)+',85%,60%)';
+              ctx2.beginPath();ctx2.arc(p.x,p.y,p.r,0,Math.PI*2);ctx2.fill();
+            }
+            ctx2.globalAlpha=1;T2+=0.018;
+          },20);
+        })();
+      </script>
+    </section>
+
     <!-- -- AIOS AV OS PLATFORM -- -->
     <section style="background:linear-gradient(180deg,#070710 0%,#0a0a1c 100%);padding:5rem 1rem 4rem;position:relative;overflow:hidden">
       <div style="position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(0,212,255,0.04) 0%,transparent 70%);pointer-events:none"></div>

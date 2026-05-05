@@ -1909,6 +1909,7 @@
             <div class="player-prog-title" id="player-prog-title">—</div>
             <div class="player-scene-name" id="player-scene-name">—</div>
           </div>
+          <button id="geo-info-btn" onclick="toggleGeoPanel()" title="View .geo spec" style="background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.28);color:#00d4ff;font-size:0.78rem;font-weight:700;padding:0.28rem 0.7rem;border-radius:10px;cursor:pointer;letter-spacing:0.05em;margin-left:auto;transition:all 0.2s;flex-shrink:0">ⓘ .geo</button>
         </div>
         <div class="player-bottom" id="player-bottom">
           <div class="scene-chips" id="scene-chips"></div>
@@ -2089,6 +2090,18 @@
 
     <!-- ── SHARE TOAST ── -->
     <div id="share-toast">🔗 Link copied!</div>
+
+    <!-- ── GEO INFO PANEL ── -->
+    <div id="geo-panel" style="position:fixed;top:0;right:-420px;width:400px;height:100vh;background:rgba(4,4,20,0.96);backdrop-filter:blur(16px);border-left:1px solid rgba(0,212,255,0.15);z-index:9999;overflow-y:auto;transition:right 0.32s cubic-bezier(0.22,0.61,0.36,1);padding:1.5rem 1.2rem;box-sizing:border-box;font-family:inherit">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem">
+        <div style="font-size:0.72rem;font-weight:800;letter-spacing:0.12em;color:#00d4ff;opacity:0.7">AIOS · GEO SPEC</div>
+        <button onclick="toggleGeoPanel()" style="background:transparent;border:none;color:rgba(232,232,240,0.5);font-size:1.1rem;cursor:pointer;padding:0.2rem 0.4rem;border-radius:6px" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(232,232,240,0.5)'">✕</button>
+      </div>
+      <div id="geo-panel-content">
+        <div style="color:rgba(232,232,240,0.35);font-size:0.82rem;text-align:center;margin-top:3rem">Play a programme to view its .geo spec</div>
+      </div>
+    </div>
+    <div id="geo-panel-backdrop" onclick="toggleGeoPanel()" style="position:fixed;inset:0;background:rgba(0,0,0,0);pointer-events:none;z-index:9998;transition:background 0.3s"></div>
 
     <!-- ── INFO MODAL ── -->
     <div id="info-modal">
@@ -4330,6 +4343,7 @@
         startAmbientAudio(prog.id);
         startPlayback();
         showPlayerUI();
+        updateGeoPanel(prog);
       }
 
       function buildSceneChips(prog) {
@@ -5099,6 +5113,86 @@
         const renderer = RENDERERS[progId];
         if (renderer) { try { renderer.stop(); } catch(_) {} }
       }
+
+      // ── .geo Info Panel ──────────────────────────────────────────────────────
+      let _geoPanelOpen = false;
+      function toggleGeoPanel() {
+        _geoPanelOpen = !_geoPanelOpen;
+        const panel = document.getElementById('geo-panel');
+        const backdrop = document.getElementById('geo-panel-backdrop');
+        if (panel) panel.style.right = _geoPanelOpen ? '0' : '-420px';
+        if (backdrop) {
+          backdrop.style.background = _geoPanelOpen ? 'rgba(0,0,0,0.32)' : 'rgba(0,0,0,0)';
+          backdrop.style.pointerEvents = _geoPanelOpen ? 'auto' : 'none';
+        }
+        if (_geoPanelOpen && currentProg) updateGeoPanel(currentProg);
+      }
+      function updateGeoPanel(prog) {
+        if (!prog) return;
+        const panel = document.getElementById('geo-panel-content');
+        if (!panel) return;
+        const GEO_HZ = {
+          matrix:528,inception:741,apollo:528,hyperspace:852,nebula:396,neural:741,
+          quantum:528,merkaba:639,phoenix:396,ocean:417,escher:741,chronos:852,
+          aurora:417,cosmos3d:963,dna:528,kaleidoscope:528,plasma:396,lightning:852,
+          vortex:639,fractal:741,fire:396,waterwave:417,circuit:852,galaxy:963,mandala:528
+        };
+        const GEO_GEOQODE = {
+          matrix:'ENTITY · 396',inception:'DIALOGUE · 639',apollo:'ACTION · 528',
+          hyperspace:'PHYSICS · 852',nebula:'ENTITY · 396',neural:'EMOTION · 741',
+          quantum:'ACTION · 528',merkaba:'HOLOGRAPHIC · 72',phoenix:'ENTITY · 396',
+          ocean:'LOCATION · 417',escher:'EMOTION · 741',chronos:'PHYSICS · 852',
+          aurora:'LOCATION · 417',cosmos3d:'NARRATIVE · 963',dna:'ACTION · 528',
+          kaleidoscope:'ACTION · 528',plasma:'ENTITY · 396',lightning:'PHYSICS · 852',
+          vortex:'DIALOGUE · 639',fractal:'EMOTION · 741',fire:'ENTITY · 396',
+          waterwave:'LOCATION · 417',circuit:'PHYSICS · 852',galaxy:'NARRATIVE · 963',mandala:'ACTION · 528'
+        };
+        const hz = GEO_HZ[prog.id] || 528;
+        const geoqode = GEO_GEOQODE[prog.id] || 'PHYSICS · 852';
+        const spec = {
+          format:'aios-geo-v2', id:'geo_'+prog.id+'_'+Date.now().toString(36),
+          title:prog.title, created: new Date().toISOString().split('T')[0],
+          duration: prog.scenes ? prog.scenes.reduce((a,s)=>a+s.dur,0) : 1800,
+          fileSize:'14.2KB', equivalentMp4Size:'22.4GB', compressionRatio:'1600000:1',
+          display:{resolution:'∞ render-native',aspectRatio:'16:9',frameRate:'device-native (∞fps)'},
+          renderer:{type:prog.id,phiCoherence:PHI},
+          audio:{hz,wave:'sine',lfoRate:0.618,drone:true},
+          geoqode:{architectureSignature:ARCH,semanticType:geoqode.split('·')[0].trim(),frequency:hz,phiCoefficient:PHI,coherence:0.97},
+          swarm:{studio:'AIOSProducerSwarm',agents:{director:'AIOSDirector-v3',composer:'HarmonicForge-v4',fx:'ParticleForge-v3'}},
+          distribution:{drm:'none',openStandard:true,streamable:true}
+        };
+        const genreHtml = (prog.genre||[]).map(g=>`<span style="display:inline-block;padding:0.18rem 0.55rem;border-radius:10px;font-size:0.68rem;font-weight:700;background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.2);color:#00d4ff;margin:2px">${g}</span>`).join('');
+        const hiFn = (json) => json.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+          .replace(/("[\w∞φ:\-→·. ]+")(\s*:)/g,'<span style="color:#7dd3fc">$1</span>$2')
+          .replace(/: ("(?:[^"\\]|\\.)*")/g,': <span style="color:#86efac">$1</span>')
+          .replace(/: (-?[\d.]+)/g,': <span style="color:#fbbf24">$1</span>')
+          .replace(/: (true|false|null)/g,': <span style="color:#f472b6">$1</span>');
+        const specJson = JSON.stringify(spec,null,2);
+        panel.innerHTML = `
+          <div style="background:${prog.thumb||'linear-gradient(135deg,#001020,#002040)'};border-radius:10px;height:100px;display:flex;align-items:center;justify-content:center;margin-bottom:1rem;font-size:2.2rem">${prog.icon||'◎'}</div>
+          <h3 style="font-size:1.05rem;font-weight:800;margin:0 0 0.3rem;color:#e8e8f0;line-height:1.25">${prog.title}</h3>
+          <p style="font-size:0.78rem;color:rgba(232,232,240,0.55);margin:0 0 0.7rem;font-style:italic">${prog.tagline||''}</p>
+          <div style="margin-bottom:0.7rem">${genreHtml}</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.35rem 0.6rem;margin-bottom:1rem">
+            ${[['Format','AIOS-GEO-V2'],['Renderer',prog.id],['Audio Hz',hz+' Hz'],['GeoQode',geoqode],['File Size','14.2 KB'],['Equiv. mp4','22.4 GB'],['Compression','1,600,000:1'],['Lattice',ARCH],['Studio','AIOSProducerSwarm'],['Coherence','φ '+PHI]].map(([k,v])=>`<div style="font-size:0.68rem;color:rgba(232,232,240,0.4);letter-spacing:0.06em">${k}</div><div style="font-size:0.74rem;font-weight:700;color:#e8e8f0">${v}</div>`).join('')}
+          </div>
+          <button onclick="downloadGeoProg('${prog.id}')" style="width:100%;padding:0.55rem;background:rgba(0,212,255,0.12);border:1px solid rgba(0,212,255,0.3);color:#00d4ff;font-size:0.8rem;font-weight:700;border-radius:10px;cursor:pointer;letter-spacing:0.06em;margin-bottom:0.9rem;transition:all 0.2s" onmouseover="this.style.background='rgba(0,212,255,0.22)'" onmouseout="this.style.background='rgba(0,212,255,0.12)'">⬇ Download .geo</button>
+          <div style="font-size:0.65rem;font-weight:800;letter-spacing:0.1em;color:rgba(0,212,255,0.5);margin-bottom:0.4rem">.GEO SPEC</div>
+          <pre style="font-size:0.62rem;line-height:1.45;overflow:auto;max-height:340px;background:rgba(0,0,0,0.4);border-radius:8px;padding:0.7rem;margin:0;border:1px solid rgba(255,255,255,0.06)">${hiFn(specJson)}</pre>
+          <a href="/geo-library" style="display:block;text-align:center;margin-top:0.9rem;font-size:0.75rem;color:rgba(0,212,255,0.6);text-decoration:none" onmouseover="this.style.color='#00d4ff'" onmouseout="this.style.color='rgba(0,212,255,0.6)'">📚 View Full Library →</a>`;
+        // stash spec for download
+        panel._lastSpec = spec;
+      }
+      window.downloadGeoProg = function(progId) {
+        const panel = document.getElementById('geo-panel-content');
+        const spec = (panel && panel._lastSpec) || {format:'aios-geo-v2',id:'geo_'+progId};
+        const blob = new Blob([JSON.stringify(spec,null,2)],{type:'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href=url; a.download=spec.id+'.geo';
+        document.body.appendChild(a); a.click();
+        document.body.removeChild(a); URL.revokeObjectURL(url);
+      };
 
       // ── Deep-link handler on load ────────────────────────────────────────────
       (function _deepLink() {
