@@ -8865,6 +8865,15 @@
       }
 
       function closeSearch() {
+        // Kill any search card preview still running (panel close doesn't fire mouseout)
+        if (_srcHoverRend) {
+          const { cv, rend } = _srcHoverRend;
+          if (!(window._activePlayerRenderer === rend || heroRenderer === rend)) {
+            try { rend.stop(); } catch(_) {}
+          }
+          cv._rendRunning = false;
+          _srcHoverRend = null;
+        }
         _searchOpen = false;
         document.getElementById('search-overlay').classList.remove('open');
         document.body.style.overflow = '';
@@ -8878,9 +8887,9 @@
         if (_srcGenre !== 'ALL') matches = matches.filter(p => p.genre.includes(_srcGenre));
         if (q) matches = matches.filter(p =>
           p.title.toLowerCase().includes(q) ||
-          p.tagline.toLowerCase().includes(q) ||
-          p.desc.toLowerCase().includes(q) ||
-          p.genre.some(g => g.toLowerCase().includes(q)));
+          (p.tagline||'').toLowerCase().includes(q) ||
+          (p.desc||'').toLowerCase().includes(q) ||
+          (p.genre||[]).some(g => g.toLowerCase().includes(q)));
         label.textContent = q
           ? matches.length + ' result' + (matches.length !== 1 ? 's' : '') + ' for \u201c' + q + '\u201d' + (_srcGenre !== 'ALL' ? ' in ' + _srcGenre : '')
           : (_srcGenre !== 'ALL' ? matches.length + ' in ' + _srcGenre : 'All Programmes');
@@ -8918,17 +8927,23 @@
         const rKey = cv.dataset.rkey;
         const rend = RENDERERS[rKey];
         if (!rend) return;
+        // Guard: never steal renderer from active player or hero
+        if (window._activePlayerRenderer === rend || heroRenderer === rend) return;
         cv.width = cv.offsetWidth || 180;
         cv.height = cv.offsetHeight || 68;
-        try { rend.start(cv, 0); cv._rendRunning = true; cv._rend = rend; } catch(_) {}
+        try { rend.start(cv, 0); cv._rendRunning = true; cv._rend = rend; _srcHoverRend = { cv, rend }; } catch(_) {}
       });
       document.getElementById('search-grid').addEventListener('mouseout', function(e) {
         const card = e.target.closest('.src-card');
         if (!card) return;
         const cv = card.querySelector('.src-preview-cv');
         if (!cv || !cv._rendRunning) return;
-        try { cv._rend.stop(); } catch(_) {}
+        const rend = cv._rend;
         cv._rendRunning = false;
+        if (_srcHoverRend && _srcHoverRend.cv === cv) _srcHoverRend = null;
+        // Guard: renderer may have been claimed by player/hero since hover started
+        if (window._activePlayerRenderer === rend || heroRenderer === rend) { const ctx = cv.getContext('2d'); if (ctx) ctx.clearRect(0, 0, cv.width, cv.height); return; }
+        try { rend && rend.stop(); } catch(_) {}
         const ctx = cv.getContext('2d');
         if (ctx) ctx.clearRect(0, 0, cv.width, cv.height);
       });
