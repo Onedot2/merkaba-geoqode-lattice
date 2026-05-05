@@ -8704,18 +8704,21 @@
         document.getElementById('info-modal').classList.add('active');
 
         // run mini renderer in modal canvas
-        if (modalRenderer) { try { modalRenderer.stop(); } catch(_) {} modalRenderer = null; }
+        if (modalRenderer && modalRenderer !== window._activePlayerRenderer) { try { modalRenderer.stop(); } catch(_) {} }
+        modalRenderer = null;
         const canvas = document.getElementById('modal-canvas');
         sizeCanvas(canvas);
         const renderer = getRenderer(prog.id);
-        if (renderer) {
+        // Guard: don't steal the active player renderer
+        if (renderer && renderer !== window._activePlayerRenderer) {
           modalRenderer = renderer;
           renderer.start(canvas, 0);
         }
       }
 
       function closeModal() {
-        if (modalRenderer) { try { modalRenderer.stop(); } catch(_) {} modalRenderer = null; }
+        if (modalRenderer && modalRenderer !== window._activePlayerRenderer) { try { modalRenderer.stop(); } catch(_) {} }
+        modalRenderer = null;
         document.getElementById('info-modal').classList.remove('active');
       }
 
