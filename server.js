@@ -2139,7 +2139,6 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
         found.shortDesc ||
         `Immersive WebXR experience for Meta Quest. ${found.display} — zero install required.`;
       const vrUrl = `https://realaios.com${found.vrUrl || `/vr?prog=${xpId}`}`;
-      const flatUrl = `https://realaios.com${found.flatUrl || `/aiosdream?prog=${xpId}`}`;
       const shareUrl = `https://realaios.com/vr-experience/${xpId}`;
       const accent = foundCat.accent || "#00d4ff";
       const icon = foundCat.icon || "🥽";
@@ -2233,7 +2232,6 @@ ${GSC_TOKEN ? `<meta name="google-site-verification" content="${GSC_TOKEN}"/>` :
   </div>
   <div class="actions">
     <a class="btn-vr" href="${vrUrl}">🥽 Launch in VR</a>
-    <a class="btn-flat" href="${flatUrl}">⬛ Flat View</a>
   </div>
   <a class="btn-hub" href="/vr-hub">← All ${liveCount} Live Experiences</a>
 </div>

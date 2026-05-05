@@ -213,13 +213,29 @@
       }
       .vr-not-supported {
         display: none;
-        color: var(--muted);
-        font-size: 0.88rem;
-        padding: 0.6rem 1.2rem;
-        border: 1px solid rgba(107, 132, 184, 0.3);
-        border-radius: 8px;
-        max-width: 420px;
+        color: var(--text);
+        font-size: 1rem;
+        padding: 1.5rem 2rem;
+        background: rgba(0, 212, 255, 0.06);
+        border: 1px solid rgba(0, 212, 255, 0.35);
+        border-radius: 14px;
+        max-width: 560px;
         margin: 0 auto 1.5rem;
+        line-height: 1.65;
+        transition: box-shadow 0.3s;
+      }
+      .vr-not-supported strong {
+        color: var(--cyan);
+      }
+      .vr-not-supported code {
+        display: block;
+        margin-top: 0.75rem;
+        font-size: 1rem;
+        color: var(--cyan);
+        background: rgba(0, 212, 255, 0.1);
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        font-family: monospace;
       }
       .vr-quest-hint {
         font-size: 0.8rem;
@@ -571,19 +587,10 @@
 
         <!-- Fallback message for non-WebXR -->
         <div class="vr-not-supported" id="vr-not-supported">
-          🥽 WebXR not detected on this device. To experience AIOS VR:
-          <br /><br />
-          Open this page in your <strong>Meta Quest Browser</strong>:
-          <code
-            style="
-              display: block;
-              margin-top: 0.5rem;
-              font-size: 0.78rem;
-              color: var(--cyan);
-            "
-          >
-            https://realaios.com/vr
-          </code>
+          🥽 <strong>These experiences require a Meta Quest headset.</strong><br />
+          On your Quest, open the browser and navigate to:
+          <code>realaios.com/vr</code>
+          Then tap <strong>🥽 Enter VR Mode</strong> on any experience.
         </div>
 
         <p class="vr-quest-hint">
@@ -1278,7 +1285,6 @@
           <div style="font-size:0.72rem;color:#6b84b8;margin-bottom:0.75rem;">Node ${prog.latticeNode} · ${prog.sem}</div>
           <div class="card-actions">
             <a class="btn-vr" href="/vr?prog=${prog.name}" onclick="launchProgVR('${prog.name}',event)">🥽 Launch VR</a>
-            <a class="btn-flat" href="/aiosdream?prog=${prog.name}">⬛ Flat View</a>
             <button style="border:none;background:transparent;color:var(--muted);cursor:pointer;padding:0.5rem 0.4rem;font-size:0.82rem;" onclick="shareProgLink('${prog.name}')" title="Copy link">🔗</button>
           </div>`;
         grid.appendChild(card);
@@ -1687,8 +1693,12 @@
         if (webXRSupported) {
           enterVRScene(progName);
         } else {
-          // Flat fallback — redirect to aiosdream
-          location.href = `/aiosdream?prog=${progName}`;
+          // Show Meta Quest required banner prominently
+          const noSup = document.getElementById('vr-not-supported');
+          noSup.style.display = 'block';
+          noSup.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          noSup.style.boxShadow = '0 0 0 2px rgba(0, 212, 255, 0.5), 0 0 24px rgba(0, 212, 255, 0.15)';
+          setTimeout(() => { noSup.style.boxShadow = 'none'; }, 2500);
         }
       }
 
