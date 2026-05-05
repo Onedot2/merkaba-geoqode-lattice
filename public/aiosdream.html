@@ -2656,6 +2656,7 @@
           <div class="hero-btns">
             <button class="btn-play" id="hero-play">▶ Play Now</button>
             <button class="btn-info" id="hero-info">ⓘ More Info</button>
+            <button onclick="_shufflePlay()" title="Play a random episode" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.7);font-size:0.75rem;font-weight:700;letter-spacing:0.1em;padding:0.55rem 1.1rem;border-radius:6px;cursor:pointer;transition:all 0.2s;backdrop-filter:blur(8px)" onmouseover="this.style.background='rgba(255,255,255,0.12)';this.style.color='#fff'" onmouseout="this.style.background='rgba(255,255,255,0.06)';this.style.color='rgba(255,255,255,0.7)'">⟳ Shuffle</button>
           </div>
         </div>
         <div class="hero-dots" id="hero-dots"></div>
@@ -3881,7 +3882,6 @@
       ];
 
       const ROWS = [
-        { id: 'continue',   title: '▶ Continue Watching',   filter: p => { const pg = progress[p.id]; if (!pg) return false; const pct = (pg.scene * 100 / p.scenes.length) + (pg.elapsed / p.scenes[pg.scene].dur / p.scenes.length * 100); return pct > 1 && pct < 95; }, dynamic: true },
         { id: 'featured',   title: '✦ Featured Today',   filter: p => p.featured },
         { id: 'mylist',     title: '♥ My List',           filter: p => myList.includes(p.id) },
         { id: 'season1',    title: '⬡ S1: Origins — Geometry of Consciousness', filter: p => p.season === 'origins' },
@@ -5557,6 +5557,14 @@
         const track = document.getElementById(trackId);
         if (!track) return;
         track.scrollBy({ left: dir * 680, behavior: 'smooth' });
+      }
+
+      function _shufflePlay() {
+        const pool = CATALOGUE.filter(p => !currentProg || p.id !== currentProg.id);
+        const pick = pool[Math.floor(Math.random() * pool.length)];
+        if (!pick) return;
+        openPlayer(pick.id, 0);
+        toast('\u29bf Shuffle \u2192 ' + pick.title);
       }
 
       // ─────────────────────────────────────────────────────────────

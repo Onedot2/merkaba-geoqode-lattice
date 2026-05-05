@@ -1205,10 +1205,11 @@
               .join("");
             const dur = p.duration ? fmtDur(p.duration) : "—";
             const rendKey = RENDERER_MAP[p.renderer?.type] || "default";
+            const isCanonical = p.canonical || /^s2_/.test(p.id);
             return `<div class="card" onclick="watchProgramme('${p.id}')" data-id="${p.id}">
       <div class="card-canvas-wrap">
         <canvas class="card-canvas" data-renderer="${rendKey}" data-idx="${i}" width="280" height="158"></canvas>
-        ${isFresh ? '<div class="card-fresh">● FRESH</div>' : ""}
+        ${isCanonical ? '<div class="card-fresh" style="background:rgba(0,229,255,0.85);color:#06040e;letter-spacing:0.12em">⬡ S2 CANONICAL</div>' : isFresh ? '<div class="card-fresh">● FRESH</div>' : ""}
         <div class="card-geo-badge">● .GEO v2</div>
         <div class="card-play">▶</div>
       </div>
@@ -1268,10 +1269,13 @@
 
       // ── Watch ──────────────────────────────────────────────────────────────────────
       function watchProgramme(id) {
-        // Navigate to Theatre — the Theatre will load normally
-        // In a future upgrade, Theatre can accept ?geo=id and auto-play the renderer
         const prog = allProgrammes.find((p) => p.id === id);
         if (!prog) return;
+        // Canonical S2 episodes — deep-link directly into the AIOSdream player
+        if (prog.canonical || /^s2_/.test(id)) {
+          window.location.href = `/aiosdream?prog=${encodeURIComponent(id)}`;
+          return;
+        }
         const rendererType = prog.renderer?.type || "quantum";
         window.location.href = `/aiosdream?renderer=${rendererType}`;
       }
