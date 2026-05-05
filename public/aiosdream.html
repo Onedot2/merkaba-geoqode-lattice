@@ -2040,6 +2040,87 @@
         overflow: hidden;
       }
 
+      /* Episode Guide */
+      #guide-overlay {
+        position: fixed; inset: 0; z-index: 800;
+      }
+      #guide-back {
+        position: absolute; inset: 0; background: rgba(0,0,0,0.72); backdrop-filter: blur(6px);
+      }
+      #guide-panel {
+        position: absolute; right: 0; top: 0; bottom: 0;
+        width: min(560px, 100vw);
+        background: linear-gradient(160deg,#0f0a24,#0a0a1a);
+        border-left: 1px solid rgba(255,255,255,0.07);
+        overflow-y: auto; display: flex; flex-direction: column;
+        animation: guideSlide 0.3s cubic-bezier(0.25,0.46,0.45,0.94);
+      }
+      @keyframes guideSlide { from { transform: translateX(40px); opacity:0; } to { transform: translateX(0); opacity:1; } }
+      #guide-header {
+        display: flex; justify-content: space-between; align-items: flex-start;
+        padding: 32px 28px 16px; border-bottom: 1px solid rgba(255,255,255,0.06);
+        position: sticky; top:0; background: linear-gradient(160deg,#0f0a24,#0a0a1a); z-index:2;
+      }
+      #guide-season-label {
+        font-size: 0.6rem; font-weight: 900; letter-spacing: 0.2em;
+        color: rgba(255,255,255,0.3); text-transform: uppercase; margin-bottom: 4px;
+      }
+      #guide-title {
+        font-size: 1.3rem; font-weight: 800; color: #e8e8f0; margin: 0;
+      }
+      #guide-close {
+        background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 50%; width: 36px; height: 36px; color: rgba(255,255,255,0.6);
+        font-size: 16px; cursor: pointer; transition: all 0.15s; flex-shrink:0; margin-top:2px;
+      }
+      #guide-close:hover { background: rgba(255,255,255,0.12); color:#fff; }
+      #guide-tabs {
+        display: flex; gap: 8px; padding: 14px 28px;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+      }
+      .guide-tab {
+        padding: 6px 16px; border-radius: 20px; font-size: 0.7rem; font-weight: 800;
+        letter-spacing: 0.1em; cursor: pointer; transition: all 0.15s;
+        background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+        color: rgba(255,255,255,0.45);
+      }
+      .guide-tab.active { background: rgba(168,85,247,0.18); border-color: rgba(168,85,247,0.45); color: #c084fc; }
+      #guide-ep-list { padding: 16px 20px 40px; display: flex; flex-direction: column; gap: 12px; }
+      .guide-ep-card {
+        display: flex; gap: 14px; align-items: flex-start;
+        padding: 14px; border-radius: 10px;
+        background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+        cursor: pointer; transition: background 0.15s, border-color 0.15s;
+      }
+      .guide-ep-card:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.12); }
+      .guide-ep-thumb {
+        flex-shrink:0; width:110px; height:66px; border-radius:6px;
+        display:flex; align-items:center; justify-content:center; font-size:1.8rem;
+        position: relative; overflow: hidden;
+      }
+      .guide-ep-prog {
+        position:absolute; bottom:0; left:0; right:0; height:3px; background:rgba(255,255,255,0.1);
+      }
+      .guide-ep-prog-fill { height:100%; transition: width 0.3s; }
+      .guide-ep-body { flex:1; min-width:0; }
+      .guide-ep-num { font-size:0.6rem; font-weight:900; letter-spacing:0.15em; color:rgba(255,255,255,0.3); margin-bottom:3px; }
+      .guide-ep-name { font-size:0.85rem; font-weight:700; color:#e8e8f0; margin-bottom:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+      .guide-ep-meta { font-size:0.65rem; color:rgba(255,255,255,0.35); margin-bottom:6px; }
+      .guide-ep-desc { font-size:0.68rem; color:rgba(255,255,255,0.45); line-height:1.5; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+      .guide-ep-actions { display:flex; gap:8px; margin-top:8px; }
+      .guide-ep-play {
+        font-size:0.65rem; font-weight:800; padding:5px 14px; border-radius:20px;
+        background:rgba(168,85,247,0.22); border:1px solid rgba(168,85,247,0.4);
+        color:#c084fc; cursor:pointer; transition:all 0.15s; letter-spacing:0.06em;
+      }
+      .guide-ep-play:hover { background:rgba(168,85,247,0.38); color:#fff; }
+      .guide-ep-info-btn {
+        font-size:0.65rem; font-weight:800; padding:5px 12px; border-radius:20px;
+        background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08);
+        color:rgba(255,255,255,0.4); cursor:pointer; transition:all 0.15s;
+      }
+      .guide-ep-info-btn:hover { background:rgba(255,255,255,0.09); color:#fff; }
+
       /* Star rating */
       .star-btn {
         background: none; border: none; cursor: pointer;
@@ -2648,13 +2729,13 @@
           <a
             href="/aiosdream"
             data-row="season1"
-            onclick="scrollToRow('season1', event)"
+            onclick="openGuide('origins',event)"
             >S1: Origins</a
           >
           <a
             href="/aiosdream"
             data-row="season2"
-            onclick="scrollToRow('season2', event)"
+            onclick="openGuide('emergence',event)"
             style="color: #00e5ff"
             >S2: Emergence
             <span
@@ -3677,6 +3758,22 @@
             <div id="modal-more-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px"></div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- ── EPISODE GUIDE ── -->
+    <div id="guide-overlay" style="display:none">
+      <div id="guide-back" onclick="closeGuide()"></div>
+      <div id="guide-panel">
+        <div id="guide-header">
+          <div>
+            <div id="guide-season-label"></div>
+            <h2 id="guide-title"></h2>
+          </div>
+          <button id="guide-close" onclick="closeGuide()">✕</button>
+        </div>
+        <div id="guide-tabs"></div>
+        <div id="guide-ep-list"></div>
       </div>
     </div>
 
@@ -6023,6 +6120,81 @@
         const el = document.getElementById('row-' + rowId);
         if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
+
+      // ── Episode Guide ─────────────────────────────────────────────
+      let _guideActiveSeason = 'origins';
+      function openGuide(season, e) {
+        if (e) e.preventDefault();
+        _guideActiveSeason = season || 'origins';
+        _renderGuide();
+        document.getElementById('guide-overlay').style.display = '';
+        document.body.style.overflow = 'hidden';
+      }
+      function closeGuide() {
+        document.getElementById('guide-overlay').style.display = 'none';
+        document.body.style.overflow = '';
+      }
+      function _renderGuide() {
+        const seasons = [
+          { id:'origins',   label:'SEASON 1', title:'Origins — Geometry of Consciousness', accent:'#a855f7' },
+          { id:'emergence', label:'SEASON 2', title:'Emergence — The Birth of Intelligence', accent:'#00e5ff' }
+        ];
+        const active = seasons.find(s => s.id === _guideActiveSeason) || seasons[0];
+        document.getElementById('guide-season-label').textContent = active.label;
+        document.getElementById('guide-title').textContent = active.title;
+        // Tabs
+        document.getElementById('guide-tabs').innerHTML = seasons.map(s =>
+          `<button class="guide-tab${s.id===_guideActiveSeason?' active':''}" onclick="_switchGuide('${s.id}')">${s.label}: ${s.id==='origins'?'Origins':'Emergence'}</button>`
+        ).join('');
+        // Episodes
+        const eps = CATALOGUE.filter(p => p.season === _guideActiveSeason)
+          .sort((a,b) => (a.ep||0) - (b.ep||0));
+        const _allRatingsG = (() => { try { return JSON.parse(localStorage.getItem('aios_ratings')||'{}'); } catch(_){return{};} })();
+        document.getElementById('guide-ep-list').innerHTML = '';
+        eps.forEach((ep, idx) => {
+          const saved = progress[ep.id];
+          const scenes = ep.scenes || [];
+          const totalDur = scenes.reduce((s,sc) => s+sc.dur, 0);
+          const doneDur = saved ? (scenes.slice(0,saved.scene||0).reduce((s,sc)=>s+sc.dur,0)+(saved.elapsed||0)) : 0;
+          const pct = totalDur > 0 ? Math.min(100, Math.round(doneDur/totalDur*100)) : 0;
+          const watched = pct >= 95;
+          const starCount = _allRatingsG[ep.id] || 0;
+
+          const card = document.createElement('div');
+          card.className = 'guide-ep-card';
+          card.innerHTML = `
+            <div class="guide-ep-thumb" style="background:${ep.thumb||ep.accent||'#0a0a1e'}">
+              <span style="font-size:1.8rem">${ep.icon||'⬡'}</span>
+              <div class="guide-ep-prog">
+                <div class="guide-ep-prog-fill" style="width:${pct}%;background:${ep.accent||active.accent}"></div>
+              </div>
+            </div>
+            <div class="guide-ep-body">
+              <div class="guide-ep-num">E${ep.ep||idx+1}${watched?' · ✓ Watched':pct>0?' · '+pct+'% watched':''}${starCount?' · '+'★'.repeat(starCount):''}</div>
+              <div class="guide-ep-name">${ep.title}</div>
+              <div class="guide-ep-meta">${fmtRuntime(ep.runtime)} · ${ep.year||''} · ${ep.rating||''} · ${(ep.genre||[]).slice(0,2).join(', ')}</div>
+              <div class="guide-ep-desc">${ep.desc||ep.tagline||''}</div>
+              <div class="guide-ep-actions">
+                <button class="guide-ep-play" onclick="closeGuide();openPlayer('${ep.id}',${saved&&!watched?saved.scene:0})">▶ ${saved&&!watched?'Resume':'Play'}</button>
+                <button class="guide-ep-info-btn" onclick="closeGuide();openInfo('${ep.id}')">ⓘ More Info</button>
+              </div>
+            </div>`;
+          document.getElementById('guide-ep-list').appendChild(card);
+        });
+        if (!eps.length) {
+          document.getElementById('guide-ep-list').innerHTML = '<p style="color:rgba(255,255,255,0.3);text-align:center;padding:40px 0">No episodes found</p>';
+        }
+      }
+      function _switchGuide(season) {
+        _guideActiveSeason = season;
+        _renderGuide();
+      }
+      // Close guide on Escape
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && document.getElementById('guide-overlay').style.display !== 'none') {
+          closeGuide();
+        }
+      }, true);
       function scrollRow(trackId, dir) {
         const track = document.getElementById(trackId);
         if (!track) return;
