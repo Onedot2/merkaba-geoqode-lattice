@@ -3163,7 +3163,8 @@ const _GEO_SUBTITLE = [
 ];
 const _GEO_RENDERERS = [
   "matrix","inception","apollo","hyperspace","nebula","neural",
-  "quantum","merkaba","phoenix","ocean","escher","chronos","aurora","cosmos3d","dna"
+  "quantum","merkaba","phoenix","ocean","escher","chronos","aurora","cosmos3d","dna",
+  "kaleidoscope","plasma","lightning","vortex","fractal"
 ];
 const _GEO_GENRES = [
   ["Quantum","Meditation"],["Cosmic","Ambient"],["Cinematic","Drama"],

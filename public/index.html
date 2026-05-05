@@ -1373,9 +1373,61 @@
           </a>
         </div>
         <p style="font-size: 0.78rem; color: #6b7280; margin: 0">
-          15 AI renderers &middot; 24/7 .geo production &middot; No account needed
+          20 AI renderers &middot; 24/7 .geo production &middot; No account needed
         </p>
       </div>
+
+      <!-- LIVE GEO STATS TICKER -->
+      <div id="geo-stats-ticker" style="display:flex;gap:1.8rem;flex-wrap:wrap;justify-content:center;margin:1.4rem 0 0;padding:0.7rem 1.5rem;background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.12);border-radius:30px">
+        <div style="text-align:center">
+          <div id="gs-lib" style="font-size:1.1rem;font-weight:800;color:#00d4ff;letter-spacing:-0.02em">—</div>
+          <div style="font-size:0.65rem;color:rgba(237,244,255,0.4);text-transform:uppercase;letter-spacing:0.1em;margin-top:2px">In Library</div>
+        </div>
+        <div style="text-align:center">
+          <div id="gs-prod" style="font-size:1.1rem;font-weight:800;color:#00f5d4;letter-spacing:-0.02em">—</div>
+          <div style="font-size:0.65rem;color:rgba(237,244,255,0.4);text-transform:uppercase;letter-spacing:0.1em;margin-top:2px">Produced Today</div>
+        </div>
+        <div style="text-align:center">
+          <div id="gs-hrs" style="font-size:1.1rem;font-weight:800;color:#a78bfa;letter-spacing:-0.02em">—</div>
+          <div style="font-size:0.65rem;color:rgba(237,244,255,0.4);text-transform:uppercase;letter-spacing:0.1em;margin-top:2px">Hours of Content</div>
+        </div>
+        <div style="text-align:center">
+          <div id="gs-next" style="font-size:1.1rem;font-weight:800;color:#fbbf24;letter-spacing:-0.02em">—</div>
+          <div style="font-size:0.65rem;color:rgba(237,244,255,0.4);text-transform:uppercase;letter-spacing:0.1em;margin-top:2px">Next .geo in</div>
+        </div>
+        <div style="text-align:center;display:flex;align-items:center;gap:6px">
+          <span style="width:7px;height:7px;border-radius:50%;background:#00d4ff;display:inline-block;animation:_aavpulse 1.5s ease-in-out infinite"></span>
+          <span style="font-size:0.7rem;color:rgba(237,244,255,0.35);font-weight:600">LIVE</span>
+        </div>
+      </div>
+      <script>
+      (function() {
+        var INTERVAL_MS = 120000;
+        var lastFetch = 0;
+        var countdown = INTERVAL_MS / 1000;
+        function fmtSec(s) { return s < 60 ? s + 's' : Math.ceil(s/60) + 'm ' + (s%60) + 's'; }
+        function fetchStats() {
+          fetch('/api/geo/stats').then(function(r){return r.json();}).then(function(d){
+            var el = document.getElementById.bind(document);
+            if (el('gs-lib')) el('gs-lib').textContent = d.catalogueSize || '—';
+            if (el('gs-prod')) el('gs-prod').textContent = d.totalProduced || '—';
+            if (el('gs-hrs')) {
+              var hrs = d.totalDurationMin ? (d.totalDurationMin / 60).toFixed(1) : '—';
+              el('gs-hrs').textContent = hrs;
+            }
+            lastFetch = Date.now();
+            countdown = INTERVAL_MS / 1000;
+          }).catch(function(){});
+        }
+        fetchStats();
+        setInterval(fetchStats, INTERVAL_MS);
+        setInterval(function() {
+          countdown = Math.max(0, countdown - 1);
+          var el = document.getElementById('gs-next');
+          if (el) el.textContent = countdown + 's';
+        }, 1000);
+      })();
+      </script>
 
       <!-- EMAIL CAPTURE: always visible -->
       <div id="hero-waitlist-wrap">
