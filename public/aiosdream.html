@@ -6082,7 +6082,7 @@
                 ctx.fillStyle = mg;
                 ctx.beginPath(); ctx.arc(mx, my, mr, 0, Math.PI * 2); ctx.fill();
                 // craters
-                [[0.3,0.2,0.08],[−0.2,0.35,0.06],[0.1,−0.3,0.05]].forEach(([dx,dy,dr]) => {
+                [[0.3,0.2,0.08],[-0.2,0.35,0.06],[0.1,-0.3,0.05]].forEach(([dx,dy,dr]) => {
                   ctx.beginPath(); ctx.arc(mx + dx*mr, my + dy*mr, dr*mr, 0, Math.PI * 2);
                   ctx.fillStyle = 'rgba(60,60,55,0.4)'; ctx.fill();
                 });
@@ -6591,7 +6591,7 @@
               ctx.lineWidth = 0.8;
               const h = size/2;
               const sh = size * 0.12;
-              [[−h,−h],[h,−h],[h,h],[−h,h]].forEach(([cx2,cy2]) => {
+              [[-h,-h],[h,-h],[h,h],[-h,h]].forEach(([cx2,cy2]) => {
                 ctx.beginPath();
                 ctx.moveTo(cx2 + (cx2>0?-sh:sh), cy2);
                 ctx.lineTo(cx2, cy2);
@@ -9341,8 +9341,6 @@
       document.addEventListener('click', function(e) {
         const wrap = document.getElementById('bine-wrap');
         if (wrap && !wrap.contains(e.target)) document.getElementById('bine-popup').classList.remove('vis');
-      });
-
       });
 
       // ── Ambient Sound Mixer ───────────────────────────────────────────────────
