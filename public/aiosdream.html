@@ -2134,7 +2134,9 @@
         max-height: calc(100dvh - 180px);
         scrollbar-width: none;
       }
-      #live-ticker::-webkit-scrollbar { display: none; }
+      #live-ticker::-webkit-scrollbar {
+        display: none;
+      }
       .live-event {
         display: flex;
         align-items: flex-start;
@@ -2198,14 +2200,22 @@
 
       /* ── What's New Modal ── */
       #whats-new-overlay {
-        position: fixed; inset: 0; z-index: 9500;
-        background: rgba(0,0,0,0.82);
+        position: fixed;
+        inset: 0;
+        z-index: 9500;
+        background: rgba(0, 0, 0, 0.82);
         backdrop-filter: blur(8px);
-        display: flex; align-items: center; justify-content: center;
-        opacity: 0; pointer-events: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        pointer-events: none;
         transition: opacity 0.5s;
       }
-      #whats-new-overlay.on { opacity: 1; pointer-events: all; }
+      #whats-new-overlay.on {
+        opacity: 1;
+        pointer-events: all;
+      }
       #whats-new-card {
         position: relative;
         width: min(840px, 94vw);
@@ -2215,84 +2225,175 @@
         overflow: hidden;
         display: flex;
         flex-direction: column;
-        box-shadow: 0 40px 120px rgba(0,0,0,0.9), 0 0 0 1px rgba(255,255,255,0.07);
+        box-shadow:
+          0 40px 120px rgba(0, 0, 0, 0.9),
+          0 0 0 1px rgba(255, 255, 255, 0.07);
         transform: scale(0.94) translateY(20px);
-        transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+        transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
       }
-      #whats-new-overlay.on #whats-new-card { transform: scale(1) translateY(0); }
+      #whats-new-overlay.on #whats-new-card {
+        transform: scale(1) translateY(0);
+      }
       #wn-canvas-wrap {
-        position: relative; width: 100%; height: 220px; flex-shrink: 0; overflow: hidden;
+        position: relative;
+        width: 100%;
+        height: 220px;
+        flex-shrink: 0;
+        overflow: hidden;
       }
-      #wn-canvas { width: 100%; height: 100%; display: block; }
+      #wn-canvas {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
       #wn-content {
         padding: 28px 32px 24px;
         overflow-y: auto;
         scrollbar-width: none;
       }
-      #wn-content::-webkit-scrollbar { display: none; }
+      #wn-content::-webkit-scrollbar {
+        display: none;
+      }
       #wn-eyebrow {
-        font-size: 10px; font-weight: 900; letter-spacing: 0.22em;
-        color: #00e5ff; margin-bottom: 10px;
+        font-size: 10px;
+        font-weight: 900;
+        letter-spacing: 0.22em;
+        color: #00e5ff;
+        margin-bottom: 10px;
         animation: wnFadeUp 0.6s 0.15s both;
       }
       #wn-headline {
-        font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 900;
-        color: #fff; line-height: 1.1; margin-bottom: 10px;
+        font-size: clamp(1.6rem, 4vw, 2.4rem);
+        font-weight: 900;
+        color: #fff;
+        line-height: 1.1;
+        margin-bottom: 10px;
         animation: wnFadeUp 0.6s 0.25s both;
       }
       #wn-sub {
-        font-size: 14px; color: rgba(255,255,255,0.55); line-height: 1.55;
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.55);
+        line-height: 1.55;
         margin-bottom: 22px;
         animation: wnFadeUp 0.6s 0.35s both;
       }
       #wn-grid {
-        display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-        gap: 12px; margin-bottom: 24px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 12px;
+        margin-bottom: 24px;
         animation: wnFadeUp 0.6s 0.45s both;
       }
       .wn-ep-card {
-        border-radius: 10px; overflow: hidden; cursor: pointer;
-        border: 1px solid rgba(255,255,255,0.07);
-        transition: transform 0.2s, border-color 0.2s;
+        border-radius: 10px;
+        overflow: hidden;
+        cursor: pointer;
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        transition:
+          transform 0.2s,
+          border-color 0.2s;
       }
-      .wn-ep-card:hover { transform: scale(1.03); border-color: rgba(255,255,255,0.2); }
+      .wn-ep-card:hover {
+        transform: scale(1.03);
+        border-color: rgba(255, 255, 255, 0.2);
+      }
       .wn-ep-thumb {
-        height: 90px; display: flex; align-items: center; justify-content: center;
-        font-size: 2rem; position: relative;
+        height: 90px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        position: relative;
       }
-      .wn-ep-info { padding: 8px 10px; background: rgba(255,255,255,0.04); }
-      .wn-ep-label { font-size: 9px; font-weight: 800; letter-spacing: 0.12em; color: rgba(255,255,255,0.35); margin-bottom: 3px; }
-      .wn-ep-title { font-size: 12px; font-weight: 700; color: #fff; line-height: 1.3; }
+      .wn-ep-info {
+        padding: 8px 10px;
+        background: rgba(255, 255, 255, 0.04);
+      }
+      .wn-ep-label {
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        color: rgba(255, 255, 255, 0.35);
+        margin-bottom: 3px;
+      }
+      .wn-ep-title {
+        font-size: 12px;
+        font-weight: 700;
+        color: #fff;
+        line-height: 1.3;
+      }
       #wn-actions {
-        display: flex; gap: 12px; flex-wrap: wrap;
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
         animation: wnFadeUp 0.6s 0.55s both;
       }
       #wn-play-btn {
-        flex: 1; min-width: 140px; padding: 13px 24px;
-        background: #00e5ff; color: #0a0c1a; border: none;
-        border-radius: 10px; font-size: 14px; font-weight: 900;
-        cursor: pointer; letter-spacing: 0.04em;
-        transition: opacity 0.2s, transform 0.15s;
+        flex: 1;
+        min-width: 140px;
+        padding: 13px 24px;
+        background: #00e5ff;
+        color: #0a0c1a;
+        border: none;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 900;
+        cursor: pointer;
+        letter-spacing: 0.04em;
+        transition:
+          opacity 0.2s,
+          transform 0.15s;
       }
-      #wn-play-btn:hover { opacity: 0.88; transform: scale(1.02); }
+      #wn-play-btn:hover {
+        opacity: 0.88;
+        transform: scale(1.02);
+      }
       #wn-dismiss-btn {
-        padding: 13px 24px; background: rgba(255,255,255,0.07);
-        border: 1px solid rgba(255,255,255,0.12); border-radius: 10px;
-        color: rgba(255,255,255,0.6); font-size: 13px; font-weight: 600;
-        cursor: pointer; transition: all 0.2s;
+        padding: 13px 24px;
+        background: rgba(255, 255, 255, 0.07);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 10px;
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
       }
-      #wn-dismiss-btn:hover { background: rgba(255,255,255,0.12); color: #fff; }
+      #wn-dismiss-btn:hover {
+        background: rgba(255, 255, 255, 0.12);
+        color: #fff;
+      }
       #wn-close {
-        position: absolute; top: 14px; right: 14px;
-        background: rgba(0,0,0,0.5); border: none; color: rgba(255,255,255,0.6);
-        width: 32px; height: 32px; border-radius: 50%; font-size: 14px;
-        cursor: pointer; display: flex; align-items: center; justify-content: center;
-        transition: all 0.2s; z-index: 2;
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        background: rgba(0, 0, 0, 0.5);
+        border: none;
+        color: rgba(255, 255, 255, 0.6);
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        font-size: 14px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        z-index: 2;
       }
-      #wn-close:hover { background: rgba(255,255,255,0.15); color: #fff; }
+      #wn-close:hover {
+        background: rgba(255, 255, 255, 0.15);
+        color: #fff;
+      }
       @keyframes wnFadeUp {
-        from { opacity: 0; transform: translateY(18px); }
-        to   { opacity: 1; transform: translateY(0); }
+        from {
+          opacity: 0;
+          transform: translateY(18px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
 
       /* ── Now-Playing sticky bar ─────────────────────────────────────────── */
@@ -4177,14 +4278,37 @@
         <!-- Trending Now -->
         <div class="row" id="row-trending">
           <div class="row-header">
-            <span class="row-title">🔥 Trending Now
-              <span style="display:inline-block;font-size:8px;font-weight:900;letter-spacing:0.16em;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.4);color:#f59e0b;padding:1px 7px;border-radius:10px;vertical-align:middle;margin-left:8px">LIVE RANK</span>
+            <span class="row-title"
+              >🔥 Trending Now
+              <span
+                style="
+                  display: inline-block;
+                  font-size: 8px;
+                  font-weight: 900;
+                  letter-spacing: 0.16em;
+                  background: rgba(245, 158, 11, 0.15);
+                  border: 1px solid rgba(245, 158, 11, 0.4);
+                  color: #f59e0b;
+                  padding: 1px 7px;
+                  border-radius: 10px;
+                  vertical-align: middle;
+                  margin-left: 8px;
+                "
+                >LIVE RANK</span
+              >
             </span>
           </div>
           <div class="row-wrap">
-            <div class="row-arrow lft" onclick="scrollRow('track-trending',-1)">‹</div>
+            <div
+              class="row-arrow lft"
+              onclick="scrollRow('track-trending', -1)"
+            >
+              ‹
+            </div>
             <div class="row-track" id="track-trending"></div>
-            <div class="row-arrow rgt" onclick="scrollRow('track-trending',1)">›</div>
+            <div class="row-arrow rgt" onclick="scrollRow('track-trending', 1)">
+              ›
+            </div>
           </div>
         </div>
         <!-- Dynamic rows -->
@@ -4748,11 +4872,15 @@
         <div id="wn-content">
           <div id="wn-eyebrow">NEW THIS WEEK</div>
           <div id="wn-headline">S2: Emergence</div>
-          <div id="wn-sub">4 new episodes have arrived. Dive deeper into the lattice.</div>
+          <div id="wn-sub">
+            4 new episodes have arrived. Dive deeper into the lattice.
+          </div>
           <div id="wn-grid"></div>
           <div id="wn-actions">
             <button id="wn-play-btn">▶ Start Watching</button>
-            <button id="wn-dismiss-btn" onclick="_wnDismiss()">Maybe Later</button>
+            <button id="wn-dismiss-btn" onclick="_wnDismiss()">
+              Maybe Later
+            </button>
           </div>
         </div>
         <button id="wn-close" onclick="_wnDismiss()">✕</button>
@@ -9516,8 +9644,8 @@
         function _ssStart() {
           if (_ssActive) return;
           // Don't launch if player or any modal is open
-          if (document.getElementById('player-overlay') &&
-              getComputedStyle(document.getElementById('player-overlay')).display !== 'none') return;
+          if (document.getElementById('player').classList.contains('active')) return;
+          if (document.getElementById('info-modal').classList.contains('active')) return;
           _ssActive = true;
           _ssIdx = Math.floor(Math.random() * SS_PROGS.length);
           const el = document.getElementById('ss-overlay');
@@ -9760,6 +9888,7 @@
         }
 
         function _wnRenderCanvas() {
+          _wnStopCanvas(); // cancel any existing loop before starting a new one
           var cv = document.getElementById('wn-canvas');
           if (!cv) return;
           var W = cv.offsetWidth || 840;
@@ -10168,7 +10297,11 @@
         if (!_previewActive[progId]) return;
         _previewActive[progId] = false;
         const renderer = RENDERERS[progId];
-        if (renderer) { try { renderer.stop(); } catch(_) {} }
+        if (!renderer) return;
+        // Guard: don't stop renderer if it was claimed by the player or hero while card was hovered
+        if (window._activePlayerRenderer === renderer) return;
+        if (heroRenderer === renderer) return;
+        try { renderer.stop(); } catch(_) {}
       }
 
       // ── .geo Info Panel ──────────────────────────────────────────────────────
