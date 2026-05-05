@@ -766,6 +766,7 @@
         <a href="/aios-studio" class="aios-link">⚡ Studio</a>
         <a href="/vr-hub" class="aios-link">🥽 VR Hub</a>
         <a href="/" class="aios-link">← Home</a>
+        <a href="/live" style="font-size:0.82rem;font-weight:800;color:#ef4444;text-decoration:none;display:inline-flex;align-items:center;gap:4px"><span style="width:6px;height:6px;border-radius:50%;background:#ef4444;display:inline-block"></span>LIVE</a>
       </div>
     </header>
 
@@ -815,6 +816,22 @@
         <div class="loading">
           <div class="spinner"></div>
           <p>Loading apps...</p>
+        </div>
+      </div>
+
+      <!-- LIVE .GEO PROGRAMMES from AIOSProducerSwarm -->
+      <div class="section-header" style="margin-top: 2.5rem">
+        <h2 class="section-title">🔴 Live .geo Programmes</h2>
+        <a href="/geo-library" class="section-link">Full Library →</a>
+      </div>
+      <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 1rem">
+        AIOSProducerSwarm produces new .geo programmes every 2 minutes. All
+        titles are unique — AI-directed, AI-scored, zero pre-recorded media.
+      </p>
+      <div class="app-grid" id="geo-live-grid" style="margin-bottom: 2rem">
+        <div class="loading">
+          <div class="spinner"></div>
+          <p>Loading live catalogue…</p>
         </div>
       </div>
 
@@ -1976,6 +1993,86 @@
       loadVRApps();
       loadAllApps();
       loadCategories();
+
+      // ── Live .geo Catalogue from AIOSProducerSwarm ─────────────────────────────
+      (function loadGeoCatalogue() {
+        const ACCS = [
+          "#00d4ff",
+          "#a78bfa",
+          "#00f5d4",
+          "#f472b6",
+          "#fbbf24",
+          "#34d399",
+          "#818cf8",
+          "#fb923c",
+        ];
+        const ICONS = {
+          quantum: "⚛",
+          cosmic: "✦",
+          cinematic: "🎬",
+          neural: "🧠",
+          "sci-fi": "🚀",
+          mystical: "✡",
+          cosmos: "🌌",
+          mind: "∞",
+          holographic: "◎",
+          psychedelic: "〜",
+          temporal: "⏱",
+          aurora: "⌇",
+          meditation: "☯",
+          nature: "🌊",
+          physics: "⚡",
+          abstract: "∿",
+        };
+        function geoCard(p) {
+          const genres = (p.genres || []).slice(0, 2);
+          const acc =
+            ACCS[Math.abs((p.id || "").charCodeAt(0) || 0) % ACCS.length];
+          const iconKey = (genres[0] || "").toLowerCase();
+          const icon = ICONS[iconKey] || "●";
+          const minDur = p.duration ? Math.round(p.duration / 60) : "?";
+          const renderer = (p.renderer || "").replace(/_/g, " ");
+          return `<div class="app-card" style="border-color:${acc}22;cursor:pointer;position:relative" onclick="window.location='/geo-library'">
+            <span style="position:absolute;top:10px;right:10px;font-size:0.6rem;font-weight:700;background:rgba(255,0,100,0.12);color:#f472b6;border-radius:6px;padding:2px 7px;letter-spacing:0.08em">● .GEO</span>
+            <div style="display:flex;gap:0.7rem;align-items:flex-start;margin-bottom:0.7rem">
+              <div style="width:48px;height:48px;border-radius:12px;background:${acc}18;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0">${icon}</div>
+              <div style="flex:1;min-width:0">
+                <div style="font-weight:800;font-size:0.88rem;line-height:1.2;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.title || "Untitled Programme"}</div>
+                <div style="font-size:0.7rem;color:#64748b">AIOSProducerSwarm · ${renderer}</div>
+                <div style="font-size:0.68rem;color:#94a3b8;margin-top:2px">${genres.join(" · ")} · ${minDur}min</div>
+              </div>
+            </div>
+            <div style="font-size:0.78rem;color:#64748b;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:0.7rem">${p.logline || p.description || "An AI-generated .geo programme."}</div>
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <span style="font-size:0.65rem;font-weight:600;color:${acc};background:${acc}12;padding:2px 8px;border-radius:8px">${p.hz || 528} Hz · ${(p.spatialProfile || "Stereo").toUpperCase()}</span>
+              <a href="/aiosdream?renderer=${p.renderer || "matrix"}" onclick="event.stopPropagation()" style="font-size:0.78rem;font-weight:700;background:${acc};color:#000;padding:0.3rem 0.8rem;border-radius:16px;text-decoration:none">▶ Watch</a>
+            </div>
+          </div>`;
+        }
+        fetch("/api/geo/catalogue?limit=8")
+          .then((r) => r.json())
+          .then((d) => {
+            const progs = d.programmes || d.catalogue || [];
+            const grid = document.getElementById("geo-live-grid");
+            if (!grid) return;
+            if (!progs.length) {
+              grid.innerHTML =
+                '<div style="text-align:center;padding:2rem;color:#64748b">Swarm is warming up — check back shortly!</div>';
+              return;
+            }
+            grid.innerHTML = progs.map(geoCard).join("");
+            // update stat
+            const el = document.getElementById("stat-installs");
+            if (el && d.total)
+              el.textContent = d.total.toLocaleString() + " .geo";
+          })
+          .catch(() => {
+            const grid = document.getElementById("geo-live-grid");
+            if (grid)
+              grid.innerHTML =
+                '<div style="text-align:center;padding:2rem"><a href="/geo-library" style="color:#00d4ff;font-weight:600;text-decoration:none">Browse .geo Library →</a></div>';
+          });
+      })();
     </script>
   </body>
 </html>

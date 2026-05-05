@@ -832,6 +832,15 @@
         overflow-y: auto;
         animation: slideUp 0.32s cubic-bezier(0.16, 1, 0.3, 1);
       }
+      @keyframes livePulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.4;
+        }
+      }
       @keyframes slideUp {
         from {
           transform: translateY(60px);
@@ -1770,6 +1779,31 @@
           onmouseout="this.style.color = 'var(--muted)'"
           >PLAIstore</a
         >
+        <a
+          href="/live"
+          style="
+            font-size: 13px;
+            font-weight: 700;
+            color: #ef4444;
+            transition: color 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+          "
+          onmouseover="this.style.opacity = '0.75'"
+          onmouseout="this.style.opacity = '1'"
+          ><span
+            style="
+              width: 6px;
+              height: 6px;
+              border-radius: 50%;
+              background: #ef4444;
+              display: inline-block;
+              animation: livePulse 1.2s ease-in-out infinite;
+            "
+          ></span
+          >LIVE</a
+        >
         <button
           class="nav-icon-btn"
           title="Search"
@@ -2481,6 +2515,91 @@
             { title: 'First Zoom',   dur: 88 },
             { title: 'Deep Field',   dur: 96 },
             { title: 'Infinite',     dur: 104 }
+          ]
+        },
+        {
+          id: 'fire',
+          title: 'FIRE STORM: Particle Inferno',
+          tagline: 'A million particles. One raging fire.',
+          desc: 'Thousands of buoyant fire particles rise in turbulent convection columns. Temperature-mapped chromatics — white-core, yellow-body, orange-corona, red-ember. Roars without a speaker.',
+          genre: ['Cinematic', 'Nature', 'Ambient'],
+          runtime: 72, year: 2026, rating: 'G',
+          accent: '#f97316', featured: true, row: 'cinematic',
+          thumb: 'linear-gradient(135deg,#1a0400,#2a0800,#3a1200)', icon: '🔥',
+          scenes: [
+            { title: 'Ember',      dur: 60 },
+            { title: 'Blaze',      dur: 72 },
+            { title: 'Inferno',    dur: 88 },
+            { title: 'Storm',      dur: 96 },
+            { title: 'Supernova',  dur: 110 }
+          ]
+        },
+        {
+          id: 'waterwave',
+          title: 'OCEAN WAVE: Caustic Surface',
+          tagline: 'Every surface a lens. Every lens a world.',
+          desc: 'A procedural ocean surface rendered via wave superposition — Gerstner waves driving 16 frequency components. Sub-surface caustic light scattering painted in real time.',
+          genre: ['Nature', 'Ambient', 'Meditation'],
+          runtime: 80, year: 2026, rating: 'G',
+          accent: '#06b6d4', featured: false, row: 'mind',
+          thumb: 'linear-gradient(135deg,#001824,#002a3a,#003a50)', icon: '🌊',
+          scenes: [
+            { title: 'Still',      dur: 60 },
+            { title: 'Ripple',     dur: 72 },
+            { title: 'Swell',      dur: 80 },
+            { title: 'Storm',      dur: 96 },
+            { title: 'Tempest',    dur: 104 }
+          ]
+        },
+        {
+          id: 'circuit',
+          title: 'CIRCUIT: Living PCB',
+          tagline: 'The architecture of thought, made electric.',
+          desc: 'A generative PCB trace network that grows in real time — nodes ignite, signals travel, loops form and dissolve. The visual language of computation itself.',
+          genre: ['Sci-Fi', 'Abstract', 'Neural'],
+          runtime: 76, year: 2026, rating: 'G',
+          accent: '#22d3ee', featured: false, row: 'cinematic',
+          thumb: 'linear-gradient(135deg,#001a14,#002a1e,#003228)', icon: '⬡',
+          scenes: [
+            { title: 'Boot',       dur: 60 },
+            { title: 'Network',    dur: 76 },
+            { title: 'Cascade',    dur: 88 },
+            { title: 'Overload',   dur: 96 },
+            { title: 'Rebuild',    dur: 108 }
+          ]
+        },
+        {
+          id: 'galaxy',
+          title: 'GALAXY SPIRAL: Barred Formation',
+          tagline: 'A hundred thousand suns in one frame.',
+          desc: '3,600 stars in a barred spiral galaxy formation — logarithmic spiral arms, bulge density, stellar mass colour-coding and gravitational drift computed each frame.',
+          genre: ['Cosmos', 'Sci-Fi', 'Physics'],
+          runtime: 92, year: 2026, rating: 'G',
+          accent: '#818cf8', featured: true, row: 'cosmos',
+          thumb: 'linear-gradient(135deg,#050016,#0a0022,#0f002e)', icon: '🌌',
+          scenes: [
+            { title: 'Formation',  dur: 72 },
+            { title: 'Spiral',     dur: 88 },
+            { title: 'Collision',  dur: 96 },
+            { title: 'Merger',     dur: 104 },
+            { title: 'Rebirth',    dur: 116 }
+          ]
+        },
+        {
+          id: 'mandala',
+          title: 'MANDALA: Sacred Geometry Engine',
+          tagline: 'Every frame a different universe.',
+          desc: 'Procedural mandalas built from 12-fold rotational symmetry — Fibonacci spirals, Islamic geometric star patterns, and Buddhist yantras generated and dissolving continuously.',
+          genre: ['Abstract', 'Meditation', 'Mystical'],
+          runtime: 84, year: 2026, rating: 'G',
+          accent: '#e879f9', featured: true, row: 'mind',
+          thumb: 'linear-gradient(135deg,#1a0022,#280030,#36003e)', icon: '❋',
+          scenes: [
+            { title: 'Seed',       dur: 60 },
+            { title: 'Lotus',      dur: 76 },
+            { title: 'Star',       dur: 84 },
+            { title: 'Sri Yantra', dur: 96 },
+            { title: 'Cosmic',     dur: 108 }
           ]
         }
       ];
@@ -3694,6 +3813,310 @@
             loop();
           },
           stop() { cancelAnimationFrame(this._raf); }
+        },
+
+        // 21. FIRE — buoyant particle convection
+        fire: {
+          _raf: null,
+          start(canvas, si) {
+            const ctx = canvas.getContext('2d');
+            const W = canvas.width, H = canvas.height;
+            const speeds = [0.6, 0.9, 1.2, 1.5, 1.8];
+            const spd = speeds[si] || 1.0;
+            const N = 1800;
+            const parts = Array.from({length: N}, () => ({
+              x: (0.2 + Math.random()*0.6)*W,
+              y: H,
+              vy: -(0.8 + Math.random()*2.2)*spd,
+              vx: (Math.random()-0.5)*0.8,
+              life: Math.random(),
+              maxLife: 0.6 + Math.random()*0.5,
+              size: 1.5 + Math.random()*3
+            }));
+            let t = 0;
+            const loop = () => {
+              ctx.fillStyle = 'rgba(0,0,0,0.18)'; ctx.fillRect(0,0,W,H);
+              for (const p of parts) {
+                p.life += 0.012 * spd;
+                if (p.life > p.maxLife) {
+                  p.x = (0.15 + Math.random()*0.70)*W;
+                  p.y = H - Math.random()*H*0.08;
+                  p.vy = -(0.8 + Math.random()*2.2)*spd;
+                  p.vx = (Math.random()-0.5)*0.8;
+                  p.life = 0; p.maxLife = 0.6 + Math.random()*0.5;
+                  p.size = 1.5 + Math.random()*3;
+                }
+                const ratio = p.life / p.maxLife;
+                // turbulence
+                p.vx += (Math.random()-0.5)*0.15;
+                p.vx *= 0.97;
+                p.x += p.vx;
+                p.y += p.vy * (1 - ratio*0.4);
+                // colour: white-core → yellow → orange → red → fade
+                let r=255, g=255, b=255, a=1-ratio;
+                if (ratio < 0.3) { g=220+Math.floor(ratio/0.3*35); b=Math.floor((1-ratio/0.3)*255); }
+                else if (ratio < 0.6) { g=Math.floor(255-((ratio-0.3)/0.3)*165); b=0; }
+                else { r=255; g=Math.floor(90-((ratio-0.6)/0.4)*90); b=0; a*=(1-(ratio-0.6)/0.4*0.6); }
+                ctx.globalAlpha = Math.max(0, a*0.85);
+                ctx.fillStyle = `rgb(${r},${g},${b})`;
+                const s = p.size*(1-ratio*0.5);
+                ctx.beginPath(); ctx.arc(p.x, p.y, s, 0, Math.PI*2); ctx.fill();
+              }
+              ctx.globalAlpha = 1;
+              t += 0.016;
+              this._raf = requestAnimationFrame(loop);
+            };
+            loop();
+          },
+          stop() { cancelAnimationFrame(this._raf); }
+        },
+
+        // 22. WATERWAVE — Gerstner wave caustic ocean surface
+        waterwave: {
+          _raf: null,
+          start(canvas, si) {
+            const ctx = canvas.getContext('2d');
+            const W = canvas.width, H = canvas.height;
+            const speeds = [0.3, 0.5, 0.8, 1.1, 1.4];
+            const spd = speeds[si] || 0.6;
+            const WAVES = Array.from({length: 8}, (_, i) => ({
+              amp: (12 - i*1.2) * (H/600),
+              freq: 0.008 + i*0.003,
+              speed: (0.4 + i*0.15)*spd,
+              phase: (i * Math.PI * 0.618)
+            }));
+            let t = 0;
+            const ROWS_COUNT = Math.ceil(H / 4);
+            const loop = () => {
+              ctx.fillStyle = '#001828'; ctx.fillRect(0,0,W,H);
+              // caustic shimmer layer
+              for (let r = 0; r < ROWS_COUNT; r++) {
+                const y0 = r * 4;
+                let waveSum = 0;
+                for (const w of WAVES) waveSum += Math.sin(r * w.freq * 2 + t * w.speed + w.phase) * w.amp;
+                const brightness = 0.35 + 0.35 * Math.sin(r * 0.05 + t * 0.8 + waveSum * 0.08);
+                const hue = 188 + waveSum * 0.4;
+                const sat = 75 + waveSum * 0.3;
+                ctx.fillStyle = `hsla(${hue},${sat}%,${40 + brightness*35}%,0.85)`;
+                ctx.fillRect(0, y0, W, 4);
+                // caustic bright lines
+                if (Math.abs(Math.sin(r * 0.14 + t * 1.2)) > 0.88) {
+                  ctx.fillStyle = `rgba(160,240,255,${0.18 * brightness})`;
+                  ctx.fillRect(0, y0, W, 2);
+                }
+              }
+              // surface foam line
+              const foamY = H * 0.38 + Math.sin(t*0.6)*H*0.04;
+              const g = ctx.createLinearGradient(0, foamY-30, 0, foamY+30);
+              g.addColorStop(0,'rgba(130,220,255,0)'); g.addColorStop(0.5,'rgba(200,245,255,0.25)'); g.addColorStop(1,'rgba(0,180,220,0)');
+              ctx.fillStyle = g; ctx.fillRect(0, foamY-30, W, 60);
+              t += 0.016; this._raf = requestAnimationFrame(loop);
+            };
+            loop();
+          },
+          stop() { cancelAnimationFrame(this._raf); }
+        },
+
+        // 23. CIRCUIT — generative PCB living network
+        circuit: {
+          _raf: null,
+          start(canvas, si) {
+            const ctx = canvas.getContext('2d');
+            const W = canvas.width, H = canvas.height;
+            const speeds = [0.4, 0.7, 1.0, 1.4, 1.8];
+            const spd = speeds[si] || 0.8;
+            const GRID = 28;
+            const CW = W/GRID, CH = H/GRID;
+            // Generate a random trace network
+            const nodes = [];
+            for (let gx = 1; gx < GRID-1; gx++) for (let gy = 1; gy < GRID-1; gy++) {
+              if (Math.random() < 0.18) nodes.push({ x: gx*CW, y: gy*CH, active: false, pulseT: Math.random()*Math.PI*2 });
+            }
+            const edges = [];
+            for (let i = 0; i < nodes.length; i++) {
+              for (let j = i+1; j < nodes.length; j++) {
+                const dx = nodes[i].x - nodes[j].x, dy = nodes[i].y - nodes[j].y;
+                const d = Math.sqrt(dx*dx+dy*dy);
+                if (d < CW*3.5 && Math.random() < 0.55) {
+                  edges.push({ a: i, b: j, progress: 0, speed: (0.003+Math.random()*0.005)*spd, active: false, dir: 1 });
+                }
+              }
+            }
+            // Random activation
+            if (nodes.length) nodes[Math.floor(Math.random()*nodes.length)].active = true;
+            let t = 0;
+            const loop = () => {
+              ctx.fillStyle = 'rgba(0,10,6,0.22)'; ctx.fillRect(0,0,W,H);
+              // Grid background
+              ctx.strokeStyle = 'rgba(0,220,160,0.04)'; ctx.lineWidth = 0.5;
+              for (let gx = 0; gx <= GRID; gx++) { ctx.beginPath(); ctx.moveTo(gx*CW,0); ctx.lineTo(gx*CW,H); ctx.stroke(); }
+              for (let gy = 0; gy <= GRID; gy++) { ctx.beginPath(); ctx.moveTo(0,gy*CH); ctx.lineTo(W,gy*CH); ctx.stroke(); }
+              // Edges
+              for (const e of edges) {
+                const na = nodes[e.a], nb = nodes[e.b];
+                if (!e.active && (na.active || nb.active) && Math.random() < 0.008) { e.active = true; e.dir = na.active ? 1 : -1; }
+                if (!e.active) {
+                  ctx.strokeStyle = 'rgba(0,255,160,0.06)'; ctx.lineWidth = 0.8;
+                  ctx.beginPath(); ctx.moveTo(na.x,na.y); ctx.lineTo(nb.x,nb.y); ctx.stroke();
+                  continue;
+                }
+                e.progress += e.speed;
+                if (e.progress >= 1) { e.progress = 0; (e.dir>0 ? nb : na).active = true; e.active = false; }
+                const px = na.x + (nb.x-na.x)*e.progress, py = na.y + (nb.y-na.y)*e.progress;
+                ctx.strokeStyle = 'rgba(0,255,160,0.22)'; ctx.lineWidth = 1.2;
+                ctx.beginPath(); ctx.moveTo(na.x,na.y); ctx.lineTo(nb.x,nb.y); ctx.stroke();
+                // signal dot
+                const sg = ctx.createRadialGradient(px,py,0,px,py,8);
+                sg.addColorStop(0,'rgba(180,255,220,0.9)'); sg.addColorStop(1,'rgba(0,255,160,0)');
+                ctx.fillStyle = sg; ctx.beginPath(); ctx.arc(px,py,8,0,Math.PI*2); ctx.fill();
+              }
+              // Nodes
+              for (const n of nodes) {
+                n.pulseT += 0.04*spd;
+                const pulse = 0.5 + 0.5*Math.sin(n.pulseT);
+                const r = n.active ? 4+pulse*3 : 2;
+                const col = n.active ? `rgba(100,255,200,${0.7+pulse*0.3})` : 'rgba(0,200,120,0.35)';
+                ctx.fillStyle = col; ctx.beginPath(); ctx.arc(n.x,n.y,r,0,Math.PI*2); ctx.fill();
+              }
+              t += 0.016; this._raf = requestAnimationFrame(loop);
+            };
+            loop();
+          },
+          stop() { cancelAnimationFrame(this._raf); }
+        },
+
+        // 24. GALAXY — barred spiral with 3600 stars
+        galaxy: {
+          _raf: null,
+          start(canvas, si) {
+            const ctx = canvas.getContext('2d');
+            const W = canvas.width, H = canvas.height;
+            const speeds = [0.15, 0.25, 0.40, 0.55, 0.75];
+            const spd = speeds[si] || 0.3;
+            const N = 3600;
+            const cx = W/2, cy = H/2;
+            const scale = Math.min(W,H)*0.44;
+            // Bar half-length
+            const BAR = 0.18;
+            function starColor(temp) {
+              if (temp > 0.85) return `hsl(210,90%,${80+temp*20}%)`; // blue-white
+              if (temp > 0.6)  return `hsl(60,10%,90%)`; // white
+              if (temp > 0.4)  return `hsl(40,70%,80%)`; // yellow
+              if (temp > 0.2)  return `hsl(18,80%,65%)`; // orange
+              return `hsl(4,75%,55%)`; // red dwarf
+            }
+            const stars = Array.from({length: N}, (_, i) => {
+              const arm = Math.floor(Math.random()*2); // 2 arms
+              const inBar = Math.random() < 0.2;
+              let r, theta;
+              if (inBar) {
+                r = Math.random() * BAR;
+                theta = (Math.random()-0.5)*0.5;
+              } else {
+                r = BAR + Math.pow(Math.random(), 0.65) * (1-BAR);
+                const logSpiral = Math.log(r+0.1)*3.5;
+                theta = arm * Math.PI + logSpiral + (Math.random()-0.5)*0.6;
+              }
+              const temp = Math.random();
+              // bulge stars
+              if (Math.random() < 0.12) { r = Math.random()*0.08; theta = Math.random()*Math.PI*2; }
+              return {
+                r, theta0: theta,
+                temp, col: starColor(temp),
+                brightness: 0.4 + Math.random()*0.6,
+                size: temp > 0.7 ? 1.2 + Math.random()*0.8 : 0.5 + Math.random()*0.7,
+                dTheta: (0.3 + (1-r)*0.5) * 0.0002 * spd * (arm===0 ? 1 : 1)
+              };
+            });
+            let t = 0;
+            const loop = () => {
+              ctx.fillStyle = 'rgba(2,2,14,0.28)'; ctx.fillRect(0,0,W,H);
+              // Galactic glow
+              const glow = ctx.createRadialGradient(cx,cy,0,cx,cy,scale*0.45);
+              glow.addColorStop(0,'rgba(200,190,255,0.06)'); glow.addColorStop(1,'rgba(0,0,0,0)');
+              ctx.fillStyle = glow; ctx.fillRect(0,0,W,H);
+              for (const s of stars) {
+                s.theta0 += s.dTheta;
+                const x = cx + Math.cos(s.theta0)*s.r*scale;
+                const y = cy + Math.sin(s.theta0)*s.r*scale*0.42; // flattened disk
+                const twinkle = s.brightness * (0.7 + 0.3*Math.sin(t*3 + s.r*20));
+                ctx.globalAlpha = Math.max(0, Math.min(1, twinkle));
+                ctx.fillStyle = s.col;
+                ctx.beginPath(); ctx.arc(x, y, s.size, 0, Math.PI*2); ctx.fill();
+              }
+              ctx.globalAlpha = 1;
+              t += 0.016; this._raf = requestAnimationFrame(loop);
+            };
+            loop();
+          },
+          stop() { cancelAnimationFrame(this._raf); }
+        },
+
+        // 25. MANDALA — procedural 12-fold sacred geometry
+        mandala: {
+          _raf: null,
+          start(canvas, si) {
+            const ctx = canvas.getContext('2d');
+            const W = canvas.width, H = canvas.height;
+            const speeds = [0.2, 0.35, 0.55, 0.75, 1.0];
+            const spd = speeds[si] || 0.4;
+            const cx = W/2, cy = H/2;
+            const R = Math.min(W,H)*0.44;
+            const FOLDS = 12;
+            const LAYERS = 7;
+            let t = 0;
+            const palettes = [
+              ['#f472b6','#e879f9','#a855f7','#818cf8','#67e8f9'],
+              ['#fbbf24','#f97316','#ef4444','#ec4899','#a855f7'],
+              ['#34d399','#06b6d4','#3b82f6','#8b5cf6','#ec4899'],
+              ['#e879f9','#f472b6','#fb923c','#fbbf24','#34d399']
+            ];
+            let palIdx = 0;
+            let palT = 0;
+            const loop = () => {
+              ctx.fillStyle = 'rgba(8,0,16,0.25)'; ctx.fillRect(0,0,W,H);
+              palT += 0.003*spd;
+              if (palT > 1) { palT = 0; palIdx = (palIdx+1)%palettes.length; }
+              const pal = palettes[palIdx];
+              ctx.save(); ctx.translate(cx, cy);
+              for (let fold = 0; fold < FOLDS; fold++) {
+                ctx.save(); ctx.rotate((fold/FOLDS)*Math.PI*2);
+                for (let layer = 1; layer <= LAYERS; layer++) {
+                  const lr = (layer/LAYERS)*R;
+                  const phase = t*spd*(layer%2===0?1:-1)*0.4 + fold*(Math.PI/FOLDS);
+                  const col = pal[layer % pal.length];
+                  const alpha = 0.55 - layer*0.04;
+                  ctx.globalAlpha = alpha;
+                  ctx.strokeStyle = col;
+                  ctx.lineWidth = 1.2 - layer*0.1;
+                  // Petal arc
+                  ctx.beginPath();
+                  ctx.arc(0, -lr*0.5, lr*0.52, -Math.PI*0.6 + Math.sin(phase)*0.35, Math.PI*0.6 + Math.sin(phase)*0.35);
+                  ctx.stroke();
+                  // Star vertex line
+                  if (layer <= 4) {
+                    ctx.beginPath();
+                    ctx.moveTo(0, 0);
+                    const vx = Math.sin(phase)*lr*0.82;
+                    const vy = -Math.cos(phase)*lr*0.82;
+                    ctx.lineTo(vx, vy);
+                    ctx.globalAlpha = alpha*0.5;
+                    ctx.stroke();
+                  }
+                }
+                ctx.restore();
+              }
+              // Central jewel
+              ctx.globalAlpha = 1;
+              const jg = ctx.createRadialGradient(0,0,0,0,0,R*0.12);
+              jg.addColorStop(0,'rgba(255,255,255,0.95)'); jg.addColorStop(0.5,pal[0]+'cc'); jg.addColorStop(1,'rgba(0,0,0,0)');
+              ctx.fillStyle = jg; ctx.beginPath(); ctx.arc(0,0,R*0.12,0,Math.PI*2); ctx.fill();
+              ctx.restore();
+              t += 0.016; this._raf = requestAnimationFrame(loop);
+            };
+            loop();
+          },
+          stop() { cancelAnimationFrame(this._raf); }
         }
       };
 
@@ -4315,7 +4738,12 @@
         plasma:       { hz: 639, wave: 'sine',     noise: 0.12, lfo: 0.09, fHz: 900  },
         lightning:    { hz: 852, wave: 'sawtooth', noise: 0.18, lfo: 0.22, fHz: 2800 },
         vortex:       { hz: 417, wave: 'sine',     noise: 0.08, lfo: 0.15, fHz: 1100 },
-        fractal:      { hz: 528, wave: 'sine',     noise: 0.06, lfo: 0.05, fHz: 740  }
+        fractal:      { hz: 528, wave: 'sine',     noise: 0.06, lfo: 0.05, fHz: 740  },
+        fire:         { hz: 396, wave: 'sawtooth', noise: 0.22, lfo: 0.18, fHz: 800  },
+        waterwave:    { hz: 417, wave: 'sine',     noise: 0.08, lfo: 0.06, fHz: 600  },
+        circuit:      { hz: 852, wave: 'square',   noise: 0.10, lfo: 0.25, fHz: 2200 },
+        galaxy:       { hz: 963, wave: 'sine',     noise: 0.05, lfo: 0.04, fHz: 2000 },
+        mandala:      { hz: 528, wave: 'sine',     noise: 0.04, lfo: 0.08, fHz: 1320 }
       };
 
       var _audioCtx = null;
@@ -4690,7 +5118,8 @@
         nebula:-0.15, neural:0.12,  quantum:-0.22, merkaba:0,
         phoenix:0.14, ocean:-0.12,  escher:0.18,  chronos:-0.07,
         aurora:-0.08, cosmos3d:0.05, dna:0.10,
-        kaleidoscope:0.00, plasma:0.12, lightning:-0.18, vortex:0.06, fractal:-0.05
+        kaleidoscope:0.00, plasma:0.12, lightning:-0.18, vortex:0.06, fractal:-0.05,
+        fire:0.08, waterwave:-0.10, circuit:0.16, galaxy:0.00, mandala:0.00
       };
       // ── Per-programme colour grade (CSS filter + mood overlay) ───────────────
       var _PROG_GRADE = {
@@ -4714,6 +5143,11 @@
         lightning:    { f:'contrast(1.15) brightness(1.08)',                      ov:'rgba(0,8,24,0.08)' },
         vortex:       { f:'saturate(1.20) brightness(1.04) hue-rotate(-8deg)',   ov:'rgba(8,0,22,0.10)' },
         fractal:      { f:'saturate(1.10) contrast(1.06)',                        ov:'rgba(0,10,6,0.08)' },
+        fire:         { f:'saturate(1.35) contrast(1.12)',                         ov:'rgba(40,8,0,0.12)' },
+        waterwave:    { f:'saturate(1.20) hue-rotate(8deg) brightness(1.06)',      ov:'rgba(0,18,30,0.10)' },
+        circuit:      { f:'saturate(1.10) contrast(1.08) hue-rotate(-5deg)',       ov:'rgba(0,22,12,0.10)' },
+        galaxy:       { f:'saturate(0.88) brightness(1.03)',                       ov:'rgba(0,0,20,0.12)' },
+        mandala:      { f:'saturate(1.45) contrast(1.06) hue-rotate(10deg)',       ov:'rgba(18,0,22,0.08)' },
       };
 
       // ── Colour grade application ─────────────────────────────────────────────
