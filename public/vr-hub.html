@@ -1367,20 +1367,23 @@
         border-radius: 12px;
       }
       /* ── XP Hover Audio Indicator ── */
-      .xp-card, .well-card {
-        --xp-freq-clr: rgba(0,212,255,0.7);
+      .xp-card,
+      .well-card {
+        --xp-freq-clr: rgba(0, 212, 255, 0.7);
       }
       .xp-card:hover .xp-freq,
       .xp-card:hover [class*="freq"],
       .well-card:hover [class*="freq"] {
         color: var(--accent, var(--cyan));
         text-shadow: 0 0 10px currentColor;
-        transition: color 0.3s, text-shadow 0.3s;
+        transition:
+          color 0.3s,
+          text-shadow 0.3s;
       }
       /* Audio sting pulse on VR overlay */
       #enter-vr-overlay.playing .evr-ring {
         border-top-color: #fff;
-        box-shadow: 0 0 30px rgba(0,212,255,0.4);
+        box-shadow: 0 0 30px rgba(0, 212, 255, 0.4);
       }
     </style>
   </head>
@@ -3070,7 +3073,8 @@
       // AIOS AV ENGINE — XP Hover Spatial Tones + VR Entry Sting
       // ═══════════════════════════════════════════════════════════════════
 
-      var _xpACtx = null, _xpHoverOsc = null;
+      var _xpACtx = null,
+        _xpHoverOsc = null;
 
       function _ensureXpAudio() {
         if (_xpACtx) return;
@@ -3081,21 +3085,26 @@
       function _xpHoverTone(hz) {
         try {
           _ensureXpAudio();
-          if (_xpACtx.state === 'suspended') _xpACtx.resume();
-          if (_xpHoverOsc) { try { _xpHoverOsc.stop(); } catch(_) {} }
-          var ctx = _xpACtx, now = ctx.currentTime;
-          var osc  = ctx.createOscillator();
+          if (_xpACtx.state === "suspended") _xpACtx.resume();
+          if (_xpHoverOsc) {
+            try {
+              _xpHoverOsc.stop();
+            } catch (_) {}
+          }
+          var ctx = _xpACtx,
+            now = ctx.currentTime;
+          var osc = ctx.createOscillator();
           var gain = ctx.createGain();
           var osc2 = ctx.createOscillator(); // overtone at hz * PHI
-          var g2   = ctx.createGain();
-          var pan  = ctx.createStereoPanner ? ctx.createStereoPanner() : null;
-          osc.type = 'sine';
+          var g2 = ctx.createGain();
+          var pan = ctx.createStereoPanner ? ctx.createStereoPanner() : null;
+          osc.type = "sine";
           osc.frequency.setValueAtTime(hz * 0.5, now);
           osc.frequency.exponentialRampToValueAtTime(hz * 1.618, now + 0.9); // PHI sweep
           gain.gain.setValueAtTime(0, now);
           gain.gain.linearRampToValueAtTime(0.045, now + 0.25);
           gain.gain.setTargetAtTime(0, now + 0.55, 0.28);
-          osc2.type = 'triangle';
+          osc2.type = "triangle";
           osc2.frequency.setValueAtTime(hz, now);
           g2.gain.setValueAtTime(0, now);
           g2.gain.linearRampToValueAtTime(0.018, now + 0.3);
@@ -3104,32 +3113,38 @@
           osc2.connect(g2);
           if (pan) {
             pan.pan.value = (Math.random() - 0.5) * 0.5;
-            gain.connect(pan); g2.connect(pan);
+            gain.connect(pan);
+            g2.connect(pan);
             pan.connect(ctx.destination);
           } else {
-            gain.connect(ctx.destination); g2.connect(ctx.destination);
+            gain.connect(ctx.destination);
+            g2.connect(ctx.destination);
           }
-          osc.start(now);  osc.stop(now + 1.8);
-          osc2.start(now); osc2.stop(now + 1.8);
+          osc.start(now);
+          osc.stop(now + 1.8);
+          osc2.start(now);
+          osc2.stop(now + 1.8);
           _xpHoverOsc = osc;
-        } catch(_) {}
+        } catch (_) {}
       }
 
       // Attach hover tones to all XP cards
       (function attachXpHoverAudio() {
-        document.querySelectorAll('.xp-card, .well-card').forEach(function(card) {
-          if (card._xpAudioReady) return;
-          card._xpAudioReady = true;
-          card.addEventListener('mouseenter', function() {
-            // Extract Hz frequency from any text in card
-            var text = card.textContent;
-            var m = text.match(/(d{2,4})s*(?:Hz|hz)/);
-            var freq = m ? parseInt(m[1]) : 528;
-            // Sanity clamp to audible musical range
-            freq = Math.max(80, Math.min(2000, freq));
-            _xpHoverTone(freq);
+        document
+          .querySelectorAll(".xp-card, .well-card")
+          .forEach(function (card) {
+            if (card._xpAudioReady) return;
+            card._xpAudioReady = true;
+            card.addEventListener("mouseenter", function () {
+              // Extract Hz frequency from any text in card
+              var text = card.textContent;
+              var m = text.match(/(d{2,4})s*(?:Hz|hz)/);
+              var freq = m ? parseInt(m[1]) : 528;
+              // Sanity clamp to audible musical range
+              freq = Math.max(80, Math.min(2000, freq));
+              _xpHoverTone(freq);
+            });
           });
-        });
       })();
 
       // VR entry audio sting — rising dual-sine sweep
@@ -3137,49 +3152,60 @@
         try {
           _ensureXpAudio();
           var ctx = _xpACtx;
-          if (ctx.state === 'suspended') ctx.resume();
+          if (ctx.state === "suspended") ctx.resume();
           var now = ctx.currentTime;
           // Layer 1: deep sine sweep 72Hz (HOLOGRAPHIC base) → 432Hz
-          var o1 = ctx.createOscillator(), g1 = ctx.createGain();
-          o1.type = 'sine';
+          var o1 = ctx.createOscillator(),
+            g1 = ctx.createGain();
+          o1.type = "sine";
           o1.frequency.setValueAtTime(72, now);
           o1.frequency.exponentialRampToValueAtTime(864, now + 1.1);
           g1.gain.setValueAtTime(0, now);
           g1.gain.linearRampToValueAtTime(0.18, now + 0.12);
           g1.gain.exponentialRampToValueAtTime(0.001, now + 1.3);
-          o1.connect(g1); g1.connect(ctx.destination);
-          o1.start(now); o1.stop(now + 1.4);
+          o1.connect(g1);
+          g1.connect(ctx.destination);
+          o1.start(now);
+          o1.stop(now + 1.4);
           // Layer 2: triangle sweep 144Hz → 1728Hz (upper harmonic)
-          var o2 = ctx.createOscillator(), g2 = ctx.createGain();
-          o2.type = 'triangle';
+          var o2 = ctx.createOscillator(),
+            g2 = ctx.createGain();
+          o2.type = "triangle";
           o2.frequency.setValueAtTime(144, now);
           o2.frequency.exponentialRampToValueAtTime(1728, now + 1.1);
           g2.gain.setValueAtTime(0, now);
           g2.gain.linearRampToValueAtTime(0.08, now + 0.2);
           g2.gain.exponentialRampToValueAtTime(0.001, now + 1.2);
-          o2.connect(g2); g2.connect(ctx.destination);
-          o2.start(now + 0.05); o2.stop(now + 1.3);
+          o2.connect(g2);
+          g2.connect(ctx.destination);
+          o2.start(now + 0.05);
+          o2.stop(now + 1.3);
           // Layer 3: short impact click at 528Hz (ACTION freq)
-          var o3 = ctx.createOscillator(), g3 = ctx.createGain();
-          o3.type = 'sine';
+          var o3 = ctx.createOscillator(),
+            g3 = ctx.createGain();
+          o3.type = "sine";
           o3.frequency.value = 528;
           g3.gain.setValueAtTime(0.12, now);
           g3.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
-          o3.connect(g3); g3.connect(ctx.destination);
-          o3.start(now); o3.stop(now + 0.2);
+          o3.connect(g3);
+          g3.connect(ctx.destination);
+          o3.start(now);
+          o3.stop(now + 0.2);
           // Pulse the VR overlay ring
-          var ov = document.getElementById('enter-vr-overlay');
+          var ov = document.getElementById("enter-vr-overlay");
           if (ov) {
-            ov.classList.add('playing');
-            setTimeout(function() { ov && ov.classList.remove('playing'); }, 1400);
+            ov.classList.add("playing");
+            setTimeout(function () {
+              ov && ov.classList.remove("playing");
+            }, 1400);
           }
-        } catch(_) {}
+        } catch (_) {}
       }
 
       // Hook enterVRWorld to play sting (chaining from existing wrapper)
-      (function() {
+      (function () {
         var _prevEnter = enterVRWorld;
-        enterVRWorld = function(url, name) {
+        enterVRWorld = function (url, name) {
           _playVrSting();
           _prevEnter(url, name);
         };
