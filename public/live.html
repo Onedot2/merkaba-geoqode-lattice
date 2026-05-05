@@ -203,7 +203,7 @@ const RENDERERS = {
           p.x+=p.vx;p.y+=p.vy;p.life+=0.002;
           if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;
           ctx.globalAlpha=0.6+0.4*Math.sin(p.life*3);
-          ctx.fillStyle=hsl(,80%,65%);
+          ctx.fillStyle=`hsl(${p.hue + t * 0.2},80%,65%)`;
           ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();
         }
         ctx.globalAlpha=1;t++;
@@ -226,7 +226,7 @@ const RENDERERS = {
           const sx=s.x/s.z*W+W/2, sy=s.y/s.z*H+H/2;
           const px=s.x/s.pz*W+W/2, py=s.y/s.pz*H+H/2;
           const bright=1-s.z/W;
-          ctx.strokeStyle=gba(,,255,);
+          ctx.strokeStyle=`rgba(${Math.floor(bright*80+160)},${Math.floor(bright*120+80)},255,${bright})`;
           ctx.lineWidth=bright*2;
           ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(sx,sy);ctx.stroke();
         }
@@ -247,7 +247,7 @@ const RENDERERS = {
           const shift=Math.sin(t*0.4+i*0.6)*H*0.22;
           const hue=155+i*6;
           const g=ctx.createLinearGradient(x,H*0.1+shift,x,H*0.85+shift);
-          g.addColorStop(0,'transparent');g.addColorStop(0.35,hsla(,85%,60%,0.38));g.addColorStop(1,'transparent');
+          g.addColorStop(0,'transparent');g.addColorStop(0.35,`hsla(${hue},85%,60%,0.38)`);g.addColorStop(1,'transparent');
           ctx.fillStyle=g;ctx.fillRect(x,0,W/18+2,H);
         }
         t+=0.016;
@@ -280,7 +280,7 @@ const RENDERERS = {
         // rings
         for(let r=1;r<=4;r++){
           ctx.beginPath();ctx.arc(cx,cy,R*(r/4),0,Math.PI*2);
-          ctx.strokeStyle=gba(255,200,100,);ctx.lineWidth=0.8;ctx.stroke();
+          ctx.strokeStyle=`rgba(255,200,100,${0.07*r})`;ctx.lineWidth=0.8;ctx.stroke();
         }
         t+=0.008;
       },20);
@@ -320,7 +320,7 @@ const RENDERERS = {
     start(cv) {
       const ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
       const cx=W/2,cy=H/2,sc=Math.min(W,H)*0.44,BAR=0.18;
-      function sc2(t){if(t>0.85)returnhsl(210,90%,%);if(t>0.6)return'hsl(60,10%,92%)';if(t>0.4)return'hsl(40,70%,82%)';if(t>0.2)return'hsl(18,80%,68%)';return'hsl(4,75%,58%)';}
+      function sc2(t){if(t>0.85)return`hsl(210,90%,${Math.floor(80+t*10)}%)`;if(t>0.6)return'hsl(60,10%,92%)';if(t>0.4)return'hsl(40,70%,82%)';if(t>0.2)return'hsl(18,80%,68%)';return'hsl(4,75%,58%)';}
       const N=1800;
       const stars=Array.from({length:N},(_, i)=>{
         const arm=Math.floor(Math.random()*2),inBar=Math.random()<0.2;
@@ -366,7 +366,7 @@ const RENDERERS = {
           if(ratio<0.3){g=220+Math.floor(ratio/0.3*35);b=Math.floor((1-ratio/0.3)*255);}
           else if(ratio<0.6){g=Math.floor(255-((ratio-0.3)/0.3)*165);b=0;}
           else{r=255;g=Math.floor(90-((ratio-0.6)/0.4)*90);b=0;a*=(1-(ratio-0.6)/0.4*0.6);}
-          ctx.globalAlpha=Math.max(0,a*0.82);ctx.fillStyle=gb(robots:NO,❌ NONE,);
+          ctx.globalAlpha=Math.max(0,a*0.82);ctx.fillStyle=`rgb(${r},${g},${b})`;
           const s=p.size*(1-ratio*0.5);ctx.beginPath();ctx.arc(p.x,p.y,s,0,Math.PI*2);ctx.fill();
         }
         ctx.globalAlpha=1;
@@ -425,7 +425,7 @@ function drawAudioViz() {
   avCtx.clearRect(0,0,80,30);
   for (let i = 0; i < 16; i++) {
     const h = 4 + Math.abs(Math.sin(avT*2 + i*0.8)) * 22;
-    avCtx.fillStyle = gba(0,212,255,);
+    avCtx.fillStyle = `rgba(0,212,255,${0.4 + Math.abs(Math.sin(avT + i * 0.5)) * 0.6})`;
     avCtx.fillRect(i*5, 30-h, 4, h);
   }
   avT += 0.06;
@@ -446,13 +446,13 @@ function buildSchedule(progs) {
   list.innerHTML = progs.map((p, i) => {
     const isActive = i === 0;
     const genres = (p.genres || []).join(' · ');
-    return <div class="sched-item " onclick="jumpToSlot(2652)">
-      <div class="sched-time"></div>
+    return `<div class="sched-item ${isActive ? 'sched-active' : ''}" onclick="jumpToSlot(${i})">
+      <div class="sched-time">${formatTime(i * 120)}</div>
       <div>
-        <div class="sched-title"></div>
-        <div class="sched-genres"> · </div>
+        <div class="sched-title">${p.title || 'Live Programme'}</div>
+        <div class="sched-genres">${genres} · ${p.hz || '528'} Hz</div>
       </div>
-    </div>;
+    </div>`;
   }).join('');
 }
 
@@ -463,22 +463,22 @@ function buildUpcoming(progs) {
   if (!next.length) { el.innerHTML = '<p style="color:var(--muted);font-size:0.8rem">Loading queue…</p>'; return; }
   el.innerHTML = next.map((p, i) => {
     const genres = (p.genres || []).slice(0,2).join(' · ');
-    return <div class="np-card" style="cursor:pointer" onclick="jumpToSlot()">
-      <div class="np-card-badge" style="background:rgba(0,212,255,0.1);color:var(--cyan)">NEXT </div>
-      <div class="np-card-title"></div>
-      <div class="np-card-meta"> ·  · in min</div>
-    </div>;
+    return `<div class="np-card" style="cursor:pointer" onclick="jumpToSlot(${scheduleIndex + 1 + i})">
+      <div class="np-card-badge" style="background:rgba(0,212,255,0.1);color:var(--cyan)">NEXT ${i + 1}</div>
+      <div class="np-card-title">${p.title || 'Programme'}</div>
+      <div class="np-card-meta">${genres} · ${p.hz || '528'} Hz · in ${(i + 1) * 2}min</div>
+    </div>`;
   }).join('');
 }
 
 function setNowPlaying(p) {
   if (!p) return;
   document.getElementById('np-title').textContent = p.title || 'Live .geo Programme';
-  document.getElementById('np-sub').textContent = AIOSProducerSwarm ·  ·  · Hz;
+  document.getElementById('np-sub').textContent = `AIOSProducerSwarm · ${p.renderer || ''} · ${(p.genres||[]).slice(0,2).join(', ')} · ${p.hz || '528'} Hz`;
   const tagsEl = document.getElementById('np-tags');
-  tagsEl.innerHTML = (p.genres||[]).slice(0,4).map(g=><span class="np-tag">❌ NONE</span>).join('') + <span class="np-tag">.geo v2</span>;
+  tagsEl.innerHTML = (p.genres||[]).slice(0,4).map(g=>`<span class="np-tag">${g}</span>`).join('') + `<span class="np-tag">.geo v2</span>`;
   const watch = document.getElementById('np-watch');
-  if (watch) watch.href = /aiosdream?renderer=;
+  if (watch) watch.href = `/aiosdream?renderer=${p.renderer || ''}`;
   // Switch renderer to match programme if available
   const r = p.renderer;
   if (r && RENDERERS[r]) startRenderer(r);
