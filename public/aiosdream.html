@@ -2196,6 +2196,105 @@
         color: rgba(255, 255, 255, 0.4);
       }
 
+      /* ── What's New Modal ── */
+      #whats-new-overlay {
+        position: fixed; inset: 0; z-index: 9500;
+        background: rgba(0,0,0,0.82);
+        backdrop-filter: blur(8px);
+        display: flex; align-items: center; justify-content: center;
+        opacity: 0; pointer-events: none;
+        transition: opacity 0.5s;
+      }
+      #whats-new-overlay.on { opacity: 1; pointer-events: all; }
+      #whats-new-card {
+        position: relative;
+        width: min(840px, 94vw);
+        max-height: 90dvh;
+        background: #0a0c1a;
+        border-radius: 20px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 40px 120px rgba(0,0,0,0.9), 0 0 0 1px rgba(255,255,255,0.07);
+        transform: scale(0.94) translateY(20px);
+        transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+      }
+      #whats-new-overlay.on #whats-new-card { transform: scale(1) translateY(0); }
+      #wn-canvas-wrap {
+        position: relative; width: 100%; height: 220px; flex-shrink: 0; overflow: hidden;
+      }
+      #wn-canvas { width: 100%; height: 100%; display: block; }
+      #wn-content {
+        padding: 28px 32px 24px;
+        overflow-y: auto;
+        scrollbar-width: none;
+      }
+      #wn-content::-webkit-scrollbar { display: none; }
+      #wn-eyebrow {
+        font-size: 10px; font-weight: 900; letter-spacing: 0.22em;
+        color: #00e5ff; margin-bottom: 10px;
+        animation: wnFadeUp 0.6s 0.15s both;
+      }
+      #wn-headline {
+        font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 900;
+        color: #fff; line-height: 1.1; margin-bottom: 10px;
+        animation: wnFadeUp 0.6s 0.25s both;
+      }
+      #wn-sub {
+        font-size: 14px; color: rgba(255,255,255,0.55); line-height: 1.55;
+        margin-bottom: 22px;
+        animation: wnFadeUp 0.6s 0.35s both;
+      }
+      #wn-grid {
+        display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 12px; margin-bottom: 24px;
+        animation: wnFadeUp 0.6s 0.45s both;
+      }
+      .wn-ep-card {
+        border-radius: 10px; overflow: hidden; cursor: pointer;
+        border: 1px solid rgba(255,255,255,0.07);
+        transition: transform 0.2s, border-color 0.2s;
+      }
+      .wn-ep-card:hover { transform: scale(1.03); border-color: rgba(255,255,255,0.2); }
+      .wn-ep-thumb {
+        height: 90px; display: flex; align-items: center; justify-content: center;
+        font-size: 2rem; position: relative;
+      }
+      .wn-ep-info { padding: 8px 10px; background: rgba(255,255,255,0.04); }
+      .wn-ep-label { font-size: 9px; font-weight: 800; letter-spacing: 0.12em; color: rgba(255,255,255,0.35); margin-bottom: 3px; }
+      .wn-ep-title { font-size: 12px; font-weight: 700; color: #fff; line-height: 1.3; }
+      #wn-actions {
+        display: flex; gap: 12px; flex-wrap: wrap;
+        animation: wnFadeUp 0.6s 0.55s both;
+      }
+      #wn-play-btn {
+        flex: 1; min-width: 140px; padding: 13px 24px;
+        background: #00e5ff; color: #0a0c1a; border: none;
+        border-radius: 10px; font-size: 14px; font-weight: 900;
+        cursor: pointer; letter-spacing: 0.04em;
+        transition: opacity 0.2s, transform 0.15s;
+      }
+      #wn-play-btn:hover { opacity: 0.88; transform: scale(1.02); }
+      #wn-dismiss-btn {
+        padding: 13px 24px; background: rgba(255,255,255,0.07);
+        border: 1px solid rgba(255,255,255,0.12); border-radius: 10px;
+        color: rgba(255,255,255,0.6); font-size: 13px; font-weight: 600;
+        cursor: pointer; transition: all 0.2s;
+      }
+      #wn-dismiss-btn:hover { background: rgba(255,255,255,0.12); color: #fff; }
+      #wn-close {
+        position: absolute; top: 14px; right: 14px;
+        background: rgba(0,0,0,0.5); border: none; color: rgba(255,255,255,0.6);
+        width: 32px; height: 32px; border-radius: 50%; font-size: 14px;
+        cursor: pointer; display: flex; align-items: center; justify-content: center;
+        transition: all 0.2s; z-index: 2;
+      }
+      #wn-close:hover { background: rgba(255,255,255,0.15); color: #fff; }
+      @keyframes wnFadeUp {
+        from { opacity: 0; transform: translateY(18px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+
       /* ── Now-Playing sticky bar ─────────────────────────────────────────── */
       #np-bar {
         position: fixed;
@@ -4075,6 +4174,19 @@
             </div>
           </div>
         </div>
+        <!-- Trending Now -->
+        <div class="row" id="row-trending">
+          <div class="row-header">
+            <span class="row-title">🔥 Trending Now
+              <span style="display:inline-block;font-size:8px;font-weight:900;letter-spacing:0.16em;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.4);color:#f59e0b;padding:1px 7px;border-radius:10px;vertical-align:middle;margin-left:8px">LIVE RANK</span>
+            </span>
+          </div>
+          <div class="row-wrap">
+            <div class="row-arrow lft" onclick="scrollRow('track-trending',-1)">‹</div>
+            <div class="row-track" id="track-trending"></div>
+            <div class="row-arrow rgt" onclick="scrollRow('track-trending',1)">›</div>
+          </div>
+        </div>
         <!-- Dynamic rows -->
         <div id="rows-container"></div>
       </div>
@@ -4628,6 +4740,24 @@
         transition: background 0.3s;
       "
     ></div>
+
+    <!-- ── WHAT'S NEW MODAL ── -->
+    <div id="whats-new-overlay">
+      <div id="whats-new-card">
+        <div id="wn-canvas-wrap"><canvas id="wn-canvas"></canvas></div>
+        <div id="wn-content">
+          <div id="wn-eyebrow">NEW THIS WEEK</div>
+          <div id="wn-headline">S2: Emergence</div>
+          <div id="wn-sub">4 new episodes have arrived. Dive deeper into the lattice.</div>
+          <div id="wn-grid"></div>
+          <div id="wn-actions">
+            <button id="wn-play-btn">▶ Start Watching</button>
+            <button id="wn-dismiss-btn" onclick="_wnDismiss()">Maybe Later</button>
+          </div>
+        </div>
+        <button id="wn-close" onclick="_wnDismiss()">✕</button>
+      </div>
+    </div>
 
     <!-- ── INFO MODAL ── -->
     <div id="info-modal">
@@ -7798,6 +7928,60 @@
       }
 
       // ─────────────────────────────────────────────────────────────
+      // TRENDING ROW — localStorage view-count driven
+      // ─────────────────────────────────────────────────────────────
+      const _trendViews = JSON.parse(localStorage.getItem('aios_views') || '{}');
+
+      // Seed a few pseudo-views so the row isn't empty on first visit
+      (function() {
+        var seeded = localStorage.getItem('aios_views_seeded');
+        if (!seeded) {
+          CATALOGUE.forEach(function(p, i) {
+            _trendViews[p.id] = (_trendViews[p.id] || 0) + Math.max(1, 12 - i * 0.8 + Math.floor(Math.random() * 8));
+          });
+          localStorage.setItem('aios_views', JSON.stringify(_trendViews));
+          localStorage.setItem('aios_views_seeded', '1');
+        }
+      })();
+
+      function buildTrendingRow() {
+        const track = document.getElementById('track-trending');
+        if (!track) return;
+        const views = JSON.parse(localStorage.getItem('aios_views') || '{}');
+        const ranked = CATALOGUE
+          .map(p => ({ prog: p, views: views[p.id] || 0 }))
+          .sort((a, b) => b.views - a.views)
+          .slice(0, 10);
+        track.innerHTML = '';
+        ranked.forEach(({ prog, views: v }, rank) => {
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.style.cursor = 'pointer';
+          card.style.position = 'relative';
+          card.onclick = () => openPlayer(prog.id);
+          // Rank badge overlay
+          const rankColor = rank === 0 ? '#f59e0b' : rank === 1 ? '#94a3b8' : rank === 2 ? '#b45309' : 'rgba(255,255,255,0.25)';
+          card.innerHTML =
+            '<div class="card-thumb" style="background:' + prog.thumb + ';position:relative">' +
+              '<div style="position:absolute;top:6px;left:6px;width:26px;height:26px;border-radius:50%;' +
+                'background:' + rankColor + ';display:flex;align-items:center;justify-content:center;' +
+                'font-size:11px;font-weight:900;color:#0a0c1a;line-height:1;z-index:2">' + (rank + 1) + '</div>' +
+              '<div class="card-icon">' + prog.icon + '</div>' +
+              '<canvas class="card-live-cv" id="cv-t-' + prog.id + '"></canvas>' +
+            '</div>' +
+            '<div class="card-body">' +
+              '<div class="card-title">' + prog.title + '</div>' +
+              '<div class="card-sub" style="display:flex;align-items:center;gap:6px;margin-top:3px">' +
+                '<span style="color:' + prog.accent + ';font-weight:700;font-size:10px">#' + (rank + 1) + ' Trending</span>' +
+                '<span style="color:rgba(255,255,255,0.3);font-size:10px">·</span>' +
+                '<span style="color:rgba(255,255,255,0.45);font-size:10px">▶ ' + v.toLocaleString() + ' plays</span>' +
+              '</div>' +
+            '</div>';
+          track.appendChild(card);
+        });
+      }
+
+      // ─────────────────────────────────────────────────────────────
       // HERO ROTATION
       // ─────────────────────────────────────────────────────────────
       const FEATURED = CATALOGUE.filter(p => p.featured);
@@ -7851,6 +8035,12 @@
         if (e) e.stopPropagation();
         const prog = CATALOGUE.find(p => p.id === progId);
         if (!prog) return;
+
+        // Track view count (localStorage-backed, used by Trending row)
+        const _vc = JSON.parse(localStorage.getItem('aios_views') || '{}');
+        _vc[progId] = (_vc[progId] || 0) + 1;
+        localStorage.setItem('aios_views', JSON.stringify(_vc));
+        buildTrendingRow(); // re-rank live
 
         // stop hero renderer
         if (heroRenderer) { try { heroRenderer.stop(); } catch(_){} heroRenderer = null; }
@@ -8491,6 +8681,7 @@
       // ─────────────────────────────────────────────────────────────
       buildRows();
       buildContinueWatching();
+      buildTrendingRow();
       refreshUserUI(); // init avatar state from localStorage
       initHero();
 
@@ -9555,6 +9746,120 @@
         document.addEventListener('keydown', function(e) {
           if (e.key === 'Escape' && _liveOpen) window._closeLivePanel();
         });
+      })();
+
+      // ── WHAT'S NEW MODAL ─────────────────────────────────────────────────────
+      (function() {
+        var WN_KEY = 'aios_wn_seen';
+        var WN_INTERVAL = 7 * 24 * 3600 * 1000; // once per week
+        var _wnRaf = null;
+
+        function _wnShouldShow() {
+          var last = parseInt(localStorage.getItem(WN_KEY) || '0', 10);
+          return Date.now() - last > WN_INTERVAL;
+        }
+
+        function _wnRenderCanvas() {
+          var cv = document.getElementById('wn-canvas');
+          if (!cv) return;
+          var W = cv.offsetWidth || 840;
+          var H = 220;
+          cv.width = W; cv.height = H;
+          var ctx = cv.getContext('2d');
+          var t = 0;
+          // Use S2 emergence programme renderers as backdrop
+          var S2 = CATALOGUE.filter(function(p){ return p.season === 'emergence'; });
+          var prog = S2[0] || CATALOGUE[0];
+          // Gradient backdrop
+          var grad = ctx.createLinearGradient(0, 0, W, H);
+          grad.addColorStop(0, '#0a0c1a');
+          grad.addColorStop(0.5, (prog.accent || '#00e5ff') + '22');
+          grad.addColorStop(1, '#0a0c1a');
+          ctx.fillStyle = grad;
+          ctx.fillRect(0, 0, W, H);
+          // Animate PHI spiral dots
+          (function frame() {
+            _wnRaf = requestAnimationFrame(frame);
+            t += 0.012;
+            ctx.fillStyle = '#0a0c1a';
+            ctx.fillRect(0, 0, W, H);
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, W, H);
+            var n = 80;
+            for (var i = 0; i < n; i++) {
+              var angle = i * PHI * 2.399; // golden angle radians
+              var r = Math.sqrt(i / n) * Math.min(W, H) * 0.55;
+              var x = W / 2 + r * Math.cos(angle + t);
+              var y = H / 2 + r * Math.sin(angle + t * 0.618);
+              var alpha = 0.15 + 0.4 * (i / n);
+              var sz = 1.5 + 2 * (i / n);
+              ctx.beginPath();
+              ctx.arc(x, y, sz, 0, 6.283);
+              ctx.fillStyle = (prog.accent || '#00e5ff') + Math.round(alpha * 255).toString(16).padStart(2,'0');
+              ctx.fill();
+            }
+            // AIOS watermark
+            ctx.font = '900 ' + Math.round(H * 0.55) + 'px monospace';
+            ctx.textAlign = 'center';
+            ctx.fillStyle = 'rgba(255,255,255,0.025)';
+            ctx.fillText('AIOS', W / 2, H * 0.7);
+          })();
+        }
+
+        function _wnStopCanvas() {
+          if (_wnRaf) { cancelAnimationFrame(_wnRaf); _wnRaf = null; }
+        }
+
+        function _wnBuildGrid() {
+          var grid = document.getElementById('wn-grid');
+          if (!grid) return;
+          // Show S2 episodes + most recent S1 episode
+          var S2 = CATALOGUE.filter(function(p){ return p.season === 'emergence'; })
+            .sort(function(a,b){ return (a.ep||0) - (b.ep||0); });
+          var items = S2.slice(0, 4);
+          grid.innerHTML = items.map(function(prog) {
+            return '<div class="wn-ep-card" onclick="_wnDismiss();setTimeout(function(){openPlayer(\''+prog.id+'\',0)},200)">' +
+              '<div class="wn-ep-thumb" style="background:'+prog.thumb+'">' +
+                '<span>' + prog.icon + '</span>' +
+              '</div>' +
+              '<div class="wn-ep-info">' +
+                '<div class="wn-ep-label">E' + prog.ep + ' · S2</div>' +
+                '<div class="wn-ep-title">' + prog.title + '</div>' +
+              '</div>' +
+            '</div>';
+          }).join('');
+          // Wire play button to first S2 episode
+          var playBtn = document.getElementById('wn-play-btn');
+          if (playBtn && items[0]) {
+            playBtn.onclick = function() { _wnDismiss(); setTimeout(function(){ openPlayer(items[0].id, 0); }, 200); };
+          }
+        }
+
+        window._wnShow = function() {
+          _wnBuildGrid();
+          var overlay = document.getElementById('whats-new-overlay');
+          overlay.classList.add('on');
+          _wnRenderCanvas();
+          localStorage.setItem(WN_KEY, Date.now().toString());
+        };
+
+        window._wnDismiss = function() {
+          document.getElementById('whats-new-overlay').classList.remove('on');
+          _wnStopCanvas();
+        };
+
+        // Close on overlay click (not card click)
+        var overlay = document.getElementById('whats-new-overlay');
+        if (overlay) {
+          overlay.addEventListener('click', function(e) {
+            if (e.target === overlay) _wnDismiss();
+          });
+        }
+
+        // Show 2s after page load if due
+        if (_wnShouldShow()) {
+          setTimeout(window._wnShow, 2000);
+        }
       })();
 
       // ── Binge Season ─────────────────────────────────────────────────────────
