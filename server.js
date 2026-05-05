@@ -63,7 +63,10 @@ function withMeta(html) {
   const pwaTag = `<link rel="manifest" href="/manifest.json"/>\n<meta name="theme-color" content="#00e5ff"/>\n<script>if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js');</script>\n`;
   const gaTag = `<!-- Google tag (gtag.js) -->\n<script async src="https://www.googletagmanager.com/gtag/js?id=${GA_ID}"></script>\n<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${GA_ID}');</script>\n`;
   // Inject immediately after <head> — Google Tag Assistant requires this position
-  return html.replace(/(<head[^>]*>)/, `$1\n${gscTag}${preconnect}${pwaTag}${gaTag}`);
+  return html.replace(
+    /(<head[^>]*>)/,
+    `$1\n${gscTag}${preconnect}${pwaTag}${gaTag}`,
+  );
 }
 
 // ─── Static assets ───────────────────────────────────────────────────────────
@@ -2067,7 +2070,9 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
     // ── POST /api/aios/user/register — localStorage-first user account (best-effort) ──
     if (req.method === "POST" && pathname === "/api/aios/user/register") {
       let body = "";
-      req.on("data", (chunk) => { body += chunk; });
+      req.on("data", (chunk) => {
+        body += chunk;
+      });
       req.on("end", () => {
         try {
           const { email, name } = JSON.parse(body || "{}");
@@ -2076,10 +2081,19 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
           }
           // Sanitise: no control chars, max 320 chars
           const safeEmail = email.replace(/[^\x20-\x7E@.]/g, "").slice(0, 320);
-          const safeName  = (name || safeEmail.split("@")[0]).replace(/[^\x20-\x7E]/g, "").slice(0, 80);
+          const safeName = (name || safeEmail.split("@")[0])
+            .replace(/[^\x20-\x7E]/g, "")
+            .slice(0, 80);
           // Stateless token — base64(name:email:timestamp) — no server state needed
-          const token = Buffer.from(`${safeName}:${safeEmail}:${Date.now()}`).toString("base64");
-          return json(res, 200, { ok: true, token, name: safeName, email: safeEmail });
+          const token = Buffer.from(
+            `${safeName}:${safeEmail}:${Date.now()}`,
+          ).toString("base64");
+          return json(res, 200, {
+            ok: true,
+            token,
+            name: safeName,
+            email: safeEmail,
+          });
         } catch (_) {
           return json(res, 400, { ok: false, error: "Bad request" });
         }
@@ -2448,7 +2462,9 @@ function filterXP(cat, btn) {
       const { statSync } = await import("fs");
       const geoProofPath = join(PUBLIC_DIR, "proof", "sixty-min-4k.geo");
       let geoBytes = 0;
-      try { geoBytes = statSync(geoProofPath).size; } catch (_) {}
+      try {
+        geoBytes = statSync(geoProofPath).size;
+      } catch (_) {}
       const mp4Bytes = 22_500_000_000; // 4K H.264/HEVC @ 50 Mbps × 3600 s (Blu-ray 4K class)
       const ratio = geoBytes > 0 ? Math.round(mp4Bytes / geoBytes) : 0;
       res.writeHead(200, {
@@ -2456,39 +2472,51 @@ function filterXP(cat, btn) {
         "Cache-Control": "no-cache",
         "Access-Control-Allow-Origin": "*",
       });
-      res.end(JSON.stringify({
-        claim: ".geo vs mp4 — independent compression verification",
-        geo_file: "https://realaios.com/proof/sixty-min-4k.geo",
-        geo_bytes: geoBytes,
-        geo_kb: parseFloat((geoBytes / 1024).toFixed(2)),
-        mp4_bytes: mp4Bytes,
-        mp4_gb: parseFloat((mp4Bytes / 1_073_741_824).toFixed(2)),
-        mp4_reference: "4K H.264/HEVC @ 50 Mbps × 3600 seconds (Blu-ray 4K-class quality) = 22.5 GB",
-        compression_ratio: ratio,
-        compression_ratio_display: `${ratio.toLocaleString()}:1`,
-        resolution_geo: "infinite (render-native, any device pixel density)",
-        resolution_mp4: "fixed pixels (3840×2160 max)",
-        framerate_geo: "device-rAF (uncapped, hardware-limited only)",
-        framerate_mp4: "120fps cap",
-        intelligence_geo: "AI-adaptive per scene (hz, waveform, colour grade, spatial pan)",
-        intelligence_mp4: "zero (static encoded frames)",
-        standard_geo: "AIOS-OC-1.0 — open standard, patent-free, forever",
-        standard_mp4: "patent-encumbered (MPEG-LA H.264/HEVC licensing)",
-        architecture: "8,26,48:480",
-        phi: 1.618,
-        verify_download: "curl -o proof.geo https://realaios.com/proof/sixty-min-4k.geo && wc -c proof.geo",
-        verify_ratio: "python3 -c \"print(22500000000 / $(curl -sI https://realaios.com/proof/sixty-min-4k.geo | grep -i content-length | awk '{print $2}' | tr -d '\\r'))\"",
-        timestamp: new Date().toISOString(),
-        status: "VERIFIED",
-      }));
+      res.end(
+        JSON.stringify({
+          claim: ".geo vs mp4 — independent compression verification",
+          geo_file: "https://realaios.com/proof/sixty-min-4k.geo",
+          geo_bytes: geoBytes,
+          geo_kb: parseFloat((geoBytes / 1024).toFixed(2)),
+          mp4_bytes: mp4Bytes,
+          mp4_gb: parseFloat((mp4Bytes / 1_073_741_824).toFixed(2)),
+          mp4_reference:
+            "4K H.264/HEVC @ 50 Mbps × 3600 seconds (Blu-ray 4K-class quality) = 22.5 GB",
+          compression_ratio: ratio,
+          compression_ratio_display: `${ratio.toLocaleString()}:1`,
+          resolution_geo: "infinite (render-native, any device pixel density)",
+          resolution_mp4: "fixed pixels (3840×2160 max)",
+          framerate_geo: "device-rAF (uncapped, hardware-limited only)",
+          framerate_mp4: "120fps cap",
+          intelligence_geo:
+            "AI-adaptive per scene (hz, waveform, colour grade, spatial pan)",
+          intelligence_mp4: "zero (static encoded frames)",
+          standard_geo: "AIOS-OC-1.0 — open standard, patent-free, forever",
+          standard_mp4: "patent-encumbered (MPEG-LA H.264/HEVC licensing)",
+          architecture: "8,26,48:480",
+          phi: 1.618,
+          verify_download:
+            "curl -o proof.geo https://realaios.com/proof/sixty-min-4k.geo && wc -c proof.geo",
+          verify_ratio:
+            "python3 -c \"print(22500000000 / $(curl -sI https://realaios.com/proof/sixty-min-4k.geo | grep -i content-length | awk '{print $2}' | tr -d '\\r'))\"",
+          timestamp: new Date().toISOString(),
+          status: "VERIFIED",
+        }),
+      );
       return;
     }
 
     // ── GET /proof/*.geo — serve proof .geo files ─────────────────────────
-    if (req.method === "GET" && pathname.startsWith("/proof/") && pathname.endsWith(".geo")) {
+    if (
+      req.method === "GET" &&
+      pathname.startsWith("/proof/") &&
+      pathname.endsWith(".geo")
+    ) {
       const geoFile = join(PUBLIC_DIR, pathname);
       if (!existsSync(geoFile)) {
-        res.writeHead(404); res.end("Not found"); return;
+        res.writeHead(404);
+        res.end("Not found");
+        return;
       }
       res.writeHead(200, {
         "Content-Type": "application/json; charset=utf-8",
@@ -2506,21 +2534,29 @@ function filterXP(cat, btn) {
         "Content-Type": "application/manifest+json; charset=utf-8",
         "Cache-Control": "public, max-age=86400",
       });
-      res.end(JSON.stringify({
-        name: "AIOSdream — Generative Cinema",
-        short_name: "AIOS",
-        description: "The format that renders reality. Generative audiovisual programmes — infinite resolution, AI-adaptive, zero bytes of recorded video.",
-        start_url: "/aiosdream",
-        display: "standalone",
-        orientation: "landscape-primary",
-        background_color: "#06080f",
-        theme_color: "#00e5ff",
-        icons: [
-          { src: "/public/og-image.svg", sizes: "any", type: "image/svg+xml", purpose: "any maskable" }
-        ],
-        categories: ["entertainment", "multimedia"],
-        screenshots: [],
-      }));
+      res.end(
+        JSON.stringify({
+          name: "AIOSdream — Generative Cinema",
+          short_name: "AIOS",
+          description:
+            "The format that renders reality. Generative audiovisual programmes — infinite resolution, AI-adaptive, zero bytes of recorded video.",
+          start_url: "/aiosdream",
+          display: "standalone",
+          orientation: "landscape-primary",
+          background_color: "#06080f",
+          theme_color: "#00e5ff",
+          icons: [
+            {
+              src: "/public/og-image.svg",
+              sizes: "any",
+              type: "image/svg+xml",
+              purpose: "any maskable",
+            },
+          ],
+          categories: ["entertainment", "multimedia"],
+          screenshots: [],
+        }),
+      );
       return;
     }
 
@@ -2531,10 +2567,11 @@ function filterXP(cat, btn) {
         "Cache-Control": "no-cache",
         "Service-Worker-Allowed": "/",
       });
-      res.end(`const CACHE='aios-v1';const PRE=['/aiosdream','/geo-codec','/aios-studio','/geo-library','/live'];self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(PRE).catch(()=>{})).then(()=>self.skipWaiting())));self.addEventListener('activate',e=>e.waitUntil(clients.claim()));self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;e.respondWith(caches.match(e.request).then(h=>h||fetch(e.request).then(r=>{if(r.ok){const c=r.clone();caches.open(CACHE).then(x=>x.put(e.request,c));}return r;}).catch(()=>h)));});`);
+      res.end(
+        `const CACHE='aios-v1';const PRE=['/aiosdream','/geo-codec','/aios-studio','/geo-library','/live'];self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(PRE).catch(()=>{})).then(()=>self.skipWaiting())));self.addEventListener('activate',e=>e.waitUntil(clients.claim()));self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;e.respondWith(caches.match(e.request).then(h=>h||fetch(e.request).then(r=>{if(r.ok){const c=r.clone();caches.open(CACHE).then(x=>x.put(e.request,c));}return r;}).catch(()=>h)));});`,
+      );
       return;
     }
-
 
     if (
       req.method === "GET" &&

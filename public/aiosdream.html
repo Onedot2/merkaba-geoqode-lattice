@@ -172,12 +172,14 @@
         user-select: none;
         transition: transform 0.15s;
       }
-      .nav-avatar:hover { transform: scale(1.08); }
+      .nav-avatar:hover {
+        transform: scale(1.08);
+      }
       .nav-avatar.signed-out {
-        background: rgba(255,255,255,0.09);
-        border: 1px solid rgba(255,255,255,0.15);
+        background: rgba(255, 255, 255, 0.09);
+        border: 1px solid rgba(255, 255, 255, 0.15);
         font-size: 16px;
-        color: rgba(255,255,255,0.5);
+        color: rgba(255, 255, 255, 0.5);
       }
       /* Profile dropdown */
       #profile-drop {
@@ -186,68 +188,116 @@
         top: calc(100% + 10px);
         right: 0;
         width: 220px;
-        background: rgba(8,10,22,0.97);
-        border: 1px solid rgba(255,255,255,0.1);
+        background: rgba(8, 10, 22, 0.97);
+        border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 8px;
         backdrop-filter: blur(20px);
-        box-shadow: 0 16px 48px rgba(0,0,0,0.7);
+        box-shadow: 0 16px 48px rgba(0, 0, 0, 0.7);
         overflow: hidden;
         z-index: 500;
       }
-      #profile-drop.open { display: block; }
+      #profile-drop.open {
+        display: block;
+      }
       .pdrop-header {
         padding: 14px 16px;
-        border-bottom: 1px solid rgba(255,255,255,0.07);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.07);
       }
-      .pdrop-name { font-size: 13px; font-weight: 700; color: #fff; letter-spacing: 0.02em; }
-      .pdrop-email { font-size: 10px; color: rgba(255,255,255,0.35); margin-top: 2px; letter-spacing: 0.03em; }
+      .pdrop-name {
+        font-size: 13px;
+        font-weight: 700;
+        color: #fff;
+        letter-spacing: 0.02em;
+      }
+      .pdrop-email {
+        font-size: 10px;
+        color: rgba(255, 255, 255, 0.35);
+        margin-top: 2px;
+        letter-spacing: 0.03em;
+      }
       .pdrop-row {
         display: flex;
         align-items: center;
         gap: 10px;
         padding: 11px 16px;
         font-size: 11px;
-        color: rgba(255,255,255,0.65);
+        color: rgba(255, 255, 255, 0.65);
         cursor: pointer;
         letter-spacing: 0.03em;
-        transition: background 0.15s, color 0.15s;
+        transition:
+          background 0.15s,
+          color 0.15s;
         border: none;
         background: none;
         width: 100%;
         font-family: inherit;
         text-align: left;
       }
-      .pdrop-row:hover { background: rgba(255,255,255,0.06); color: #fff; }
-      .pdrop-row + .pdrop-row { border-top: 1px solid rgba(255,255,255,0.04); }
-      .pdrop-stat { font-size:9px; color:rgba(255,255,255,0.28); margin-left:auto; }
+      .pdrop-row:hover {
+        background: rgba(255, 255, 255, 0.06);
+        color: #fff;
+      }
+      .pdrop-row + .pdrop-row {
+        border-top: 1px solid rgba(255, 255, 255, 0.04);
+      }
+      .pdrop-stat {
+        font-size: 9px;
+        color: rgba(255, 255, 255, 0.28);
+        margin-left: auto;
+      }
       /* Sign-in modal */
       #signin-modal {
         display: none;
         position: fixed;
         inset: 0;
         z-index: 600;
-        background: rgba(0,0,12,0.92);
+        background: rgba(0, 0, 12, 0.92);
         backdrop-filter: blur(18px);
         align-items: center;
         justify-content: center;
       }
-      #signin-modal.open { display: flex; }
+      #signin-modal.open {
+        display: flex;
+      }
       .signin-box {
-        background: rgba(8,10,22,0.98);
-        border: 1px solid rgba(255,255,255,0.1);
+        background: rgba(8, 10, 22, 0.98);
+        border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 12px;
         padding: 36px 32px;
-        width: min(440px,92vw);
-        box-shadow: 0 32px 80px rgba(0,0,0,0.8);
+        width: min(440px, 92vw);
+        box-shadow: 0 32px 80px rgba(0, 0, 0, 0.8);
       }
-      .signin-logo { font-size: 11px; letter-spacing: 4px; color: var(--cyan); font-weight: 900; margin-bottom: 22px; }
-      .signin-title { font-size: 22px; font-weight: 800; color: #fff; letter-spacing: -0.02em; margin-bottom: 6px; }
-      .signin-sub { font-size: 12px; color: rgba(255,255,255,0.38); margin-bottom: 28px; line-height: 1.5; }
-      .signin-label { font-size: 9px; letter-spacing: 3px; color: rgba(255,255,255,0.4); margin-bottom: 6px; display: block; }
+      .signin-logo {
+        font-size: 11px;
+        letter-spacing: 4px;
+        color: var(--cyan);
+        font-weight: 900;
+        margin-bottom: 22px;
+      }
+      .signin-title {
+        font-size: 22px;
+        font-weight: 800;
+        color: #fff;
+        letter-spacing: -0.02em;
+        margin-bottom: 6px;
+      }
+      .signin-sub {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.38);
+        margin-bottom: 28px;
+        line-height: 1.5;
+      }
+      .signin-label {
+        font-size: 9px;
+        letter-spacing: 3px;
+        color: rgba(255, 255, 255, 0.4);
+        margin-bottom: 6px;
+        display: block;
+      }
       .signin-inp {
         width: 100%;
-        background: rgba(255,255,255,0.05);
-        border: 1px solid rgba(255,255,255,0.1);
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
         color: #fff;
         font-family: inherit;
         font-size: 14px;
@@ -258,11 +308,17 @@
         margin-bottom: 14px;
         transition: border-color 0.2s;
       }
-      .signin-inp:focus { border-color: rgba(0,229,255,0.5); }
+      .signin-inp:focus {
+        border-color: rgba(0, 229, 255, 0.5);
+      }
       .signin-btn {
         width: 100%;
-        background: linear-gradient(135deg, rgba(0,229,255,0.18), rgba(124,58,237,0.22));
-        border: 1px solid rgba(0,229,255,0.3);
+        background: linear-gradient(
+          135deg,
+          rgba(0, 229, 255, 0.18),
+          rgba(124, 58, 237, 0.22)
+        );
+        border: 1px solid rgba(0, 229, 255, 0.3);
         color: #fff;
         font-family: inherit;
         font-size: 11px;
@@ -274,24 +330,32 @@
         margin-top: 4px;
         transition: background 0.2s;
       }
-      .signin-btn:hover { background: linear-gradient(135deg,rgba(0,229,255,0.28),rgba(124,58,237,0.32)); }
+      .signin-btn:hover {
+        background: linear-gradient(
+          135deg,
+          rgba(0, 229, 255, 0.28),
+          rgba(124, 58, 237, 0.32)
+        );
+      }
       .signin-close {
         float: right;
         background: none;
         border: none;
-        color: rgba(255,255,255,0.3);
+        color: rgba(255, 255, 255, 0.3);
         font-size: 20px;
         cursor: pointer;
         line-height: 1;
         padding: 0;
         transition: color 0.15s;
       }
-      .signin-close:hover { color: rgba(255,255,255,0.7); }
+      .signin-close:hover {
+        color: rgba(255, 255, 255, 0.7);
+      }
       /* My List ❤ button in card hover */
       .card-btn-list {
-        background: rgba(255,255,255,0.07);
-        border: 1px solid rgba(255,255,255,0.14);
-        color: rgba(255,255,255,0.6);
+        background: rgba(255, 255, 255, 0.07);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        color: rgba(255, 255, 255, 0.6);
         font-size: 14px;
         width: 30px;
         height: 30px;
@@ -303,9 +367,10 @@
         transition: all 0.18s;
         flex-shrink: 0;
       }
-      .card-btn-list:hover, .card-btn-list.active {
-        background: rgba(248,113,113,0.18);
-        border-color: rgba(248,113,113,0.5);
+      .card-btn-list:hover,
+      .card-btn-list.active {
+        background: rgba(248, 113, 113, 0.18);
+        border-color: rgba(248, 113, 113, 0.5);
         color: #f87171;
       }
 
@@ -624,14 +689,14 @@
         position: absolute;
         top: 8px;
         left: 8px;
-        background: rgba(0,0,0,0.68);
+        background: rgba(0, 0, 0, 0.68);
         color: #00e5ff;
         font-size: 10px;
         font-weight: 800;
         letter-spacing: 0.1em;
         padding: 2px 7px;
         border-radius: 3px;
-        border: 1px solid rgba(0,229,255,0.28);
+        border: 1px solid rgba(0, 229, 255, 0.28);
         z-index: 2;
         pointer-events: none;
       }
@@ -949,14 +1014,23 @@
         font-weight: 800;
         letter-spacing: 0.12em;
         padding: 3px 10px;
-        border: 1px solid rgba(255,255,255,0.1);
+        border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 4px;
-        color: rgba(255,255,255,0.45);
-        transition: color 0.2s, border-color 0.2s, text-shadow 0.2s;
+        color: rgba(255, 255, 255, 0.45);
+        transition:
+          color 0.2s,
+          border-color 0.2s,
+          text-shadow 0.2s;
       }
-      #ctrl-binaural:hover { color: #00e5ff; border-color: rgba(0,229,255,0.3); }
+      #ctrl-binaural:hover {
+        color: #00e5ff;
+        border-color: rgba(0, 229, 255, 0.3);
+      }
       /* Row header BINGE button active state */
-      .binge-active { background: rgba(0,229,255,0.25) !important; color: #fff !important; }
+      .binge-active {
+        background: rgba(0, 229, 255, 0.25) !important;
+        color: #fff !important;
+      }
       .ctrl-sp {
         flex: 1;
       }
@@ -1988,17 +2062,51 @@
         >
           ⌕
         </button>
-        <div style="position:relative">
-          <div class="nav-avatar signed-out" id="nav-avatar" title="Profile" onclick="onAvatarClick()">⊕</div>
+        <div style="position: relative">
+          <div
+            class="nav-avatar signed-out"
+            id="nav-avatar"
+            title="Profile"
+            onclick="onAvatarClick()"
+          >
+            ⊕
+          </div>
           <!-- Profile dropdown -->
           <div id="profile-drop">
             <div class="pdrop-header">
               <div class="pdrop-name" id="pdrop-name">Guest</div>
               <div class="pdrop-email" id="pdrop-email">Not signed in</div>
             </div>
-            <button class="pdrop-row" onclick="closeDrop();document.getElementById('rows-container').scrollIntoView({behavior:'smooth'})">♥ My List <span class="pdrop-stat" id="pdrop-list-count">0</span></button>
-            <button class="pdrop-row" onclick="closeDrop();showWatchStats()">⏱ Watch Stats <span class="pdrop-stat" id="pdrop-hrs">0h</span></button>
-            <button class="pdrop-row" onclick="closeDrop();signOut()" style="color:rgba(248,113,113,0.75)">↩ Sign Out</button>
+            <button
+              class="pdrop-row"
+              onclick="
+                closeDrop();
+                document
+                  .getElementById('rows-container')
+                  .scrollIntoView({ behavior: 'smooth' });
+              "
+            >
+              ♥ My List <span class="pdrop-stat" id="pdrop-list-count">0</span>
+            </button>
+            <button
+              class="pdrop-row"
+              onclick="
+                closeDrop();
+                showWatchStats();
+              "
+            >
+              ⏱ Watch Stats <span class="pdrop-stat" id="pdrop-hrs">0h</span>
+            </button>
+            <button
+              class="pdrop-row"
+              onclick="
+                closeDrop();
+                signOut();
+              "
+              style="color: rgba(248, 113, 113, 0.75)"
+            >
+              ↩ Sign Out
+            </button>
           </div>
         </div>
       </div>
@@ -2007,18 +2115,49 @@
     <!-- ── SIGN-IN MODAL ──────────────────────────────────────── -->
     <div id="signin-modal">
       <div class="signin-box">
-        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px">
+        <div
+          style="
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 20px;
+          "
+        >
           <div class="signin-logo">AIOSdream</div>
           <button class="signin-close" onclick="closeSignIn()">✕</button>
         </div>
         <div class="signin-title">Welcome back.</div>
-        <div class="signin-sub">Your list, progress and settings live here — across every session.</div>
+        <div class="signin-sub">
+          Your list, progress and settings live here — across every session.
+        </div>
         <label class="signin-label">YOUR NAME</label>
-        <input class="signin-inp" id="si-name" type="text" placeholder="Ada" autocomplete="name" />
+        <input
+          class="signin-inp"
+          id="si-name"
+          type="text"
+          placeholder="Ada"
+          autocomplete="name"
+        />
         <label class="signin-label">EMAIL ADDRESS</label>
-        <input class="signin-inp" id="si-email" type="email" placeholder="you@example.com" autocomplete="email" />
+        <input
+          class="signin-inp"
+          id="si-email"
+          type="email"
+          placeholder="you@example.com"
+          autocomplete="email"
+        />
         <button class="signin-btn" onclick="doSignIn()">CONTINUE →</button>
-        <div style="font-size:9px;color:rgba(255,255,255,0.2);text-align:center;margin-top:16px;line-height:1.5">No password needed. Your data is stored locally on this device.</div>
+        <div
+          style="
+            font-size: 9px;
+            color: rgba(255, 255, 255, 0.2);
+            text-align: center;
+            margin-top: 16px;
+            line-height: 1.5;
+          "
+        >
+          No password needed. Your data is stored locally on this device.
+        </div>
       </div>
     </div>
 
@@ -2112,11 +2251,35 @@
         <div class="player-top" id="player-top">
           <button class="player-back-btn" id="player-back">← Back</button>
           <div class="player-titles">
-            <div class="player-ep-label" id="player-ep-label" style="display:none"></div>
+            <div
+              class="player-ep-label"
+              id="player-ep-label"
+              style="display: none"
+            ></div>
             <div class="player-prog-title" id="player-prog-title">—</div>
             <div class="player-scene-name" id="player-scene-name">—</div>
           </div>
-          <button id="geo-info-btn" onclick="toggleGeoPanel()" title="View .geo spec" style="background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.28);color:#00d4ff;font-size:0.78rem;font-weight:700;padding:0.28rem 0.7rem;border-radius:10px;cursor:pointer;letter-spacing:0.05em;margin-left:auto;transition:all 0.2s;flex-shrink:0">ⓘ .geo</button>
+          <button
+            id="geo-info-btn"
+            onclick="toggleGeoPanel()"
+            title="View .geo spec"
+            style="
+              background: rgba(0, 212, 255, 0.1);
+              border: 1px solid rgba(0, 212, 255, 0.28);
+              color: #00d4ff;
+              font-size: 0.78rem;
+              font-weight: 700;
+              padding: 0.28rem 0.7rem;
+              border-radius: 10px;
+              cursor: pointer;
+              letter-spacing: 0.05em;
+              margin-left: auto;
+              transition: all 0.2s;
+              flex-shrink: 0;
+            "
+          >
+            ⓘ .geo
+          </button>
         </div>
         <div class="player-bottom" id="player-bottom">
           <div class="scene-chips" id="scene-chips"></div>
@@ -2196,8 +2359,15 @@
               class="ctrl-btn"
               id="ctrl-binaural"
               title="Binaural Entrainment ±4Hz (N)"
-              style="font-size:11px;letter-spacing:0.12em;font-weight:800;padding:0 8px"
-            >⬡ BINE</button>
+              style="
+                font-size: 11px;
+                letter-spacing: 0.12em;
+                font-weight: 800;
+                padding: 0 8px;
+              "
+            >
+              ⬡ BINE
+            </button>
             <div class="speed-wrap">
               <button class="ctrl-btn" id="ctrl-speed" title="Speed">1×</button>
               <div class="speed-popup" id="speed-popup">
@@ -2305,16 +2475,86 @@
     <div id="share-toast">🔗 Link copied!</div>
 
     <!-- ── GEO INFO PANEL ── -->
-    <div id="geo-panel" style="position:fixed;top:0;right:-420px;width:400px;height:100vh;background:rgba(4,4,20,0.96);backdrop-filter:blur(16px);border-left:1px solid rgba(0,212,255,0.15);z-index:9999;overflow-y:auto;transition:right 0.32s cubic-bezier(0.22,0.61,0.36,1);padding:1.5rem 1.2rem;box-sizing:border-box;font-family:inherit">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem">
-        <div style="font-size:0.72rem;font-weight:800;letter-spacing:0.12em;color:#00d4ff;opacity:0.7">AIOS · GEO SPEC</div>
-        <button onclick="toggleGeoPanel()" style="background:transparent;border:none;color:rgba(232,232,240,0.5);font-size:1.1rem;cursor:pointer;padding:0.2rem 0.4rem;border-radius:6px" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(232,232,240,0.5)'">✕</button>
+    <div
+      id="geo-panel"
+      style="
+        position: fixed;
+        top: 0;
+        right: -420px;
+        width: 400px;
+        height: 100vh;
+        background: rgba(4, 4, 20, 0.96);
+        backdrop-filter: blur(16px);
+        border-left: 1px solid rgba(0, 212, 255, 0.15);
+        z-index: 9999;
+        overflow-y: auto;
+        transition: right 0.32s cubic-bezier(0.22, 0.61, 0.36, 1);
+        padding: 1.5rem 1.2rem;
+        box-sizing: border-box;
+        font-family: inherit;
+      "
+    >
+      <div
+        style="
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 1.2rem;
+        "
+      >
+        <div
+          style="
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            color: #00d4ff;
+            opacity: 0.7;
+          "
+        >
+          AIOS · GEO SPEC
+        </div>
+        <button
+          onclick="toggleGeoPanel()"
+          style="
+            background: transparent;
+            border: none;
+            color: rgba(232, 232, 240, 0.5);
+            font-size: 1.1rem;
+            cursor: pointer;
+            padding: 0.2rem 0.4rem;
+            border-radius: 6px;
+          "
+          onmouseover="this.style.color = '#fff'"
+          onmouseout="this.style.color = 'rgba(232,232,240,0.5)'"
+        >
+          ✕
+        </button>
       </div>
       <div id="geo-panel-content">
-        <div style="color:rgba(232,232,240,0.35);font-size:0.82rem;text-align:center;margin-top:3rem">Play a programme to view its .geo spec</div>
+        <div
+          style="
+            color: rgba(232, 232, 240, 0.35);
+            font-size: 0.82rem;
+            text-align: center;
+            margin-top: 3rem;
+          "
+        >
+          Play a programme to view its .geo spec
+        </div>
       </div>
     </div>
-    <div id="geo-panel-backdrop" onclick="toggleGeoPanel()" style="position:fixed;inset:0;background:rgba(0,0,0,0);pointer-events:none;z-index:9998;transition:background 0.3s"></div>
+    <div
+      id="geo-panel-backdrop"
+      onclick="toggleGeoPanel()"
+      style="
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0);
+        pointer-events: none;
+        z-index: 9998;
+        transition: background 0.3s;
+      "
+    ></div>
 
     <!-- ── INFO MODAL ── -->
     <div id="info-modal">
