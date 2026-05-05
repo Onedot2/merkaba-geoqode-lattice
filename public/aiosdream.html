@@ -1503,7 +1503,20 @@
         align-items: center;
         justify-content: center;
         font-size: 30px;
+        position: relative;
+        overflow: hidden;
       }
+      .src-preview-cv {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        display: none;
+        opacity: 0;
+        transition: opacity 0.22s;
+      }
+      .src-card:hover .src-preview-cv { display: block; opacity: 1; }
+      .src-card:hover .src-icon-lbl { opacity: 0; transition: opacity 0.18s; }
       .src-body {
         padding: 10px 12px 14px;
       }
@@ -2448,6 +2461,8 @@
     <main id="browse">
       <div class="hero" id="hero">
         <canvas id="hero-canvas"></canvas>
+        <!-- Audio visualiser ring (bottom-right corner, pulses with ambient audio) -->
+        <canvas id="hero-vu-ring" width="80" height="80" style="position:absolute;bottom:20px;right:24px;width:80px;height:80px;opacity:0;transition:opacity 0.6s;pointer-events:none;z-index:4"></canvas>
         <div class="hero-grad"></div>
         <div class="hero-content" id="hero-content">
           <div class="hero-eyebrow" id="hero-eyebrow">Featured</div>
@@ -2934,6 +2949,8 @@
           <p class="modal-desc-p" id="modal-desc">—</p>
           <div class="modal-scenes-h">Episodes &amp; Scenes</div>
           <div id="modal-scene-list"></div>
+          <!-- Season context: ep progress + next ep -->
+          <div id="modal-season-ctx" style="display:none;margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.07)"></div>
         </div>
       </div>
     </div>
@@ -5309,7 +5326,20 @@
             <div class="row-header">
               <div ${isSeason ? `style="display:flex;flex-direction:column;gap:3px"` : ''}>
                 <span class="row-title" ${isMyList ? `style="color:#f87171"` : ''}>${row.title}${row.badge ? ` <span style="display:inline-block;font-size:8px;font-weight:900;letter-spacing:0.16em;background:rgba(0,229,255,0.18);border:1px solid rgba(0,229,255,0.45);color:#00e5ff;padding:1px 7px;border-radius:10px;vertical-align:middle;margin-left:8px">${row.badge}</span>` : ''}</span>
-                ${isSeason ? `<span style="font-size:10px;color:rgba(255,255,255,0.38);letter-spacing:0.04em;font-weight:500">${progs.length} Episodes · ${fmtRuntime(progs.reduce((s,p)=>s+p.runtime,0))} total</span>` : ''}
+                ${isSeason ? (function(){
+                  const epPips = progs.map(function(ep){
+                    const pct = (function(){
+                      const saved = progress[ep.id];
+                      if (!saved) return 0;
+                      const scenes = ep.scenes||[];
+                      const total = scenes.reduce(function(s,sc){return s+sc.dur;},0);
+                      const done = scenes.slice(0,saved.scene||0).reduce(function(s,sc){return s+sc.dur;},0)+(saved.elapsed||0);
+                      return Math.min(100, Math.round(done/total*100));
+                    })();
+                    return '<span title="E'+ep.ep+': '+ep.title+' \xb7 '+pct+'%" style="display:inline-block;width:18px;height:4px;border-radius:2px;background:'+(pct>=95?ep.accent:pct>0?'rgba(255,255,255,0.28)':'rgba(255,255,255,0.1)')+';transition:background 0.3s"></span>';
+                  }).join('');
+                  return '<span style="font-size:10px;color:rgba(255,255,255,0.38);letter-spacing:0.04em;font-weight:500">'+progs.length+' Episodes \xb7 '+fmtRuntime(progs.reduce(function(s,p){return s+p.runtime;},0))+' total</span><span style="display:flex;align-items:center;gap:3px;margin-top:4px">'+epPips+'</span>';
+                })() : ''}
                 ${isMyList ? `<span style="font-size:10px;color:rgba(248,113,113,0.45);letter-spacing:0.04em">${progs.length} programme${progs.length===1?'':'s'}</span>` : ''}
               </div>
               <div style="display:flex;align-items:center;gap:0.5rem">
@@ -5793,7 +5823,33 @@
         document.getElementById('modal-desc').textContent = prog.desc;
 
         const meta = document.getElementById('modal-meta');
-        meta.innerHTML = `<span class="meta-badge">${prog.rating}</span><span style="color:var(--muted);font-size:13px">${prog.year}</span><span style="color:var(--muted);font-size:13px">${fmtRuntime(prog.runtime)}</span>${prog.genre.map(g => `<span class="meta-tag">${g}</span>`).join('')}`;
+        const _SN_NAMES = { origins: 'S1: Origins', emergence: 'S2: Emergence' };
+        const seasonLabel = prog.season ? _SN_NAMES[prog.season] || prog.season : '';
+        const epBadge = prog.ep ? `<span style="display:inline-block;font-size:9px;font-weight:900;letter-spacing:0.12em;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.14);color:rgba(255,255,255,0.65);padding:2px 9px;border-radius:10px">E${prog.ep} \xb7 ${seasonLabel}</span>` : '';
+        meta.innerHTML = `${epBadge}<span class="meta-badge">${prog.rating}</span><span style="color:var(--muted);font-size:13px">${prog.year}</span><span style="color:var(--muted);font-size:13px">${fmtRuntime(prog.runtime)}</span>${prog.genre.map(g => `<span class="meta-tag">${g}</span>`).join('')}`;
+
+        // Season context panel
+        const ctxEl = document.getElementById('modal-season-ctx');
+        if (prog.season && prog.ep) {
+          const saved = progress[prog.id];
+          let pctHtml = '';
+          if (saved) {
+            const scenes = prog.scenes || [];
+            const total = scenes.reduce((s, sc) => s + sc.dur, 0);
+            const done = scenes.slice(0, saved.scene || 0).reduce((s, sc) => s + sc.dur, 0) + (saved.elapsed || 0);
+            const pct = Math.min(100, Math.round(done / total * 100));
+            pctHtml = `<div style="margin-bottom:10px"><div style="font-size:9px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:5px">YOUR PROGRESS</div><div style="height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden"><div style="height:100%;width:${pct}%;background:${prog.accent};border-radius:2px;transition:width 0.4s"></div></div><div style="font-size:10px;color:rgba(255,255,255,0.32);margin-top:4px">${pct}% \xb7 Scene ${(saved.scene||0)+1} of ${scenes.length}</div></div>`;
+          }
+          const nextEp = CATALOGUE.find(p => p.season === prog.season && p.ep === prog.ep + 1);
+          let nextHtml = '';
+          if (nextEp) {
+            nextHtml = `<div style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:10px 12px;cursor:pointer" onclick="closeModal();openPlayer('${nextEp.id}',0)"><div style="width:36px;height:36px;border-radius:8px;background:${nextEp.thumb};display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">${nextEp.icon}</div><div style="flex:1;min-width:0"><div style="font-size:9px;font-weight:800;letter-spacing:0.16em;color:rgba(255,255,255,0.3);text-transform:uppercase;margin-bottom:2px">Up Next \xb7 E${nextEp.ep}</div><div style="font-size:12px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${nextEp.title}</div><div style="font-size:10px;color:rgba(255,255,255,0.35);margin-top:1px">${fmtRuntime(nextEp.runtime)}</div></div><span style="color:rgba(255,255,255,0.4);font-size:18px">\u203a</span></div>`;
+          }
+          ctxEl.style.display = (pctHtml || nextHtml) ? '' : 'none';
+          ctxEl.innerHTML = pctHtml + nextHtml;
+        } else {
+          ctxEl.style.display = 'none';
+        }
 
         const sceneList = document.getElementById('modal-scene-list');
         sceneList.innerHTML = prog.scenes.map((s, i) => `
@@ -5955,9 +6011,13 @@
           return;
         }
         el.innerHTML = matches.map(function(p) {
-          return '<div class="src-card" onclick="closeSearch();openPlayer(\'' + p.id + '\',0)">' +
+          const rKey = Object.keys(RENDERERS).find(function(k){ return p.id.includes(k) || k.includes(p.id.replace('orig_','').replace('s2_','')); }) || '';
+          return '<div class="src-card" data-prog-id="' + p.id + '" onclick="closeSearch();openPlayer(\'' + p.id + '\',0)">' +
             '<div class="src-accent-bar" style="background:' + p.accent + '"></div>' +
-            '<div class="src-thumb-box" style="background:' + p.thumb + '">' + p.icon + '</div>' +
+            '<div class="src-thumb-box" style="background:' + p.thumb + '">' +
+              '<span class="src-icon-lbl">' + p.icon + '</span>' +
+              (RENDERERS[rKey] ? '<canvas class="src-preview-cv" data-rkey="' + rKey + '"></canvas>' : '') +
+            '</div>' +
             '<div class="src-body">' +
               '<div class="src-title">' + p.title + '</div>' +
               '<div class="src-meta">' + (p.ep ? 'E' + p.ep + ' \xb7 ' : '') + p.year + ' \xb7 ' + p.genre.slice(0,2).join(' \xb7 ') + '</div>' +
@@ -5967,6 +6027,31 @@
 
       document.getElementById('search-input').addEventListener('input', function(e) {
         renderSearchGrid(e.target.value.toLowerCase().trim());
+      });
+
+      // Search card hover — live mini renderer preview
+      let _srcHoverRend = null;
+      document.getElementById('search-grid').addEventListener('mouseover', function(e) {
+        const card = e.target.closest('.src-card');
+        if (!card) return;
+        const cv = card.querySelector('.src-preview-cv');
+        if (!cv || cv._rendRunning) return;
+        const rKey = cv.dataset.rkey;
+        const rend = RENDERERS[rKey];
+        if (!rend) return;
+        cv.width = cv.offsetWidth || 180;
+        cv.height = cv.offsetHeight || 68;
+        try { rend.start(cv, 0); cv._rendRunning = true; cv._rend = rend; } catch(_) {}
+      });
+      document.getElementById('search-grid').addEventListener('mouseout', function(e) {
+        const card = e.target.closest('.src-card');
+        if (!card) return;
+        const cv = card.querySelector('.src-preview-cv');
+        if (!cv || !cv._rendRunning) return;
+        try { cv._rend.stop(); } catch(_) {}
+        cv._rendRunning = false;
+        const ctx = cv.getContext('2d');
+        if (ctx) ctx.clearRect(0, 0, cv.width, cv.height);
       });
       document.getElementById('search-close').addEventListener('click', closeSearch);
       document.addEventListener('keydown', function(e) {
@@ -6080,6 +6165,7 @@
           _ensureAudio();
           stopAmbientAudio();
           if (_audioCtx.state === 'suspended') _audioCtx.resume();
+          _startVuRing();
           var cfg = PROG_AUDIO_CFG[progId] || PROG_AUDIO_CFG.merkaba;
           var ctx = _audioCtx;
           var now = ctx.currentTime;
@@ -6154,6 +6240,7 @@
       }
 
       function stopAmbientAudio() {
+        _stopVuRing();
         var nodes = _ambientNodes.splice(0);
         for (var i = 0; i < nodes.length; i++) {
           try { if (nodes[i].stop) nodes[i].stop(); } catch (e) {}
@@ -6750,6 +6837,65 @@
         cv.classList.remove('on');
         var ctx = cv.getContext('2d');
         if (ctx) ctx.clearRect(0, 0, cv.width, cv.height);
+      }
+
+      // ── Hero VU Ring — PHI radial bars around circle, pulses with analyser ─
+      var _vuRaf = null;
+      function _startVuRing() {
+        if (_vuRaf) cancelAnimationFrame(_vuRaf);
+        var ring = document.getElementById('hero-vu-ring');
+        if (!ring) return;
+        ring.style.opacity = '0.72';
+        var ctx = ring.getContext('2d');
+        var W = ring.width, H = ring.height;
+        var cx = W / 2, cy = H / 2;
+        var BARS = 48; // D48 lattice reference
+        var R_INNER = 22, R_MAX = 34;
+        var _lastAccent = '#00e5ff';
+        function loop() {
+          ctx.clearRect(0, 0, W, H);
+          var data = new Uint8Array(_analyserNode ? _analyserNode.frequencyBinCount : 0);
+          if (_analyserNode) _analyserNode.getByteFrequencyData(data);
+          // Sample accent from hero
+          var accent = _lastAccent;
+          try {
+            var hStyle = document.getElementById('hero').style.background;
+            // Use currentProg accent if available
+            var hp = CATALOGUE[heroIndex];
+            if (hp) { accent = hp.accent; _lastAccent = accent; }
+          } catch(_) {}
+          for (var i = 0; i < BARS; i++) {
+            var angle = (i / BARS) * Math.PI * 2 - Math.PI / 2;
+            var binIdx = Math.floor((i / BARS) * (data.length || 64));
+            var val = data[binIdx] || 0;
+            var r = R_INNER + (val / 255) * (R_MAX - R_INNER);
+            var x1 = cx + Math.cos(angle) * R_INNER;
+            var y1 = cy + Math.sin(angle) * R_INNER;
+            var x2 = cx + Math.cos(angle) * r;
+            var y2 = cy + Math.sin(angle) * r;
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.strokeStyle = accent;
+            ctx.globalAlpha = 0.18 + (val / 255) * 0.72;
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+          }
+          // PHI centre dot
+          ctx.globalAlpha = 0.45;
+          ctx.beginPath();
+          ctx.arc(cx, cy, 3, 0, Math.PI * 2);
+          ctx.fillStyle = accent;
+          ctx.fill();
+          ctx.globalAlpha = 1;
+          _vuRaf = requestAnimationFrame(loop);
+        }
+        loop();
+      }
+      function _stopVuRing() {
+        if (_vuRaf) { cancelAnimationFrame(_vuRaf); _vuRaf = null; }
+        var ring = document.getElementById('hero-vu-ring');
+        if (ring) { ring.style.opacity = '0'; var ctx = ring.getContext('2d'); if (ctx) ctx.clearRect(0,0,ring.width,ring.height); }
       }
 
       // ── Film grain canvas — runs 20fps ──────────────────────────────────────
