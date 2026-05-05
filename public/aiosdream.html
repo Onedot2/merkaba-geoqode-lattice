@@ -2041,6 +2041,35 @@
         transform: translateY(0) scale(1);
       }
 
+      /* ── Scene Burn-in ── */
+      #scene-burn {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 8000;
+        text-align: center;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.35s;
+      }
+      #scene-burn.on { opacity: 1; }
+      #scene-burn-num {
+        font-size: 0.6rem;
+        font-weight: 900;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+        color: rgba(255,255,255,0.35);
+        margin-bottom: 8px;
+      }
+      #scene-burn-title {
+        font-size: clamp(1.4rem, 4vw, 2.6rem);
+        font-weight: 900;
+        letter-spacing: -0.01em;
+        color: #fff;
+        text-shadow: 0 0 60px rgba(0,0,0,0.9), 0 2px 24px rgba(0,0,0,0.8);
+      }
+
       /* ── Now-Playing sticky bar ─────────────────────────────────────────── */
       #np-bar {
         position: fixed;
@@ -4326,6 +4355,12 @@
 
     <!-- ── SHARE TOAST ── -->
     <div id="share-toast">🔗 Link copied!</div>
+
+    <!-- ── SCENE BURN-IN ── -->
+    <div id="scene-burn">
+      <div id="scene-burn-num"></div>
+      <div id="scene-burn-title"></div>
+    </div>
 
     <!-- ── NOW PLAYING BAR ── -->
     <div id="np-bar">
@@ -7834,6 +7869,24 @@
         // Skip Intro: show only on scene 0, hide on any other scene
         if (sceneIdx === 0 && currentProg.scenes.length > 1) { _showSkipIntro(); }
         else { _hideSkipIntro(); }
+        // Scene burn-in title overlay
+        _showSceneBurn(currentProg, sceneIdx);
+      }
+
+      let _burnTmo = null;
+      function _showSceneBurn(prog, idx) {
+        const el = document.getElementById('scene-burn');
+        const numEl = document.getElementById('scene-burn-num');
+        const titleEl = document.getElementById('scene-burn-title');
+        if (!el || !numEl || !titleEl) return;
+        const scene = (prog.scenes || [])[idx];
+        if (!scene) return;
+        clearTimeout(_burnTmo);
+        numEl.textContent = 'Scene ' + (idx + 1) + ' of ' + prog.scenes.length;
+        titleEl.textContent = scene.title || '';
+        titleEl.style.color = prog.accent || '#fff';
+        el.classList.add('on');
+        _burnTmo = setTimeout(() => el.classList.remove('on'), 2200);
       }
 
       function closePlayer() {
