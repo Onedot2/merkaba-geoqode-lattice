@@ -2053,13 +2053,15 @@
         opacity: 0;
         transition: opacity 0.35s;
       }
-      #scene-burn.on { opacity: 1; }
+      #scene-burn.on {
+        opacity: 1;
+      }
       #scene-burn-num {
         font-size: 0.6rem;
         font-weight: 900;
         letter-spacing: 0.28em;
         text-transform: uppercase;
-        color: rgba(255,255,255,0.35);
+        color: rgba(255, 255, 255, 0.35);
         margin-bottom: 8px;
       }
       #scene-burn-title {
@@ -2067,7 +2069,131 @@
         font-weight: 900;
         letter-spacing: -0.01em;
         color: #fff;
-        text-shadow: 0 0 60px rgba(0,0,0,0.9), 0 2px 24px rgba(0,0,0,0.8);
+        text-shadow:
+          0 0 60px rgba(0, 0, 0, 0.9),
+          0 2px 24px rgba(0, 0, 0, 0.8);
+      }
+
+      /* ── Live Panel ── */
+      #live-panel {
+        position: fixed;
+        top: 64px;
+        right: 0;
+        width: min(380px, 100vw);
+        max-height: calc(100dvh - 64px);
+        background: rgba(6, 8, 18, 0.97);
+        backdrop-filter: blur(24px);
+        border-left: 1px solid rgba(239, 68, 68, 0.25);
+        z-index: 4000;
+        display: flex;
+        flex-direction: column;
+        transform: translateX(110%);
+        transition: transform 0.36s cubic-bezier(0.16, 1, 0.3, 1);
+        overflow: hidden;
+      }
+      #live-panel.open {
+        transform: translateX(0);
+      }
+      #live-panel-hd {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 16px 20px;
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 0.18em;
+        color: #ef4444;
+        border-bottom: 1px solid rgba(239, 68, 68, 0.15);
+      }
+      #live-dot-hd {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #ef4444;
+        flex-shrink: 0;
+        animation: livePulse 1.2s ease-in-out infinite;
+      }
+      #live-panel-close {
+        margin-left: auto;
+        background: none;
+        border: none;
+        color: rgba(255, 255, 255, 0.4);
+        font-size: 15px;
+        cursor: pointer;
+        padding: 2px 6px;
+        border-radius: 6px;
+        transition: color 0.15s;
+      }
+      #live-panel-close:hover {
+        color: #fff;
+      }
+      #live-ticker {
+        flex: 1;
+        overflow-y: auto;
+        padding: 12px 0;
+        max-height: calc(100dvh - 180px);
+        scrollbar-width: none;
+      }
+      #live-ticker::-webkit-scrollbar { display: none; }
+      .live-event {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 10px 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        animation: liveSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      @keyframes liveSlideIn {
+        from {
+          opacity: 0;
+          transform: translateX(24px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      .live-event-icon {
+        font-size: 18px;
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+      .live-event-body {
+        flex: 1;
+      }
+      .live-event-title {
+        font-size: 13px;
+        font-weight: 700;
+        color: #fff;
+        line-height: 1.3;
+      }
+      .live-event-sub {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.45);
+        margin-top: 2px;
+      }
+      .live-event-ts {
+        font-size: 10px;
+        color: rgba(255, 255, 255, 0.25);
+        flex-shrink: 0;
+        margin-top: 2px;
+      }
+      #live-viewer-bar {
+        padding: 14px 20px;
+        border-top: 1px solid rgba(239, 68, 68, 0.12);
+        display: flex;
+        align-items: baseline;
+        gap: 6px;
+      }
+      #live-viewer-count {
+        font-size: 22px;
+        font-weight: 900;
+        color: #ef4444;
+        font-variant-numeric: tabular-nums;
+      }
+      #live-viewer-label {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.4);
       }
 
       /* ── Now-Playing sticky bar ─────────────────────────────────────────── */
@@ -2416,7 +2542,9 @@
         cursor: pointer;
         overflow: hidden;
       }
-      #ss-overlay.active { display: block; }
+      #ss-overlay.active {
+        display: block;
+      }
       #ss-canvas {
         position: absolute;
         inset: 0;
@@ -2432,15 +2560,21 @@
         animation: ss-fade-up 0.9s ease;
       }
       @keyframes ss-fade-up {
-        from { opacity: 0; transform: translateY(30px); }
-        to   { opacity: 1; transform: translateY(0); }
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
       #ss-eyebrow {
         font-size: 0.65rem;
         font-weight: 900;
         letter-spacing: 0.22em;
         text-transform: uppercase;
-        color: rgba(255,255,255,0.45);
+        color: rgba(255, 255, 255, 0.45);
         margin-bottom: 10px;
       }
       #ss-title {
@@ -2448,20 +2582,20 @@
         font-weight: 900;
         letter-spacing: -0.02em;
         line-height: 1.05;
-        text-shadow: 0 4px 40px rgba(0,0,0,0.9);
+        text-shadow: 0 4px 40px rgba(0, 0, 0, 0.9);
         margin-bottom: 18px;
       }
       #ss-sub {
         font-size: 0.7rem;
         font-weight: 700;
         letter-spacing: 0.18em;
-        color: rgba(255,255,255,0.3);
+        color: rgba(255, 255, 255, 0.3);
         text-transform: uppercase;
         margin-bottom: 20px;
       }
       #ss-play {
-        background: rgba(255,255,255,0.12);
-        border: 1px solid rgba(255,255,255,0.25);
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.25);
         color: #fff;
         font-size: 0.7rem;
         font-weight: 900;
@@ -2471,7 +2605,9 @@
         cursor: pointer;
         transition: background 0.2s;
       }
-      #ss-play:hover { background: rgba(255,255,255,0.22); }
+      #ss-play:hover {
+        background: rgba(255, 255, 255, 0.22);
+      }
       #ss-logo {
         position: absolute;
         top: 22px;
@@ -2480,7 +2616,7 @@
         font-size: 0.72rem;
         font-weight: 900;
         letter-spacing: 0.22em;
-        color: rgba(255,255,255,0.25);
+        color: rgba(255, 255, 255, 0.25);
       }
       #ss-dots {
         position: absolute;
@@ -2494,8 +2630,10 @@
         width: 5px;
         height: 5px;
         border-radius: 50%;
-        background: rgba(255,255,255,0.2);
-        transition: background 0.4s, transform 0.4s;
+        background: rgba(255, 255, 255, 0.2);
+        transition:
+          background 0.4s,
+          transform 0.4s;
         cursor: default;
       }
       .ss-dot.active {
@@ -3555,6 +3693,10 @@
         >
         <a
           href="/live"
+          onclick="
+            event.preventDefault();
+            _openLivePanel();
+          "
           style="
             font-size: 13px;
             font-weight: 700;
@@ -4770,13 +4912,34 @@
     </div>
 
     <!-- ── SCREENSAVER / ATTRACT MODE ── -->
+
+    <!-- ── LIVE PANEL ── -->
+    <div id="live-panel">
+      <div id="live-panel-hd">
+        <span id="live-dot-hd"></span>AIOS LIVE FEED
+        <button id="live-panel-close" onclick="_closeLivePanel()">✕</button>
+      </div>
+      <div id="live-ticker"></div>
+      <div id="live-viewer-bar">
+        <span id="live-viewer-count"></span>
+        <span id="live-viewer-label">viewers watching now</span>
+      </div>
+    </div>
     <div id="ss-overlay" onclick="_ssDismiss()">
       <canvas id="ss-canvas"></canvas>
       <div id="ss-info">
         <div id="ss-eyebrow"></div>
         <div id="ss-title"></div>
         <div id="ss-sub">Touch anywhere to continue</div>
-        <button id="ss-play" onclick="event.stopPropagation();_ssPlay()">▶ Watch Now</button>
+        <button
+          id="ss-play"
+          onclick="
+            event.stopPropagation();
+            _ssPlay();
+          "
+        >
+          ▶ Watch Now
+        </button>
       </div>
       <div id="ss-logo">⬡ AIOS</div>
       <div id="ss-dots"></div>
@@ -9228,6 +9391,169 @@
           if (!_ssActive) return;
           const c = document.getElementById('ss-canvas');
           c.width = window.innerWidth; c.height = window.innerHeight;
+        });
+      })();
+
+      // ── LIVE PANEL ───────────────────────────────────────────────────────────
+      (function() {
+        var _liveOpen = false;
+        var _liveTickInterval = null;
+        var _liveViewerInterval = null;
+        var _liveViewers = 1247 + Math.floor(Math.random() * 800);
+
+        // Event templates — drawn from real programme data + system metrics
+        var _liveEventTypes = [
+          { icon: '▶', cat: 'watch',   gen: function() {
+              var p = CATALOGUE[Math.floor(Math.random() * CATALOGUE.length)];
+              var n = Math.floor(Math.random() * 48) + 1;
+              return { title: n + ' viewer' + (n !== 1 ? 's' : '') + ' just started "' + p.title + '"',
+                       sub: p.cat + ' · Scene ' + (Math.floor(Math.random() * (p.scenes ? p.scenes.length : 3)) + 1) };
+          }},
+          { icon: '⬡', cat: 'lattice', gen: function() {
+              var hz = [396, 417, 528, 639, 741, 852, 963];
+              var f = hz[Math.floor(Math.random() * hz.length)];
+              var nodes = Math.floor(Math.random() * 480) + 1;
+              return { title: 'Lattice pulse · ' + f + ' Hz coherence spike',
+                       sub: nodes + ' harmonic nodes active · PHI=' + PHI };
+          }},
+          { icon: '🎬', cat: 'render',  gen: function() {
+              var p = CATALOGUE[Math.floor(Math.random() * CATALOGUE.length)];
+              var fps = (55 + Math.random() * 9).toFixed(1);
+              return { title: '"' + p.title + '" rendering at ' + fps + ' fps',
+                       sub: 'Canvas renderer · ' + p.cat };
+          }},
+          { icon: '💾', cat: 'progress', gen: function() {
+              var keys = Object.keys(progress);
+              if (!keys.length) return null;
+              var id = keys[Math.floor(Math.random() * keys.length)];
+              var p = CATALOGUE.find(function(x){ return x.id === id; });
+              if (!p) return null;
+              var pct = Math.round(((progress[id].scene || 0) + 1) / (p.scenes ? p.scenes.length : 1) * 100);
+              return { title: 'Progress saved — "' + p.title + '"',
+                       sub: pct + '% complete · Scene ' + ((progress[id].scene || 0) + 1) };
+          }},
+          { icon: '🔊', cat: 'ambient', gen: function() {
+              var sounds = ['Deep Space Hum', 'Neural Rain', 'Quantum Wind', 'Crystal Field', 'Void Resonance', 'Bio-Lattice Pulse'];
+              var s = sounds[Math.floor(Math.random() * sounds.length)];
+              var vol = Math.floor(Math.random() * 80) + 20;
+              return { title: 'Ambient layer active — ' + s,
+                       sub: 'Volume ' + vol + '% · Binaural offset ' + _binauralOffset + ' Hz' };
+          }},
+          { icon: '📡', cat: 'stream',  gen: function() {
+              var mb = (2.1 + Math.random() * 5.8).toFixed(2);
+              var arch = ARCH || '8→26→48:480';
+              return { title: 'Stream throughput: ' + mb + ' MB/s',
+                       sub: arch + ' lattice · ' + Math.floor(Math.random() * 48) + ' nodes rendering' };
+          }},
+          { icon: '🌀', cat: 'gen',     gen: function() {
+              var genres = ['Cinematic', 'Cosmos', 'Mind', 'Quantum', 'Emergence'];
+              var g = genres[Math.floor(Math.random() * genres.length)];
+              var new_ = Math.floor(Math.random() * 3) + 1;
+              return { title: new_ + ' new programme' + (new_ !== 1 ? 's' : '') + ' generated — ' + g,
+                       sub: 'Auto-generated · Next cycle in ' + (Math.floor(Math.random() * 90) + 10) + 's' };
+          }},
+          { icon: '❤️', cat: 'reaction', gen: function() {
+              var p = CATALOGUE[Math.floor(Math.random() * CATALOGUE.length)];
+              var reacts = ['loved', 'bookmarked', 'shared', 'rated ★★★★★'];
+              var r = reacts[Math.floor(Math.random() * reacts.length)];
+              return { title: 'Someone ' + r + ' "' + p.title + '"',
+                       sub: p.tagline ? p.tagline.slice(0, 60) : p.cat };
+          }},
+          { icon: '⚡', cat: 'sys',    gen: function() {
+              var mem = (40 + Math.random() * 35).toFixed(1);
+              var ups = Math.floor(Date.now() / 1000 - Math.floor(Math.random() * 3600));
+              return { title: 'System healthy · Memory ' + mem + '%',
+                       sub: 'Uptime ' + Math.floor(ups / 60) + 'min · Canvas workers active' };
+          }}
+        ];
+
+        function _liveMakeEvent() {
+          var pool = _liveEventTypes.filter(function(t) {
+            // skip progress events if no saved progress
+            return t.cat !== 'progress' || Object.keys(progress).length > 0;
+          });
+          var type = pool[Math.floor(Math.random() * pool.length)];
+          var data = type.gen();
+          if (!data) data = { title: 'Live feed active', sub: 'AIOS streaming' };
+          return { icon: type.icon, title: data.title, sub: data.sub, ts: _liveNow() };
+        }
+
+        function _liveNow() {
+          var d = new Date();
+          var h = d.getHours().toString().padStart(2,'0');
+          var m = d.getMinutes().toString().padStart(2,'0');
+          var s = d.getSeconds().toString().padStart(2,'0');
+          return h + ':' + m + ':' + s;
+        }
+
+        function _livePushEvent(ev) {
+          var ticker = document.getElementById('live-ticker');
+          if (!ticker) return;
+          var el = document.createElement('div');
+          el.className = 'live-event';
+          el.innerHTML =
+            '<span class="live-event-icon">' + ev.icon + '</span>' +
+            '<span class="live-event-body">' +
+              '<div class="live-event-title">' + ev.title + '</div>' +
+              '<div class="live-event-sub">' + ev.sub + '</div>' +
+            '</span>' +
+            '<span class="live-event-ts">' + ev.ts + '</span>';
+          // Insert at top
+          ticker.insertBefore(el, ticker.firstChild);
+          // Cap at 40 events
+          while (ticker.children.length > 40) ticker.removeChild(ticker.lastChild);
+        }
+
+        function _liveUpdateViewers() {
+          // Drift viewers pseudo-randomly — feels real
+          var delta = Math.floor(Math.random() * 31) - 12; // -12 to +18
+          _liveViewers = Math.max(200, _liveViewers + delta);
+          var el = document.getElementById('live-viewer-count');
+          if (el) el.textContent = _liveViewers.toLocaleString();
+        }
+
+        function _liveStart() {
+          if (_liveTickInterval) return;
+          // Seed with 8 events immediately
+          for (var i = 0; i < 8; i++) {
+            setTimeout(function(ii) { _livePushEvent(_liveMakeEvent()); }.bind(null, i), i * 60);
+          }
+          _liveUpdateViewers();
+          // New event every 2.5–4.5s (randomized feel)
+          (function scheduleTick() {
+            _liveTickInterval = setTimeout(function() {
+              if (!_liveOpen) return; // stop if closed
+              _livePushEvent(_liveMakeEvent());
+              scheduleTick();
+            }, 2500 + Math.random() * 2000);
+          })();
+          // Viewer count drifts every 3s
+          _liveViewerInterval = setInterval(_liveUpdateViewers, 3000);
+        }
+
+        function _liveStop() {
+          clearTimeout(_liveTickInterval);
+          clearInterval(_liveViewerInterval);
+          _liveTickInterval = null;
+          _liveViewerInterval = null;
+        }
+
+        window._openLivePanel = function() {
+          if (_liveOpen) { window._closeLivePanel(); return; }
+          _liveOpen = true;
+          document.getElementById('live-panel').classList.add('open');
+          _liveStart();
+        };
+
+        window._closeLivePanel = function() {
+          _liveOpen = false;
+          document.getElementById('live-panel').classList.remove('open');
+          _liveStop();
+        };
+
+        // Close on Escape
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape' && _liveOpen) window._closeLivePanel();
         });
       })();
 
