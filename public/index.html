@@ -1423,12 +1423,9 @@
         function fetchStats() {
           fetch('/api/geo/stats').then(function(r){return r.json();}).then(function(d){
             var el = document.getElementById.bind(document);
-            if (el('gs-lib')) el('gs-lib').textContent = d.catalogueSize || '—';
-            if (el('gs-prod')) el('gs-prod').textContent = d.totalProduced || '—';
-            if (el('gs-hrs')) {
-              var hrs = d.totalDurationMin ? (d.totalDurationMin / 60).toFixed(1) : '—';
-              el('gs-hrs').textContent = hrs;
-            }
+            if (el('gs-lib')) el('gs-lib').textContent = d.catalogue != null ? d.catalogue : '—';
+            if (el('gs-prod')) el('gs-prod').textContent = d.productionCount != null ? d.productionCount : '—';
+            if (el('gs-hrs')) el('gs-hrs').textContent = d.totalDurationHours != null ? d.totalDurationHours : '—';
             lastFetch = Date.now();
             countdown = INTERVAL_MS / 1000;
           }).catch(function(){});
