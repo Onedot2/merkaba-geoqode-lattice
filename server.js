@@ -1020,6 +1020,10 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
     if (req.method === "GET" && pathname.startsWith("/public/")) {
       const safeSuffix = pathname.slice("/public/".length).replace(/\.\./g, "");
       const filePath = join(PUBLIC_DIR, safeSuffix);
+      // Bounds check: resolved path must remain inside PUBLIC_DIR
+      if (!filePath.startsWith(PUBLIC_DIR + "/") && filePath !== PUBLIC_DIR) {
+        return json(res, 400, { ok: false, error: "Invalid path" });
+      }
       if (existsSync(filePath)) {
         const ext = extname(filePath);
         const mime = MIME_TYPES[ext] || "application/octet-stream";
