@@ -1658,9 +1658,9 @@
         box-shadow:
           0 20px 60px rgba(0, 0, 0, 0.8),
           0 0 0 1px rgba(255, 255, 255, 0.09);
-        cursor: pointer;
-        transition: box-shadow 0.2s;
+        cursor: grab;
       }
+      #player.mini.mini-dragging { cursor: grabbing !important; }
       #player.mini:hover {
         box-shadow:
           0 24px 72px rgba(0, 0, 0, 0.85),
@@ -2057,6 +2057,48 @@
         position: relative;
         overflow: hidden;
       }
+
+      /* Ambient Mixer */
+      @keyframes ambSlide { from { opacity:0; transform:translateY(-8px); } to { opacity:1; transform:translateY(0); } }
+      .amb-ch { display:flex; align-items:center; gap:10px; padding:8px 4px; border-radius:8px; }
+      .amb-ch:hover { background:rgba(255,255,255,0.03); }
+      .amb-toggle { width:32px;height:32px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.04);cursor:pointer;font-size:14px;transition:all 0.15s;flex-shrink:0; }
+      .amb-toggle.on { border-color:rgba(16,185,129,0.6);background:rgba(16,185,129,0.15);box-shadow:0 0 10px rgba(16,185,129,0.25); }
+      .amb-label { font-size:0.7rem;font-weight:700;color:rgba(255,255,255,0.55);width:80px;flex-shrink:0; }
+      .amb-slider { flex:1;height:3px;accent-color:#10b981;cursor:pointer; }
+
+      /* Command Palette */
+      #cmd-overlay { position:fixed;inset:0;z-index:700;display:none; }
+      #cmd-back { position:absolute;inset:0;background:rgba(0,0,0,0.65);backdrop-filter:blur(8px); }
+      #cmd-box { position:absolute;top:12%;left:50%;transform:translateX(-50%);width:min(580px,94vw);background:rgba(10,6,24,0.98);border:1px solid rgba(168,85,247,0.3);border-radius:16px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,0.8),0 0 0 0.5px rgba(168,85,247,0.15); }
+      #cmd-input-wrap { display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid rgba(255,255,255,0.07); }
+      #cmd-icon { font-size:18px;color:rgba(168,85,247,0.7);flex-shrink:0; }
+      #cmd-input { flex:1;background:none;border:none;outline:none;font-size:1rem;color:#e8e8f0;font-weight:500; }
+      #cmd-input::placeholder { color:rgba(255,255,255,0.2); }
+      #cmd-results { max-height:380px;overflow-y:auto;padding:8px; }
+      .cmd-item { display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:8px;cursor:pointer;transition:background 0.1s; }
+      .cmd-item:hover, .cmd-item.cmd-sel { background:rgba(168,85,247,0.12); }
+      .cmd-item-icon { width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0; }
+      .cmd-item-text { flex:1;min-width:0; }
+      .cmd-item-title { font-size:0.82rem;font-weight:700;color:#e8e8f0; }
+      .cmd-item-sub { font-size:0.65rem;color:rgba(255,255,255,0.35);margin-top:1px; }
+      .cmd-item-kbd { font-size:0.6rem;color:rgba(255,255,255,0.22);font-family:'SF Mono',monospace;border:1px solid rgba(255,255,255,0.1);border-radius:4px;padding:1px 6px;white-space:nowrap;flex-shrink:0; }
+      .cmd-group { font-size:0.58rem;font-weight:900;letter-spacing:0.18em;color:rgba(255,255,255,0.2);padding:10px 12px 4px;text-transform:uppercase; }
+      #cmd-footer { padding:8px 16px;border-top:1px solid rgba(255,255,255,0.05);display:flex;gap:16px; }
+      .cmd-hint { font-size:0.6rem;color:rgba(255,255,255,0.2);display:flex;align-items:center;gap:4px; }
+      .cmd-hint kbd { border:1px solid rgba(255,255,255,0.15);border-radius:3px;padding:0 4px;font-size:0.58rem; }
+
+      /* Color Themes */
+      :root { --theme-accent:#a855f7; --theme-cyan:#00e5ff; --theme-bg1:#0a0014; --theme-bg2:#030014; }
+      [data-theme='emerald'] { --theme-accent:#10b981; --theme-cyan:#34d399; --theme-bg1:#001a0a; --theme-bg2:#000d05; }
+      [data-theme='solar'] { --theme-accent:#f59e0b; --theme-cyan:#fcd34d; --theme-bg1:#1a0f00; --theme-bg2:#0d0800; }
+      [data-theme='void'] { --theme-accent:#6366f1; --theme-cyan:#818cf8; --theme-bg1:#050508; --theme-bg2:#02020a; }
+      #theme-panel { position:fixed;bottom:80px;right:16px;z-index:600;background:rgba(10,6,24,0.97);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:14px;display:none;width:200px;box-shadow:0 20px 50px rgba(0,0,0,0.7); }
+      .theme-chip { display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;cursor:pointer;transition:background 0.15s; }
+      .theme-chip:hover,.theme-chip.cur { background:rgba(255,255,255,0.07); }
+      .theme-dot { width:18px;height:18px;border-radius:50%;flex-shrink:0; }
+      .theme-name { font-size:0.72rem;font-weight:700;color:rgba(255,255,255,0.65); }
+      .theme-chip.cur .theme-name { color:#fff; }
 
       /* Episode Guide */
       #guide-overlay {
@@ -2873,6 +2915,10 @@
           <button class="nav-icon-btn" title="Notifications" onclick="_openNotif()" style="font-size:16px;opacity:0.7">🔔</button>
           <span class="q-badge" id="notif-badge" style="background:#f59e0b"></span>
         </div>
+        <div style="position:relative;display:inline-flex">
+          <button class="nav-icon-btn" id="amb-btn" title="Ambient Mixer (A)" onclick="_openAmb()" style="font-size:16px;opacity:0.55">🎛</button>
+          <span class="q-badge" id="amb-badge" style="background:#10b981;display:none"></span>
+        </div>
         <button
           class="nav-icon-btn"
           title="Keyboard shortcuts (?)"
@@ -2889,6 +2935,7 @@
         >
           ?
         </button>
+        <button class="nav-icon-btn" title="Color Theme" onclick="_toggleThemePanel()" style="font-size:14px;opacity:0.55">🎨</button>
         <div style="position: relative">
           <div
             class="nav-avatar signed-out"
@@ -3024,12 +3071,10 @@
           <div class="kbd-row"><span class="kbd-key">B</span> Mini Player</div>
           <div class="kbd-row"><span class="kbd-key">R</span> React</div>
           <div class="kbd-row"><span class="kbd-key">C</span> Cinema Mode</div>
-          <div class="kbd-row"><span class="kbd-key">Ctrl K</span> Search</div>
+          <div class="kbd-row"><span class="kbd-key">A</span> Ambient Mixer</div>
+          <div class="kbd-row"><span class="kbd-key">/ or Ctrl K</span> Command Palette</div>
           <div class="kbd-row">
             <span class="kbd-key">Esc</span> Close Player
-          </div>
-          <div class="kbd-row">
-            <span class="kbd-key">/</span> Jump to Search
           </div>
           <div class="kbd-row"><span class="kbd-key">?</span> This Panel</div>
         </div>
@@ -3787,6 +3832,26 @@
       </div>
     </div>
 
+    <!-- ── AMBIENT MIXER ── -->
+    <div id="amb-panel" style="
+      position:fixed;top:60px;right:12px;z-index:600;
+      width:290px;background:rgba(8,4,20,0.97);
+      border:1px solid rgba(16,185,129,0.25);border-radius:14px;
+      padding:18px 16px 14px;display:none;
+      box-shadow:0 20px 50px rgba(0,0,0,0.7),0 0 0 0.5px rgba(16,185,129,0.1);
+      animation:ambSlide 0.22s ease">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+        <span style="font-size:0.65rem;font-weight:900;letter-spacing:0.18em;color:rgba(16,185,129,0.8)">AMBIENT MIXER</span>
+        <button onclick="_closeAmb()" style="background:none;border:none;color:rgba(255,255,255,0.4);font-size:14px;cursor:pointer">✕</button>
+      </div>
+      <div id="amb-channels"></div>
+      <div style="margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.06);display:flex;gap:8px">
+        <button onclick="_ambAllOff()" style="flex:1;padding:6px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.45);font-size:0.65rem;font-weight:800;letter-spacing:0.1em;cursor:pointer">ALL OFF</button>
+        <button onclick="_ambPreset('focus')" style="flex:1;padding:6px;border-radius:8px;border:1px solid rgba(16,185,129,0.2);background:rgba(16,185,129,0.06);color:rgba(16,185,129,0.7);font-size:0.65rem;font-weight:800;letter-spacing:0.1em;cursor:pointer">FOCUS</button>
+        <button onclick="_ambPreset('sleep')" style="flex:1;padding:6px;border-radius:8px;border:1px solid rgba(99,102,241,0.2);background:rgba(99,102,241,0.06);color:rgba(99,102,241,0.7);font-size:0.65rem;font-weight:800;letter-spacing:0.1em;cursor:pointer">SLEEP</button>
+      </div>
+    </div>
+
     <!-- ── EPISODE GUIDE ── -->
     <div id="guide-overlay" style="display:none">
       <div id="guide-back" onclick="closeGuide()"></div>
@@ -3800,6 +3865,44 @@
         </div>
         <div id="guide-tabs"></div>
         <div id="guide-ep-list"></div>
+      </div>
+    </div>
+
+    <!-- ── COMMAND PALETTE ── -->
+    <div id="cmd-overlay">
+      <div id="cmd-back" onclick="_closeCmd()"></div>
+      <div id="cmd-box">
+        <div id="cmd-input-wrap">
+          <span id="cmd-icon">⌘</span>
+          <input id="cmd-input" placeholder="Search programmes, actions…" autocomplete="off" spellcheck="false"/>
+        </div>
+        <div id="cmd-results"></div>
+        <div id="cmd-footer">
+          <span class="cmd-hint"><kbd>↑↓</kbd> navigate</span>
+          <span class="cmd-hint"><kbd>↵</kbd> select</span>
+          <span class="cmd-hint"><kbd>Esc</kbd> close</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── THEME PANEL ── -->
+    <div id="theme-panel">
+      <div style="font-size:0.6rem;font-weight:900;letter-spacing:0.18em;color:rgba(255,255,255,0.3);margin-bottom:10px">COLOR THEME</div>
+      <div class="theme-chip" onclick="_setTheme('default')" data-theme-id="default">
+        <div class="theme-dot" style="background:linear-gradient(135deg,#a855f7,#6366f1)"></div>
+        <span class="theme-name">Cosmic Purple</span>
+      </div>
+      <div class="theme-chip" onclick="_setTheme('emerald')" data-theme-id="emerald">
+        <div class="theme-dot" style="background:linear-gradient(135deg,#10b981,#34d399)"></div>
+        <span class="theme-name">Neon Emerald</span>
+      </div>
+      <div class="theme-chip" onclick="_setTheme('solar')" data-theme-id="solar">
+        <div class="theme-dot" style="background:linear-gradient(135deg,#f59e0b,#fcd34d)"></div>
+        <span class="theme-name">Solar Gold</span>
+      </div>
+      <div class="theme-chip" onclick="_setTheme('void')" data-theme-id="void">
+        <div class="theme-dot" style="background:linear-gradient(135deg,#6366f1,#818cf8)"></div>
+        <span class="theme-name">Void Indigo</span>
       </div>
     </div>
 
@@ -7161,11 +7264,21 @@
           case 'l': case 'L': _skip10(1); break;
           case 'r': case 'R': if (currentProg) _toggleReactPicker(null); break;
           case 'c': case 'C': _toggleCinema(); break;
+          case 'a': case 'A': _openAmb(); break;
           case 'Escape':
             if (document.getElementById('player').classList.contains('mini')) { _expandMiniPlayer(); }
             else if (!document.fullscreenElement) closePlayer();
             break;
         }
+      });
+
+      // Global shortcuts (non-player: Ctrl+K, /)
+      document.addEventListener('keydown', function(ev) {
+        const tag = (ev.target.tagName||'').toLowerCase();
+        if (tag === 'input' || tag === 'textarea') return;
+        if ((ev.ctrlKey || ev.metaKey) && ev.key === 'k') { ev.preventDefault(); _openCmd(); return; }
+        if (ev.key === '/' && !_cmdOpen && !_searchOpen) { ev.preventDefault(); _openCmd(); return; }
+        if (ev.key === 'Escape' && _cmdOpen) { _closeCmd(); return; }
       });
 
       // ─────────────────────────────────────────────────────────────
@@ -7673,6 +7786,298 @@
         if (wrap && !wrap.contains(e.target)) document.getElementById('bine-popup').classList.remove('vis');
       });
 
+      });
+
+      // ── Ambient Sound Mixer ───────────────────────────────────────────────────
+      const _AMB_CHANNELS = [
+        { id:'rain',    label:'🌧 Rain',        color:'#38bdf8' },
+        { id:'cosmic',  label:'🌌 Cosmic',      color:'#a78bfa' },
+        { id:'crystal', label:'🔮 Crystal',     color:'#34d399' },
+        { id:'void',    label:'🕳 Void',        color:'#6366f1' },
+        { id:'thunder', label:'⚡ Thunder',     color:'#fbbf24' },
+      ];
+      const _ambState = {}; // { id: { gain, active, vol } }
+      let _ambAudioCtx = null;
+
+      function _ambGetCtx() {
+        if (!_ambAudioCtx) _ambAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (_ambAudioCtx.state === 'suspended') _ambAudioCtx.resume();
+        return _ambAudioCtx;
+      }
+
+      function _buildAmbChannel(ch) {
+        const ctx = _ambGetCtx();
+        const masterGain = ctx.createGain();
+        masterGain.gain.value = (_ambState[ch.id]||{}).vol || 0.4;
+        masterGain.connect(ctx.destination);
+        let nodes = [];
+
+        if (ch.id === 'rain') {
+          // White noise buffer (2s)
+          const buf = ctx.createBuffer(1, ctx.sampleRate * 2, ctx.sampleRate);
+          const data = buf.getChannelData(0);
+          for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+          const src = ctx.createBufferSource(); src.buffer = buf; src.loop = true;
+          const filt = ctx.createBiquadFilter(); filt.type = 'lowpass'; filt.frequency.value = 900;
+          src.connect(filt); filt.connect(masterGain); src.start();
+          nodes = [src, filt, masterGain];
+        } else if (ch.id === 'cosmic') {
+          // Low drone — 3 detuned oscillators PHI-spaced
+          const freqs = [40, 40 * 1.618, 40 * 1.618 * 1.618];
+          freqs.forEach(f => {
+            const osc = ctx.createOscillator(); osc.type = 'sine'; osc.frequency.value = f;
+            const g = ctx.createGain(); g.gain.value = 0.25;
+            osc.connect(g); g.connect(masterGain); osc.start();
+            nodes.push(osc, g);
+          });
+          nodes.push(masterGain);
+        } else if (ch.id === 'crystal') {
+          // Crystal bowl — harmonic sine stack with delay reverb
+          const delay = ctx.createDelay(2); delay.delayTime.value = 0.35;
+          const fb = ctx.createGain(); fb.gain.value = 0.45;
+          delay.connect(fb); fb.connect(delay); delay.connect(masterGain);
+          [432, 528, 639, 741].forEach(f => {
+            const osc = ctx.createOscillator(); osc.type = 'sine'; osc.frequency.value = f;
+            const g = ctx.createGain(); g.gain.value = 0.08;
+            osc.connect(g); g.connect(delay); g.connect(masterGain); osc.start();
+            nodes.push(osc, g);
+          });
+          nodes.push(delay, fb, masterGain);
+        } else if (ch.id === 'void') {
+          // Very low sub rumble + pink-ish noise
+          const buf = ctx.createBuffer(1, ctx.sampleRate * 4, ctx.sampleRate);
+          const data = buf.getChannelData(0);
+          let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0;
+          for (let i = 0; i < data.length; i++) {
+            const wn = Math.random()*2-1;
+            b0=0.99886*b0+wn*0.0555179; b1=0.99332*b1+wn*0.0750759;
+            b2=0.96900*b2+wn*0.1538520; b3=0.86650*b3+wn*0.3104856;
+            b4=0.55000*b4+wn*0.5329522; b5=-0.7616*b5-wn*0.0168980;
+            data[i]=(b0+b1+b2+b3+b4+b5+b6+wn*0.5362)*0.11; b6=wn*0.115926;
+          }
+          const src = ctx.createBufferSource(); src.buffer = buf; src.loop = true;
+          const filt = ctx.createBiquadFilter(); filt.type = 'lowpass'; filt.frequency.value = 200;
+          const osc = ctx.createOscillator(); osc.type = 'sine'; osc.frequency.value = 28;
+          const og = ctx.createGain(); og.gain.value = 0.5;
+          src.connect(filt); filt.connect(masterGain); osc.connect(og); og.connect(masterGain);
+          src.start(); osc.start();
+          nodes = [src, filt, osc, og, masterGain];
+        } else if (ch.id === 'thunder') {
+          // Low rumble burst — brown noise filtered
+          const buf = ctx.createBuffer(1, ctx.sampleRate * 3, ctx.sampleRate);
+          const data = buf.getChannelData(0);
+          let last = 0;
+          for (let i = 0; i < data.length; i++) {
+            const wn = Math.random() * 2 - 1;
+            last = (last + 0.02 * wn) / 1.02;
+            data[i] = last * 3.5;
+          }
+          const src = ctx.createBufferSource(); src.buffer = buf; src.loop = true;
+          const filt = ctx.createBiquadFilter(); filt.type = 'lowpass'; filt.frequency.value = 400;
+          src.connect(filt); filt.connect(masterGain); src.start();
+          nodes = [src, filt, masterGain];
+        }
+        return { nodes, masterGain };
+      }
+
+      function _ambToggle(id) {
+        if (!_ambState[id]) _ambState[id] = { active: false, vol: 0.4 };
+        const ch = _AMB_CHANNELS.find(c => c.id === id);
+        if (_ambState[id].active) {
+          // Stop
+          (_ambState[id].nodes || []).forEach(n => { try { if (n.stop) n.stop(); } catch(_){} try { n.disconnect(); } catch(_){} });
+          _ambState[id].active = false;
+          _ambState[id].nodes = [];
+        } else {
+          const built = _buildAmbChannel(ch);
+          _ambState[id].active = true;
+          _ambState[id].nodes = built.nodes;
+          _ambState[id].gainNode = built.masterGain;
+        }
+        _renderAmbChannels();
+        _updateAmbBadge();
+      }
+
+      function _ambSetVol(id, vol) {
+        if (!_ambState[id]) _ambState[id] = { active: false, vol };
+        _ambState[id].vol = vol;
+        if (_ambState[id].gainNode) _ambState[id].gainNode.gain.value = vol;
+      }
+
+      function _renderAmbChannels() {
+        document.getElementById('amb-channels').innerHTML = _AMB_CHANNELS.map(ch => {
+          const st = _ambState[ch.id] || {};
+          const vol = st.vol !== undefined ? st.vol : 0.4;
+          return `<div class="amb-ch">
+            <button class="amb-toggle${st.active?' on':''}" onclick="_ambToggle('${ch.id}')" style="${st.active?`color:${ch.color};background:rgba(${ch.color.slice(1).match(/../g).map(h=>parseInt(h,16)).join(',')},0.15)`:''}">
+              ${ch.label.split(' ')[0]}
+            </button>
+            <span class="amb-label">${ch.label.split(' ').slice(1).join(' ')}</span>
+            <input type="range" class="amb-slider" min="0" max="1" step="0.05" value="${vol}"
+              style="accent-color:${ch.color}"
+              oninput="_ambSetVol('${ch.id}',parseFloat(this.value))">
+          </div>`;
+        }).join('');
+      }
+
+      function _updateAmbBadge() {
+        const active = _AMB_CHANNELS.filter(c => (_ambState[c.id]||{}).active).length;
+        const badge = document.getElementById('amb-badge');
+        if (active) { badge.textContent = active; badge.style.display = ''; }
+        else { badge.style.display = 'none'; }
+        document.getElementById('amb-btn').style.opacity = active ? '1' : '0.55';
+      }
+
+      function _openAmb() {
+        const panel = document.getElementById('amb-panel');
+        if (panel.style.display !== 'none') { _closeAmb(); return; }
+        _renderAmbChannels();
+        panel.style.display = '';
+        // Close other panels
+        document.getElementById('notif-panel').style.display = 'none';
+        document.getElementById('queue-panel').classList.remove('open');
+      }
+      function _closeAmb() { document.getElementById('amb-panel').style.display = 'none'; }
+      document.addEventListener('click', e => {
+        const p = document.getElementById('amb-panel');
+        const b = document.getElementById('amb-btn');
+        if (p && b && !p.contains(e.target) && !b.contains(e.target)) p.style.display = 'none';
+      });
+
+      function _ambAllOff() {
+        _AMB_CHANNELS.forEach(ch => {
+          if ((_ambState[ch.id]||{}).active) _ambToggle(ch.id);
+        });
+      }
+      function _ambPreset(name) {
+        _ambAllOff();
+        if (name === 'focus') {
+          // Cosmic low + Crystal hi
+          setTimeout(() => _ambToggle('cosmic'), 50);
+          setTimeout(() => { _ambToggle('crystal'); _ambSetVol('crystal', 0.25); _renderAmbChannels(); }, 100);
+          toast('🎛 Focus preset — Cosmic + Crystal');
+        } else if (name === 'sleep') {
+          setTimeout(() => _ambToggle('rain'), 50);
+          setTimeout(() => { _ambToggle('void'); _ambSetVol('void', 0.2); _renderAmbChannels(); }, 100);
+          toast('🎛 Sleep preset — Rain + Void');
+        }
+        setTimeout(_updateAmbBadge, 200);
+      }
+
+      // ── Command Palette ────────────────────────────────────────────────────────
+      let _cmdOpen = false;
+      let _cmdSel = 0;
+      let _cmdItems = [];
+
+      const _CMD_ACTIONS = [
+        { title:'Search Programmes', sub:'Open search overlay', icon:'⌕', kbd:'Ctrl+K', action: openSearch },
+        { title:'Toggle Binaural', sub:'Start/stop binaural entrainment', icon:'⬡', kbd:'N', action: toggleBinaural },
+        { title:'Toggle Cinema Mode', sub:'Hide all UI chrome', icon:'◼', kbd:'C', action: _toggleCinema },
+        { title:'Ambient Mixer', sub:'Open sound mixer', icon:'🎛', kbd:'', action: _openAmb },
+        { title:'Watch Stats', sub:'View your watch statistics', icon:'◈', kbd:'', action: showWatchStats },
+        { title:'Episode Guide S1', sub:'Origins — Geometry of Consciousness', icon:'⬡', kbd:'', action: ()=>openGuide('origins') },
+        { title:'Episode Guide S2', sub:'Emergence — The Birth of Intelligence', icon:'⬡', kbd:'', action: ()=>openGuide('emergence') },
+        { title:'Shuffle Play', sub:'Play a random programme', icon:'⇌', kbd:'', action: _shufflePlay },
+        { title:'My List', sub:'Scroll to My List row', icon:'♥', kbd:'', action: ()=>scrollToRow('mylist') },
+      ];
+
+      function _openCmd() {
+        if (_cmdOpen) return;
+        _cmdOpen = true;
+        const ov = document.getElementById('cmd-overlay');
+        ov.style.display = '';
+        document.getElementById('cmd-input').value = '';
+        _renderCmd('');
+        setTimeout(() => document.getElementById('cmd-input').focus(), 30);
+      }
+      function _closeCmd() {
+        _cmdOpen = false;
+        document.getElementById('cmd-overlay').style.display = 'none';
+      }
+      function _renderCmd(q) {
+        const lower = q.toLowerCase();
+        const progMatches = CATALOGUE.filter(p =>
+          p.title.toLowerCase().includes(lower) ||
+          (p.tagline||'').toLowerCase().includes(lower) ||
+          (p.genre||[]).some(g => g.toLowerCase().includes(lower))
+        ).slice(0, 5);
+        const actMatches = lower ? _CMD_ACTIONS.filter(a =>
+          a.title.toLowerCase().includes(lower) || a.sub.toLowerCase().includes(lower)
+        ) : _CMD_ACTIONS;
+
+        _cmdItems = [];
+        let html = '';
+        if (actMatches.length) {
+          html += `<div class="cmd-group">Actions</div>`;
+          actMatches.forEach(a => {
+            _cmdItems.push({ type:'action', data:a });
+            html += `<div class="cmd-item" data-idx="${_cmdItems.length-1}" onclick="_execCmd(${_cmdItems.length-1})">
+              <div class="cmd-item-icon" style="background:rgba(168,85,247,0.12)">${a.icon}</div>
+              <div class="cmd-item-text"><div class="cmd-item-title">${a.title}</div><div class="cmd-item-sub">${a.sub}</div></div>
+              ${a.kbd ? `<span class="cmd-item-kbd">${a.kbd}</span>` : ''}
+            </div>`;
+          });
+        }
+        if (progMatches.length) {
+          html += `<div class="cmd-group">Programmes</div>`;
+          progMatches.forEach(p => {
+            _cmdItems.push({ type:'prog', data:p });
+            html += `<div class="cmd-item" data-idx="${_cmdItems.length-1}" onclick="_execCmd(${_cmdItems.length-1})">
+              <div class="cmd-item-icon" style="background:${p.thumb||p.accent||'#0a0a1e'}">${p.icon}</div>
+              <div class="cmd-item-text"><div class="cmd-item-title">${p.title}</div><div class="cmd-item-sub">${fmtRuntime(p.runtime)} · ${(p.genre||[]).slice(0,2).join(', ')}</div></div>
+              <span class="cmd-item-kbd">Play</span>
+            </div>`;
+          });
+        }
+        if (!html) html = '<div style="padding:24px;text-align:center;color:rgba(255,255,255,0.25);font-size:0.8rem">No results</div>';
+        document.getElementById('cmd-results').innerHTML = html;
+        _cmdSel = 0;
+        _updateCmdSel();
+      }
+      function _updateCmdSel() {
+        document.querySelectorAll('.cmd-item').forEach((el, i) => {
+          el.classList.toggle('cmd-sel', i === _cmdSel);
+          if (i === _cmdSel) el.scrollIntoView({ block:'nearest' });
+        });
+      }
+      function _execCmd(idx) {
+        const item = _cmdItems[idx];
+        if (!item) return;
+        _closeCmd();
+        if (item.type === 'action') { item.data.action(); }
+        else if (item.type === 'prog') { openPlayer(item.data.id, 0); }
+      }
+      document.getElementById('cmd-input').addEventListener('input', e => _renderCmd(e.target.value));
+      document.getElementById('cmd-input').addEventListener('keydown', e => {
+        if (e.key === 'ArrowDown') { e.preventDefault(); _cmdSel = Math.min(_cmdSel+1, _cmdItems.length-1); _updateCmdSel(); }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); _cmdSel = Math.max(_cmdSel-1, 0); _updateCmdSel(); }
+        else if (e.key === 'Enter') { _execCmd(_cmdSel); }
+        else if (e.key === 'Escape') { _closeCmd(); }
+      });
+
+      // ── Color Theme Picker ────────────────────────────────────────────────────
+      function _setTheme(name) {
+        document.documentElement.setAttribute('data-theme', name === 'default' ? '' : name);
+        try { localStorage.setItem('aios_theme', name); } catch(_){}
+        document.querySelectorAll('.theme-chip').forEach(el => el.classList.toggle('cur', el.dataset.themeId === name));
+        document.getElementById('theme-panel').style.display = 'none';
+        const names = { default:'Cosmic Purple', emerald:'Neon Emerald', solar:'Solar Gold', void:'Void Indigo' };
+        toast('🎨 ' + (names[name]||name));
+      }
+      function _toggleThemePanel() {
+        const p = document.getElementById('theme-panel');
+        p.style.display = p.style.display !== 'none' ? 'none' : '';
+        if (p.style.display !== 'none') {
+          const saved = (() => { try { return localStorage.getItem('aios_theme')||'default'; } catch(_){ return 'default'; }})();
+          document.querySelectorAll('.theme-chip').forEach(el => el.classList.toggle('cur', el.dataset.themeId === saved));
+        }
+      }
+      // Restore theme on load
+      (function() {
+        const saved = (() => { try { return localStorage.getItem('aios_theme')||'default'; } catch(_){ return 'default'; }})();
+        if (saved && saved !== 'default') document.documentElement.setAttribute('data-theme', saved);
+      })();
+
       // ── Binge Season ─────────────────────────────────────────────────────────
       window.startBinge = function(rowId) {
         // rowId e.g. 'season1' → find all progs with season='origins' (ep-sorted)
@@ -7691,23 +8096,64 @@
         document.getElementById('player').classList.contains('mini')
           ? _expandMiniPlayer() : _activateMiniPlayer();
       }
+      let _miniDragCleanup = null;
       function _activateMiniPlayer() {
         const el = document.getElementById('player');
+        // Restore saved position
+        const saved = (() => { try { return JSON.parse(localStorage.getItem('aios_mini_pos')||'null'); } catch(_){return null;} })();
+        el.style.bottom = ''; el.style.right = '';
+        if (saved) { el.style.top = saved.top + 'px'; el.style.left = saved.left + 'px'; }
+        else { el.style.bottom = '24px'; el.style.right = '24px'; el.style.top = ''; el.style.left = ''; }
         el.classList.add('mini');
         document.body.style.overflow = '';
-        el._miniClick = (e) => {
+        // Drag logic
+        let _ox = 0, _oy = 0, _dragging = false;
+        function _onDown(e) {
           if (e.target.classList.contains('mini-fab')) return;
+          _dragging = false;
+          const rect = el.getBoundingClientRect();
+          _ox = e.clientX - rect.left; _oy = e.clientY - rect.top;
+          el.setPointerCapture && el.setPointerCapture(e.pointerId);
+          e.preventDefault();
+        }
+        function _onMove(e) {
+          if (!e.buttons) return;
+          _dragging = true;
+          el.classList.add('mini-dragging');
+          const nx = Math.max(0, Math.min(window.innerWidth - el.offsetWidth, e.clientX - _ox));
+          const ny = Math.max(0, Math.min(window.innerHeight - el.offsetHeight, e.clientY - _oy));
+          el.style.left = nx + 'px'; el.style.top = ny + 'px';
+          el.style.bottom = ''; el.style.right = '';
+        }
+        function _onUp(e) {
+          el.classList.remove('mini-dragging');
+          if (_dragging) {
+            try { localStorage.setItem('aios_mini_pos', JSON.stringify({ top: parseInt(el.style.top), left: parseInt(el.style.left) })); } catch(_){}
+          }
+        }
+        el.addEventListener('pointerdown', _onDown);
+        el.addEventListener('pointermove', _onMove);
+        el.addEventListener('pointerup', _onUp);
+        el._miniClick = (e) => {
+          if (e.target.classList.contains('mini-fab') || _dragging) return;
           _expandMiniPlayer();
         };
         el.addEventListener('click', el._miniClick);
+        _miniDragCleanup = () => {
+          el.removeEventListener('pointerdown', _onDown);
+          el.removeEventListener('pointermove', _onMove);
+          el.removeEventListener('pointerup', _onUp);
+        };
         _syncNpBar();
         document.getElementById('np-bar').classList.add('active');
       }
       function _expandMiniPlayer() {
         const el = document.getElementById('player');
         el.classList.remove('mini');
+        el.style.top = ''; el.style.left = ''; el.style.bottom = ''; el.style.right = '';
         document.body.style.overflow = 'hidden';
         if (el._miniClick) { el.removeEventListener('click', el._miniClick); el._miniClick = null; }
+        if (_miniDragCleanup) { _miniDragCleanup(); _miniDragCleanup = null; }
         document.getElementById('np-bar').classList.remove('active');
       }
 
