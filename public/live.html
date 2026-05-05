@@ -1,582 +1,1291 @@
-﻿<!DOCTYPE html>
+﻿<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AIOS LIVE — 24/7 .geo Broadcast Channel</title>
-  <meta name="description" content="AIOS LIVE: The world's first AI-native 24/7 broadcast channel. AIOSProducerSwarm generates a new .geo programme every 2 minutes. No pre-recorded media." />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --bg: #04040c;
-      --surface: #0c0c1a;
-      --border: rgba(255,255,255,0.07);
-      --text: #edf4ff;
-      --muted: rgba(237,244,255,0.4);
-      --red: #ef4444;
-      --cyan: #00d4ff;
-      --teal: #00f5d4;
-      --purple: #a78bfa;
-      --gold: #fbbf24;
-    }
-    html, body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; overflow-x: hidden; }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AIOS LIVE — 24/7 .geo Broadcast Channel</title>
+    <meta
+      name="description"
+      content="AIOS LIVE: The world's first AI-native 24/7 broadcast channel. AIOSProducerSwarm generates a new .geo programme every 2 minutes. No pre-recorded media."
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --bg: #04040c;
+        --surface: #0c0c1a;
+        --border: rgba(255, 255, 255, 0.07);
+        --text: #edf4ff;
+        --muted: rgba(237, 244, 255, 0.4);
+        --red: #ef4444;
+        --cyan: #00d4ff;
+        --teal: #00f5d4;
+        --purple: #a78bfa;
+        --gold: #fbbf24;
+      }
+      html,
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
 
-    /* NAV */
-    nav { position: sticky; top: 0; z-index: 60; background: rgba(4,4,12,0.95); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0.6rem 1.2rem; }
-    .nav-logo { font-size: 0.95rem; font-weight: 900; letter-spacing: -0.02em; color: var(--text); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
-    .live-badge { display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.35); border-radius: 6px; font-size: 0.65rem; font-weight: 800; letter-spacing: 0.12em; color: var(--red); padding: 0.18rem 0.55rem; animation: livePulse 2s ease-in-out infinite; }
-    @keyframes livePulse { 0%,100%{opacity:1} 50%{opacity:0.65} }
-    .live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--red); }
-    .nav-right { display: flex; align-items: center; gap: 1rem; }
-    .nav-right a { font-size: 0.8rem; font-weight: 500; color: var(--muted); text-decoration: none; transition: color 0.2s; }
-    .nav-right a:hover { color: var(--text); }
-    .nav-cta { background: var(--red); color: #fff !important; font-weight: 700 !important; padding: 0.35rem 0.9rem; border-radius: 20px; }
+      /* NAV */
+      nav {
+        position: sticky;
+        top: 0;
+        z-index: 60;
+        background: rgba(4, 4, 12, 0.95);
+        backdrop-filter: blur(16px);
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.6rem 1.2rem;
+      }
+      .nav-logo {
+        font-size: 0.95rem;
+        font-weight: 900;
+        letter-spacing: -0.02em;
+        color: var(--text);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .live-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        background: rgba(239, 68, 68, 0.15);
+        border: 1px solid rgba(239, 68, 68, 0.35);
+        border-radius: 6px;
+        font-size: 0.65rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        color: var(--red);
+        padding: 0.18rem 0.55rem;
+        animation: livePulse 2s ease-in-out infinite;
+      }
+      @keyframes livePulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.65;
+        }
+      }
+      .live-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--red);
+      }
+      .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+      .nav-right a {
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: var(--muted);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .nav-right a:hover {
+        color: var(--text);
+      }
+      .nav-cta {
+        background: var(--red);
+        color: #fff !important;
+        font-weight: 700 !important;
+        padding: 0.35rem 0.9rem;
+        border-radius: 20px;
+      }
 
-    /* PLAYER ZONE */
-    .player-zone { position: relative; background: #000; width: 100%; }
-    .player-aspect { width: 100%; aspect-ratio: 16/9; max-height: 62vh; position: relative; overflow: hidden; }
-    #live-canvas { width: 100%; height: 100%; display: block; }
-    .player-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(4,4,12,0.85) 0%, transparent 40%, transparent 70%, rgba(4,4,12,0.4) 100%); pointer-events: none; }
-    /* TOP-LEFT: channel info */
-    .channel-badge { position: absolute; top: 12px; left: 14px; display: flex; align-items: center; gap: 0.6rem; }
-    .ch-live { display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(239,68,68,0.9); border-radius: 6px; font-size: 0.7rem; font-weight: 800; color: #fff; padding: 0.2rem 0.6rem; letter-spacing: 0.1em; }
-    .ch-num { font-size: 0.72rem; font-weight: 700; color: rgba(255,255,255,0.7); background: rgba(0,0,0,0.5); border-radius: 6px; padding: 0.2rem 0.55rem; }
-    /* BOTTOM: now playing info */
-    .now-playing { position: absolute; bottom: 0; left: 0; right: 0; padding: 1rem 1.2rem; }
-    .np-meta { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
-    .np-title { font-size: clamp(1rem, 2.5vw, 1.5rem); font-weight: 900; letter-spacing: -0.03em; text-shadow: 0 2px 12px rgba(0,0,0,0.7); }
-    .np-sub { font-size: 0.78rem; color: rgba(237,244,255,0.65); margin-top: 0.2rem; text-shadow: 0 1px 8px rgba(0,0,0,0.7); }
-    .np-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.4rem; }
-    .np-tag { font-size: 0.65rem; font-weight: 700; padding: 0.18rem 0.55rem; border-radius: 6px; background: rgba(255,255,255,0.1); color: rgba(237,244,255,0.75); text-transform: uppercase; letter-spacing: 0.06em; }
-    .np-controls { display: flex; gap: 0.6rem; flex-shrink: 0; }
-    .ctrl-btn { background: rgba(255,255,255,0.12); border: none; border-radius: 8px; color: #fff; font-size: 0.8rem; font-weight: 700; padding: 0.45rem 0.9rem; cursor: pointer; transition: background 0.2s; backdrop-filter: blur(8px); text-decoration: none; display: inline-flex; align-items: center; gap: 0.3rem; }
-    .ctrl-btn:hover { background: rgba(255,255,255,0.22); }
-    .ctrl-btn.primary { background: var(--cyan); color: #000; }
-    .ctrl-btn.primary:hover { opacity: 0.85; background: var(--cyan); }
-    /* PROGRESS BAR */
-    .live-progress { height: 3px; background: rgba(255,255,255,0.1); position: relative; }
-    .live-progress-fill { height: 100%; background: var(--red); transition: width 0.5s linear; }
-    /* AUDIO VIZ */
-    #audio-viz { position: absolute; bottom: 60px; right: 14px; width: 80px; height: 30px; opacity: 0.6; }
+      /* PLAYER ZONE */
+      .player-zone {
+        position: relative;
+        background: #000;
+        width: 100%;
+      }
+      .player-aspect {
+        width: 100%;
+        aspect-ratio: 16/9;
+        max-height: 62vh;
+        position: relative;
+        overflow: hidden;
+      }
+      #live-canvas {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+      .player-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to top,
+          rgba(4, 4, 12, 0.85) 0%,
+          transparent 40%,
+          transparent 70%,
+          rgba(4, 4, 12, 0.4) 100%
+        );
+        pointer-events: none;
+      }
+      /* TOP-LEFT: channel info */
+      .channel-badge {
+        position: absolute;
+        top: 12px;
+        left: 14px;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+      }
+      .ch-live {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        background: rgba(239, 68, 68, 0.9);
+        border-radius: 6px;
+        font-size: 0.7rem;
+        font-weight: 800;
+        color: #fff;
+        padding: 0.2rem 0.6rem;
+        letter-spacing: 0.1em;
+      }
+      .ch-num {
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: rgba(255, 255, 255, 0.7);
+        background: rgba(0, 0, 0, 0.5);
+        border-radius: 6px;
+        padding: 0.2rem 0.55rem;
+      }
+      /* BOTTOM: now playing info */
+      .now-playing {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 1rem 1.2rem;
+      }
+      .np-meta {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+      .np-title {
+        font-size: clamp(1rem, 2.5vw, 1.5rem);
+        font-weight: 900;
+        letter-spacing: -0.03em;
+        text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
+      }
+      .np-sub {
+        font-size: 0.78rem;
+        color: rgba(237, 244, 255, 0.65);
+        margin-top: 0.2rem;
+        text-shadow: 0 1px 8px rgba(0, 0, 0, 0.7);
+      }
+      .np-tags {
+        display: flex;
+        gap: 0.4rem;
+        flex-wrap: wrap;
+        margin-top: 0.4rem;
+      }
+      .np-tag {
+        font-size: 0.65rem;
+        font-weight: 700;
+        padding: 0.18rem 0.55rem;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.1);
+        color: rgba(237, 244, 255, 0.75);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+      .np-controls {
+        display: flex;
+        gap: 0.6rem;
+        flex-shrink: 0;
+      }
+      .ctrl-btn {
+        background: rgba(255, 255, 255, 0.12);
+        border: none;
+        border-radius: 8px;
+        color: #fff;
+        font-size: 0.8rem;
+        font-weight: 700;
+        padding: 0.45rem 0.9rem;
+        cursor: pointer;
+        transition: background 0.2s;
+        backdrop-filter: blur(8px);
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+      }
+      .ctrl-btn:hover {
+        background: rgba(255, 255, 255, 0.22);
+      }
+      .ctrl-btn.primary {
+        background: var(--cyan);
+        color: #000;
+      }
+      .ctrl-btn.primary:hover {
+        opacity: 0.85;
+        background: var(--cyan);
+      }
+      /* PROGRESS BAR */
+      .live-progress {
+        height: 3px;
+        background: rgba(255, 255, 255, 0.1);
+        position: relative;
+      }
+      .live-progress-fill {
+        height: 100%;
+        background: var(--red);
+        transition: width 0.5s linear;
+      }
+      /* AUDIO VIZ */
+      #audio-viz {
+        position: absolute;
+        bottom: 60px;
+        right: 14px;
+        width: 80px;
+        height: 30px;
+        opacity: 0.6;
+      }
 
-    /* SCHEDULE SIDEBAR */
-    .content-wrap { display: grid; grid-template-columns: 1fr 340px; gap: 0; max-width: 100%; }
-    @media (max-width: 900px) { .content-wrap { grid-template-columns: 1fr; } .sidebar { display: none; } }
-    .main-content { padding: 1.2rem 1.5rem; }
-    .sidebar { padding: 1rem; border-left: 1px solid var(--border); background: var(--surface); height: calc(100vh - 80px); overflow-y: auto; position: sticky; top: 48px; }
+      /* SCHEDULE SIDEBAR */
+      .content-wrap {
+        display: grid;
+        grid-template-columns: 1fr 340px;
+        gap: 0;
+        max-width: 100%;
+      }
+      @media (max-width: 900px) {
+        .content-wrap {
+          grid-template-columns: 1fr;
+        }
+        .sidebar {
+          display: none;
+        }
+      }
+      .main-content {
+        padding: 1.2rem 1.5rem;
+      }
+      .sidebar {
+        padding: 1rem;
+        border-left: 1px solid var(--border);
+        background: var(--surface);
+        height: calc(100vh - 80px);
+        overflow-y: auto;
+        position: sticky;
+        top: 48px;
+      }
 
-    /* NOW / NEXT */
-    .section-head { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.7rem; }
-    .np-card { background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 12px; padding: 0.9rem; margin-bottom: 0.6rem; position: relative; }
-    .np-card.active { border-color: rgba(239,68,68,0.4); background: rgba(239,68,68,0.05); }
-    .np-card-badge { position: absolute; top: 8px; right: 8px; font-size: 0.6rem; font-weight: 700; padding: 0.15rem 0.45rem; border-radius: 6px; }
-    .np-card-title { font-size: 0.85rem; font-weight: 700; margin-bottom: 0.2rem; }
-    .np-card-meta { font-size: 0.7rem; color: var(--muted); }
-    .np-card-bar { height: 2px; background: rgba(255,255,255,0.08); border-radius: 2px; margin-top: 0.5rem; overflow: hidden; }
-    .np-card-bar-fill { height: 100%; background: var(--red); }
+      /* NOW / NEXT */
+      .section-head {
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 0.7rem;
+      }
+      .np-card {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 0.9rem;
+        margin-bottom: 0.6rem;
+        position: relative;
+      }
+      .np-card.active {
+        border-color: rgba(239, 68, 68, 0.4);
+        background: rgba(239, 68, 68, 0.05);
+      }
+      .np-card-badge {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        font-size: 0.6rem;
+        font-weight: 700;
+        padding: 0.15rem 0.45rem;
+        border-radius: 6px;
+      }
+      .np-card-title {
+        font-size: 0.85rem;
+        font-weight: 700;
+        margin-bottom: 0.2rem;
+      }
+      .np-card-meta {
+        font-size: 0.7rem;
+        color: var(--muted);
+      }
+      .np-card-bar {
+        height: 2px;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 2px;
+        margin-top: 0.5rem;
+        overflow: hidden;
+      }
+      .np-card-bar-fill {
+        height: 100%;
+        background: var(--red);
+      }
 
-    /* STATS STRIP */
-    .stats-strip { display: flex; gap: 1.5rem; flex-wrap: wrap; padding: 0.9rem 1.5rem; border-bottom: 1px solid var(--border); background: var(--surface); }
-    .strip-stat { display: flex; align-items: center; gap: 0.5rem; }
-    .strip-num { font-size: 1rem; font-weight: 800; }
-    .strip-label { font-size: 0.7rem; color: var(--muted); }
+      /* STATS STRIP */
+      .stats-strip {
+        display: flex;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+        padding: 0.9rem 1.5rem;
+        border-bottom: 1px solid var(--border);
+        background: var(--surface);
+      }
+      .strip-stat {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .strip-num {
+        font-size: 1rem;
+        font-weight: 800;
+      }
+      .strip-label {
+        font-size: 0.7rem;
+        color: var(--muted);
+      }
 
-    /* SCHEDULE */
-    .sched-item { display: flex; gap: 0.8rem; padding: 0.6rem 0; border-bottom: 1px solid rgba(255,255,255,0.04); cursor: pointer; transition: background 0.15s; border-radius: 8px; }
-    .sched-item:hover { background: rgba(255,255,255,0.03); }
-    .sched-time { font-size: 0.72rem; color: var(--muted); min-width: 38px; padding-top: 2px; }
-    .sched-title { font-size: 0.82rem; font-weight: 600; line-height: 1.3; }
-    .sched-genres { font-size: 0.67rem; color: var(--muted); margin-top: 2px; }
-    .sched-active .sched-title { color: var(--red); }
-    .sched-active .sched-time { color: var(--red); }
+      /* SCHEDULE */
+      .sched-item {
+        display: flex;
+        gap: 0.8rem;
+        padding: 0.6rem 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        cursor: pointer;
+        transition: background 0.15s;
+        border-radius: 8px;
+      }
+      .sched-item:hover {
+        background: rgba(255, 255, 255, 0.03);
+      }
+      .sched-time {
+        font-size: 0.72rem;
+        color: var(--muted);
+        min-width: 38px;
+        padding-top: 2px;
+      }
+      .sched-title {
+        font-size: 0.82rem;
+        font-weight: 600;
+        line-height: 1.3;
+      }
+      .sched-genres {
+        font-size: 0.67rem;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+      .sched-active .sched-title {
+        color: var(--red);
+      }
+      .sched-active .sched-time {
+        color: var(--red);
+      }
 
-    /* RENDERER SELECTOR */
-    .renderer-pills { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.2rem; }
-    .r-pill { padding: 0.28rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; border: 1px solid var(--border); color: var(--muted); cursor: pointer; transition: all 0.18s; background: transparent; }
-    .r-pill:hover, .r-pill.active { background: rgba(0,212,255,0.1); border-color: rgba(0,212,255,0.35); color: var(--cyan); }
-  </style>
-</head>
-<body>
+      /* RENDERER SELECTOR */
+      .renderer-pills {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        margin-bottom: 1.2rem;
+      }
+      .r-pill {
+        padding: 0.28rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        border: 1px solid var(--border);
+        color: var(--muted);
+        cursor: pointer;
+        transition: all 0.18s;
+        background: transparent;
+      }
+      .r-pill:hover,
+      .r-pill.active {
+        background: rgba(0, 212, 255, 0.1);
+        border-color: rgba(0, 212, 255, 0.35);
+        color: var(--cyan);
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div style="display: flex; align-items: center; gap: 0.75rem">
+        <a href="/" class="nav-logo">AIOS</a>
+        <div class="live-badge"><span class="live-dot"></span>LIVE</div>
+      </div>
+      <div class="nav-right">
+        <a href="/aiosdream">▶ Theatre</a>
+        <a href="/geo-library">📚 Library</a>
+        <a href="/aios-studio">⚡ Studio</a>
+        <a href="/plaistore">PLAIstore</a>
+        <a href="/vr-hub" class="nav-cta">🥽 VR</a>
+      </div>
+    </nav>
 
-<nav>
-  <div style="display:flex;align-items:center;gap:0.75rem">
-    <a href="/" class="nav-logo">AIOS</a>
-    <div class="live-badge"><span class="live-dot"></span>LIVE</div>
-  </div>
-  <div class="nav-right">
-    <a href="/aiosdream">▶ Theatre</a>
-    <a href="/geo-library">📚 Library</a>
-    <a href="/aios-studio">⚡ Studio</a>
-    <a href="/plaistore">PLAIstore</a>
-    <a href="/vr-hub" class="nav-cta">🥽 VR</a>
-  </div>
-</nav>
+    <!-- STATS STRIP -->
+    <div class="stats-strip">
+      <div class="strip-stat">
+        <span class="strip-num" id="ss-total" style="color: var(--cyan)">—</span
+        ><span class="strip-label">In Library</span>
+      </div>
+      <div class="strip-stat">
+        <span class="strip-num" id="ss-produced" style="color: var(--teal)"
+          >—</span
+        ><span class="strip-label">Produced Today</span>
+      </div>
+      <div class="strip-stat">
+        <span class="strip-num" id="ss-hrs" style="color: var(--purple)">—</span
+        ><span class="strip-label">Hours of Content</span>
+      </div>
+      <div class="strip-stat">
+        <span class="strip-num" id="ss-next" style="color: var(--gold)">—</span
+        ><span class="strip-label">Next .geo in</span>
+      </div>
+      <div class="strip-stat">
+        <span class="strip-num" style="color: var(--red)">25</span
+        ><span class="strip-label">AI Renderers</span>
+      </div>
+    </div>
 
-<!-- STATS STRIP -->
-<div class="stats-strip">
-  <div class="strip-stat"><span class="strip-num" id="ss-total" style="color:var(--cyan)">—</span><span class="strip-label">In Library</span></div>
-  <div class="strip-stat"><span class="strip-num" id="ss-produced" style="color:var(--teal)">—</span><span class="strip-label">Produced Today</span></div>
-  <div class="strip-stat"><span class="strip-num" id="ss-hrs" style="color:var(--purple)">—</span><span class="strip-label">Hours of Content</span></div>
-  <div class="strip-stat"><span class="strip-num" id="ss-next" style="color:var(--gold)">—</span><span class="strip-label">Next .geo in</span></div>
-  <div class="strip-stat"><span class="strip-num" style="color:var(--red)">25</span><span class="strip-label">AI Renderers</span></div>
-</div>
-
-<div class="content-wrap">
-  <!-- MAIN: player + controls -->
-  <div>
-    <!-- PLAYER -->
-    <div class="player-zone">
-      <div class="player-aspect">
-        <canvas id="live-canvas"></canvas>
-        <div class="player-overlay"></div>
-        <!-- GeoQode Hz overlay — Hebrew letter + frequency label -->
-        <div id="hz-overlay" style="position:absolute;bottom:4.5rem;right:0.75rem;text-align:center;pointer-events:none;z-index:4;user-select:none">
-          <div class="hz-letter" style="font-size:2.2rem;color:rgba(255,255,255,0.16);font-family:serif;line-height:1;text-shadow:0 0 22px rgba(0,212,255,0.35)">&#x05D4;</div>
-          <div class="hz-label" style="font-size:0.48rem;color:rgba(255,255,255,0.2);letter-spacing:0.08em;white-space:nowrap;margin-top:0.2rem;text-transform:uppercase">528 Hz &middot; Hey &middot; Activation</div>
-        </div>
-        <div class="channel-badge">
-          <div class="ch-live"><span style="width:6px;height:6px;border-radius:50%;background:#fff;display:inline-block;animation:livePulse 1s ease-in-out infinite"></span>LIVE</div>
-          <div class="ch-num">CH 01 · AIOS</div>
-        </div>
-        <canvas id="audio-viz" width="80" height="30"></canvas>
-        <div class="now-playing">
-          <div class="np-meta">
-            <div>
-              <div class="np-title" id="np-title">Loading…</div>
-              <div class="np-sub" id="np-sub">AIOSProducerSwarm · .geo v2</div>
-              <div class="np-tags" id="np-tags"></div>
+    <div class="content-wrap">
+      <!-- MAIN: player + controls -->
+      <div>
+        <!-- PLAYER -->
+        <div class="player-zone">
+          <div class="player-aspect">
+            <canvas id="live-canvas"></canvas>
+            <div class="player-overlay"></div>
+            <!-- GeoQode Hz overlay — Hebrew letter + frequency label -->
+            <div
+              id="hz-overlay"
+              style="
+                position: absolute;
+                bottom: 4.5rem;
+                right: 0.75rem;
+                text-align: center;
+                pointer-events: none;
+                z-index: 4;
+                user-select: none;
+              "
+            >
+              <div
+                class="hz-letter"
+                style="
+                  font-size: 2.2rem;
+                  color: rgba(255, 255, 255, 0.16);
+                  font-family: serif;
+                  line-height: 1;
+                  text-shadow: 0 0 22px rgba(0, 212, 255, 0.35);
+                "
+              >
+                &#x05D4;
+              </div>
+              <div
+                class="hz-label"
+                style="
+                  font-size: 0.48rem;
+                  color: rgba(255, 255, 255, 0.2);
+                  letter-spacing: 0.08em;
+                  white-space: nowrap;
+                  margin-top: 0.2rem;
+                  text-transform: uppercase;
+                "
+              >
+                528 Hz &middot; Hey &middot; Activation
+              </div>
             </div>
-            <div class="np-controls">
-              <a id="np-fullscreen" class="ctrl-btn" href="/aiosdream" target="_blank">⛶ Full</a>
-              <a id="np-watch" class="ctrl-btn primary" href="/aiosdream">▶ Watch</a>
+            <div class="channel-badge">
+              <div class="ch-live">
+                <span
+                  style="
+                    width: 6px;
+                    height: 6px;
+                    border-radius: 50%;
+                    background: #fff;
+                    display: inline-block;
+                    animation: livePulse 1s ease-in-out infinite;
+                  "
+                ></span
+                >LIVE
+              </div>
+              <div class="ch-num">CH 01 · AIOS</div>
+            </div>
+            <canvas id="audio-viz" width="80" height="30"></canvas>
+            <div class="now-playing">
+              <div class="np-meta">
+                <div>
+                  <div class="np-title" id="np-title">Loading…</div>
+                  <div class="np-sub" id="np-sub">
+                    AIOSProducerSwarm · .geo v2
+                  </div>
+                  <div class="np-tags" id="np-tags"></div>
+                </div>
+                <div class="np-controls">
+                  <a
+                    id="np-fullscreen"
+                    class="ctrl-btn"
+                    href="/aiosdream"
+                    target="_blank"
+                    >⛶ Full</a
+                  >
+                  <a id="np-watch" class="ctrl-btn primary" href="/aiosdream"
+                    >▶ Watch</a
+                  >
+                </div>
+              </div>
             </div>
           </div>
+          <div class="live-progress">
+            <div
+              class="live-progress-fill"
+              id="live-progress"
+              style="width: 0%"
+            ></div>
+          </div>
+        </div>
+
+        <!-- RENDERER SELECTOR -->
+        <div class="main-content">
+          <p class="section-head" style="margin-top: 0.5rem">Choose Renderer</p>
+          <div class="renderer-pills" id="renderer-pills"></div>
+          <p class="section-head" style="margin-top: 1rem">
+            Coming Up — Next in Queue
+          </p>
+          <div id="upcoming-list"></div>
         </div>
       </div>
-      <div class="live-progress"><div class="live-progress-fill" id="live-progress" style="width:0%"></div></div>
+
+      <!-- SIDEBAR: schedule -->
+      <div class="sidebar">
+        <p class="section-head">📅 Today's Schedule</p>
+        <div id="schedule-list"></div>
+      </div>
     </div>
 
-    <!-- RENDERER SELECTOR -->
-    <div class="main-content">
-      <p class="section-head" style="margin-top:0.5rem">Choose Renderer</p>
-      <div class="renderer-pills" id="renderer-pills"></div>
-      <p class="section-head" style="margin-top:1rem">Coming Up — Next in Queue</p>
-      <div id="upcoming-list"></div>
-    </div>
-  </div>
+    <script>
+      // ── RENDERERS (subset — fast-starting, good standalone) ────────────────────
+      const RENDERERS = {
+        matrix: {
+          label: "Matrix",
+          start(cv) {
+            const ctx = cv.getContext("2d"),
+              W = cv.width,
+              H = cv.height;
+            const cols = Math.floor(W / 16),
+              drops = Array(cols).fill(1);
+            const chars =
+              "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワン0123456789ABCDEF";
+            let t = 0;
+            return setInterval(() => {
+              ctx.fillStyle = "rgba(0,0,0,0.05)";
+              ctx.fillRect(0, 0, W, H);
+              ctx.fillStyle = "#00ff41";
+              ctx.font = "14px monospace";
+              for (let i = 0; i < drops.length; i++) {
+                ctx.fillText(
+                  chars[Math.floor(Math.random() * chars.length)],
+                  i * 16,
+                  drops[i] * 16,
+                );
+                if (drops[i] * 16 > H && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+              }
+              t++;
+            }, 40);
+          },
+          stop(h) {
+            clearInterval(h);
+          },
+        },
+        nebula: {
+          label: "Nebula",
+          start(cv) {
+            const ctx = cv.getContext("2d"),
+              W = cv.width,
+              H = cv.height;
+            const N = 600;
+            const pts = Array.from({ length: N }, () => ({
+              x: Math.random() * W,
+              y: Math.random() * H,
+              vx: (Math.random() - 0.5) * 0.4,
+              vy: (Math.random() - 0.5) * 0.4,
+              hue: Math.random() * 360,
+              r: 0.5 + Math.random() * 1.5,
+              life: Math.random(),
+            }));
+            let t = 0;
+            return setInterval(() => {
+              ctx.fillStyle = "rgba(4,0,10,0.12)";
+              ctx.fillRect(0, 0, W, H);
+              for (const p of pts) {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.life += 0.002;
+                if (p.x < 0 || p.x > W) p.vx *= -1;
+                if (p.y < 0 || p.y > H) p.vy *= -1;
+                ctx.globalAlpha = 0.6 + 0.4 * Math.sin(p.life * 3);
+                ctx.fillStyle = `hsl(${p.hue + t * 0.2},80%,65%)`;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fill();
+              }
+              ctx.globalAlpha = 1;
+              t++;
+            }, 20);
+          },
+          stop(h) {
+            clearInterval(h);
+          },
+        },
+        hyperspace: {
+          label: "Hyperspace",
+          start(cv) {
+            const ctx = cv.getContext("2d"),
+              W = cv.width,
+              H = cv.height;
+            const N = 200;
+            const stars = Array.from({ length: N }, () => ({
+              x: Math.random() * W - W / 2,
+              y: Math.random() * H - H / 2,
+              z: Math.random() * W,
+              pz: 0,
+            }));
+            let t = 0;
+            return setInterval(() => {
+              ctx.fillStyle = "rgba(0,0,10,0.2)";
+              ctx.fillRect(0, 0, W, H);
+              for (const s of stars) {
+                s.pz = s.z;
+                s.z -= 4;
+                if (s.z <= 0) {
+                  s.x = Math.random() * W - W / 2;
+                  s.y = Math.random() * H - H / 2;
+                  s.z = W;
+                  s.pz = s.z;
+                }
+                const sx = (s.x / s.z) * W + W / 2,
+                  sy = (s.y / s.z) * H + H / 2;
+                const px = (s.x / s.pz) * W + W / 2,
+                  py = (s.y / s.pz) * H + H / 2;
+                const bright = 1 - s.z / W;
+                ctx.strokeStyle = `rgba(${Math.floor(bright * 80 + 160)},${Math.floor(bright * 120 + 80)},255,${bright})`;
+                ctx.lineWidth = bright * 2;
+                ctx.beginPath();
+                ctx.moveTo(px, py);
+                ctx.lineTo(sx, sy);
+                ctx.stroke();
+              }
+              t++;
+            }, 20);
+          },
+          stop(h) {
+            clearInterval(h);
+          },
+        },
+        aurora: {
+          label: "Aurora",
+          start(cv) {
+            const ctx = cv.getContext("2d"),
+              W = cv.width,
+              H = cv.height;
+            let t = 0;
+            return setInterval(() => {
+              ctx.fillStyle = "rgba(0,8,16,0.15)";
+              ctx.fillRect(0, 0, W, H);
+              for (let i = 0; i < 18; i++) {
+                const x = (i / 18) * W;
+                const shift = Math.sin(t * 0.4 + i * 0.6) * H * 0.22;
+                const hue = 155 + i * 6;
+                const g = ctx.createLinearGradient(
+                  x,
+                  H * 0.1 + shift,
+                  x,
+                  H * 0.85 + shift,
+                );
+                g.addColorStop(0, "transparent");
+                g.addColorStop(0.35, `hsla(${hue},85%,60%,0.38)`);
+                g.addColorStop(1, "transparent");
+                ctx.fillStyle = g;
+                ctx.fillRect(x, 0, W / 18 + 2, H);
+              }
+              t += 0.016;
+            }, 20);
+          },
+          stop(h) {
+            clearInterval(h);
+          },
+        },
+        merkaba: {
+          label: "Merkaba",
+          start(cv) {
+            const ctx = cv.getContext("2d"),
+              W = cv.width,
+              H = cv.height;
+            const cx = W / 2,
+              cy = H / 2,
+              R = Math.min(W, H) * 0.38;
+            let t = 0;
+            function tet(angle, dir, col) {
+              ctx.save();
+              ctx.translate(cx, cy);
+              ctx.rotate(angle);
+              ctx.strokeStyle = col;
+              ctx.lineWidth = 1.5;
+              ctx.globalAlpha = 0.75;
+              ctx.beginPath();
+              for (let v = 0; v < 3; v++) {
+                const a = v * ((Math.PI * 2) / 3);
+                const x = Math.cos(a) * R,
+                  y = Math.sin(a) * R * dir;
+                v === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+              }
+              ctx.closePath();
+              ctx.stroke();
+              ctx.restore();
+            }
+            return setInterval(() => {
+              ctx.fillStyle = "rgba(10,5,30,0.18)";
+              ctx.fillRect(0, 0, W, H);
+              tet(t, "1", "rgba(0,212,255,0.9)");
+              tet(-t + Math.PI / 3, "-1", "rgba(167,139,250,0.9)");
+              // rings
+              for (let r = 1; r <= 4; r++) {
+                ctx.beginPath();
+                ctx.arc(cx, cy, R * (r / 4), 0, Math.PI * 2);
+                ctx.strokeStyle = `rgba(255,200,100,${0.07 * r})`;
+                ctx.lineWidth = 0.8;
+                ctx.stroke();
+              }
+              t += 0.008;
+            }, 20);
+          },
+          stop(h) {
+            clearInterval(h);
+          },
+        },
+        mandala: {
+          label: "Mandala",
+          start(cv) {
+            const ctx = cv.getContext("2d"),
+              W = cv.width,
+              H = cv.height;
+            const cx = W / 2,
+              cy = H / 2,
+              R = Math.min(W, H) * 0.44,
+              FOLDS = 12,
+              LAYERS = 7;
+            const pal = ["#f472b6", "#e879f9", "#a855f7", "#818cf8", "#67e8f9"];
+            let t = 0;
+            return setInterval(() => {
+              ctx.fillStyle = "rgba(8,0,16,0.22)";
+              ctx.fillRect(0, 0, W, H);
+              ctx.save();
+              ctx.translate(cx, cy);
+              for (let fold = 0; fold < FOLDS; fold++) {
+                ctx.save();
+                ctx.rotate((fold / FOLDS) * Math.PI * 2);
+                for (let layer = 1; layer <= LAYERS; layer++) {
+                  const lr = (layer / LAYERS) * R,
+                    ph =
+                      t * 0.35 * (layer % 2 === 0 ? 1 : -1) +
+                      fold * (Math.PI / FOLDS);
+                  ctx.globalAlpha = 0.5 - layer * 0.04;
+                  ctx.strokeStyle = pal[layer % pal.length];
+                  ctx.lineWidth = 1.1;
+                  ctx.beginPath();
+                  ctx.arc(
+                    0,
+                    -lr * 0.5,
+                    lr * 0.52,
+                    -Math.PI * 0.6 + Math.sin(ph) * 0.35,
+                    Math.PI * 0.6 + Math.sin(ph) * 0.35,
+                  );
+                  ctx.stroke();
+                }
+                ctx.restore();
+              }
+              ctx.globalAlpha = 1;
+              const jg = ctx.createRadialGradient(0, 0, 0, 0, 0, R * 0.11);
+              jg.addColorStop(0, "rgba(255,255,255,0.9)");
+              jg.addColorStop(1, "rgba(0,0,0,0)");
+              ctx.fillStyle = jg;
+              ctx.beginPath();
+              ctx.arc(0, 0, R * 0.11, 0, Math.PI * 2);
+              ctx.fill();
+              ctx.restore();
+              t += 0.016;
+            }, 20);
+          },
+          stop(h) {
+            clearInterval(h);
+          },
+        },
+        galaxy: {
+          label: "Galaxy",
+          start(cv) {
+            const ctx = cv.getContext("2d"),
+              W = cv.width,
+              H = cv.height;
+            const cx = W / 2,
+              cy = H / 2,
+              sc = Math.min(W, H) * 0.44,
+              BAR = 0.18;
+            function sc2(t) {
+              if (t > 0.85) return `hsl(210,90%,${Math.floor(80 + t * 10)}%)`;
+              if (t > 0.6) return "hsl(60,10%,92%)";
+              if (t > 0.4) return "hsl(40,70%,82%)";
+              if (t > 0.2) return "hsl(18,80%,68%)";
+              return "hsl(4,75%,58%)";
+            }
+            const N = 1800;
+            const stars = Array.from({ length: N }, (_, i) => {
+              const arm = Math.floor(Math.random() * 2),
+                inBar = Math.random() < 0.2;
+              let r, theta;
+              if (inBar) {
+                r = Math.random() * BAR;
+                theta = (Math.random() - 0.5) * 0.5;
+              } else {
+                r = BAR + Math.pow(Math.random(), 0.65) * (1 - BAR);
+                theta =
+                  arm * Math.PI +
+                  Math.log(r + 0.1) * 3.5 +
+                  (Math.random() - 0.5) * 0.6;
+              }
+              if (Math.random() < 0.12) {
+                r = Math.random() * 0.08;
+                theta = Math.random() * Math.PI * 2;
+              }
+              const temp = Math.random();
+              return {
+                r,
+                theta0: theta,
+                temp,
+                col: sc2(temp),
+                brightness: 0.4 + Math.random() * 0.6,
+                size:
+                  temp > 0.7
+                    ? 1.2 + Math.random() * 0.7
+                    : 0.5 + Math.random() * 0.6,
+                dTheta: (0.3 + (1 - r) * 0.5) * 0.00015,
+              };
+            });
+            let t = 0;
+            return setInterval(() => {
+              ctx.fillStyle = "rgba(2,2,14,0.22)";
+              ctx.fillRect(0, 0, W, H);
+              const gw = ctx.createRadialGradient(cx, cy, 0, cx, cy, sc * 0.4);
+              gw.addColorStop(0, "rgba(200,190,255,0.05)");
+              gw.addColorStop(1, "rgba(0,0,0,0)");
+              ctx.fillStyle = gw;
+              ctx.fillRect(0, 0, W, H);
+              for (const s of stars) {
+                s.theta0 += s.dTheta;
+                const x = cx + Math.cos(s.theta0) * s.r * sc,
+                  y = cy + Math.sin(s.theta0) * s.r * sc * 0.42;
+                const tw =
+                  s.brightness * (0.7 + 0.3 * Math.sin(t * 3 + s.r * 20));
+                ctx.globalAlpha = Math.max(0, Math.min(1, tw));
+                ctx.fillStyle = s.col;
+                ctx.beginPath();
+                ctx.arc(x, y, s.size, 0, Math.PI * 2);
+                ctx.fill();
+              }
+              ctx.globalAlpha = 1;
+              t += 0.016;
+            }, 20);
+          },
+          stop(h) {
+            clearInterval(h);
+          },
+        },
+        fire: {
+          label: "Fire",
+          start(cv) {
+            const ctx = cv.getContext("2d"),
+              W = cv.width,
+              H = cv.height;
+            const N = 1200;
+            const pts = Array.from({ length: N }, () => ({
+              x: (0.2 + Math.random() * 0.6) * W,
+              y: H,
+              vy: -(1 + Math.random() * 2.5),
+              vx: (Math.random() - 0.5) * 0.8,
+              life: Math.random(),
+              maxLife: 0.6 + Math.random() * 0.5,
+              size: 1.5 + Math.random() * 3,
+            }));
+            return setInterval(() => {
+              ctx.fillStyle = "rgba(0,0,0,0.16)";
+              ctx.fillRect(0, 0, W, H);
+              for (const p of pts) {
+                p.life += 0.012;
+                if (p.life > p.maxLife) {
+                  p.x = (0.15 + Math.random() * 0.7) * W;
+                  p.y = H - Math.random() * H * 0.08;
+                  p.vy = -(1 + Math.random() * 2.5);
+                  p.vx = (Math.random() - 0.5) * 0.8;
+                  p.life = 0;
+                  p.maxLife = 0.6 + Math.random() * 0.5;
+                  p.size = 1.5 + Math.random() * 3;
+                }
+                const ratio = p.life / p.maxLife;
+                p.vx += (Math.random() - 0.5) * 0.15;
+                p.vx *= 0.97;
+                p.x += p.vx;
+                p.y += p.vy * (1 - ratio * 0.4);
+                let r = 255,
+                  g = 255,
+                  b = 255,
+                  a = 1 - ratio;
+                if (ratio < 0.3) {
+                  g = 220 + Math.floor((ratio / 0.3) * 35);
+                  b = Math.floor((1 - ratio / 0.3) * 255);
+                } else if (ratio < 0.6) {
+                  g = Math.floor(255 - ((ratio - 0.3) / 0.3) * 165);
+                  b = 0;
+                } else {
+                  r = 255;
+                  g = Math.floor(90 - ((ratio - 0.6) / 0.4) * 90);
+                  b = 0;
+                  a *= 1 - ((ratio - 0.6) / 0.4) * 0.6;
+                }
+                ctx.globalAlpha = Math.max(0, a * 0.82);
+                ctx.fillStyle = `rgb(${r},${g},${b})`;
+                const s = p.size * (1 - ratio * 0.5);
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, s, 0, Math.PI * 2);
+                ctx.fill();
+              }
+              ctx.globalAlpha = 1;
+            }, 20);
+          },
+          stop(h) {
+            clearInterval(h);
+          },
+        },
+      };
+      const RENDERER_KEYS = Object.keys(RENDERERS);
 
-  <!-- SIDEBAR: schedule -->
-  <div class="sidebar">
-    <p class="section-head">📅 Today's Schedule</p>
-    <div id="schedule-list"></div>
-  </div>
-</div>
+      // ── GeoQode Hz → Hebrew letter + canvas colour modulation ────────────────
+      // Each Solfeggio frequency maps to a Hebrew letter (gematria operator) and a
+      // hue-rotate angle so the entire renderer canvas shifts to the correct colour
+      // band.  528 Hz (ACTION / Hey / gematria 5) is the visual baseline: 0° shift.
+      const HZ_GEOQODE = {
+        396: {
+          letter: "\u05D0",
+          name: "Aleph",
+          gematria: 1,
+          meaning: "Liberation",
+          hueShift: 45,
+        },
+        417: {
+          letter: "\u05D1",
+          name: "Bet",
+          gematria: 2,
+          meaning: "Transformation",
+          hueShift: -60,
+        },
+        528: {
+          letter: "\u05D4",
+          name: "Hey",
+          gematria: 5,
+          meaning: "Activation",
+          hueShift: 0,
+        },
+        639: {
+          letter: "\u05D5",
+          name: "Vav",
+          gematria: 6,
+          meaning: "Connection",
+          hueShift: 100,
+        },
+        741: {
+          letter: "\u05D9",
+          name: "Yod",
+          gematria: 10,
+          meaning: "Awakening",
+          hueShift: 30,
+        },
+        852: {
+          letter: "\u05DC",
+          name: "Lamed",
+          gematria: 30,
+          meaning: "Order",
+          hueShift: -90,
+        },
+        963: {
+          letter: "\u05EA",
+          name: "Tav",
+          gematria: 400,
+          meaning: "Oneness",
+          hueShift: 140,
+        },
+        72: {
+          letter: "\u05E9",
+          name: "Shin",
+          gematria: 300,
+          meaning: "Holographic",
+          hueShift: 0,
+        },
+      };
 
-<script>
-// ── RENDERERS (subset — fast-starting, good standalone) ────────────────────
-const RENDERERS = {
-  matrix: {
-    label: 'Matrix',
-    start(cv) {
-      const ctx = cv.getContext('2d'), W = cv.width, H = cv.height;
-      const cols = Math.floor(W/16), drops = Array(cols).fill(1);
-      const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワン0123456789ABCDEF';
-      let t = 0;
-      return setInterval(() => {
-        ctx.fillStyle='rgba(0,0,0,0.05)';ctx.fillRect(0,0,W,H);
-        ctx.fillStyle='#00ff41';ctx.font='14px monospace';
-        for(let i=0;i<drops.length;i++){
-          ctx.fillText(chars[Math.floor(Math.random()*chars.length)],i*16,drops[i]*16);
-          if(drops[i]*16>H&&Math.random()>0.975)drops[i]=0;
-          drops[i]++;
-        }
-        t++;
-      }, 40);
-    },
-    stop(h) { clearInterval(h); }
-  },
-  nebula: {
-    label: 'Nebula',
-    start(cv) {
-      const ctx = cv.getContext('2d'), W = cv.width, H = cv.height;
-      const N = 600;
-      const pts = Array.from({length:N},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-0.5)*0.4,vy:(Math.random()-0.5)*0.4,hue:Math.random()*360,r:0.5+Math.random()*1.5,life:Math.random()}));
-      let t = 0;
-      return setInterval(()=>{
-        ctx.fillStyle='rgba(4,0,10,0.12)';ctx.fillRect(0,0,W,H);
-        for(const p of pts){
-          p.x+=p.vx;p.y+=p.vy;p.life+=0.002;
-          if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;
-          ctx.globalAlpha=0.6+0.4*Math.sin(p.life*3);
-          ctx.fillStyle=`hsl(${p.hue + t * 0.2},80%,65%)`;
-          ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();
-        }
-        ctx.globalAlpha=1;t++;
-      },20);
-    },
-    stop(h){clearInterval(h);}
-  },
-  hyperspace: {
-    label: 'Hyperspace',
-    start(cv) {
-      const ctx = cv.getContext('2d'), W = cv.width, H = cv.height;
-      const N = 200;
-      const stars = Array.from({length:N},()=>({x:Math.random()*W-W/2,y:Math.random()*H-H/2,z:Math.random()*W,pz:0}));
-      let t=0;
-      return setInterval(()=>{
-        ctx.fillStyle='rgba(0,0,10,0.2)';ctx.fillRect(0,0,W,H);
-        for(const s of stars){
-          s.pz=s.z; s.z-=4;
-          if(s.z<=0){s.x=Math.random()*W-W/2;s.y=Math.random()*H-H/2;s.z=W;s.pz=s.z;}
-          const sx=s.x/s.z*W+W/2, sy=s.y/s.z*H+H/2;
-          const px=s.x/s.pz*W+W/2, py=s.y/s.pz*H+H/2;
-          const bright=1-s.z/W;
-          ctx.strokeStyle=`rgba(${Math.floor(bright*80+160)},${Math.floor(bright*120+80)},255,${bright})`;
-          ctx.lineWidth=bright*2;
-          ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(sx,sy);ctx.stroke();
-        }
-        t++;
-      },20);
-    },
-    stop(h){clearInterval(h);}
-  },
-  aurora: {
-    label: 'Aurora',
-    start(cv) {
-      const ctx = cv.getContext('2d'), W = cv.width, H = cv.height;
-      let t=0;
-      return setInterval(()=>{
-        ctx.fillStyle='rgba(0,8,16,0.15)';ctx.fillRect(0,0,W,H);
-        for(let i=0;i<18;i++){
-          const x=(i/18)*W;
-          const shift=Math.sin(t*0.4+i*0.6)*H*0.22;
-          const hue=155+i*6;
-          const g=ctx.createLinearGradient(x,H*0.1+shift,x,H*0.85+shift);
-          g.addColorStop(0,'transparent');g.addColorStop(0.35,`hsla(${hue},85%,60%,0.38)`);g.addColorStop(1,'transparent');
-          ctx.fillStyle=g;ctx.fillRect(x,0,W/18+2,H);
-        }
-        t+=0.016;
-      },20);
-    },
-    stop(h){clearInterval(h);}
-  },
-  merkaba: {
-    label: 'Merkaba',
-    start(cv) {
-      const ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
-      const cx=W/2,cy=H/2,R=Math.min(W,H)*0.38;
-      let t=0;
-      function tet(angle,dir,col){
-        ctx.save();ctx.translate(cx,cy);ctx.rotate(angle);
-        ctx.strokeStyle=col;ctx.lineWidth=1.5;ctx.globalAlpha=0.75;
-        ctx.beginPath();
-        for(let v=0;v<3;v++){
-          const a=v*(Math.PI*2/3);
-          const x=Math.cos(a)*R,y=Math.sin(a)*R*dir;
-          v===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
-        }
-        ctx.closePath();ctx.stroke();
-        ctx.restore();
+      function applyHzVisuals(hz) {
+        const info = HZ_GEOQODE[hz] || HZ_GEOQODE[528];
+        // Shift entire renderer canvas to the frequency's colour band
+        cv.style.filter = `hue-rotate(${info.hueShift}deg) saturate(1.12)`;
+        // Update Hebrew letter overlay
+        const ov = document.getElementById("hz-overlay");
+        if (!ov) return;
+        ov.querySelector(".hz-letter").textContent = info.letter;
+        ov.querySelector(".hz-label").textContent =
+          `${hz} Hz \u00B7 ${info.name} \u00B7 ${info.meaning}`;
       }
-      return setInterval(()=>{
-        ctx.fillStyle='rgba(10,5,30,0.18)';ctx.fillRect(0,0,W,H);
-        tet(t,'1','rgba(0,212,255,0.9)');
-        tet(-t+Math.PI/3,'-1','rgba(167,139,250,0.9)');
-        // rings
-        for(let r=1;r<=4;r++){
-          ctx.beginPath();ctx.arc(cx,cy,R*(r/4),0,Math.PI*2);
-          ctx.strokeStyle=`rgba(255,200,100,${0.07*r})`;ctx.lineWidth=0.8;ctx.stroke();
-        }
-        t+=0.008;
-      },20);
-    },
-    stop(h){clearInterval(h);}
-  },
-  mandala: {
-    label: 'Mandala',
-    start(cv) {
-      const ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
-      const cx=W/2,cy=H/2,R=Math.min(W,H)*0.44,FOLDS=12,LAYERS=7;
-      const pal=['#f472b6','#e879f9','#a855f7','#818cf8','#67e8f9'];
-      let t=0;
-      return setInterval(()=>{
-        ctx.fillStyle='rgba(8,0,16,0.22)';ctx.fillRect(0,0,W,H);
-        ctx.save();ctx.translate(cx,cy);
-        for(let fold=0;fold<FOLDS;fold++){
-          ctx.save();ctx.rotate((fold/FOLDS)*Math.PI*2);
-          for(let layer=1;layer<=LAYERS;layer++){
-            const lr=(layer/LAYERS)*R,ph=t*0.35*(layer%2===0?1:-1)+fold*(Math.PI/FOLDS);
-            ctx.globalAlpha=0.5-layer*0.04;ctx.strokeStyle=pal[layer%pal.length];ctx.lineWidth=1.1;
-            ctx.beginPath();ctx.arc(0,-lr*0.5,lr*0.52,-Math.PI*0.6+Math.sin(ph)*0.35,Math.PI*0.6+Math.sin(ph)*0.35);ctx.stroke();
-          }
-          ctx.restore();
-        }
-        ctx.globalAlpha=1;const jg=ctx.createRadialGradient(0,0,0,0,0,R*0.11);
-        jg.addColorStop(0,'rgba(255,255,255,0.9)');jg.addColorStop(1,'rgba(0,0,0,0)');
-        ctx.fillStyle=jg;ctx.beginPath();ctx.arc(0,0,R*0.11,0,Math.PI*2);ctx.fill();
-        ctx.restore();
-        t+=0.016;
-      },20);
-    },
-    stop(h){clearInterval(h);}
-  },
-  galaxy: {
-    label: 'Galaxy',
-    start(cv) {
-      const ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
-      const cx=W/2,cy=H/2,sc=Math.min(W,H)*0.44,BAR=0.18;
-      function sc2(t){if(t>0.85)return`hsl(210,90%,${Math.floor(80+t*10)}%)`;if(t>0.6)return'hsl(60,10%,92%)';if(t>0.4)return'hsl(40,70%,82%)';if(t>0.2)return'hsl(18,80%,68%)';return'hsl(4,75%,58%)';}
-      const N=1800;
-      const stars=Array.from({length:N},(_, i)=>{
-        const arm=Math.floor(Math.random()*2),inBar=Math.random()<0.2;
-        let r,theta;
-        if(inBar){r=Math.random()*BAR;theta=(Math.random()-0.5)*0.5;}
-        else{r=BAR+Math.pow(Math.random(),0.65)*(1-BAR);theta=arm*Math.PI+Math.log(r+0.1)*3.5+(Math.random()-0.5)*0.6;}
-        if(Math.random()<0.12){r=Math.random()*0.08;theta=Math.random()*Math.PI*2;}
-        const temp=Math.random();
-        return{r,theta0:theta,temp,col:sc2(temp),brightness:0.4+Math.random()*0.6,size:temp>0.7?1.2+Math.random()*0.7:0.5+Math.random()*0.6,dTheta:(0.3+(1-r)*0.5)*0.00015};
+
+      // ── STATE ──────────────────────────────────────────────────────────────────
+      let activeRenderer = "matrix";
+      let rendererHandle = null;
+      let catalogue = [];
+      let scheduleIndex = 0;
+      let progressPct = 0;
+      let progDuration = 120; // seconds per slot
+      let slotElapsed = 0;
+      let countdown = 120;
+
+      // ── CANVAS SETUP ─────────────────────────────────────────────────────────
+      const cv = document.getElementById("live-canvas");
+      function resizeCanvas() {
+        const rect = cv.parentElement.getBoundingClientRect();
+        cv.width = rect.width;
+        cv.height = rect.height;
+      }
+      resizeCanvas();
+      window.addEventListener("resize", () => {
+        resizeCanvas();
+        startRenderer(activeRenderer);
       });
-      let t=0;
-      return setInterval(()=>{
-        ctx.fillStyle='rgba(2,2,14,0.22)';ctx.fillRect(0,0,W,H);
-        const gw=ctx.createRadialGradient(cx,cy,0,cx,cy,sc*0.4);
-        gw.addColorStop(0,'rgba(200,190,255,0.05)');gw.addColorStop(1,'rgba(0,0,0,0)');
-        ctx.fillStyle=gw;ctx.fillRect(0,0,W,H);
-        for(const s of stars){
-          s.theta0+=s.dTheta;
-          const x=cx+Math.cos(s.theta0)*s.r*sc,y=cy+Math.sin(s.theta0)*s.r*sc*0.42;
-          const tw=s.brightness*(0.7+0.3*Math.sin(t*3+s.r*20));
-          ctx.globalAlpha=Math.max(0,Math.min(1,tw));ctx.fillStyle=s.col;
-          ctx.beginPath();ctx.arc(x,y,s.size,0,Math.PI*2);ctx.fill();
+
+      function startRenderer(key) {
+        if (rendererHandle !== null)
+          RENDERERS[activeRenderer]?.stop(rendererHandle);
+        activeRenderer = key;
+        document
+          .querySelectorAll(".r-pill")
+          .forEach((p) => p.classList.toggle("active", p.dataset.r === key));
+        rendererHandle = RENDERERS[key]?.start(cv) ?? null;
+      }
+
+      // ── RENDERER PILLS ────────────────────────────────────────────────────────
+      const pillsEl = document.getElementById("renderer-pills");
+      RENDERER_KEYS.forEach((k) => {
+        const b = document.createElement("button");
+        b.className = "r-pill" + (k === activeRenderer ? " active" : "");
+        b.textContent = RENDERERS[k].label;
+        b.dataset.r = k;
+        b.onclick = () => startRenderer(k);
+        pillsEl.appendChild(b);
+      });
+      startRenderer(activeRenderer);
+
+      // ── AUDIO VISUALISER ──────────────────────────────────────────────────────
+      const avCv = document.getElementById("audio-viz");
+      const avCtx = avCv ? avCv.getContext("2d") : null;
+      let avT = 0;
+      function drawAudioViz() {
+        if (!avCtx) return;
+        avCtx.clearRect(0, 0, 80, 30);
+        for (let i = 0; i < 16; i++) {
+          const h = 4 + Math.abs(Math.sin(avT * 2 + i * 0.8)) * 22;
+          avCtx.fillStyle = `rgba(0,212,255,${0.4 + Math.abs(Math.sin(avT + i * 0.5)) * 0.6})`;
+          avCtx.fillRect(i * 5, 30 - h, 4, h);
         }
-        ctx.globalAlpha=1;t+=0.016;
-      },20);
-    },
-    stop(h){clearInterval(h);}
-  },
-  fire: {
-    label: 'Fire',
-    start(cv) {
-      const ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
-      const N=1200;
-      const pts=Array.from({length:N},()=>({x:(0.2+Math.random()*0.6)*W,y:H,vy:-(1+Math.random()*2.5),vx:(Math.random()-0.5)*0.8,life:Math.random(),maxLife:0.6+Math.random()*0.5,size:1.5+Math.random()*3}));
-      return setInterval(()=>{
-        ctx.fillStyle='rgba(0,0,0,0.16)';ctx.fillRect(0,0,W,H);
-        for(const p of pts){
-          p.life+=0.012;
-          if(p.life>p.maxLife){p.x=(0.15+Math.random()*0.7)*W;p.y=H-Math.random()*H*0.08;p.vy=-(1+Math.random()*2.5);p.vx=(Math.random()-0.5)*0.8;p.life=0;p.maxLife=0.6+Math.random()*0.5;p.size=1.5+Math.random()*3;}
-          const ratio=p.life/p.maxLife;
-          p.vx+=(Math.random()-0.5)*0.15;p.vx*=0.97;p.x+=p.vx;p.y+=p.vy*(1-ratio*0.4);
-          let r=255,g=255,b=255,a=1-ratio;
-          if(ratio<0.3){g=220+Math.floor(ratio/0.3*35);b=Math.floor((1-ratio/0.3)*255);}
-          else if(ratio<0.6){g=Math.floor(255-((ratio-0.3)/0.3)*165);b=0;}
-          else{r=255;g=Math.floor(90-((ratio-0.6)/0.4)*90);b=0;a*=(1-(ratio-0.6)/0.4*0.6);}
-          ctx.globalAlpha=Math.max(0,a*0.82);ctx.fillStyle=`rgb(${r},${g},${b})`;
-          const s=p.size*(1-ratio*0.5);ctx.beginPath();ctx.arc(p.x,p.y,s,0,Math.PI*2);ctx.fill();
-        }
-        ctx.globalAlpha=1;
-      },20);
-    },
-    stop(h){clearInterval(h);}
-  }
-};
-const RENDERER_KEYS = Object.keys(RENDERERS);
+        avT += 0.06;
+        requestAnimationFrame(drawAudioViz);
+      }
+      drawAudioViz();
 
-// ── GeoQode Hz → Hebrew letter + canvas colour modulation ────────────────
-// Each Solfeggio frequency maps to a Hebrew letter (gematria operator) and a
-// hue-rotate angle so the entire renderer canvas shifts to the correct colour
-// band.  528 Hz (ACTION / Hey / gematria 5) is the visual baseline: 0° shift.
-const HZ_GEOQODE = {
-  396: { letter: '\u05D0', name: 'Aleph', gematria:   1, meaning: 'Liberation',     hueShift:  45 },
-  417: { letter: '\u05D1', name: 'Bet',   gematria:   2, meaning: 'Transformation', hueShift: -60 },
-  528: { letter: '\u05D4', name: 'Hey',   gematria:   5, meaning: 'Activation',     hueShift:   0 },
-  639: { letter: '\u05D5', name: 'Vav',   gematria:   6, meaning: 'Connection',     hueShift: 100 },
-  741: { letter: '\u05D9', name: 'Yod',   gematria:  10, meaning: 'Awakening',      hueShift:  30 },
-  852: { letter: '\u05DC', name: 'Lamed', gematria:  30, meaning: 'Order',          hueShift: -90 },
-  963: { letter: '\u05EA', name: 'Tav',   gematria: 400, meaning: 'Oneness',        hueShift: 140 },
-   72: { letter: '\u05E9', name: 'Shin',  gematria: 300, meaning: 'Holographic',    hueShift:   0 },
-};
+      // ── API & SCHEDULE ────────────────────────────────────────────────────────
+      function formatTime(offsetSec) {
+        const now = new Date();
+        now.setSeconds(now.getSeconds() + offsetSec);
+        return now.toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+      }
 
-function applyHzVisuals(hz) {
-  const info = HZ_GEOQODE[hz] || HZ_GEOQODE[528];
-  // Shift entire renderer canvas to the frequency's colour band
-  cv.style.filter = `hue-rotate(${info.hueShift}deg) saturate(1.12)`;
-  // Update Hebrew letter overlay
-  const ov = document.getElementById('hz-overlay');
-  if (!ov) return;
-  ov.querySelector('.hz-letter').textContent = info.letter;
-  ov.querySelector('.hz-label').textContent  = `${hz} Hz \u00B7 ${info.name} \u00B7 ${info.meaning}`;
-}
-
-// ── STATE ──────────────────────────────────────────────────────────────────
-let activeRenderer = 'matrix';
-let rendererHandle = null;
-let catalogue = [];
-let scheduleIndex = 0;
-let progressPct = 0;
-let progDuration = 120; // seconds per slot
-let slotElapsed = 0;
-let countdown = 120;
-
-// ── CANVAS SETUP ─────────────────────────────────────────────────────────
-const cv = document.getElementById('live-canvas');
-function resizeCanvas() {
-  const rect = cv.parentElement.getBoundingClientRect();
-  cv.width = rect.width;
-  cv.height = rect.height;
-}
-resizeCanvas();
-window.addEventListener('resize', () => { resizeCanvas(); startRenderer(activeRenderer); });
-
-function startRenderer(key) {
-  if (rendererHandle !== null) RENDERERS[activeRenderer]?.stop(rendererHandle);
-  activeRenderer = key;
-  document.querySelectorAll('.r-pill').forEach(p => p.classList.toggle('active', p.dataset.r === key));
-  rendererHandle = RENDERERS[key]?.start(cv) ?? null;
-}
-
-// ── RENDERER PILLS ────────────────────────────────────────────────────────
-const pillsEl = document.getElementById('renderer-pills');
-RENDERER_KEYS.forEach(k => {
-  const b = document.createElement('button');
-  b.className = 'r-pill' + (k === activeRenderer ? ' active' : '');
-  b.textContent = RENDERERS[k].label;
-  b.dataset.r = k;
-  b.onclick = () => startRenderer(k);
-  pillsEl.appendChild(b);
-});
-startRenderer(activeRenderer);
-
-// ── AUDIO VISUALISER ──────────────────────────────────────────────────────
-const avCv = document.getElementById('audio-viz');
-const avCtx = avCv ? avCv.getContext('2d') : null;
-let avT = 0;
-function drawAudioViz() {
-  if (!avCtx) return;
-  avCtx.clearRect(0,0,80,30);
-  for (let i = 0; i < 16; i++) {
-    const h = 4 + Math.abs(Math.sin(avT*2 + i*0.8)) * 22;
-    avCtx.fillStyle = `rgba(0,212,255,${0.4 + Math.abs(Math.sin(avT + i * 0.5)) * 0.6})`;
-    avCtx.fillRect(i*5, 30-h, 4, h);
-  }
-  avT += 0.06;
-  requestAnimationFrame(drawAudioViz);
-}
-drawAudioViz();
-
-// ── API & SCHEDULE ────────────────────────────────────────────────────────
-function formatTime(offsetSec) {
-  const now = new Date();
-  now.setSeconds(now.getSeconds() + offsetSec);
-  return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-}
-
-function buildSchedule(progs) {
-  const list = document.getElementById('schedule-list');
-  if (!list || !progs.length) return;
-  list.innerHTML = progs.map((p, i) => {
-    const isActive = i === 0;
-    const genres = (p.genres || []).join(' · ');
-    return `<div class="sched-item ${isActive ? 'sched-active' : ''}" onclick="jumpToSlot(${i})">
+      function buildSchedule(progs) {
+        const list = document.getElementById("schedule-list");
+        if (!list || !progs.length) return;
+        list.innerHTML = progs
+          .map((p, i) => {
+            const isActive = i === 0;
+            const genres = (p.genres || []).join(" · ");
+            return `<div class="sched-item ${isActive ? "sched-active" : ""}" onclick="jumpToSlot(${i})">
       <div class="sched-time">${formatTime(i * 120)}</div>
       <div>
-        <div class="sched-title">${p.title || 'Live Programme'}</div>
-        <div class="sched-genres">${genres} · ${p.hz || '528'} Hz</div>
+        <div class="sched-title">${p.title || "Live Programme"}</div>
+        <div class="sched-genres">${genres} · ${p.hz || "528"} Hz</div>
       </div>
     </div>`;
-  }).join('');
-}
+          })
+          .join("");
+      }
 
-function buildUpcoming(progs) {
-  const el = document.getElementById('upcoming-list');
-  if (!el) return;
-  const next = progs.slice(1, 5);
-  if (!next.length) { el.innerHTML = '<p style="color:var(--muted);font-size:0.8rem">Loading queue…</p>'; return; }
-  el.innerHTML = next.map((p, i) => {
-    const genres = (p.genres || []).slice(0,2).join(' · ');
-    return `<div class="np-card" style="cursor:pointer" onclick="jumpToSlot(${scheduleIndex + 1 + i})">
+      function buildUpcoming(progs) {
+        const el = document.getElementById("upcoming-list");
+        if (!el) return;
+        const next = progs.slice(1, 5);
+        if (!next.length) {
+          el.innerHTML =
+            '<p style="color:var(--muted);font-size:0.8rem">Loading queue…</p>';
+          return;
+        }
+        el.innerHTML = next
+          .map((p, i) => {
+            const genres = (p.genres || []).slice(0, 2).join(" · ");
+            return `<div class="np-card" style="cursor:pointer" onclick="jumpToSlot(${scheduleIndex + 1 + i})">
       <div class="np-card-badge" style="background:rgba(0,212,255,0.1);color:var(--cyan)">NEXT ${i + 1}</div>
-      <div class="np-card-title">${p.title || 'Programme'}</div>
-      <div class="np-card-meta">${genres} · ${p.hz || '528'} Hz · in ${(i + 1) * 2}min</div>
+      <div class="np-card-title">${p.title || "Programme"}</div>
+      <div class="np-card-meta">${genres} · ${p.hz || "528"} Hz · in ${(i + 1) * 2}min</div>
     </div>`;
-  }).join('');
-}
+          })
+          .join("");
+      }
 
-function setNowPlaying(p) {
-  if (!p) return;
-  document.getElementById('np-title').textContent = p.title || 'Live .geo Programme';
-  document.getElementById('np-sub').textContent = `AIOSProducerSwarm · ${p.renderer || ''} · ${(p.genres||[]).slice(0,2).join(', ')} · ${p.hz || '528'} Hz`;
-  const tagsEl = document.getElementById('np-tags');
-  tagsEl.innerHTML = (p.genres||[]).slice(0,4).map(g=>`<span class="np-tag">${g}</span>`).join('') + `<span class="np-tag">.geo v2</span>`;
-  const watch = document.getElementById('np-watch');
-  if (watch) watch.href = `/aiosdream?renderer=${p.renderer || ''}`;
-  // Switch renderer to match programme if available
-  const r = p.renderer;
-  if (r && RENDERERS[r]) startRenderer(r);
-  else if (r) {
-    // find closest
-    const fallbacks = { apollo:'aurora', escher:'mandala', chronos:'merkaba', dna:'galaxy', cosmos3d:'galaxy', neural:'circuit', quantum:'hyperspace', inception:'hyperspace', phoenix:'fire', ocean:'aurora', vortex:'nebula', fractal:'mandala', plasma:'nebula', lightning:'matrix', kaleidoscope:'mandala', waterwave:'aurora', circuit:'merkaba' };
-    startRenderer(fallbacks[r] || RENDERER_KEYS[Math.floor(Math.random()*RENDERER_KEYS.length)]);
-  }
-  applyHzVisuals(parseInt(p.hz, 10) || 528);
-}
+      function setNowPlaying(p) {
+        if (!p) return;
+        document.getElementById("np-title").textContent =
+          p.title || "Live .geo Programme";
+        document.getElementById("np-sub").textContent =
+          `AIOSProducerSwarm · ${p.renderer || ""} · ${(p.genres || []).slice(0, 2).join(", ")} · ${p.hz || "528"} Hz`;
+        const tagsEl = document.getElementById("np-tags");
+        tagsEl.innerHTML =
+          (p.genres || [])
+            .slice(0, 4)
+            .map((g) => `<span class="np-tag">${g}</span>`)
+            .join("") + `<span class="np-tag">.geo v2</span>`;
+        const watch = document.getElementById("np-watch");
+        if (watch) watch.href = `/aiosdream?renderer=${p.renderer || ""}`;
+        // Switch renderer to match programme if available
+        const r = p.renderer;
+        if (r && RENDERERS[r]) startRenderer(r);
+        else if (r) {
+          // find closest
+          const fallbacks = {
+            apollo: "aurora",
+            escher: "mandala",
+            chronos: "merkaba",
+            dna: "galaxy",
+            cosmos3d: "galaxy",
+            neural: "circuit",
+            quantum: "hyperspace",
+            inception: "hyperspace",
+            phoenix: "fire",
+            ocean: "aurora",
+            vortex: "nebula",
+            fractal: "mandala",
+            plasma: "nebula",
+            lightning: "matrix",
+            kaleidoscope: "mandala",
+            waterwave: "aurora",
+            circuit: "merkaba",
+          };
+          startRenderer(
+            fallbacks[r] ||
+              RENDERER_KEYS[Math.floor(Math.random() * RENDERER_KEYS.length)],
+          );
+        }
+        applyHzVisuals(parseInt(p.hz, 10) || 528);
+      }
 
-function jumpToSlot(idx) {
-  if (!catalogue[idx]) return;
-  scheduleIndex = idx;
-  slotElapsed = 0;
-  setNowPlaying(catalogue[idx]);
-  buildUpcoming(catalogue.slice(idx));
-  document.querySelectorAll('.sched-item').forEach((el, i) => el.classList.toggle('sched-active', i === idx));
-}
+      function jumpToSlot(idx) {
+        if (!catalogue[idx]) return;
+        scheduleIndex = idx;
+        slotElapsed = 0;
+        setNowPlaying(catalogue[idx]);
+        buildUpcoming(catalogue.slice(idx));
+        document
+          .querySelectorAll(".sched-item")
+          .forEach((el, i) => el.classList.toggle("sched-active", i === idx));
+      }
 
-async function loadCatalogue() {
-  try {
-    const r = await fetch('/api/geo/catalogue?limit=40');
-    const d = await r.json();
-    catalogue = d.programmes || d.catalogue || [];
-    if (catalogue.length) {
-      setNowPlaying(catalogue[0]);
-      buildSchedule(catalogue);
-      buildUpcoming(catalogue);
-    }
-  } catch(e) {}
-}
+      async function loadCatalogue() {
+        try {
+          const r = await fetch("/api/geo/catalogue?limit=40");
+          const d = await r.json();
+          catalogue = d.programmes || d.catalogue || [];
+          if (catalogue.length) {
+            setNowPlaying(catalogue[0]);
+            buildSchedule(catalogue);
+            buildUpcoming(catalogue);
+          }
+        } catch (e) {}
+      }
 
-async function loadStats() {
-  try {
-    const d = await (await fetch('/api/geo/stats')).json();
-    const el = id => document.getElementById(id);
-    if (el('ss-total')) el('ss-total').textContent = d.catalogueSize || '—';
-    if (el('ss-produced')) el('ss-produced').textContent = d.totalProduced || '—';
-    if (el('ss-hrs')) el('ss-hrs').textContent = d.totalDurationMin ? (d.totalDurationMin/60).toFixed(1) : '—';
-  } catch(e) {}
-}
+      async function loadStats() {
+        try {
+          const d = await (await fetch("/api/geo/stats")).json();
+          const el = (id) => document.getElementById(id);
+          if (el("ss-total"))
+            el("ss-total").textContent = d.catalogueSize || "—";
+          if (el("ss-produced"))
+            el("ss-produced").textContent = d.totalProduced || "—";
+          if (el("ss-hrs"))
+            el("ss-hrs").textContent = d.totalDurationMin
+              ? (d.totalDurationMin / 60).toFixed(1)
+              : "—";
+        } catch (e) {}
+      }
 
-// ── PROGRESS + COUNTDOWN ──────────────────────────────────────────────────
-setInterval(() => {
-  slotElapsed++;
-  countdown = Math.max(0, 120 - slotElapsed);
-  const el = document.getElementById('ss-next');
-  if (el) el.textContent = countdown + 's';
-  const pct = Math.min(100, (slotElapsed / 120) * 100);
-  const bar = document.getElementById('live-progress');
-  if (bar) bar.style.width = pct + '%';
-  // Auto-advance slot
-  if (slotElapsed >= 120 && catalogue.length > 1) {
-    scheduleIndex = (scheduleIndex + 1) % catalogue.length;
-    slotElapsed = 0;
-    setNowPlaying(catalogue[scheduleIndex]);
-    buildUpcoming(catalogue.slice(scheduleIndex));
-    buildSchedule(catalogue.slice(scheduleIndex));
-  }
-}, 1000);
+      // ── PROGRESS + COUNTDOWN ──────────────────────────────────────────────────
+      setInterval(() => {
+        slotElapsed++;
+        countdown = Math.max(0, 120 - slotElapsed);
+        const el = document.getElementById("ss-next");
+        if (el) el.textContent = countdown + "s";
+        const pct = Math.min(100, (slotElapsed / 120) * 100);
+        const bar = document.getElementById("live-progress");
+        if (bar) bar.style.width = pct + "%";
+        // Auto-advance slot
+        if (slotElapsed >= 120 && catalogue.length > 1) {
+          scheduleIndex = (scheduleIndex + 1) % catalogue.length;
+          slotElapsed = 0;
+          setNowPlaying(catalogue[scheduleIndex]);
+          buildUpcoming(catalogue.slice(scheduleIndex));
+          buildSchedule(catalogue.slice(scheduleIndex));
+        }
+      }, 1000);
 
-// ── INIT ──────────────────────────────────────────────────────────────────
-loadCatalogue();
-loadStats();
-setInterval(loadStats, 60000);
-setInterval(loadCatalogue, 120000); // refresh when new .geo is produced
-</script>
-</body>
+      // ── INIT ──────────────────────────────────────────────────────────────────
+      loadCatalogue();
+      loadStats();
+      setInterval(loadStats, 60000);
+      setInterval(loadCatalogue, 120000); // refresh when new .geo is produced
+    </script>
+  </body>
 </html>
