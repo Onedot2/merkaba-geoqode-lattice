@@ -587,7 +587,11 @@
         </button>
 
         <!-- Quest VR mode note -->
-        <div class="vr-not-supported" id="vr-not-supported" style="display:none">
+        <div
+          class="vr-not-supported"
+          id="vr-not-supported"
+          style="display: none"
+        >
           🎬 <strong>Running in Cinema Mode (desktop).</strong><br />
           For full spatial VR, open this page on a Meta Quest browser:
           <code>realaios.com/vr</code>
@@ -1676,20 +1680,25 @@
 
         // Determine ambient Hz for this programme
         const semHz = currentProg
-          ? ((SEMANTIC[(PROGRAMMES.find(p => p.name === currentProg) || {}).sem] || SEMANTIC.HOLOGRAPHIC).hz)
+          ? (
+              SEMANTIC[
+                (PROGRAMMES.find((p) => p.name === currentProg) || {}).sem
+              ] || SEMANTIC.HOLOGRAPHIC
+            ).hz
           : BASE_FREQ;
 
         // Load MAL scene async, fall back to legacy builder on error
-        const malSceneId = MAL_SCENE_MAP[currentProg] || MAL_SCENE_MAP['default'];
+        const malSceneId =
+          MAL_SCENE_MAP[currentProg] || MAL_SCENE_MAP["default"];
         getMALLoader()
           .then(({ buildMALScene }) => buildMALScene(malSceneId))
           .then(({ sceneHTML, narrativeHTML, fogAttr, palette }) => {
-            const exitBtn = container.querySelector('#vr-exit-btn');
+            const exitBtn = container.querySelector("#vr-exit-btn");
             const isVR = webXRSupported;
             container.innerHTML =
               `<button id="vr-exit-btn" onclick="exitVRScene()" style="position:fixed;top:16px;right:16px;z-index:9999;background:rgba(0,0,0,0.7);color:#fff;border:1px solid #444;border-radius:8px;padding:8px 18px;font-size:14px;cursor:pointer;">&#x2715; Exit</button>` +
               `<a-scene
-                vr-mode-ui="enabled: ${isVR ? 'true' : 'false'}"
+                vr-mode-ui="enabled: ${isVR ? "true" : "false"}"
                 loading-screen="dotsColor: #00d4ff; backgroundColor: ${palette.bg}"
                 fog="${fogAttr}"
                 renderer="antialias: true; physicallyCorrectLights: true"
@@ -1720,13 +1729,14 @@
           })
           .catch(() => {
             // Fallback: legacy sphere/panel scene
-            const loading = container.querySelector('#vr-loading');
+            const loading = container.querySelector("#vr-loading");
             if (loading) loading.remove();
             container.innerHTML =
               `<button id="vr-exit-btn" onclick="exitVRScene()" style="position:fixed;top:16px;right:16px;z-index:9999;background:rgba(0,0,0,0.7);color:#fff;border:1px solid #444;border-radius:8px;padding:8px 18px;font-size:14px;cursor:pointer;">&#x2715; Exit</button>` +
               buildAFrameScene(currentProg);
-            const scene = container.querySelector('a-scene');
-            if (scene) scene.addEventListener('loaded', () => attachPanelListeners());
+            const scene = container.querySelector("a-scene");
+            if (scene)
+              scene.addEventListener("loaded", () => attachPanelListeners());
             startAmbientTone(semHz);
           });
       }
