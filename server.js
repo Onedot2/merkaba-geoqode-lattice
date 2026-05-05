@@ -149,6 +149,11 @@ const VR_DEV_HTML = existsSync(VR_DEV_HTML_PATH)
   ? withMeta(readFileSync(VR_DEV_HTML_PATH, "utf-8"))
   : null;
 
+const PLAYGROUND_HTML_PATH = join(PUBLIC_DIR, "aios-playground.html");
+const PLAYGROUND_HTML = existsSync(PLAYGROUND_HTML_PATH)
+  ? withMeta(readFileSync(PLAYGROUND_HTML_PATH, "utf-8"))
+  : null;
+
 const LLMS_TXT_PATH = join(PUBLIC_DIR, "llms.txt");
 const LLMS_TXT = existsSync(LLMS_TXT_PATH)
   ? readFileSync(LLMS_TXT_PATH, "utf-8")
@@ -533,6 +538,7 @@ const server = createServer(async (req, res) => {
         `  <url><loc>https://realaios.com/vr-developer</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>`,
         `  <url><loc>https://realaios.com/aiosdream</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>`,
         `  <url><loc>https://realaios.com/plaistore</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>`,
+        `  <url><loc>https://realaios.com/aios-playground</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.88</priority></url>`,
         `  <url><loc>https://realaios.com/experiences</loc><lastmod>${now}</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>`,
         `  <url><loc>https://realaios.com/ai</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.95</priority></url>`,
         `  <url><loc>https://realaios.com/start</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.85</priority></url>`,
@@ -1830,6 +1836,18 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
         return json(res, 404, { ok: false, error: "Dashboard page not found" });
       res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
       res.end(DASHBOARD_HTML);
+      return;
+    }
+
+    // ── GET /aios-playground — NEXGEN Sentient Gaming Hub ──────────────────
+    if (
+      req.method === "GET" &&
+      (pathname === "/aios-playground" || pathname === "/aios-playground/")
+    ) {
+      if (!PLAYGROUND_HTML)
+        return json(res, 404, { ok: false, error: "NEXGEN Playground not found" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.end(PLAYGROUND_HTML);
       return;
     }
 
