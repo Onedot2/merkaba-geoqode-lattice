@@ -168,11 +168,17 @@ const GAME_PHI_BREAKER_HTML_PATH = join(PUBLIC_DIR, "game-phi-breaker.html");
 const GAME_PHI_BREAKER_HTML = existsSync(GAME_PHI_BREAKER_HTML_PATH)
   ? withMeta(readFileSync(GAME_PHI_BREAKER_HTML_PATH, "utf-8"))
   : null;
-const GAME_LATTICE_DODGE_HTML_PATH = join(PUBLIC_DIR, "game-lattice-dodge.html");
+const GAME_LATTICE_DODGE_HTML_PATH = join(
+  PUBLIC_DIR,
+  "game-lattice-dodge.html",
+);
 const GAME_LATTICE_DODGE_HTML = existsSync(GAME_LATTICE_DODGE_HTML_PATH)
   ? withMeta(readFileSync(GAME_LATTICE_DODGE_HTML_PATH, "utf-8"))
   : null;
-const GAME_LATTICE_BUILDER_HTML_PATH = join(PUBLIC_DIR, "game-lattice-builder.html");
+const GAME_LATTICE_BUILDER_HTML_PATH = join(
+  PUBLIC_DIR,
+  "game-lattice-builder.html",
+);
 const GAME_LATTICE_BUILDER_HTML = existsSync(GAME_LATTICE_BUILDER_HTML_PATH)
   ? withMeta(readFileSync(GAME_LATTICE_BUILDER_HTML_PATH, "utf-8"))
   : null;
@@ -248,7 +254,8 @@ const AIOS_NEWS = [
     id: "2026-05-08-aios-arcade-launch",
     date: "2026-05-08",
     category: "VR Platform",
-    title: "AIOS Arcade Live — 3 Playable WebXR Games Born from the PHI Lattice",
+    title:
+      "AIOS Arcade Live — 3 Playable WebXR Games Born from the PHI Lattice",
     summary:
       "AIOS Arcade is now open. Three browser-native WebXR games are live at /games: PHI Breaker (lattice shooter, 528 Hz ACTION), Lattice Dodge (PHI survival, 417 Hz LOCATION), and Lattice Builder (PHI sequence puzzle, 852 Hz PHYSICS). Every mechanic is derived from PHI=1.618 geometry and the canonical 8→26→48:480 harmonic architecture. Works in any desktop browser. Full VR on Quest 2/3. No install, no account, free to play.",
     tags: ["arcade", "vr", "webxr", "phi", "aframe", "games", "quest"],
@@ -2068,7 +2075,10 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
     }
 
     // ── Games routes ──────────────────────────────────────────────────────
-    if (req.method === "GET" && (pathname === "/games" || pathname === "/games/")) {
+    if (
+      req.method === "GET" &&
+      (pathname === "/games" || pathname === "/games/")
+    ) {
       if (!GAMES_HUB_HTML) return json(res, 404, { error: "not found" });
       res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
       res.end(GAMES_HUB_HTML);
@@ -2081,13 +2091,15 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       return;
     }
     if (req.method === "GET" && pathname === "/games/lattice-dodge") {
-      if (!GAME_LATTICE_DODGE_HTML) return json(res, 404, { error: "not found" });
+      if (!GAME_LATTICE_DODGE_HTML)
+        return json(res, 404, { error: "not found" });
       res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
       res.end(GAME_LATTICE_DODGE_HTML);
       return;
     }
     if (req.method === "GET" && pathname === "/games/lattice-builder") {
-      if (!GAME_LATTICE_BUILDER_HTML) return json(res, 404, { error: "not found" });
+      if (!GAME_LATTICE_BUILDER_HTML)
+        return json(res, 404, { error: "not found" });
       res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
       res.end(GAME_LATTICE_BUILDER_HTML);
       return;

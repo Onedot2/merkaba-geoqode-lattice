@@ -4,9 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AIOS Arcade — Games born from the lattice</title>
-    <meta name="description" content="Browser and VR games built on PHI geometry and the 48-node Merkaba lattice. Play free on any device. VR headset optional." />
+    <meta
+      name="description"
+      content="Browser and VR games built on PHI geometry and the 48-node Merkaba lattice. Play free on any device. VR headset optional."
+    />
     <style>
-      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
       :root {
         --bg: #020610;
         --bg2: #040a18;
@@ -17,37 +26,153 @@
         --gold: #fbbf24;
         --text: #edf4ff;
         --muted: #6b84b8;
-        --border: rgba(0,212,255,0.12);
-        --surface: rgba(255,255,255,0.04);
+        --border: rgba(0, 212, 255, 0.12);
+        --surface: rgba(255, 255, 255, 0.04);
       }
-      body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; min-height: 100vh; overflow-x: hidden; }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
 
-      nav.site-nav{position:fixed;top:0;left:0;right:0;z-index:200;height:54px;padding:0 24px;display:flex;align-items:center;gap:8px;background:rgba(2,6,16,0.95);backdrop-filter:blur(14px);border-bottom:1px solid rgba(0,212,255,0.1);}
-      .site-nav-logo{font-size:18px;font-weight:800;color:#00d4ff;text-decoration:none;letter-spacing:-0.5px;white-space:nowrap;margin-right:4px;flex-shrink:0;}
-      .site-nav-links{display:flex;align-items:center;gap:2px;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0;}
-      .site-nav-links::-webkit-scrollbar{display:none;}
-      .site-nav-links a{color:rgba(248,250,252,0.5);font-size:0.82rem;font-weight:500;text-decoration:none;padding:5px 10px;border-radius:6px;white-space:nowrap;transition:color .15s,background .15s;flex-shrink:0;}
-      .site-nav-links a:hover{color:#fff;background:rgba(255,255,255,0.07);}
-      .site-nav-links a.active{color:#00d4ff;background:rgba(0,212,255,0.08);}
-      .site-nav-right{display:flex;align-items:center;gap:10px;flex-shrink:0;margin-left:8px;}
-      .site-nav-live{display:inline-flex;align-items:center;gap:4px;font-size:0.72rem;font-weight:800;color:#ef4444;text-decoration:none;letter-spacing:.05em;animation:_snlive 1.2s ease-in-out infinite;}
-      @keyframes _snlive{0%,100%{opacity:1}50%{opacity:0.4}}
-      .site-nav-cta{background:#00d4ff;color:#000;font-weight:700;font-size:0.78rem;padding:6px 14px;border-radius:6px;text-decoration:none;letter-spacing:.3px;transition:opacity .2s;white-space:nowrap;}
-      .site-nav-cta:hover{opacity:.85;}
-      @media(max-width:640px){nav.site-nav{padding:0 12px;height:50px;}.site-nav-live{display:none;}.site-nav-logo{font-size:16px;}}
-      body{padding-top:54px;}
-      @media(max-width:640px){body{padding-top:50px;}}
+      nav.site-nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 200;
+        height: 54px;
+        padding: 0 24px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(2, 6, 16, 0.95);
+        backdrop-filter: blur(14px);
+        border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+      }
+      .site-nav-logo {
+        font-size: 18px;
+        font-weight: 800;
+        color: #00d4ff;
+        text-decoration: none;
+        letter-spacing: -0.5px;
+        white-space: nowrap;
+        margin-right: 4px;
+        flex-shrink: 0;
+      }
+      .site-nav-links {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        overflow-x: auto;
+        scrollbar-width: none;
+        flex: 1;
+        min-width: 0;
+      }
+      .site-nav-links::-webkit-scrollbar {
+        display: none;
+      }
+      .site-nav-links a {
+        color: rgba(248, 250, 252, 0.5);
+        font-size: 0.82rem;
+        font-weight: 500;
+        text-decoration: none;
+        padding: 5px 10px;
+        border-radius: 6px;
+        white-space: nowrap;
+        transition:
+          color 0.15s,
+          background 0.15s;
+        flex-shrink: 0;
+      }
+      .site-nav-links a:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.07);
+      }
+      .site-nav-links a.active {
+        color: #00d4ff;
+        background: rgba(0, 212, 255, 0.08);
+      }
+      .site-nav-right {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-shrink: 0;
+        margin-left: 8px;
+      }
+      .site-nav-live {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 0.72rem;
+        font-weight: 800;
+        color: #ef4444;
+        text-decoration: none;
+        letter-spacing: 0.05em;
+        animation: _snlive 1.2s ease-in-out infinite;
+      }
+      @keyframes _snlive {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.4;
+        }
+      }
+      .site-nav-cta {
+        background: #00d4ff;
+        color: #000;
+        font-weight: 700;
+        font-size: 0.78rem;
+        padding: 6px 14px;
+        border-radius: 6px;
+        text-decoration: none;
+        letter-spacing: 0.3px;
+        transition: opacity 0.2s;
+        white-space: nowrap;
+      }
+      .site-nav-cta:hover {
+        opacity: 0.85;
+      }
+      @media (max-width: 640px) {
+        nav.site-nav {
+          padding: 0 12px;
+          height: 50px;
+        }
+        .site-nav-live {
+          display: none;
+        }
+        .site-nav-logo {
+          font-size: 16px;
+        }
+      }
+      body {
+        padding-top: 54px;
+      }
+      @media (max-width: 640px) {
+        body {
+          padding-top: 50px;
+        }
+      }
 
       /* HERO */
       .hero {
         text-align: center;
         padding: 5rem 1.5rem 3rem;
-        background: radial-gradient(ellipse at 50% 0%, rgba(239,68,68,0.08) 0%, rgba(155,92,255,0.05) 40%, transparent 70%);
+        background: radial-gradient(
+          ellipse at 50% 0%,
+          rgba(239, 68, 68, 0.08) 0%,
+          rgba(155, 92, 255, 0.05) 40%,
+          transparent 70%
+        );
         position: relative;
         overflow: hidden;
       }
       .hero::before {
-        content: '';
+        content: "";
         position: absolute;
         top: -40%;
         left: 50%;
@@ -55,7 +180,7 @@
         width: 600px;
         height: 600px;
         border-radius: 50%;
-        border: 1px solid rgba(239,68,68,0.08);
+        border: 1px solid rgba(239, 68, 68, 0.08);
         pointer-events: none;
       }
       .hero-badge {
@@ -67,8 +192,8 @@
         letter-spacing: 0.18em;
         color: var(--red);
         text-transform: uppercase;
-        background: rgba(239,68,68,0.1);
-        border: 1px solid rgba(239,68,68,0.25);
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.25);
         padding: 5px 16px;
         border-radius: 20px;
         margin-bottom: 1.5rem;
@@ -80,9 +205,17 @@
         line-height: 0.95;
         margin-bottom: 1.2rem;
       }
-      .hero-title .t1 { color: var(--text); }
+      .hero-title .t1 {
+        color: var(--text);
+      }
       .hero-title .t2 {
-        background: linear-gradient(135deg, #ef4444 0%, #f97316 35%, #fbbf24 70%, #00d4ff 100%);
+        background: linear-gradient(
+          135deg,
+          #ef4444 0%,
+          #f97316 35%,
+          #fbbf24 70%,
+          #00d4ff 100%
+        );
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -109,10 +242,26 @@
         font-weight: 600;
         letter-spacing: 0.04em;
       }
-      .pill-vr { color: var(--cyan); border-color: rgba(0,212,255,0.3); background: rgba(0,212,255,0.06); }
-      .pill-free { color: var(--green); border-color: rgba(34,197,94,0.3); background: rgba(34,197,94,0.06); }
-      .pill-browser { color: var(--gold); border-color: rgba(251,191,36,0.3); background: rgba(251,191,36,0.06); }
-      .pill-phi { color: var(--purple); border-color: rgba(155,92,255,0.3); background: rgba(155,92,255,0.06); }
+      .pill-vr {
+        color: var(--cyan);
+        border-color: rgba(0, 212, 255, 0.3);
+        background: rgba(0, 212, 255, 0.06);
+      }
+      .pill-free {
+        color: var(--green);
+        border-color: rgba(34, 197, 94, 0.3);
+        background: rgba(34, 197, 94, 0.06);
+      }
+      .pill-browser {
+        color: var(--gold);
+        border-color: rgba(251, 191, 36, 0.3);
+        background: rgba(251, 191, 36, 0.06);
+      }
+      .pill-phi {
+        color: var(--purple);
+        border-color: rgba(155, 92, 255, 0.3);
+        background: rgba(155, 92, 255, 0.06);
+      }
 
       /* STATS STRIP */
       .stats-strip {
@@ -124,7 +273,9 @@
         overflow-x: auto;
         scrollbar-width: none;
       }
-      .stats-strip::-webkit-scrollbar { display: none; }
+      .stats-strip::-webkit-scrollbar {
+        display: none;
+      }
       .strip-stat {
         flex: 1;
         min-width: 120px;
@@ -132,15 +283,48 @@
         padding: 1.2rem 1rem;
         border-right: 1px solid var(--border);
       }
-      .strip-stat:last-child { border-right: none; }
-      .strip-n { font-size: 2rem; font-weight: 900; }
-      .strip-l { font-size: 0.65rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 2px; }
+      .strip-stat:last-child {
+        border-right: none;
+      }
+      .strip-n {
+        font-size: 2rem;
+        font-weight: 900;
+      }
+      .strip-l {
+        font-size: 0.65rem;
+        color: var(--muted);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-top: 2px;
+      }
 
       /* SECTION */
-      .section { max-width: 1100px; margin: 0 auto; padding: 4rem 1.5rem; }
-      .section-label { font-size: 0.7rem; font-weight: 800; letter-spacing: 0.2em; color: var(--muted); text-transform: uppercase; margin-bottom: 0.75rem; }
-      .section-title { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 900; letter-spacing: -0.03em; margin-bottom: 0.75rem; }
-      .section-sub { color: var(--muted); font-size: 1rem; max-width: 560px; line-height: 1.6; margin-bottom: 2.5rem; }
+      .section {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 4rem 1.5rem;
+      }
+      .section-label {
+        font-size: 0.7rem;
+        font-weight: 800;
+        letter-spacing: 0.2em;
+        color: var(--muted);
+        text-transform: uppercase;
+        margin-bottom: 0.75rem;
+      }
+      .section-title {
+        font-size: clamp(1.8rem, 4vw, 2.6rem);
+        font-weight: 900;
+        letter-spacing: -0.03em;
+        margin-bottom: 0.75rem;
+      }
+      .section-sub {
+        color: var(--muted);
+        font-size: 1rem;
+        max-width: 560px;
+        line-height: 1.6;
+        margin-bottom: 2.5rem;
+      }
 
       /* GAME CARDS */
       .game-grid {
@@ -153,7 +337,10 @@
         border: 1px solid var(--border);
         border-radius: 16px;
         overflow: hidden;
-        transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+        transition:
+          transform 0.2s,
+          border-color 0.2s,
+          box-shadow 0.2s;
         text-decoration: none;
         color: inherit;
         display: flex;
@@ -162,7 +349,7 @@
       .game-card:hover {
         transform: translateY(-4px);
         border-color: var(--card-accent);
-        box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+        box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
       }
       .game-card-top {
         height: 160px;
@@ -182,15 +369,31 @@
         position: absolute;
         inset: 0;
         opacity: 0.08;
-        background: radial-gradient(ellipse at 50% 50%, var(--card-accent) 0%, transparent 70%);
+        background: radial-gradient(
+          ellipse at 50% 50%,
+          var(--card-accent) 0%,
+          transparent 70%
+        );
       }
       .game-card-lattice {
         position: absolute;
         inset: 0;
         opacity: 0.06;
-        background-image: 
-          repeating-linear-gradient(0deg, var(--card-accent) 0px, var(--card-accent) 1px, transparent 1px, transparent 30px),
-          repeating-linear-gradient(90deg, var(--card-accent) 0px, var(--card-accent) 1px, transparent 1px, transparent 30px);
+        background-image:
+          repeating-linear-gradient(
+            0deg,
+            var(--card-accent) 0px,
+            var(--card-accent) 1px,
+            transparent 1px,
+            transparent 30px
+          ),
+          repeating-linear-gradient(
+            90deg,
+            var(--card-accent) 0px,
+            var(--card-accent) 1px,
+            transparent 1px,
+            transparent 30px
+          );
       }
       .game-card-status {
         position: absolute;
@@ -202,22 +405,59 @@
         padding: 3px 10px;
         border-radius: 12px;
         text-transform: uppercase;
-        background: rgba(34,197,94,0.15);
+        background: rgba(34, 197, 94, 0.15);
         color: var(--green);
-        border: 1px solid rgba(34,197,94,0.3);
+        border: 1px solid rgba(34, 197, 94, 0.3);
       }
       .game-card-status.coming {
-        background: rgba(251,191,36,0.1);
+        background: rgba(251, 191, 36, 0.1);
         color: var(--gold);
-        border-color: rgba(251,191,36,0.25);
+        border-color: rgba(251, 191, 36, 0.25);
       }
-      .game-card-body { padding: 1.4rem; flex: 1; display: flex; flex-direction: column; gap: 0.6rem; }
-      .game-card-name { font-size: 1.2rem; font-weight: 800; letter-spacing: -0.02em; color: var(--text); }
-      .game-card-tagline { font-size: 0.78rem; color: var(--card-accent); font-weight: 600; }
-      .game-card-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.55; flex: 1; }
-      .game-card-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.25rem; }
-      .game-tag { font-size: 0.65rem; padding: 2px 8px; border-radius: 8px; background: rgba(255,255,255,0.06); color: var(--muted); }
-      .game-card-footer { padding: 1rem 1.4rem; border-top: 1px solid var(--border); display: flex; gap: 0.75rem; align-items: center; }
+      .game-card-body {
+        padding: 1.4rem;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+      }
+      .game-card-name {
+        font-size: 1.2rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        color: var(--text);
+      }
+      .game-card-tagline {
+        font-size: 0.78rem;
+        color: var(--card-accent);
+        font-weight: 600;
+      }
+      .game-card-desc {
+        font-size: 0.85rem;
+        color: var(--muted);
+        line-height: 1.55;
+        flex: 1;
+      }
+      .game-card-tags {
+        display: flex;
+        gap: 0.4rem;
+        flex-wrap: wrap;
+        margin-top: 0.25rem;
+      }
+      .game-tag {
+        font-size: 0.65rem;
+        padding: 2px 8px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--muted);
+      }
+      .game-card-footer {
+        padding: 1rem 1.4rem;
+        border-top: 1px solid var(--border);
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+      }
       .btn-launch {
         background: var(--card-accent);
         color: #000;
@@ -226,12 +466,23 @@
         padding: 7px 18px;
         border-radius: 8px;
         text-decoration: none;
-        transition: opacity .15s;
+        transition: opacity 0.15s;
         flex-shrink: 0;
       }
-      .btn-launch:hover { opacity: 0.85; }
-      .btn-launch.coming { background: rgba(251,191,36,0.15); color: var(--gold); border: 1px solid rgba(251,191,36,0.3); font-weight: 700; cursor: default; }
-      .game-card-meta { font-size: 0.7rem; color: var(--muted); }
+      .btn-launch:hover {
+        opacity: 0.85;
+      }
+      .btn-launch.coming {
+        background: rgba(251, 191, 36, 0.15);
+        color: var(--gold);
+        border: 1px solid rgba(251, 191, 36, 0.3);
+        font-weight: 700;
+        cursor: default;
+      }
+      .game-card-meta {
+        font-size: 0.7rem;
+        color: var(--muted);
+      }
 
       /* LATTICE SECTION */
       .lattice-section {
@@ -241,10 +492,35 @@
         padding: 3.5rem 1.5rem;
         text-align: center;
       }
-      .lattice-title { font-size: 1.4rem; font-weight: 800; color: var(--text); margin-bottom: 0.75rem; letter-spacing: -0.02em; }
-      .lattice-sub { color: var(--muted); font-size: 0.9rem; max-width: 520px; margin: 0 auto 2rem; line-height: 1.6; }
-      .lattice-pills { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
-      .lattice-pill { font-size: 0.75rem; padding: 6px 16px; border-radius: 20px; background: rgba(0,212,255,0.06); border: 1px solid rgba(0,212,255,0.15); color: var(--cyan); font-weight: 600; }
+      .lattice-title {
+        font-size: 1.4rem;
+        font-weight: 800;
+        color: var(--text);
+        margin-bottom: 0.75rem;
+        letter-spacing: -0.02em;
+      }
+      .lattice-sub {
+        color: var(--muted);
+        font-size: 0.9rem;
+        max-width: 520px;
+        margin: 0 auto 2rem;
+        line-height: 1.6;
+      }
+      .lattice-pills {
+        display: flex;
+        gap: 0.75rem;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .lattice-pill {
+        font-size: 0.75rem;
+        padding: 6px 16px;
+        border-radius: 20px;
+        background: rgba(0, 212, 255, 0.06);
+        border: 1px solid rgba(0, 212, 255, 0.15);
+        color: var(--cyan);
+        font-weight: 600;
+      }
 
       /* FOOTER */
       footer {
@@ -254,12 +530,16 @@
         color: var(--muted);
         font-size: 0.8rem;
       }
-      footer a { color: var(--cyan); text-decoration: none; }
-      footer a:hover { opacity: 0.8; }
+      footer a {
+        color: var(--cyan);
+        text-decoration: none;
+      }
+      footer a:hover {
+        opacity: 0.8;
+      }
     </style>
   </head>
   <body>
-
     <!-- NAV -->
     <nav class="site-nav">
       <a href="/" class="site-nav-logo">⬡ AIOS</a>
@@ -285,12 +565,12 @@
     <div class="hero">
       <div class="hero-badge">🎮 AIOS Arcade</div>
       <h1 class="hero-title">
-        <span class="t1">Games born</span><br>
+        <span class="t1">Games born</span><br />
         <span class="t2">from the lattice</span>
       </h1>
       <p class="hero-sub">
-        Browser and WebVR games built on PHI geometry and the 48-node Merkaba lattice.
-        No install. VR headset optional. Free to play.
+        Browser and WebVR games built on PHI geometry and the 48-node Merkaba
+        lattice. No install. VR headset optional. Free to play.
       </p>
       <div class="hero-pills">
         <span class="hero-pill pill-vr">🥽 Quest Compatible</span>
@@ -303,19 +583,19 @@
     <!-- STATS STRIP -->
     <div class="stats-strip">
       <div class="strip-stat">
-        <div class="strip-n" style="color:var(--green)">3</div>
+        <div class="strip-n" style="color: var(--green)">3</div>
         <div class="strip-l">Live Now</div>
       </div>
       <div class="strip-stat">
-        <div class="strip-n" style="color:var(--gold)">3</div>
+        <div class="strip-n" style="color: var(--gold)">3</div>
         <div class="strip-l">Coming Soon</div>
       </div>
       <div class="strip-stat">
-        <div class="strip-n" style="color:var(--cyan)">D480</div>
+        <div class="strip-n" style="color: var(--cyan)">D480</div>
         <div class="strip-l">Harmonic Space</div>
       </div>
       <div class="strip-stat">
-        <div class="strip-n" style="color:var(--purple)">PHI</div>
+        <div class="strip-n" style="color: var(--purple)">PHI</div>
         <div class="strip-l">Core Physics</div>
       </div>
     </div>
@@ -324,12 +604,13 @@
     <div class="section">
       <div class="section-label">Live Now</div>
       <h2 class="section-title">Play Today</h2>
-      <p class="section-sub">Three fully playable games. Works in any browser. Full VR on Quest 2/3.</p>
+      <p class="section-sub">
+        Three fully playable games. Works in any browser. Full VR on Quest 2/3.
+      </p>
 
       <div class="game-grid">
-
         <!-- PHI Breaker -->
-        <div class="game-card" style="--card-accent:#ef4444">
+        <div class="game-card" style="--card-accent: #ef4444">
           <div class="game-card-top">
             <div class="game-card-bg"></div>
             <div class="game-card-lattice"></div>
@@ -340,8 +621,9 @@
             <div class="game-card-name">PHI Breaker</div>
             <div class="game-card-tagline">Lattice Shooter</div>
             <div class="game-card-desc">
-              Entropy disruptors are attacking the 48-node lattice. Gaze to lock on.
-              Click to destroy. Each wave spawns PHI times faster. 60-second rounds.
+              Entropy disruptors are attacking the 48-node lattice. Gaze to lock
+              on. Click to destroy. Each wave spawns PHI times faster. 60-second
+              rounds.
             </div>
             <div class="game-card-tags">
               <span class="game-tag">Shooter</span>
@@ -357,7 +639,7 @@
         </div>
 
         <!-- Lattice Dodge -->
-        <div class="game-card" style="--card-accent:#9b5cff">
+        <div class="game-card" style="--card-accent: #9b5cff">
           <div class="game-card-top">
             <div class="game-card-bg"></div>
             <div class="game-card-lattice"></div>
@@ -368,8 +650,9 @@
             <div class="game-card-name">Lattice Dodge</div>
             <div class="game-card-tagline">PHI Reflexes Survival</div>
             <div class="game-card-desc">
-              Entropy cubes flood the lattice ring from all directions. Move to survive.
-              Speed ramps by PHI every 15 seconds. 3 lives. How long can you hold?
+              Entropy cubes flood the lattice ring from all directions. Move to
+              survive. Speed ramps by PHI every 15 seconds. 3 lives. How long
+              can you hold?
             </div>
             <div class="game-card-tags">
               <span class="game-tag">Survival</span>
@@ -379,13 +662,18 @@
             </div>
           </div>
           <div class="game-card-footer">
-            <a href="/games/lattice-dodge" class="btn-launch" style="background:#9b5cff">▶ Play Now</a>
+            <a
+              href="/games/lattice-dodge"
+              class="btn-launch"
+              style="background: #9b5cff"
+              >▶ Play Now</a
+            >
             <div class="game-card-meta">WASD · 3 Lives · Infinite</div>
           </div>
         </div>
 
         <!-- Lattice Builder -->
-        <div class="game-card" style="--card-accent:#22c55e">
+        <div class="game-card" style="--card-accent: #22c55e">
           <div class="game-card-top">
             <div class="game-card-bg"></div>
             <div class="game-card-lattice"></div>
@@ -396,8 +684,9 @@
             <div class="game-card-name">Lattice Builder</div>
             <div class="game-card-tagline">PHI Sequence Puzzle</div>
             <div class="game-card-desc">
-              8 damaged lattice nodes float in sequence. Gaze them in PHI order to
-              reconstruct the lattice. Sequence grows by 1 each round. 3 mistakes and the lattice collapses.
+              8 damaged lattice nodes float in sequence. Gaze them in PHI order
+              to reconstruct the lattice. Sequence grows by 1 each round. 3
+              mistakes and the lattice collapses.
             </div>
             <div class="game-card-tags">
               <span class="game-tag">Puzzle</span>
@@ -407,24 +696,29 @@
             </div>
           </div>
           <div class="game-card-footer">
-            <a href="/games/lattice-builder" class="btn-launch" style="background:#22c55e">▶ Play Now</a>
+            <a
+              href="/games/lattice-builder"
+              class="btn-launch"
+              style="background: #22c55e"
+              >▶ Play Now</a
+            >
             <div class="game-card-meta">Gaze · Memory · Progressive</div>
           </div>
         </div>
-
       </div>
     </div>
 
     <!-- COMING SOON -->
-    <div class="section" style="padding-top:0">
+    <div class="section" style="padding-top: 0">
       <div class="section-label">Coming Soon</div>
       <h2 class="section-title">Next from the Lattice</h2>
-      <p class="section-sub">Built from the GeoQode frequency map. In development on the D48 mesh.</p>
+      <p class="section-sub">
+        Built from the GeoQode frequency map. In development on the D48 mesh.
+      </p>
 
       <div class="game-grid">
-
         <!-- Merkaba Racer -->
-        <div class="game-card" style="--card-accent:#f97316;opacity:0.75">
+        <div class="game-card" style="--card-accent: #f97316; opacity: 0.75">
           <div class="game-card-top">
             <div class="game-card-bg"></div>
             <div class="game-card-icon">🏎️</div>
@@ -433,7 +727,10 @@
           <div class="game-card-body">
             <div class="game-card-name">Merkaba Racer</div>
             <div class="game-card-tagline">PHI-Spiral Multiplayer Racing</div>
-            <div class="game-card-desc">Race PHI-spiral tracks in the 48-node lattice. 8-player multiplayer. First across the harmonic finish wins.</div>
+            <div class="game-card-desc">
+              Race PHI-spiral tracks in the 48-node lattice. 8-player
+              multiplayer. First across the harmonic finish wins.
+            </div>
             <div class="game-card-tags">
               <span class="game-tag">Racing</span>
               <span class="game-tag">Multiplayer</span>
@@ -446,7 +743,7 @@
         </div>
 
         <!-- Frequency Wars -->
-        <div class="game-card" style="--card-accent:#00d4ff;opacity:0.75">
+        <div class="game-card" style="--card-accent: #00d4ff; opacity: 0.75">
           <div class="game-card-top">
             <div class="game-card-bg"></div>
             <div class="game-card-icon">🌊</div>
@@ -455,7 +752,10 @@
           <div class="game-card-body">
             <div class="game-card-name">Frequency Wars</div>
             <div class="game-card-tagline">Tower Defence at Lattice Scale</div>
-            <div class="game-card-desc">Place frequency towers at lattice nodes to repel entropy waves. Each tower resonates at a GeoQode semantic frequency.</div>
+            <div class="game-card-desc">
+              Place frequency towers at lattice nodes to repel entropy waves.
+              Each tower resonates at a GeoQode semantic frequency.
+            </div>
             <div class="game-card-tags">
               <span class="game-tag">Tower Defence</span>
               <span class="game-tag">Strategy</span>
@@ -468,7 +768,7 @@
         </div>
 
         <!-- Quantum Chess -->
-        <div class="game-card" style="--card-accent:#fbbf24;opacity:0.75">
+        <div class="game-card" style="--card-accent: #fbbf24; opacity: 0.75">
           <div class="game-card-top">
             <div class="game-card-bg"></div>
             <div class="game-card-icon">♟️</div>
@@ -477,7 +777,10 @@
           <div class="game-card-body">
             <div class="game-card-name">Quantum Chess</div>
             <div class="game-card-tagline">Chess in Quantum Superposition</div>
-            <div class="game-card-desc">Pieces exist in superposition across multiple lattice positions simultaneously. Observation collapses the wave function.</div>
+            <div class="game-card-desc">
+              Pieces exist in superposition across multiple lattice positions
+              simultaneously. Observation collapses the wave function.
+            </div>
             <div class="game-card-tags">
               <span class="game-tag">Chess</span>
               <span class="game-tag">Quantum</span>
@@ -488,7 +791,6 @@
             <span class="btn-launch coming">Coming Soon</span>
           </div>
         </div>
-
       </div>
     </div>
 
@@ -496,8 +798,9 @@
     <div class="lattice-section">
       <div class="lattice-title">All games run on the D48 Merkaba lattice</div>
       <p class="lattice-sub">
-        Every enemy, sequence, collision, and mechanic is derived from PHI=1.618 geometry and
-        the canonical 8→26→48:480 harmonic architecture. The physics are the philosophy.
+        Every enemy, sequence, collision, and mechanic is derived from PHI=1.618
+        geometry and the canonical 8→26→48:480 harmonic architecture. The
+        physics are the philosophy.
       </p>
       <div class="lattice-pills">
         <span class="lattice-pill">PHI = 1.618</span>
@@ -512,10 +815,10 @@
     <!-- FOOTER -->
     <footer>
       <p>
-        <a href="/">AIOS</a> · <a href="/vr">VR Hub</a> · <a href="/aiosdream">Theatre</a> · <a href="/news">News</a>
+        <a href="/">AIOS</a> · <a href="/vr">VR Hub</a> ·
+        <a href="/aiosdream">Theatre</a> · <a href="/news">News</a>
         &nbsp;|&nbsp; AIOS Arcade — Games born from the lattice · realaios.com
       </p>
     </footer>
-
   </body>
 </html>
