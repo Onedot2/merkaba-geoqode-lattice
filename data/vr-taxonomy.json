@@ -8,7 +8,7 @@
   "psi": 1.414,
   "baseFrequencyHz": 72,
   "totalExperiences": 48,
-  "liveExperiences": 24,
+  "liveExperiences": 25,
   "categories": [
     {
       "id": "cinema",
@@ -438,6 +438,25 @@
           "questCompatible": true,
           "flatCompatible": true,
           "estimatedDuration": "5-15 min",
+          "releaseDate": "2026-Q2"
+        },
+        {
+          "id": "merkaba-ghosts",
+          "display": "Merkaba Ghosts — Agent VR",
+          "status": "live",
+          "version": "1.0.0",
+          "vrUrl": "/games/merkaba-ghosts",
+          "flatUrl": "/games/merkaba-ghosts",
+          "semanticType": "HOLOGRAPHIC",
+          "frequencyHz": 72,
+          "latticeNode": 1,
+          "harmonicNode": 8,
+          "description": "8 ghost AI agents haunt the D48 lattice. Attune to each Agent-Player-Character by gazing. No NPCs — every ghost is a Storm sector agent manifesting in VR.",
+          "shortDesc": "Attune to 8 ghost AI agents in the lattice.",
+          "tags": ["ghost", "agents", "apc", "gaze", "holographic"],
+          "questCompatible": true,
+          "flatCompatible": true,
+          "estimatedDuration": "5-20 min",
           "releaseDate": "2026-Q2"
         },
         {

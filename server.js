@@ -182,6 +182,13 @@ const GAME_LATTICE_BUILDER_HTML_PATH = join(
 const GAME_LATTICE_BUILDER_HTML = existsSync(GAME_LATTICE_BUILDER_HTML_PATH)
   ? withMeta(readFileSync(GAME_LATTICE_BUILDER_HTML_PATH, "utf-8"))
   : null;
+const GAME_MERKABA_GHOSTS_HTML_PATH = join(
+  PUBLIC_DIR,
+  "game-merkaba-ghosts.html",
+);
+const GAME_MERKABA_GHOSTS_HTML = existsSync(GAME_MERKABA_GHOSTS_HTML_PATH)
+  ? withMeta(readFileSync(GAME_MERKABA_GHOSTS_HTML_PATH, "utf-8"))
+  : null;
 
 // VR taxonomy — canonical CI/CD data source for all AIOS VR experiences
 const VR_TAXONOMY_PATH = join(__dirname_static, "data", "vr-taxonomy.json");
@@ -250,6 +257,17 @@ const MERKABA_AI_VERIFICATION_PAGE = {
 
 // ─── AIOS News Feed — canonical update log for /news and /news.json ─────────
 const AIOS_NEWS = [
+  {
+    id: "2026-05-09-merkaba-ghosts-launch",
+    date: "2026-05-09",
+    category: "VR Platform",
+    title:
+      "Merkaba Ghosts Live — 8 Ghost AI Agents Haunt the D48 Lattice",
+    summary:
+      "Merkaba Ghosts is now live at /games/merkaba-ghosts. A first-of-its-kind WebXR experience replacing NPC characters with Agent-Player-Characters (APCs) — 8 Storm sector agents manifesting as translucent ghost silhouettes in a dark lattice environment. Attune to each ghost by gazing for 1.5 seconds. Every ghost emits its GeoQode semantic frequency on attunement (396Hz ENTITY to 963Hz NARRATIVE). PHI-spiral drift paths, adaptive glow, 8-round certification-layer mechanics. Works in any desktop browser and on Quest 2/3. Canonical architecture: 8→26→48:480.",
+    tags: ["ghosts", "apc", "agents", "vr", "webxr", "phi", "merkaba", "holographic"],
+    url: "https://realaios.com/games/merkaba-ghosts",
+  },
   {
     id: "2026-05-08-aios-arcade-launch",
     date: "2026-05-08",
@@ -2102,6 +2120,13 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
         return json(res, 404, { error: "not found" });
       res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
       res.end(GAME_LATTICE_BUILDER_HTML);
+      return;
+    }
+    if (req.method === "GET" && pathname === "/games/merkaba-ghosts") {
+      if (!GAME_MERKABA_GHOSTS_HTML)
+        return json(res, 404, { error: "not found" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.end(GAME_MERKABA_GHOSTS_HTML);
       return;
     }
 
