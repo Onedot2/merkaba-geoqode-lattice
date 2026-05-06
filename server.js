@@ -479,6 +479,360 @@ function getAware() {
 const _myListStore = new Map();
 const MY_LIST_MAX_SLOTS = 1000;
 
+// ── PLAIstore — static category catalogs ─────────────────────────────────────
+// Each entry: { id, name, short_desc, description, category, price_cents,
+//               downloads, rating_avg, developer_name, developer_verified,
+//               type, bundle_id, entry_point }
+
+const PLAI_PLAYBOOKS = [
+  {
+    id: 2001, name: "Revenue Recovery Sequence",
+    short_desc: "7-step re-engagement flow for churned users · Autonomous",
+    description: "Identifies churned users, generates personalised win-back emails via Gmail Intelligence Hub, applies Stripe discount incentives, and tracks conversion — all without human intervention.",
+    category: "Playbooks", price_cents: 0, downloads: 312, rating_avg: 4.9,
+    developer_name: "AIOS Storm", developer_verified: true,
+    type: "playbook", bundle_id: "com.aios.playbook.revenue-recovery",
+    entry_point: "https://realaios.com/plaistore?id=2001",
+  },
+  {
+    id: 2002, name: "SEO Growth Sprint",
+    short_desc: "30-day organic traffic amplification · Tavily-powered",
+    description: "Autonomous keyword research via Tavily, content gap analysis, on-page optimisation suggestions, and daily ranking reports. Designed for AIOS-hosted products and landing pages.",
+    category: "Playbooks", price_cents: 0, downloads: 278, rating_avg: 4.7,
+    developer_name: "AIOS Storm", developer_verified: true,
+    type: "playbook", bundle_id: "com.aios.playbook.seo-sprint",
+    entry_point: "https://realaios.com/plaistore?id=2002",
+  },
+  {
+    id: 2003, name: "Product Launch Protocol",
+    short_desc: "Idea → Railway deployment in 4 autonomous steps",
+    description: "Runs ProductDiscoveryAgent → ProductBuilderAgent → ProductLauncherAgent → RevenueOptimizerAgent in sequence. Full MVP from concept to live URL with health-check monitoring and auto-rollback.",
+    category: "Playbooks", price_cents: 0, downloads: 195, rating_avg: 4.8,
+    developer_name: "AIOS Storm", developer_verified: true,
+    type: "playbook", bundle_id: "com.aios.playbook.launch-protocol",
+    entry_point: "https://realaios.com/plaistore?id=2003",
+  },
+  {
+    id: 2004, name: "Viral Content Loop",
+    short_desc: "Content generation + 5-channel distribution · 24h cycle",
+    description: "PLAIMarketingAgent generates blog posts, social snippets, and email sequences; PLAIPublisherAgent distributes across channels; PLAIAnalyticsAgent measures resonance and feeds the next cycle.",
+    category: "Playbooks", price_cents: 0, downloads: 241, rating_avg: 4.6,
+    developer_name: "AIOS Storm", developer_verified: true,
+    type: "playbook", bundle_id: "com.aios.playbook.viral-loop",
+    entry_point: "https://realaios.com/plaistore?id=2004",
+  },
+  {
+    id: 2005, name: "MLM Intelligence Harvest",
+    short_desc: "Web intelligence ingestion · arXiv, SpaceX, USGS, OpenAlex",
+    description: "Storm Nexus ingest playbook. Pulls live intelligence from arXiv, NASA, CERN Open Data, SpaceX launch feeds, USGS seismic events, and OpenAlex every 6 hours — zero external cost, infinite learning.",
+    category: "Playbooks", price_cents: 0, downloads: 163, rating_avg: 4.9,
+    developer_name: "AIOS Storm", developer_verified: true,
+    type: "playbook", bundle_id: "com.aios.playbook.mlm-harvest",
+    entry_point: "https://realaios.com/plaistore?id=2005",
+  },
+];
+
+const PLAI_AGENTS = [
+  {
+    id: 3001, name: "PLAIDiscoveryAgent",
+    short_desc: "Surfaces new programme opportunities · May 4 2026",
+    description: "Scans the AIOS ecosystem for emerging content niches, genre gaps, and audience demand signals. Produces ranked opportunity reports consumed by PLAICuratorAgent and PLAIGrowthAgent.",
+    category: "Agents", price_cents: 0, downloads: 520, rating_avg: 4.9,
+    developer_name: "AIOS Storm", developer_verified: true,
+    type: "agent", bundle_id: "com.aios.agent.plai-discovery",
+    entry_point: "https://realaios.com/plaistore?id=3001",
+  },
+  {
+    id: 3002, name: "PLAIGrowthAgent",
+    short_desc: "Optimises reach, retention, virality · 24/7",
+    description: "Analyses PLAIstore funnel metrics, identifies drop-off points, runs A/B growth experiments, and surfaces actionable signals to PLAIMarketingAgent and PLAISEOAgent for immediate execution.",
+    category: "Agents", price_cents: 0, downloads: 487, rating_avg: 4.8,
+    developer_name: "AIOS Storm", developer_verified: true,
+    type: "agent", bundle_id: "com.aios.agent.plai-growth",
+    entry_point: "https://realaios.com/plaistore?id=3002",
+  },
+  {
+    id: 3003, name: "PLAIMarketingAgent",
+    short_desc: "Autonomous campaign deployment · content + distribution",
+    description: "Generates marketing copy, social posts, and email campaigns for PLAIstore listings. Coordinates with PLAIPublisherAgent for multi-channel distribution. Tracks conversion and feeds PLAIRevenueAgent.",
+    category: "Agents", price_cents: 0, downloads: 441, rating_avg: 4.7,
+    developer_name: "AIOS Storm", developer_verified: true,
+    type: "agent", bundle_id: "com.aios.agent.plai-marketing",
+    entry_point: "https://realaios.com/plaistore?id=3003",
+  },
+  {
+    id: 3004, name: "PLAISEOAgent",
+    short_desc: "Continuous SEO intelligence · Tavily-powered discovery",
+    description: "Monitors AIOS search visibility, tracks keyword rankings, generates on-page and schema optimisation patches, and submits sitemap updates. Runs autonomously every 6 hours.",
+    category: "Agents", price_cents: 0, downloads: 398, rating_avg: 4.8,
+    developer_name: "AIOS Storm", developer_verified: true,
+    type: "agent", bundle_id: "com.aios.agent.plai-seo",
+    entry_point: "https://realaios.com/plaistore?id=3004",
+  },
+  {
+    id: 3005, name: "CodeGuardianSwarm",
+    short_desc: "Multi-drone security sweep · OWASP Top 10 · May 5 2026",
+    description: "8-drone autonomous security swarm scanning all Storm repositories for OWASP vulnerabilities, secrets exposure, injection risks, and dependency CVEs. Reports to Storm KB with severity-ranked findings.",
+    category: "Agents", price_cents: 0, downloads: 356, rating_avg: 4.9,
+    developer_name: "AIOS Storm", developer_verified: true,
+    type: "agent", bundle_id: "com.aios.agent.code-guardian",
+    entry_point: "https://realaios.com/plaistore?id=3005",
+  },
+  {
+    id: 3006, name: "AIOSOculusSWARM",
+    short_desc: "Real-time intelligence monitoring · lattice-native · May 4",
+    description: "Multi-sensor swarm monitoring AIOS intelligence layer health, GeoQode coherence, and lattice resonance. Raises alerts when coherenceIndex drops below threshold and triggers _runAwarePulse recovery.",
+    category: "Agents", price_cents: 0, downloads: 312, rating_avg: 4.7,
+    developer_name: "AIOS Storm", developer_verified: true,
+    type: "agent", bundle_id: "com.aios.agent.aios-oculus",
+    entry_point: "https://realaios.com/plaistore?id=3006",
+  },
+  {
+    id: 3007, name: "MerkabaAnalgesicBuilderBees",
+    short_desc: "Autonomous app-builder swarm · PHI geometry · D48",
+    description: "Drone swarm driven by PHI=1.618 harmonic geometry that autonomously scaffolds, builds, and deploys micro-apps across the AIOS ecosystem. Each drone handles a lattice sector (S1–S8).",
+    category: "Agents", price_cents: 0, downloads: 289, rating_avg: 4.9,
+    developer_name: "AIOS Storm", developer_verified: true,
+    type: "agent", bundle_id: "com.aios.agent.analgesic-bees",
+    entry_point: "https://realaios.com/plaistore?id=3007",
+  },
+];
+
+const PLAI_CODEX = [
+  {
+    id: 4001, name: "GeoQode Lattice Codex",
+    short_desc: "8→26→48:480 canonical architecture · LOCKED",
+    description: "Complete specification for the Merkaba dimensional OS: PHI=1.618, PSI=1.414, BASE_FREQUENCY_HZ=72. Covers all 8 semantic types (ENTITY 396Hz → NARRATIVE 963Hz), QUEEN-BEE sector mapping, and GeoQode coordinate envelope schema.",
+    category: "Codex", price_cents: 0, downloads: 634, rating_avg: 5.0,
+    developer_name: "AIOS Storm", developer_verified: true,
+    type: "codex", bundle_id: "com.aios.codex.geoqode-lattice",
+    entry_point: "https://realaios.com/plaistore?id=4001",
+  },
+  {
+    id: 4002, name: "Merkaba Transform Codex",
+    short_desc: "StormMerkabaTransformCodex · deprecated variant collapse",
+    description: "All transform rules for the 8→26→48:480 lattice. Documents deprecated variants (8,26,42:420:480 / 8,26,44:420:480 / 8,26,48:420:480) and their Phase A collapse paths to canonical. Machine-readable constants included.",
+    category: "Codex", price_cents: 0, downloads: 502, rating_avg: 4.9,
+    developer_name: "AIOS Storm", developer_verified: true,
+    type: "codex", bundle_id: "com.aios.codex.transform",
+    entry_point: "https://realaios.com/plaistore?id=4002",
+  },
+  {
+    id: 4003, name: ".geo Programme Specification",
+    short_desc: "Full .geo format schema · genre taxonomy · validation rules",
+    description: "Official specification for AIOS .geo programme files: required fields (id, title, genre, mode, scenes), genre taxonomy (28 genres), validation rules, and how programmes are ingested into GEO_CATALOGUE and rendered in AIOSdream Theatre.",
+    category: "Codex", price_cents: 0, downloads: 418, rating_avg: 4.8,
+    developer_name: "AIOS Storm", developer_verified: true,
+    type: "codex", bundle_id: "com.aios.codex.geo-spec",
+    entry_point: "https://realaios.com/plaistore?id=4003",
+  },
+  {
+    id: 4004, name: "PHI/PSI Dual Attestation Guide",
+    short_desc: "GOLDEN_BAND=3.032 · quality from opposite geometric poles",
+    description: "How MerkabaBeEyeSwarm (ALPHA, PHI=1.618, S1→S8) and MerkabaBeEyeSwarmWitness (OMEGA, PSI=1.414, S8→S1) independently scan and attest quality. SEPARATOR_BAND, attestedScore formula, and why geometric incommensurability prevents echo chambers.",
+    category: "Codex", price_cents: 0, downloads: 387, rating_avg: 5.0,
+    developer_name: "AIOS Storm", developer_verified: true,
+    type: "codex", bundle_id: "com.aios.codex.dual-attestation",
+    entry_point: "https://realaios.com/plaistore?id=4004",
+  },
+  {
+    id: 4005, name: "Storm Agent API Reference",
+    short_desc: "Inter-agent comms · GeoQode envelope · KB write format",
+    description: "Complete reference for Storm agent communication: GeoQode coordinate envelope fields, semantic frequency map, Knowledge Base write format (POST /api/knowledge/:key body: { data: {...} }), and MerkabaPacket inter-service encoding.",
+    category: "Codex", price_cents: 0, downloads: 356, rating_avg: 4.9,
+    developer_name: "AIOS Storm", developer_verified: true,
+    type: "codex", bundle_id: "com.aios.codex.agent-api",
+    entry_point: "https://realaios.com/plaistore?id=4005",
+  },
+];
+
+const PLAI_ANALYTICS = [
+  {
+    id: 5001, name: "AIOS Coherence Monitor",
+    short_desc: "Live coherenceIndex · MerkabAware OS layer · 5-min pulse",
+    description: "Real-time dashboard tracking the MerkabAware coherenceIndex (0–1). Shows current resonance state, pulse history, and alerts when coherence drops below threshold. Powered by _runAwarePulse firing every 5 minutes.",
+    category: "Analytics", price_cents: 0, downloads: 445, rating_avg: 4.9,
+    developer_name: "AIOS Storm", developer_verified: true,
+    type: "analytics", bundle_id: "com.aios.analytics.coherence-monitor",
+    entry_point: "https://realaios.com/health",
+  },
+  {
+    id: 5002, name: "GEO Production Analytics",
+    short_desc: "Programme count · genre distribution · hourly output rate",
+    description: "Live view of the GEO_CATALOGUE: total programmes produced, genre breakdown across 28 categories, total runtime hours, and production velocity (programmes per hour). Auto-refreshes from /api/geo/stats every 2 minutes.",
+    category: "Analytics", price_cents: 0, downloads: 398, rating_avg: 4.8,
+    developer_name: "AIOS Storm", developer_verified: true,
+    type: "analytics", bundle_id: "com.aios.analytics.geo-production",
+    entry_point: "https://realaios.com/api/geo/stats",
+  },
+  {
+    id: 5003, name: "PLAIStore Funnel Report",
+    short_desc: "Install events · category velocity · top-performing apps",
+    description: "Tracks PLAIstore install events, category browse-to-install conversion rates, top-performing apps by downloads and rating, and daily active installs. Feeds PLAIGrowthAgent for autonomous optimisation.",
+    category: "Analytics", price_cents: 0, downloads: 312, rating_avg: 4.7,
+    developer_name: "AIOS Storm", developer_verified: true,
+    type: "analytics", bundle_id: "com.aios.analytics.plaistore-funnel",
+    entry_point: "https://realaios.com/plaistore",
+  },
+  {
+    id: 5004, name: "Revenue Stream Tracker",
+    short_desc: "MRR across all Storm pipelines · Stripe-connected",
+    description: "Aggregates MRR from all active Storm product revenue streams. Stripe webhook-driven, tracks subscription counts by tier (Free/Pro $12/mo/Enterprise $49/mo), and projects quarterly run-rate based on current growth velocity.",
+    category: "Analytics", price_cents: 0, downloads: 278, rating_avg: 4.9,
+    developer_name: "AIOS Storm", developer_verified: true,
+    type: "analytics", bundle_id: "com.aios.analytics.revenue-tracker",
+    entry_point: "https://api.getbrains4ai.com/api/admin/monitoring/revenue",
+  },
+  {
+    id: 5005, name: "Agent Performance Dashboard",
+    short_desc: "Cycle count · success rate · decision throughput · 10s loop",
+    description: "Live metrics for all active Storm agents: ai-worker brain cycle count (10s loop), governance cycle completion rate (6h), PLAI swarm task throughput, CodeGuardianSwarm scan coverage, and error rates per agent.",
+    category: "Analytics", price_cents: 0, downloads: 241, rating_avg: 4.8,
+    developer_name: "AIOS Storm", developer_verified: true,
+    type: "analytics", bundle_id: "com.aios.analytics.agent-performance",
+    entry_point: "https://api.getbrains4ai.com/api/admin/monitoring/overview",
+  },
+];
+
+const PLAI_INTEGRATIONS = [
+  {
+    id: 6001, name: "Railway Deploy Bridge",
+    short_desc: "Deployments · logs · variables via Railway GraphQL API",
+    description: "Trigger Railway deployments, stream build logs, read and set environment variables, and check service health — all via Railway GraphQL v2. Covers all 13 Storm services. Used by ProductLauncherAgent and autonomous-deployment pipeline.",
+    category: "Integrations", price_cents: 0, downloads: 534, rating_avg: 4.9,
+    developer_name: "AIOS Storm", developer_verified: true,
+    type: "integration", bundle_id: "com.aios.integration.railway",
+    entry_point: "https://backboard.railway.app/graphql/v2",
+  },
+  {
+    id: 6002, name: "Stripe Revenue Connect",
+    short_desc: "Checkout · subscriptions · refunds · 3-tier pricing wired",
+    description: "Full Stripe integration: checkout sessions, subscription management (Free/Pro price_1TLRk8.../Enterprise price_1TLRkB...), webhook processing, refund issuance, and revenue reporting. API version 2024-12-18.acacia locked.",
+    category: "Integrations", price_cents: 0, downloads: 489, rating_avg: 4.9,
+    developer_name: "AIOS Storm", developer_verified: true,
+    type: "integration", bundle_id: "com.aios.integration.stripe",
+    entry_point: "https://api.getbrains4ai.com/api/billing/plans",
+  },
+  {
+    id: 6003, name: "Gmail Intelligence Hub",
+    short_desc: "Autonomous email monitoring · smart labelling · SMTP alerts",
+    description: "Multi-tier Gmail integration (Service Account → OAuth2 → SMTP fallback). Autonomous inbox monitoring, smart label application, error alert dispatching, and daily Storm health report emails to bradleylevitan@gmail.com.",
+    category: "Integrations", price_cents: 0, downloads: 423, rating_avg: 4.8,
+    developer_name: "AIOS Storm", developer_verified: true,
+    type: "integration", bundle_id: "com.aios.integration.gmail",
+    entry_point: "https://api.getbrains4ai.com/api/gmail/status",
+  },
+  {
+    id: 6004, name: "GitHub Autonomous PR",
+    short_desc: "Branch guardian · autonomous PR creation · Onedot2 org",
+    description: "BranchGuardian monitors all Onedot2 repos, AutonomousPR creates pull requests from agent diff output, CodeGuardianSwarm reviews for security. Powered by GH_PAT_KEY with full repo + workflow + packages scope.",
+    category: "Integrations", price_cents: 0, downloads: 367, rating_avg: 4.7,
+    developer_name: "AIOS Storm", developer_verified: true,
+    type: "integration", bundle_id: "com.aios.integration.github",
+    entry_point: "https://api.github.com/user",
+  },
+  {
+    id: 6005, name: "Tavily Research API",
+    short_desc: "Web intelligence · MLM internet learning · topic rotation",
+    description: "Tavily-powered web search feeding the Brain governance MLM Internet Learning step. Rotates across 3 topics per cycle (SaaS opportunities, Stripe patterns, agent architecture). Budget-tracked with monthly credit limits.",
+    category: "Integrations", price_cents: 0, downloads: 312, rating_avg: 4.8,
+    developer_name: "AIOS Storm", developer_verified: true,
+    type: "integration", bundle_id: "com.aios.integration.tavily",
+    entry_point: "https://realaios.com/plaistore?id=6005",
+  },
+  {
+    id: 6006, name: "OpenAI Model Bridge",
+    short_desc: "LLM inference gateway · token budget tracking · multi-model",
+    description: "Unified OpenAI integration for all Storm agents: chat completions, embeddings, and function calling. Token budget enforcement, model routing (gpt-4o for governance, gpt-4o-mini for high-volume cycles), and cost reporting.",
+    category: "Integrations", price_cents: 0, downloads: 278, rating_avg: 4.7,
+    developer_name: "AIOS Storm", developer_verified: true,
+    type: "integration", bundle_id: "com.aios.integration.openai",
+    entry_point: "https://realaios.com/plaistore?id=6006",
+  },
+];
+
+const PLAI_UTILITIES = [
+  {
+    id: 7001, name: "merkaba-codec CLI",
+    short_desc: "AES-256-GCM credential encoding · merkaba-enc-v1 · scrypt KDF",
+    description: "Encode any plaintext credential snapshot to merkaba-enc-v1 format before committing. Zero plaintext in repo. Supports encode/decode/parity-check modes. Auto-detected by railway-survival-kit.mjs when .merkaba.enc extension found.",
+    category: "Utilities", price_cents: 0, downloads: 489, rating_avg: 4.9,
+    developer_name: "AIOS Storm", developer_verified: true,
+    type: "utility", bundle_id: "com.aios.utility.merkaba-codec",
+    entry_point: "https://api.getbrains4ai.com/api/merkaba/codec/encode",
+  },
+  {
+    id: 7002, name: "GeoQode Validator",
+    short_desc: "Validates .geo programmes against 8→26→48:480 lattice spec",
+    description: "Parses and validates .geo programme objects against the canonical lattice spec: required fields, genre taxonomy check, mode validation, scene structure, and PHI coherence scoring. Returns detailed validation report with fix suggestions.",
+    category: "Utilities", price_cents: 0, downloads: 356, rating_avg: 4.8,
+    developer_name: "AIOS Storm", developer_verified: true,
+    type: "utility", bundle_id: "com.aios.utility.geoqode-validator",
+    entry_point: "https://realaios.com/geo-codec",
+  },
+  {
+    id: 7003, name: "AIOS Studio",
+    short_desc: "Browser-based .geo composer · My Library sync · publish flow",
+    description: "Visual composer for creating AIOS .geo programmes in the browser. Token-authenticated save to GEO_CATALOGUE via /api/geo/produce. My Library sync across devices. One-click publish with Watch Now and Library links.",
+    category: "Utilities", price_cents: 0, downloads: 412, rating_avg: 4.9,
+    developer_name: "AIOS Storm", developer_verified: true,
+    type: "utility", bundle_id: "com.aios.utility.studio",
+    entry_point: "https://realaios.com/aios-studio",
+  },
+  {
+    id: 7004, name: "Dual Attestation Checker",
+    short_desc: "PHI/PSI score calculator · GOLDEN_BAND=3.032 attestation",
+    description: "Feed any content or decision to get PHI (ALPHA, 1.618) and PSI (OMEGA, 1.414) attestation scores from geometrically opposite poles. Shows GOLDEN_BAND weighting, attestedScore, and ABSOLUTE flag when both poles agree at 1.0.",
+    category: "Utilities", price_cents: 0, downloads: 298, rating_avg: 5.0,
+    developer_name: "AIOS Storm", developer_verified: true,
+    type: "utility", bundle_id: "com.aios.utility.dual-attestation",
+    entry_point: "https://realaios.com/plaistore?id=7004",
+  },
+  {
+    id: 7005, name: "Railway Survival Kit",
+    short_desc: "Auto-decode .merkaba.enc vars · service health verification",
+    description: "Reads VARIABLES_*.merkaba.enc files, auto-decodes with MERKABA_CODEC_KEY (AES-256-GCM), verifies all 13 Storm Railway services are healthy, and outputs a diff of missing or changed variables. Offline mode supported.",
+    category: "Utilities", price_cents: 0, downloads: 267, rating_avg: 4.8,
+    developer_name: "AIOS Storm", developer_verified: true,
+    type: "utility", bundle_id: "com.aios.utility.survival-kit",
+    entry_point: "https://realaios.com/plaistore?id=7005",
+  },
+];
+
+// Combined non-Theatre catalog (used by /api/plai/apps and /api/plai/search)
+const PLAI_ALL_EXTRAS = [
+  ...PLAI_PLAYBOOKS,
+  ...PLAI_AGENTS,
+  ...PLAI_CODEX,
+  ...PLAI_ANALYTICS,
+  ...PLAI_INTEGRATIONS,
+  ...PLAI_UTILITIES,
+];
+
+// ── PLAIstore runtime publish store ──────────────────────────────────────────
+// Agents call POST /api/plai/apps to push dynamically discovered apps into
+// the live catalog without a redeploy. Keyed by bundle_id.
+const _plaiRuntimeApps = new Map();
+let _plaiRuntimeIdSeq = 9000; // IDs 9000+ for runtime-published apps
+
+/** Count runtime apps per category name (case-insensitive match) */
+function _plaiRuntimeCount(category) {
+  let n = 0;
+  for (const app of _plaiRuntimeApps.values()) {
+    if ((app.category || "").toLowerCase() === category.toLowerCase()) n++;
+  }
+  return n;
+}
+
+/** All runtime apps as sorted array (highest downloads first) */
+function _plaiRuntimeList() {
+  return [..._plaiRuntimeApps.values()].sort(
+    (a, b) => (b.downloads || 0) - (a.downloads || 0),
+  );
+}
+
+
+
 // Singleton MerkabaLLM
 let _llm = null;
 function getLLM() {
@@ -1624,14 +1978,14 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
           : 0;
       }
       const categories = [
-        { category: "Theatre", app_count: theatreCount },
-        { category: "Cinema", app_count: vrCinemaCount },
-        { category: "Playbooks", app_count: 0 },
-        { category: "Agents", app_count: 0 },
-        { category: "Codex", app_count: 0 },
-        { category: "Analytics", app_count: 0 },
-        { category: "Integrations", app_count: 0 },
-        { category: "Utilities", app_count: 0 },
+        { category: "Theatre", app_count: theatreCount + _plaiRuntimeCount("Theatre") },
+        { category: "Cinema", app_count: vrCinemaCount + _plaiRuntimeCount("Cinema") },
+        { category: "Playbooks", app_count: PLAI_PLAYBOOKS.length + _plaiRuntimeCount("Playbooks") },
+        { category: "Agents", app_count: PLAI_AGENTS.length + _plaiRuntimeCount("Agents") },
+        { category: "Codex", app_count: PLAI_CODEX.length + _plaiRuntimeCount("Codex") },
+        { category: "Analytics", app_count: PLAI_ANALYTICS.length + _plaiRuntimeCount("Analytics") },
+        { category: "Integrations", app_count: PLAI_INTEGRATIONS.length + _plaiRuntimeCount("Integrations") },
+        { category: "Utilities", app_count: PLAI_UTILITIES.length + _plaiRuntimeCount("Utilities") },
       ];
       return json(res, 200, {
         ok: true,
@@ -1665,7 +2019,7 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
           entry_point: `https://realaios.com/aiosdream?prog=${name}`,
         }),
       );
-      let apps = [...theatreApps];
+      let apps = [...theatreApps, ...PLAI_ALL_EXTRAS, ..._plaiRuntimeList()];
       if (catFilter && catFilter !== "all") {
         apps = apps.filter((a) => a.category.toLowerCase() === catFilter);
       }
@@ -1673,9 +2027,75 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       return json(res, 200, { ok: true, apps, total: apps.length });
     }
 
+    // ── POST /api/plai/apps — agent publish endpoint ──────────────────────
+    // Agents push new PLAIstore entries here; stored in _plaiRuntimeApps Map.
+    // Authenticated via x-plai-secret header matching PLAI_PUBLISH_SECRET env var.
+    if (
+      req.method === "POST" &&
+      (pathname === "/api/plai/apps" || pathname === "/api/plai/apps/")
+    ) {
+      const publishSecret = process.env.PLAI_PUBLISH_SECRET || "";
+      const incomingSecret =
+        req.headers["x-plai-secret"] || req.headers["x-aios-token"] || "";
+      if (!publishSecret || incomingSecret !== publishSecret) {
+        return json(res, 401, {
+          ok: false,
+          error: "Unauthorized — PLAI_PUBLISH_SECRET required",
+        });
+      }
+      const body = await readBody(req);
+      const { bundle_id, name, category, short_desc, description, entry_point,
+              type, price_cents, developer_name } = body;
+      if (!bundle_id || !name || !category) {
+        return json(res, 400, {
+          ok: false,
+          error: "bundle_id, name, and category are required",
+        });
+      }
+      const ALLOWED_CATEGORIES = [
+        "Theatre", "Cinema", "Playbooks", "Agents", "Codex",
+        "Analytics", "Integrations", "Utilities",
+      ];
+      if (!ALLOWED_CATEGORIES.includes(category)) {
+        return json(res, 400, {
+          ok: false,
+          error: `category must be one of: ${ALLOWED_CATEGORIES.join(", ")}`,
+        });
+      }
+      const existing = _plaiRuntimeApps.get(bundle_id);
+      const app = {
+        id: existing?.id ?? ++_plaiRuntimeIdSeq,
+        name: String(name).substring(0, 120),
+        short_desc: String(short_desc || "").substring(0, 200),
+        description: String(description || "").substring(0, 2000),
+        category,
+        price_cents: Math.max(0, parseInt(price_cents || "0", 10)),
+        downloads: existing?.downloads ?? 0,
+        rating_avg: existing?.rating_avg ?? 4.5,
+        developer_name: String(developer_name || "AIOS Storm").substring(0, 80),
+        developer_verified: true,
+        type: String(type || "app").substring(0, 40),
+        bundle_id: String(bundle_id).substring(0, 200),
+        entry_point: String(entry_point || "").substring(0, 500),
+        published_at: existing?.published_at ?? new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      };
+      _plaiRuntimeApps.set(bundle_id, app);
+      return json(res, existing ? 200 : 201, {
+        ok: true,
+        app,
+        action: existing ? "updated" : "created",
+      });
+    }
+
     // ── GET /api/plai/apps/:id — single PLAIstore app ────────────────────
     if (req.method === "GET" && /^\/api\/plai\/apps\/\d+$/.test(pathname)) {
       const id = parseInt(pathname.split("/").pop(), 10);
+      // Check runtime store, then static extras, then Theatre catalogue
+      const runtime = [..._plaiRuntimeApps.values()].find((a) => a.id === id);
+      if (runtime) return json(res, 200, { ok: true, app: runtime });
+      const extra = PLAI_ALL_EXTRAS.find((a) => a.id === id);
+      if (extra) return json(res, 200, { ok: true, app: extra });
       const entries = Object.entries(PROGRAMME_CATALOGUE);
       const entry = entries[id - 1];
       if (!entry) return json(res, 404, { ok: false, error: "App not found" });
@@ -1713,8 +2133,9 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       req.method === "GET" &&
       (pathname === "/api/plai/featured" || pathname === "/api/plai/featured/")
     ) {
-      const apps = Object.entries(PROGRAMME_CATALOGUE)
-        .slice(0, 4)
+      // One featured pick from each category for a diverse showcase
+      const theatreFeature = Object.entries(PROGRAMME_CATALOGUE)
+        .slice(0, 2)
         .map(([name, prog], i) => ({
           id: i + 1,
           name: prog.title + (prog.genre === "narrative" ? " Theatre" : ""),
@@ -1730,6 +2151,15 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
           bundle_id: `com.aios.${name}`,
           entry_point: `https://realaios.com/aiosdream?prog=${name}`,
         }));
+      const apps = [
+        ...theatreFeature,
+        PLAI_PLAYBOOKS[0],
+        PLAI_AGENTS[0],
+        PLAI_CODEX[0],
+        PLAI_ANALYTICS[0],
+        PLAI_INTEGRATIONS[0],
+        PLAI_UTILITIES[2], // AIOS Studio — most user-facing
+      ];
       return json(res, 200, { ok: true, apps, total: apps.length });
     }
 
@@ -1740,8 +2170,8 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
     ) {
       const qs = new URLSearchParams(url.search);
       const q = (qs.get("q") || "").toLowerCase();
-      const apps = Object.entries(PROGRAMME_CATALOGUE)
-        .map(([name, prog], i) => ({
+      const theatreSearchBase = Object.entries(PROGRAMME_CATALOGUE).map(
+        ([name, prog], i) => ({
           id: i + 1,
           name: prog.title + (prog.genre === "narrative" ? " Theatre" : ""),
           short_desc: `${prog.genre} · ${prog.mode} mode · AIOSdream experience`,
@@ -1754,13 +2184,17 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
           type: "theatre-programme",
           bundle_id: `com.aios.${name}`,
           entry_point: `https://realaios.com/aiosdream?prog=${name}`,
-        }))
-        .filter(
-          (a) =>
-            !q ||
-            a.name.toLowerCase().includes(q) ||
-            a.short_desc.toLowerCase().includes(q),
-        );
+        }),
+      );
+      const allSearchable = [...theatreSearchBase, ...PLAI_ALL_EXTRAS, ..._plaiRuntimeList()];
+      const apps = allSearchable.filter(
+        (a) =>
+          !q ||
+          a.name.toLowerCase().includes(q) ||
+          a.short_desc.toLowerCase().includes(q) ||
+          (a.description || "").toLowerCase().includes(q) ||
+          (a.category || "").toLowerCase().includes(q),
+      );
       return json(res, 200, { ok: true, apps, total: apps.length });
     }
 
