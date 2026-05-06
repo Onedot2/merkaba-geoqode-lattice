@@ -2319,38 +2319,73 @@
         window.open("/aiosdream", "_blank");
       };
 
-      // Auth-gate: Save to Library requires a free account
+      // ── Publish to Library — POST .geo to /api/geo/produce (auth-gated) ─
       window.cmpSaveToLibrary = function () {
         cmpBuild();
         const geo = cmpState.lastGeo;
-        // Show auth-gate prompt
-        var existing = document.getElementById("auth-gate-toast");
-        if (existing) existing.remove();
-        var toast = document.createElement("div");
-        toast.id = "auth-gate-toast";
-        toast.style.cssText =
-          "position:fixed;bottom:32px;left:50%;transform:translateX(-50%);" +
-          "background:#0d0d1a;border:1px solid rgba(124,58,237,0.5);" +
-          "border-radius:10px;padding:18px 28px;z-index:9999;" +
-          "display:flex;flex-direction:column;align-items:center;gap:12px;" +
-          "box-shadow:0 8px 40px rgba(0,0,0,0.8);max-width:400px;width:90vw;text-align:center";
-        toast.innerHTML =
-          '<div style="font-size:15px;color:#a78bfa;font-weight:700;letter-spacing:1px;">🔒 Free Account Required</div>' +
-          '<div style="font-size:13px;color:var(--dim);line-height:1.6;">Sign up free to save programmes to your library and load them in AIOS Theatre.</div>' +
-          '<div style="display:flex;gap:10px;width:100%;">' +
-          '<a href="/start" style="flex:1;background:rgba(124,58,237,0.15);border:1px solid rgba(124,58,237,0.4);' +
-          "color:#a78bfa;text-decoration:none;font-size:13px;font-weight:700;letter-spacing:2px;" +
-          'padding:10px;border-radius:6px;text-align:center;">CREATE FREE ACCOUNT</a>' +
-          '<button onclick="document.getElementById(\'auth-gate-toast\').remove()" style="flex:0 0 auto;' +
-          "background:none;border:1px solid rgba(255,255,255,0.1);color:var(--dim);font-family:inherit;" +
-          'font-size:12px;padding:10px 16px;border-radius:6px;cursor:pointer;">DISMISS</button>' +
-          "</div>";
-        document.body.appendChild(toast);
-        // Auto-dismiss after 10s
-        setTimeout(function () {
-          var t = document.getElementById("auth-gate-toast");
-          if (t) t.remove();
-        }, 10000);
+        if (!geo) return;
+
+        // Check for a stored user token
+        var user = null;
+        try { user = JSON.parse(localStorage.getItem("aios_user") || "null"); } catch (_) {}
+
+        if (!user || !user.token) {
+          // Not signed in — show auth gate
+          var existing = document.getElementById("auth-gate-toast");
+          if (existing) existing.remove();
+          var toast = document.createElement("div");
+          toast.id = "auth-gate-toast";
+          toast.style.cssText =
+            "position:fixed;bottom:32px;left:50%;transform:translateX(-50%);" +
+            "background:#0d0d1a;border:1px solid rgba(124,58,237,0.5);" +
+            "border-radius:10px;padding:18px 28px;z-index:9999;" +
+            "display:flex;flex-direction:column;align-items:center;gap:12px;" +
+            "box-shadow:0 8px 40px rgba(0,0,0,0.8);max-width:400px;width:90vw;text-align:center";
+          toast.innerHTML =
+            '<div style="font-size:15px;color:#a78bfa;font-weight:700;letter-spacing:1px;">🔒 Free Account Required</div>' +
+            '<div style="font-size:13px;color:var(--dim);line-height:1.6;">Sign up free to publish your programme to the AIOS catalogue and load it in Theatre.</div>' +
+            '<div style="display:flex;gap:10px;width:100%;">' +
+            '<a href="/start" style="flex:1;background:rgba(124,58,237,0.15);border:1px solid rgba(124,58,237,0.4);' +
+            "color:#a78bfa;text-decoration:none;font-size:13px;font-weight:700;letter-spacing:2px;" +
+            'padding:10px;border-radius:6px;text-align:center;">CREATE FREE ACCOUNT</a>' +
+            '<button onclick="document.getElementById(\'auth-gate-toast\').remove()" style="flex:0 0 auto;' +
+            "background:none;border:1px solid rgba(255,255,255,0.1);color:var(--dim);font-family:inherit;" +
+            'font-size:12px;padding:10px 16px;border-radius:6px;cursor:pointer;">DISMISS</button>' +
+            "</div>";
+          document.body.appendChild(toast);
+          setTimeout(function () { var t = document.getElementById("auth-gate-toast"); if (t) t.remove(); }, 10000);
+          return;
+        }
+
+        // Signed in — publish to live catalogue
+        var btn = document.getElementById("cmp-publish-btn");
+        if (btn) { btn.textContent = "PUBLISHING…"; btn.disabled = true; }
+        fetch("/api/geo/produce", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "x-aios-token": user.token },
+          body: JSON.stringify(geo),
+        })
+          .then(function (r) { return r.json(); })
+          .then(function (data) {
+            if (btn) { btn.textContent = "✓ PUBLISHED"; btn.style.color = "#4ade80"; }
+            cmpState.publishedId = data.programme?.id;
+            // Show success with Theatre link
+            var sg = document.createElement("div");
+            sg.style.cssText = "position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:#061208;border:1px solid rgba(74,222,128,0.4);border-radius:10px;padding:18px 28px;z-index:9999;text-align:center;max-width:380px;";
+            sg.innerHTML = '<div style="font-size:14px;color:#4ade80;font-weight:700;margin-bottom:8px;">✓ Published to AIOS Library</div>' +
+              '<div style="font-size:12px;color:var(--dim);margin-bottom:12px;">Your programme is now live in the geo-library and PLAIstore.</div>' +
+              '<div style="display:flex;gap:8px;justify-content:center;">' +
+              '<a href="/aiosdream?prog=' + (cmpState.publishedId || "") + '" target="_blank" style="background:rgba(74,222,128,0.15);border:1px solid rgba(74,222,128,0.4);color:#4ade80;text-decoration:none;font-size:11px;font-weight:700;letter-spacing:2px;padding:8px 14px;border-radius:5px;">▶ WATCH NOW</a>' +
+              '<a href="/geo-library" target="_blank" style="background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.2);color:var(--cyan);text-decoration:none;font-size:11px;font-weight:700;letter-spacing:2px;padding:8px 14px;border-radius:5px;">LIBRARY</a>' +
+              '<button onclick="this.parentNode.parentNode.remove()" style="background:none;border:1px solid rgba(255,255,255,0.1);color:var(--dim);font-family:inherit;font-size:11px;padding:8px 12px;border-radius:5px;cursor:pointer;">✕</button>' +
+              '</div>';
+            document.body.appendChild(sg);
+            setTimeout(function () { if (sg.parentNode) sg.remove(); }, 12000);
+          })
+          .catch(function () {
+            if (btn) { btn.textContent = "PUBLISH TO LIBRARY"; btn.disabled = false; }
+            alert("Publish failed — check your connection and try again.");
+          });
       };
     </script>
 

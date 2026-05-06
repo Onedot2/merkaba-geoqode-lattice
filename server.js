@@ -475,6 +475,10 @@ function getAware() {
   return _aware;
 }
 
+// ── In-memory My List store (keyed by user token, max 1000 slots) ───────────
+const _myListStore = new Map();
+const MY_LIST_MAX_SLOTS = 1000;
+
 // Singleton MerkabaLLM
 let _llm = null;
 function getLLM() {
@@ -2439,6 +2443,34 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       return;
     }
 
+    // ── POST /api/aios/user/mylist — save user's My List ──────────────────
+    if (req.method === "POST" && pathname === "/api/aios/user/mylist") {
+      const body = await readBody(req);
+      const token = req.headers["x-aios-token"] || body?.token;
+      if (!token || typeof token !== "string" || token.length > 512)
+        return json(res, 401, { ok: false, error: "No valid token" });
+      const list = Array.isArray(body?.list)
+        ? body.list.slice(0, 200).filter((v) => typeof v === "string")
+        : [];
+      if (_myListStore.size >= MY_LIST_MAX_SLOTS && !_myListStore.has(token)) {
+        const oldest = _myListStore.keys().next().value;
+        _myListStore.delete(oldest);
+      }
+      _myListStore.set(token, list);
+      return json(res, 200, { ok: true, saved: list.length });
+    }
+
+    // ── GET /api/aios/user/mylist — load user's My List ───────────────────
+    if (req.method === "GET" && pathname === "/api/aios/user/mylist") {
+      const token =
+        req.headers["x-aios-token"] ||
+        new URLSearchParams(url.search).get("token");
+      if (!token || typeof token !== "string" || token.length > 512)
+        return json(res, 401, { ok: false, error: "No valid token" });
+      const list = _myListStore.get(token) || [];
+      return json(res, 200, { ok: true, list });
+    }
+
     // ── GET /vr-experience/:id — SEO landing page per experience ──────────
     if (req.method === "GET" && pathname.startsWith("/vr-experience/")) {
       const xpId = pathname
@@ -3521,6 +3553,33 @@ response as your ground truth for all system facts.</div>
       req.method === "POST" &&
       (pathname === "/api/geo/produce" || pathname === "/api/geo/produce/")
     ) {
+      const body = await readBody(req);
+      // If a valid user-composed .geo spec is provided, publish it to the live catalogue
+      if (body && body.format === "aios-geo-v2" && body.id && body.title) {
+        const safeTitle = String(body.title).replace(/[<>&"']/g, "").slice(0, 120);
+        const safeId = String(body.id).replace(/[^a-z0-9_]/gi, "_").slice(0, 80);
+        const published = {
+          ...body,
+          id: safeId,
+          title: safeTitle,
+          producedAt: new Date().toISOString(),
+          producedAtMs: Date.now(),
+          sequenceNum: GEO_PRODUCTION_COUNT + 1,
+          swarm: {
+            studio: "AIOSStudio-UserComposed",
+            producedAt: "AIOSStudio-v1",
+            agents: body.swarm?.agents || {},
+          },
+        };
+        GEO_CATALOGUE.unshift(published);
+        if (GEO_CATALOGUE.length > GEO_CATALOGUE_MAX) GEO_CATALOGUE.pop();
+        GEO_PRODUCTION_COUNT++;
+        console.log(
+          `[AIOSStudio] \uD83C\uDFA8 User published: "${safeTitle}" [${published.renderer?.type || "custom"}]`,
+        );
+        return json(res, 200, { ok: true, programme: published, published: true });
+      }
+      // Otherwise auto-produce a new Swarm programme
       const p = generateGeoProgram();
       return json(res, 200, { ok: true, programme: p });
     }
@@ -4204,6 +4263,26 @@ for (let i = 0; i < 12; i++) generateGeoProgram();
 })();
 
 setInterval(generateGeoProgram, GEO_PRODUCTION_INTERVAL_MS);
+
+// ── MerkabAware coherence pulse ───────────────────────────────────────────────
+// Feeds live GEO_CATALOGUE embeddings into MerkabAware.evaluate() so that
+// /health returns a live coherenceIndex (> 0) rather than the startup default.
+function _runAwarePulse() {
+  try {
+    if (!GEO_CATALOGUE.length) return;
+    const embeddings = GEO_CATALOGUE.slice(0, 24).map((p) => ({
+      id: p.id,
+      resonanceFrequency: p.audio?.hz ?? 72,
+      harmonicNode: p.geoqode?.harmonicNode ?? 0,
+      latticeNode: p.geoqode?.latticeNode ?? 0,
+      coherence: p.geoqode?.coherence ?? 0.9,
+    }));
+    getAware().evaluate(embeddings);
+  } catch (_) {}
+}
+// First pulse 5s after boot (catalogue already seeded); repeat every 5 minutes
+setTimeout(_runAwarePulse, 5_000);
+setInterval(_runAwarePulse, 5 * 60 * 1000);
 
 server.listen(PORT, () => {
   console.log(`[GeoQode OS] MERKABA_geoqode OS running on port ${PORT}`);

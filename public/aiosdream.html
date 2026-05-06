@@ -8448,19 +8448,39 @@
           email: email,
           createdAt: Date.now(),
         };
+        // Get server token and restore My List
+        fetch("/api/aios/user/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: _user.name, email: _user.email }),
+        })
+          .then(function (r) { return r.json(); })
+          .then(function (data) {
+            if (data.token) {
+              _user.token = data.token;
+              localStorage.setItem("aios_user", JSON.stringify(_user));
+              // Restore My List from server (merges with local)
+              return fetch("/api/aios/user/mylist", {
+                headers: { "x-aios-token": data.token },
+              })
+                .then(function (r2) { return r2.json(); })
+                .then(function (ml) {
+                  if (Array.isArray(ml.list) && ml.list.length) {
+                    // Merge: union of server + local
+                    ml.list.forEach(function (id) { if (!myList.includes(id)) myList.push(id); });
+                    localStorage.setItem("aios_mylist", JSON.stringify(myList));
+                    buildRows();
+                  }
+                })
+                .catch(function () {});
+            }
+          })
+          .catch(function () {});
         localStorage.setItem("aios_user", JSON.stringify(_user));
         closeSignIn();
         refreshUserUI();
         buildRows(); // re-render to reflect My List row
         toast("✓ Welcome, " + _user.name);
-        // fire-and-forget to server (best-effort, no blocking)
-        try {
-          fetch("/api/aios/user/register", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name: _user.name, email: _user.email }),
-          });
-        } catch (_) {}
       }
       function signOut() {
         _user = null;
@@ -10287,6 +10307,14 @@
         }
         localStorage.setItem("aios_mylist", JSON.stringify(myList));
         if (modalProg && modalProg.id === progId) updateMyListBtn(progId);
+        // Sync to server (best-effort) when user is signed in
+        if (_user && _user.token) {
+          fetch("/api/aios/user/mylist", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "x-aios-token": _user.token },
+            body: JSON.stringify({ list: myList }),
+          }).catch(function () {});
+        }
       }
 
       function updateMyListBtn(progId) {
