@@ -159,6 +159,24 @@ const LLMS_TXT = existsSync(LLMS_TXT_PATH)
   ? readFileSync(LLMS_TXT_PATH, "utf-8")
   : null;
 
+// ── Games ─────────────────────────────────────────────────────────────────
+const GAMES_HUB_HTML_PATH = join(PUBLIC_DIR, "games.html");
+const GAMES_HUB_HTML = existsSync(GAMES_HUB_HTML_PATH)
+  ? withMeta(readFileSync(GAMES_HUB_HTML_PATH, "utf-8"))
+  : null;
+const GAME_PHI_BREAKER_HTML_PATH = join(PUBLIC_DIR, "game-phi-breaker.html");
+const GAME_PHI_BREAKER_HTML = existsSync(GAME_PHI_BREAKER_HTML_PATH)
+  ? withMeta(readFileSync(GAME_PHI_BREAKER_HTML_PATH, "utf-8"))
+  : null;
+const GAME_LATTICE_DODGE_HTML_PATH = join(PUBLIC_DIR, "game-lattice-dodge.html");
+const GAME_LATTICE_DODGE_HTML = existsSync(GAME_LATTICE_DODGE_HTML_PATH)
+  ? withMeta(readFileSync(GAME_LATTICE_DODGE_HTML_PATH, "utf-8"))
+  : null;
+const GAME_LATTICE_BUILDER_HTML_PATH = join(PUBLIC_DIR, "game-lattice-builder.html");
+const GAME_LATTICE_BUILDER_HTML = existsSync(GAME_LATTICE_BUILDER_HTML_PATH)
+  ? withMeta(readFileSync(GAME_LATTICE_BUILDER_HTML_PATH, "utf-8"))
+  : null;
+
 // VR taxonomy — canonical CI/CD data source for all AIOS VR experiences
 const VR_TAXONOMY_PATH = join(__dirname_static, "data", "vr-taxonomy.json");
 const VR_TAXONOMY_JSON = existsSync(VR_TAXONOMY_PATH)
@@ -226,6 +244,16 @@ const MERKABA_AI_VERIFICATION_PAGE = {
 
 // ─── AIOS News Feed — canonical update log for /news and /news.json ─────────
 const AIOS_NEWS = [
+  {
+    id: "2026-05-08-aios-arcade-launch",
+    date: "2026-05-08",
+    category: "VR Platform",
+    title: "AIOS Arcade Live — 3 Playable WebXR Games Born from the PHI Lattice",
+    summary:
+      "AIOS Arcade is now open. Three browser-native WebXR games are live at /games: PHI Breaker (lattice shooter, 528 Hz ACTION), Lattice Dodge (PHI survival, 417 Hz LOCATION), and Lattice Builder (PHI sequence puzzle, 852 Hz PHYSICS). Every mechanic is derived from PHI=1.618 geometry and the canonical 8→26→48:480 harmonic architecture. Works in any desktop browser. Full VR on Quest 2/3. No install, no account, free to play.",
+    tags: ["arcade", "vr", "webxr", "phi", "aframe", "games", "quest"],
+    url: "https://realaios.com/games",
+  },
   {
     id: "2026-05-07-canonical-nav-unified",
     date: "2026-05-07",
@@ -2036,6 +2064,32 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
         });
       res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
       res.end(PLAYGROUND_HTML);
+      return;
+    }
+
+    // ── Games routes ──────────────────────────────────────────────────────
+    if (req.method === "GET" && (pathname === "/games" || pathname === "/games/")) {
+      if (!GAMES_HUB_HTML) return json(res, 404, { error: "not found" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.end(GAMES_HUB_HTML);
+      return;
+    }
+    if (req.method === "GET" && pathname === "/games/phi-breaker") {
+      if (!GAME_PHI_BREAKER_HTML) return json(res, 404, { error: "not found" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.end(GAME_PHI_BREAKER_HTML);
+      return;
+    }
+    if (req.method === "GET" && pathname === "/games/lattice-dodge") {
+      if (!GAME_LATTICE_DODGE_HTML) return json(res, 404, { error: "not found" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.end(GAME_LATTICE_DODGE_HTML);
+      return;
+    }
+    if (req.method === "GET" && pathname === "/games/lattice-builder") {
+      if (!GAME_LATTICE_BUILDER_HTML) return json(res, 404, { error: "not found" });
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+      res.end(GAME_LATTICE_BUILDER_HTML);
       return;
     }
 
