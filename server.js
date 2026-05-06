@@ -57,12 +57,14 @@ const GSC_TOKEN =
 // Compute VR counts from taxonomy (called lazily inside withMeta, after VR_TAXONOMY is populated)
 function getVRCounts() {
   if (!VR_TAXONOMY) return { live: 25, total: 50, cats: 9 };
-  let live = 0, total = 0, cats = 0;
+  let live = 0,
+    total = 0,
+    cats = 0;
   for (const cat of VR_TAXONOMY.categories || []) {
     cats++;
     for (const exp of cat.experiences || []) {
       total++;
-      if (exp.status === 'live') live++;
+      if (exp.status === "live") live++;
     }
   }
   return { live, total, cats };
@@ -71,8 +73,12 @@ function getVRCounts() {
 // Count game HTML files in public/ — auto-updates when new games are added
 function getGameCount() {
   try {
-    return readdirSync(PUBLIC_DIR).filter(f => /^game-[a-z]/.test(f) && f.endsWith('.html')).length;
-  } catch { return 4; }
+    return readdirSync(PUBLIC_DIR).filter(
+      (f) => /^game-[a-z]/.test(f) && f.endsWith(".html"),
+    ).length;
+  } catch {
+    return 4;
+  }
 }
 
 function withMeta(html) {
@@ -90,10 +96,10 @@ function withMeta(html) {
   );
   // Replace data tokens with live values from vr-taxonomy.json and game file scan
   const vrCounts = getVRCounts();
-  out = out.replaceAll('__VR_LIVE__', String(vrCounts.live));
-  out = out.replaceAll('__VR_TOTAL__', String(vrCounts.total));
-  out = out.replaceAll('__VR_CATS__', String(vrCounts.cats));
-  out = out.replaceAll('__GAME_COUNT__', String(getGameCount()));
+  out = out.replaceAll("__VR_LIVE__", String(vrCounts.live));
+  out = out.replaceAll("__VR_TOTAL__", String(vrCounts.total));
+  out = out.replaceAll("__VR_CATS__", String(vrCounts.cats));
+  out = out.replaceAll("__GAME_COUNT__", String(getGameCount()));
   return out;
 }
 
@@ -105,7 +111,9 @@ const PUBLIC_DIR = join(__dirname_static, "public");
 const VR_TAXONOMY_PATH = join(__dirname_static, "data", "vr-taxonomy.json");
 let VR_TAXONOMY = null;
 try {
-  VR_TAXONOMY = existsSync(VR_TAXONOMY_PATH) ? JSON.parse(readFileSync(VR_TAXONOMY_PATH, "utf-8")) : null;
+  VR_TAXONOMY = existsSync(VR_TAXONOMY_PATH)
+    ? JSON.parse(readFileSync(VR_TAXONOMY_PATH, "utf-8"))
+    : null;
 } catch (_) {}
 const AIOS_HTML_PATH = join(PUBLIC_DIR, "index.html");
 const AIOS_HTML = existsSync(AIOS_HTML_PATH)
@@ -224,7 +232,6 @@ const GAME_MERKABA_GHOSTS_HTML_PATH = join(
 const GAME_MERKABA_GHOSTS_HTML = existsSync(GAME_MERKABA_GHOSTS_HTML_PATH)
   ? withMeta(readFileSync(GAME_MERKABA_GHOSTS_HTML_PATH, "utf-8"))
   : null;
-
 
 const AI_EVAL_JSON_PATH = join(PUBLIC_DIR, ".well-known", "ai-evaluation.json");
 const AI_EVAL_JSON = existsSync(AI_EVAL_JSON_PATH)
@@ -4207,6 +4214,36 @@ server.listen(PORT, () => {
   console.log(
     `[GeoQode OS] Available playbooks: ${BUILT_IN_PLAYBOOKS.join(", ")}`,
   );
+
+  // Startup page manifest — logs which HTML files loaded OK vs missing
+  const pageManifest = [
+    ["index", AIOS_HTML],
+    ["ai", AI_HTML],
+    ["start", START_HTML],
+    ["vr", VR_HTML],
+    ["vr-hub", VR_HUB_HTML],
+    ["vr-developer", VR_DEV_HTML],
+    ["live", LIVE_HTML],
+    ["aios-studio", AIOS_STUDIO_HTML],
+    ["aios-playground", PLAYGROUND_HTML],
+    ["geo-codec", GEO_CODEC_HTML],
+    ["geo-library", GEO_LIBRARY_HTML],
+    ["games", GAMES_HUB_HTML],
+    ["game-phi-breaker", GAME_PHI_BREAKER_HTML],
+    ["game-lattice-dodge", GAME_LATTICE_DODGE_HTML],
+    ["game-lattice-builder", GAME_LATTICE_BUILDER_HTML],
+    ["game-merkaba-ghosts", GAME_MERKABA_GHOSTS_HTML],
+    ["lab", LAB_HTML],
+    ["dashboard", DASHBOARD_HTML],
+    ["plaistore", PLAISTORE_HTML],
+  ];
+  const ok = pageManifest.filter(([, v]) => v).map(([k]) => k);
+  const missing = pageManifest.filter(([, v]) => !v).map(([k]) => k);
+  console.log(`[GeoQode OS] Pages loaded OK (${ok.length}): ${ok.join(", ")}`);
+  if (missing.length)
+    console.warn(
+      `[GeoQode OS] Pages MISSING (${missing.length}): ${missing.join(", ")}`,
+    );
 });
 
 process.on("SIGINT", () => {
@@ -4216,4 +4253,17 @@ process.on("SIGINT", () => {
 process.on("SIGTERM", () => {
   console.log("[GeoQode OS] Shutdown");
   process.exit(0);
+});
+
+// ── Crash detection ───────────────────────────────────────────────────────────
+process.on("uncaughtException", (err) => {
+  console.error("[GeoQode OS] CRASH uncaughtException:", err?.stack || err);
+  process.exit(1);
+});
+process.on("unhandledRejection", (reason) => {
+  console.error(
+    "[GeoQode OS] CRASH unhandledRejection:",
+    reason?.stack || reason,
+  );
+  process.exit(1);
 });
