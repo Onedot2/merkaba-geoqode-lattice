@@ -1181,6 +1181,16 @@
         display: flex;
         align-items: center;
         gap: 16px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding-bottom: 2px;
+      }
+      .ctrl-row::-webkit-scrollbar { display: none; }
+      .ctrl-row > * { flex-shrink: 0; }
+      @media (max-width: 600px) {
+        .ctrl-row { gap: 8px; }
+        .player-bottom { padding: 40px 12px 24px; }
       }
       .ctrl-btn {
         background: none;
@@ -3964,11 +3974,12 @@
           <button
             class="nav-icon-btn"
             id="amb-btn"
-            title="Ambient Mixer (A)"
-            onclick="_openAmb()"
-            style="font-size: 21px; opacity: 0.55"
+            title="Ambient Mixer"
+            onclick="_openAmb(event)"
+            style="font-size: 21px; opacity: 0.55; display:flex; flex-direction:column; align-items:center; gap:1px;"
           >
             🎛
+            <span style="font-size:9px;letter-spacing:0.04em;opacity:0.7;line-height:1;">AMBIENT</span>
           </button>
           <span
             class="q-badge"
@@ -11363,7 +11374,8 @@
           : "0.55";
       }
 
-      function _openAmb() {
+      function _openAmb(e) {
+        if (e) e.stopPropagation();
         const panel = document.getElementById("amb-panel");
         if (panel.style.display !== "none") {
           _closeAmb();
@@ -11381,7 +11393,8 @@
       document.addEventListener("click", (e) => {
         const p = document.getElementById("amb-panel");
         const b = document.getElementById("amb-btn");
-        if (p && b && !p.contains(e.target) && !b.contains(e.target))
+        if (p && b && p.style.display !== "none" &&
+            !p.contains(e.target) && !b.contains(e.target))
           p.style.display = "none";
       });
 

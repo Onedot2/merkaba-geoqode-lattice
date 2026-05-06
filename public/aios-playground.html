@@ -2673,10 +2673,10 @@
         };
 
         if (_musicRaf) cancelAnimationFrame(_musicRaf);
-        _musicRaf = requestAnimationFrame(_musicLoop);
+        _musicRaf = requestAnimationFrame(_musicAnimLoop);
       }
 
-      function _musicLoop() {
+      function _musicAnimLoop() {
         if (_currentScreen !== "music") {
           _musicRaf = null;
           return;
@@ -2732,7 +2732,7 @@
           a.update();
           a.draw(ctx);
         });
-        _musicRaf = requestAnimationFrame(_musicLoop);
+        _musicRaf = requestAnimationFrame(_musicAnimLoop);
       }
 
       function toggleRecord() {

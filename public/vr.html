@@ -1686,10 +1686,20 @@
           : BASE_FREQ;
 
         // Load MAL scene async, fall back to legacy builder on error
-        const malSceneId =
-          MAL_SCENE_MAP[currentProg] || MAL_SCENE_MAP["default"];
-        getMALLoader()
-          .then(({ buildMALScene }) => buildMALScene(malSceneId))
+        // Note: getMALLoader / MAL_SCENE_MAP may not be defined yet — always
+        // fall through to the legacy builder which is fully self-contained.
+        const _malPromise = (function () {
+          try {
+            const malSceneId =
+              MAL_SCENE_MAP[currentProg] || MAL_SCENE_MAP["default"];
+            return getMALLoader().then(({ buildMALScene }) =>
+              buildMALScene(malSceneId)
+            );
+          } catch (_) {
+            return Promise.reject(new Error("MAL loader unavailable"));
+          }
+        })();
+        _malPromise
           .then(({ sceneHTML, narrativeHTML, fogAttr, palette }) => {
             const exitBtn = container.querySelector("#vr-exit-btn");
             const isVR = webXRSupported;
