@@ -34,6 +34,7 @@ const ALL_LINKS = [
   ['/geo-codec', '.geo'],
   ['/aios-studio','Studio'],
   ['/lab',       'Lab'],
+  ['/news',      '📰 News'],
   ['/products',  '⚡ Products'],
 ];
 
