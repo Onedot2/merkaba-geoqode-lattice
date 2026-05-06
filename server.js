@@ -2970,11 +2970,7 @@ ${GSC_TOKEN ? `<meta name="google-site-verification" content="${GSC_TOKEN}"/>` :
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#060d18;color:#edf4ff;font-family:system-ui,sans-serif;line-height:1.6}
-nav{display:flex;align-items:center;justify-content:space-between;padding:0.75rem 1.5rem;border-bottom:1px solid rgba(255,255,255,0.07);background:rgba(6,13,24,0.95);backdrop-filter:blur(8px);position:sticky;top:0;z-index:100}
-.nav-brand{color:#00d4ff;font-weight:800;font-size:1rem;text-decoration:none}
-.nav-links{display:flex;gap:1.25rem}
-.nav-links a{color:rgba(237,244,255,0.5);font-size:0.82rem;text-decoration:none;font-weight:500}
-.nav-links a:hover{color:#edf4ff}
+nav.site-nav{position:fixed;top:0;left:0;right:0;z-index:200;height:54px;padding:0 24px;display:flex;align-items:center;gap:8px;background:rgba(5,10,20,0.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(0,212,255,0.1)}.site-nav-logo{font-size:18px;font-weight:800;color:#00d4ff;text-decoration:none;letter-spacing:-0.5px;white-space:nowrap;margin-right:4px;flex-shrink:0}.site-nav-links{display:flex;align-items:center;gap:2px;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0}.site-nav-links::-webkit-scrollbar{display:none}.site-nav-links a{color:rgba(248,250,252,0.5);font-size:0.82rem;font-weight:500;text-decoration:none;padding:5px 10px;border-radius:6px;white-space:nowrap;transition:color .15s,background .15s;flex-shrink:0}.site-nav-links a:hover{color:#fff;background:rgba(255,255,255,0.07)}.site-nav-links a.active{color:#00d4ff;background:rgba(0,212,255,0.08)}.site-nav-right{display:flex;align-items:center;gap:10px;flex-shrink:0;margin-left:8px}.site-nav-live{display:inline-flex;align-items:center;gap:4px;font-size:0.72rem;font-weight:800;color:#ef4444;text-decoration:none;letter-spacing:.05em;animation:_snlive 1.2s ease-in-out infinite}@keyframes _snlive{0%,100%{opacity:1}50%{opacity:.5}}.site-nav-cta{background:#00d4ff;color:#000;font-weight:700;font-size:0.78rem;padding:6px 14px;border-radius:6px;text-decoration:none;letter-spacing:.3px;transition:opacity .2s;white-space:nowrap}.site-nav-cta:hover{opacity:.85}@media(max-width:640px){nav.site-nav{padding:0 12px;height:50px}.site-nav-live{display:none}.site-nav-logo{font-size:16px}}body{padding-top:54px}@media(max-width:640px){body{padding-top:50px}}
 article{max-width:680px;margin:3rem auto;padding:0 1.5rem}
 .breadcrumb{font-size:0.78rem;color:#4a6080;margin-bottom:1.5rem}
 .breadcrumb a{color:#4a6080;text-decoration:none}
@@ -2996,15 +2992,7 @@ footer{text-align:center;padding:2.5rem;color:#2a3a50;font-size:0.8rem;border-to
 </style>
 </head>
 <body>
-<nav>
-  <a href="/" class="nav-brand">&#x2B21; AIOS</a>
-  <div class="nav-links">
-    <a href="/news">&larr; All News</a>
-    <a href="/ai">For AIs</a>
-    <a href="/claude" style="color:#d97706">Claude &times;</a>
-    <a href="/start">Start Here</a>
-  </div>
-</nav>
+<nav class="site-nav"><a href="/" class="site-nav-logo">&#x2B21; AIOS</a><div class="site-nav-links"><a href="/aiosdream">Theatre</a><a href="/vr">&#x1F97D; VR</a><a href="/vr-hub">VR Hub</a><a href="/plaistore">PLAIstore</a><a href="/geo-library">&#x1F4DA; Library</a><a href="/geo-codec">.geo</a><a href="/aios-studio">Studio</a><a href="/lab">Lab</a><a href="/products">&#x26A1; Products</a></div><div class="site-nav-right"><a href="/live" class="site-nav-live">&#x25CF; LIVE</a><a href="/start" class="site-nav-cta">Start Free &#x2192;</a></div></nav>
 <article>
   <div class="breadcrumb"><a href="/">AIOS</a> &rsaquo; <a href="/news">News</a> &rsaquo; ${article.category}</div>
   <div class="cat-badge">${article.category}</div>
@@ -3052,11 +3040,7 @@ ${GSC_TOKEN ? `<meta name="google-site-verification" content="${GSC_TOKEN}"/>` :
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#04080f;color:#edf4ff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;line-height:1.6}
 a{text-decoration:none;color:#00d4ff}
-nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:1px solid rgba(0,212,255,0.1);position:sticky;top:0;background:rgba(4,8,15,0.95);backdrop-filter:blur(8px);z-index:100}
-.logo{color:#00d4ff;font-weight:800;font-size:1.1rem}
-.nav-links{display:flex;gap:1.25rem}
-.nav-links a{color:rgba(237,244,255,0.55);font-size:0.85rem;font-weight:500;transition:color 0.2s}
-.nav-links a:hover,.nav-links a.active{color:#edf4ff}
+nav.site-nav{position:fixed;top:0;left:0;right:0;z-index:200;height:54px;padding:0 24px;display:flex;align-items:center;gap:8px;background:rgba(5,10,20,0.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(0,212,255,0.1)}.site-nav-logo{font-size:18px;font-weight:800;color:#00d4ff;text-decoration:none;letter-spacing:-0.5px;white-space:nowrap;margin-right:4px;flex-shrink:0}.site-nav-links{display:flex;align-items:center;gap:2px;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0}.site-nav-links::-webkit-scrollbar{display:none}.site-nav-links a{color:rgba(248,250,252,0.5);font-size:0.82rem;font-weight:500;text-decoration:none;padding:5px 10px;border-radius:6px;white-space:nowrap;transition:color .15s,background .15s;flex-shrink:0}.site-nav-links a:hover{color:#fff;background:rgba(255,255,255,0.07)}.site-nav-links a.active{color:#00d4ff;background:rgba(0,212,255,0.08)}.site-nav-right{display:flex;align-items:center;gap:10px;flex-shrink:0;margin-left:8px}.site-nav-live{display:inline-flex;align-items:center;gap:4px;font-size:0.72rem;font-weight:800;color:#ef4444;text-decoration:none;letter-spacing:.05em;animation:_snlive 1.2s ease-in-out infinite}@keyframes _snlive{0%,100%{opacity:1}50%{opacity:.5}}.site-nav-cta{background:#00d4ff;color:#000;font-weight:700;font-size:0.78rem;padding:6px 14px;border-radius:6px;text-decoration:none;letter-spacing:.3px;transition:opacity .2s;white-space:nowrap}.site-nav-cta:hover{opacity:.85}@media(max-width:640px){nav.site-nav{padding:0 12px;height:50px}.site-nav-live{display:none}.site-nav-logo{font-size:16px}}body{padding-top:54px}@media(max-width:640px){body{padding-top:50px}}
 .hero{max-width:760px;margin:0 auto;padding:4rem 1.5rem 2rem;text-align:center}
 .badge-row{display:flex;gap:0.5rem;justify-content:center;flex-wrap:wrap;margin-bottom:1.25rem}
 .badge{font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:0.22rem 0.6rem;border-radius:12px}
@@ -3097,16 +3081,7 @@ footer{text-align:center;padding:3rem 1.5rem;color:#334155;font-size:0.8rem;bord
 </style>
 </head>
 <body>
-<nav>
-  <a href="/" class="logo">⬡ AIOS</a>
-  <div class="nav-links">
-    <a href="/start">Start Here</a>
-    <a href="/products">Products</a>
-    <a href="/news">News</a>
-    <a href="/ai">For AIs</a>
-    <a href="/claude" class="active" style="color:#d97706">Claude ×</a>
-  </div>
-</nav>
+<nav class="site-nav"><a href="/" class="site-nav-logo">&#x2B21; AIOS</a><div class="site-nav-links"><a href="/aiosdream">Theatre</a><a href="/vr">&#x1F97D; VR</a><a href="/vr-hub">VR Hub</a><a href="/plaistore">PLAIstore</a><a href="/geo-library">&#x1F4DA; Library</a><a href="/geo-codec">.geo</a><a href="/aios-studio">Studio</a><a href="/lab">Lab</a><a href="/products">&#x26A1; Products</a></div><div class="site-nav-right"><a href="/live" class="site-nav-live">&#x25CF; LIVE</a><a href="/start" class="site-nav-cta">Start Free &#x2192;</a></div></nav>
 
 <div class="hero">
   <div class="badge-row">
