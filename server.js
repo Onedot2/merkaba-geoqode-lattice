@@ -2829,11 +2829,7 @@ ${GSC_TOKEN ? `<meta name="google-site-verification" content="${GSC_TOKEN}"/>` :
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#04080f;color:#edf4ff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;line-height:1.6;min-height:100vh}
 a{text-decoration:none}
-nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:1px solid rgba(0,212,255,0.1);position:sticky;top:0;background:rgba(4,8,15,0.95);backdrop-filter:blur(8px);z-index:100}
-.logo{color:#00d4ff;font-weight:800;font-size:1.1rem}
-.nav-links{display:flex;gap:1.25rem}
-.nav-links a{color:rgba(237,244,255,0.55);font-size:0.85rem;font-weight:500;transition:color 0.2s}
-.nav-links a:hover{color:#edf4ff}
+nav.site-nav{position:fixed;top:0;left:0;right:0;z-index:200;height:54px;padding:0 24px;display:flex;align-items:center;gap:8px;background:rgba(5,10,20,0.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(0,212,255,0.1)}.site-nav-logo{font-size:18px;font-weight:800;color:#00d4ff;text-decoration:none;letter-spacing:-0.5px;white-space:nowrap;margin-right:4px;flex-shrink:0}.site-nav-links{display:flex;align-items:center;gap:2px;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0}.site-nav-links::-webkit-scrollbar{display:none}.site-nav-links a{color:rgba(248,250,252,0.5);font-size:0.82rem;font-weight:500;text-decoration:none;padding:5px 10px;border-radius:6px;white-space:nowrap;transition:color .15s,background .15s;flex-shrink:0}.site-nav-links a:hover{color:#fff;background:rgba(255,255,255,0.07)}.site-nav-links a.active{color:#00d4ff;background:rgba(0,212,255,0.08)}.site-nav-right{display:flex;align-items:center;gap:10px;flex-shrink:0;margin-left:8px}.site-nav-live{display:inline-flex;align-items:center;gap:4px;font-size:0.72rem;font-weight:800;color:#ef4444;text-decoration:none;letter-spacing:.05em;animation:_snlive 1.2s ease-in-out infinite}@keyframes _snlive{0%,100%{opacity:1}50%{opacity:.5}}.site-nav-cta{background:#00d4ff;color:#000;font-weight:700;font-size:0.78rem;padding:6px 14px;border-radius:6px;text-decoration:none;letter-spacing:.3px;transition:opacity .2s;white-space:nowrap}.site-nav-cta:hover{opacity:.85}@media(max-width:640px){nav.site-nav{padding:0 12px;height:50px}.site-nav-live{display:none}.site-nav-logo{font-size:16px}}body{padding-top:54px}@media(max-width:640px){body{padding-top:50px}}
 .hero{text-align:center;padding:4rem 1.5rem 2rem;max-width:680px;margin:0 auto}
 .eyebrow{font-size:0.7rem;font-weight:700;letter-spacing:0.14em;color:#00d4ff;text-transform:uppercase;margin-bottom:0.75rem}
 h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;letter-spacing:-0.03em;margin-bottom:0.75rem}
@@ -2866,17 +2862,7 @@ footer{text-align:center;padding:3rem 1.5rem;color:#334155;font-size:0.8rem;bord
 </style>
 </head>
 <body>
-<nav>
-  <a href="/" class="logo">⬡ AIOS</a>
-  <div class="nav-links">
-    <a href="/vr-hub">🥽 VR</a>
-    <a href="/products">Products</a>
-    <a href="/start">Start Here</a>
-    <a href="/news" style="color:#00d4ff">News</a>
-    <a href="/claude" style="color:#d97706">Claude &times;</a>
-    <a href="/ai">For AIs</a>
-  </div>
-</nav>
+<nav class="site-nav"><a href="/" class="site-nav-logo">⬡ AIOS</a><div class="site-nav-links"><a href="/aiosdream">Theatre</a><a href="/vr">🥽 VR</a><a href="/vr-hub">VR Hub</a><a href="/plaistore">PLAIstore</a><a href="/geo-library">📚 Library</a><a href="/geo-codec">.geo</a><a href="/aios-studio">Studio</a><a href="/lab">Lab</a><a href="/products">⚡ Products</a></div><div class="site-nav-right"><a href="/live" class="site-nav-live">● LIVE</a><a href="/start" class="site-nav-cta">Start Free →</a></div></nav>
 <div class="hero">
   <div class="eyebrow">AIOS Updates</div>
   <h1>What's Shipping in the <span>Autonomous OS</span></h1>
