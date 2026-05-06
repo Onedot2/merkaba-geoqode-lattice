@@ -227,6 +227,16 @@ const MERKABA_AI_VERIFICATION_PAGE = {
 // ─── AIOS News Feed — canonical update log for /news and /news.json ─────────
 const AIOS_NEWS = [
   {
+    id: "2026-05-07-canonical-nav-unified",
+    date: "2026-05-07",
+    category: "Platform",
+    title: "Canonical Site Navigation Unified Across All 16 AIOS Pages",
+    summary:
+      "All AIOS pages — Theatre, VR, VR Hub, PLAIstore, Library, .geo Codec, Studio, Lab, Products, Live, News, Claude, Experiences, and article pages — now share a single canonical fixed navigation bar. The unified nav is scrollable on mobile, uses backdrop-blur, and links the full AIOS experience surface. Sitemap updated to include all routes.",
+    tags: ["platform", "ux", "navigation", "accessibility"],
+    url: "https://realaios.com",
+  },
+  {
     id: "2026-05-04-ai-identity-fix",
     date: "2026-05-04",
     category: "Security",
