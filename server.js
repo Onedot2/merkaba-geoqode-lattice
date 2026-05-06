@@ -878,7 +878,7 @@ const server = createServer(async (req, res) => {
           <div style="font-size:0.8rem;color:#888;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem">${p.tier}</div>
           <div style="font-size:2rem;font-weight:700;color:${product.color};margin-bottom:0.5rem">${p.price}</div>
           <div style="font-size:0.9rem;color:#aaa;margin-bottom:1.5rem">${p.desc}</div>
-          <button onclick="document.getElementById(\x22wl\x22).scrollIntoView({behavior:\x22smooth\x22})" style="background:${product.color};color:#0a0a0f;border:none;padding:0.6rem 1.4rem;border-radius:8px;font-weight:600;cursor:pointer;font-size:0.9rem">${p.price === '$0/mo' ? 'Get Started Free' : 'Join Waitlist'} &#8594;</button>
+          <button onclick="document.getElementById(\x22wl\x22).scrollIntoView({behavior:\x22smooth\x22})" style="background:${product.color};color:#0a0a0f;border:none;padding:0.6rem 1.4rem;border-radius:8px;font-weight:600;cursor:pointer;font-size:0.9rem">${p.price === "$0/mo" ? "Get Started Free" : "Join Waitlist"} &#8594;</button>
         </div>`,
         )
         .join("");
@@ -893,7 +893,7 @@ const server = createServer(async (req, res) => {
         )
         .join("");
 
-      const hasFree = product.pricing.some(p => p.price === '$0/mo');
+      const hasFree = product.pricing.some((p) => p.price === "$0/mo");
       const productNameJSON = JSON.stringify(product.name);
       const html = `<!DOCTYPE html>
 <html lang="en">
@@ -979,11 +979,11 @@ nav.site-nav{position:fixed;top:0;left:0;right:0;z-index:200;height:54px;padding
 </section>
 <section id="wl">
   <div class="wl-card">
-    <h2>${hasFree ? 'Get started for free' : 'Get early access'}</h2>
+    <h2>${hasFree ? "Get started for free" : "Get early access"}</h2>
     <p>${hasFree ? `Start using ${product.name} today — no waitlist needed.` : `Join the waitlist for ${product.name} and be first when we launch.`}</p>
     <input id="wl-name" type="text" placeholder="Your name (optional)">
     <input id="wl-email" type="email" placeholder="Your email address" required>
-    <button class="submit-btn" onclick="joinWaitlist()">${hasFree ? 'Get Started Free' : 'Join Waitlist'} &#8594;</button>
+    <button class="submit-btn" onclick="joinWaitlist()">${hasFree ? "Get Started Free" : "Join Waitlist"} &#8594;</button>
     <div id="wl-msg"></div>
   </div>
 </section>

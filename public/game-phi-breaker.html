@@ -1,0 +1,869 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PHI Breaker — Lattice Shooter · AIOS Arcade</title>
+    <meta
+      name="description"
+      content="Defend the 48-node lattice from entropy disruptors. Gaze to shoot across D480 harmonic space. AIOS Arcade game."
+    />
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --bg: #020610;
+        --bg2: #040a18;
+        --cyan: #00d4ff;
+        --red: #ef4444;
+        --orange: #f97316;
+        --purple: #9b5cff;
+        --text: #edf4ff;
+        --muted: #6b84b8;
+        --border: rgba(0, 212, 255, 0.12);
+        --gold: #fbbf24;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        overflow: hidden;
+      }
+
+      /* NAV — collapsed in game, shown on lobby/gameover */
+      nav.site-nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 300;
+        height: 54px;
+        padding: 0 24px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(2, 6, 16, 0.95);
+        backdrop-filter: blur(14px);
+        border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+      }
+      .site-nav-logo {
+        font-size: 18px;
+        font-weight: 800;
+        color: #00d4ff;
+        text-decoration: none;
+        letter-spacing: -0.5px;
+        white-space: nowrap;
+        margin-right: 4px;
+        flex-shrink: 0;
+      }
+      .site-nav-links {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        overflow-x: auto;
+        scrollbar-width: none;
+        flex: 1;
+        min-width: 0;
+      }
+      .site-nav-links::-webkit-scrollbar {
+        display: none;
+      }
+      .site-nav-links a {
+        color: rgba(248, 250, 252, 0.5);
+        font-size: 0.82rem;
+        font-weight: 500;
+        text-decoration: none;
+        padding: 5px 10px;
+        border-radius: 6px;
+        white-space: nowrap;
+        transition:
+          color 0.15s,
+          background 0.15s;
+        flex-shrink: 0;
+      }
+      .site-nav-links a:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.07);
+      }
+      .site-nav-right {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-shrink: 0;
+        margin-left: 8px;
+      }
+      .site-nav-live {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 0.72rem;
+        font-weight: 800;
+        color: #ef4444;
+        text-decoration: none;
+        letter-spacing: 0.05em;
+        animation: _snlive 1.2s ease-in-out infinite;
+      }
+      @keyframes _snlive {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.4;
+        }
+      }
+      .site-nav-cta {
+        background: #00d4ff;
+        color: #000;
+        font-weight: 700;
+        font-size: 0.78rem;
+        padding: 6px 14px;
+        border-radius: 6px;
+        text-decoration: none;
+        letter-spacing: 0.3px;
+        transition: opacity 0.2s;
+        white-space: nowrap;
+      }
+      .site-nav-cta:hover {
+        opacity: 0.85;
+      }
+      @media (max-width: 640px) {
+        nav.site-nav {
+          padding: 0 12px;
+          height: 50px;
+        }
+        .site-nav-live {
+          display: none;
+        }
+        .site-nav-logo {
+          font-size: 16px;
+        }
+      }
+
+      /* LOBBY */
+      #lobby {
+        position: fixed;
+        inset: 0;
+        padding-top: 54px;
+        background: radial-gradient(
+          ellipse at 50% 30%,
+          rgba(0, 212, 255, 0.06) 0%,
+          #020610 60%
+        );
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1.5rem;
+        z-index: 200;
+      }
+      .lobby-badge {
+        font-size: 0.75rem;
+        font-weight: 800;
+        letter-spacing: 0.18em;
+        color: var(--red);
+        text-transform: uppercase;
+        background: rgba(239, 68, 68, 0.12);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        padding: 4px 14px;
+        border-radius: 20px;
+      }
+      .lobby-title {
+        font-size: clamp(2.4rem, 7vw, 4.2rem);
+        font-weight: 900;
+        letter-spacing: -0.04em;
+        background: linear-gradient(
+          135deg,
+          #ef4444 0%,
+          #f97316 50%,
+          #fbbf24 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        line-height: 1.05;
+        text-align: center;
+      }
+      .lobby-sub {
+        font-size: 1.1rem;
+        color: var(--muted);
+        text-align: center;
+        max-width: 480px;
+        line-height: 1.6;
+      }
+      .lobby-stats {
+        display: flex;
+        gap: 2rem;
+        text-align: center;
+      }
+      .lobby-stat-n {
+        font-size: 1.6rem;
+        font-weight: 800;
+        color: var(--cyan);
+      }
+      .lobby-stat-l {
+        font-size: 0.72rem;
+        color: var(--muted);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+      .btn-play {
+        background: linear-gradient(135deg, #ef4444, #f97316);
+        color: #fff;
+        border: none;
+        border-radius: 12px;
+        padding: 1rem 3rem;
+        font-size: 1.1rem;
+        font-weight: 800;
+        cursor: pointer;
+        letter-spacing: 0.04em;
+        transition:
+          opacity 0.2s,
+          transform 0.2s;
+        box-shadow: 0 0 32px rgba(239, 68, 68, 0.4);
+      }
+      .btn-play:hover {
+        opacity: 0.9;
+        transform: scale(1.04);
+      }
+      .lobby-hint {
+        font-size: 0.78rem;
+        color: var(--muted);
+        text-align: center;
+      }
+      .lobby-back {
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 0.8rem;
+        transition: color 0.15s;
+      }
+      .lobby-back:hover {
+        color: var(--text);
+      }
+
+      /* HUD */
+      #hud {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 250;
+        pointer-events: none;
+      }
+      .hud-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 24px;
+        background: rgba(2, 6, 16, 0.85);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(0, 212, 255, 0.15);
+      }
+      .hud-item {
+        text-align: center;
+      }
+      .hud-num {
+        font-size: 1.5rem;
+        font-weight: 900;
+        color: var(--cyan);
+        font-variant-numeric: tabular-nums;
+      }
+      .hud-lbl {
+        font-size: 0.62rem;
+        color: var(--muted);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+      .hud-lives {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+      }
+      .hud-wave {
+        color: var(--orange);
+      }
+      #hud-time-num {
+        color: var(--gold);
+      }
+      .phi-bar {
+        height: 3px;
+        background: rgba(0, 212, 255, 0.08);
+      }
+      .phi-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #00d4ff, #9b5cff);
+        transition: width 1s linear;
+      }
+
+      /* EXIT BTN */
+      #exit-btn {
+        display: none;
+        position: fixed;
+        top: 10px;
+        right: 16px;
+        z-index: 300;
+        background: rgba(0, 0, 0, 0.7);
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 8px;
+        padding: 6px 16px;
+        font-size: 0.82rem;
+        cursor: pointer;
+        pointer-events: all;
+      }
+      #exit-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      /* CROSSHAIR */
+      #crosshair {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 20px;
+        height: 20px;
+        pointer-events: none;
+        z-index: 260;
+      }
+      #crosshair::before,
+      #crosshair::after {
+        content: "";
+        position: absolute;
+        background: rgba(0, 212, 255, 0.7);
+      }
+      #crosshair::before {
+        left: 50%;
+        top: 0;
+        width: 1px;
+        height: 100%;
+        transform: translateX(-50%);
+      }
+      #crosshair::after {
+        top: 50%;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        transform: translateY(-50%);
+      }
+      .crosshair-ring {
+        position: absolute;
+        inset: 0;
+        border: 1.5px solid rgba(0, 212, 255, 0.5);
+        border-radius: 50%;
+      }
+
+      /* A-FRAME CONTAINER */
+      #game-container {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+      }
+      #game-container a-scene {
+        width: 100% !important;
+        height: 100% !important;
+      }
+
+      /* GAME OVER */
+      #gameover {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(2, 6, 16, 0.96);
+        z-index: 400;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1.5rem;
+        padding: 2rem;
+      }
+      .go-title {
+        font-size: 3rem;
+        font-weight: 900;
+        color: var(--red);
+        letter-spacing: -0.04em;
+      }
+      .go-score {
+        text-align: center;
+      }
+      .go-score-n {
+        font-size: 4rem;
+        font-weight: 900;
+        color: var(--cyan);
+      }
+      .go-score-l {
+        font-size: 0.9rem;
+        color: var(--muted);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+      .go-wave {
+        font-size: 1rem;
+        color: var(--orange);
+      }
+      .go-actions {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .btn-retry {
+        background: linear-gradient(135deg, #ef4444, #f97316);
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        padding: 0.8rem 2.5rem;
+        font-size: 1rem;
+        font-weight: 800;
+        cursor: pointer;
+        transition: opacity 0.2s;
+      }
+      .btn-retry:hover {
+        opacity: 0.85;
+      }
+      .btn-back-go {
+        background: rgba(255, 255, 255, 0.07);
+        color: var(--text);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 0.8rem 2rem;
+        font-size: 1rem;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+      }
+      .btn-back-go:hover {
+        background: rgba(255, 255, 255, 0.12);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- NAV (lobby only) -->
+    <nav class="site-nav" id="site-nav">
+      <a href="/" class="site-nav-logo">⬡ AIOS</a>
+      <div class="site-nav-links">
+        <a href="/aiosdream">Theatre</a>
+        <a href="/vr">🥽 VR</a>
+        <a href="/vr-hub">VR Hub</a>
+        <a href="/plaistore">PLAIstore</a>
+        <a href="/geo-library">📚 Library</a>
+        <a href="/geo-codec">.geo</a>
+        <a href="/aios-studio">Studio</a>
+        <a href="/lab">Lab</a>
+        <a href="/news">📰 News</a>
+        <a href="/products">⚡ Products</a>
+      </div>
+      <div class="site-nav-right">
+        <a href="/live" class="site-nav-live">● LIVE</a>
+        <a href="/start" class="site-nav-cta">Start Free →</a>
+      </div>
+    </nav>
+
+    <!-- LOBBY -->
+    <div id="lobby">
+      <div class="lobby-badge">🎮 AIOS Arcade · PHI Breaker</div>
+      <div class="lobby-title">PHI Breaker</div>
+      <div class="lobby-sub">
+        Entropy disruptors are attacking the 48-node lattice. Gaze to lock.
+        Click to fire. Survive 60 seconds. Each wave ramps by PHI.
+      </div>
+      <div class="lobby-stats">
+        <div>
+          <div class="lobby-stat-n">60s</div>
+          <div class="lobby-stat-l">Per Round</div>
+        </div>
+        <div>
+          <div class="lobby-stat-n">×PHI</div>
+          <div class="lobby-stat-l">Wave Scaling</div>
+        </div>
+        <div>
+          <div class="lobby-stat-n">D480</div>
+          <div class="lobby-stat-l">Harmonic Space</div>
+        </div>
+      </div>
+      <button class="btn-play" onclick="startGame()">▶ LAUNCH GAME</button>
+      <div class="lobby-hint">
+        Gaze to aim · Click or tap to shoot · WASD on desktop
+      </div>
+      <a href="/vr-hub" class="lobby-back">← Back to VR Hub</a>
+    </div>
+
+    <!-- A-FRAME SCENE CONTAINER -->
+    <div id="game-container"></div>
+
+    <!-- HUD -->
+    <div id="hud">
+      <div class="hud-bar">
+        <div class="hud-item">
+          <div class="hud-num" id="hud-score">0</div>
+          <div class="hud-lbl">Score</div>
+        </div>
+        <div class="hud-item">
+          <div class="hud-num hud-wave" id="hud-wave">1</div>
+          <div class="hud-lbl">Wave</div>
+        </div>
+        <div class="hud-item">
+          <div class="hud-num" id="hud-time-num">60</div>
+          <div class="hud-lbl">Seconds</div>
+        </div>
+        <div class="hud-item">
+          <div class="hud-num" id="hud-kills">0</div>
+          <div class="hud-lbl">Kills</div>
+        </div>
+      </div>
+      <div class="phi-bar">
+        <div class="phi-fill" id="phi-fill" style="width: 100%"></div>
+      </div>
+    </div>
+
+    <!-- EXIT BTN -->
+    <button id="exit-btn" onclick="exitGame()">✕ Exit</button>
+
+    <!-- CROSSHAIR -->
+    <div id="crosshair"><div class="crosshair-ring"></div></div>
+
+    <!-- GAME OVER -->
+    <div id="gameover">
+      <div class="go-title">ROUND OVER</div>
+      <div class="go-score">
+        <div class="go-score-n" id="go-score-n">0</div>
+        <div class="go-score-l">PHI Points Scored</div>
+      </div>
+      <div class="go-wave" id="go-wave">Wave 1 reached</div>
+      <div class="go-actions">
+        <button class="btn-retry" onclick="restartGame()">↺ Play Again</button>
+        <a href="/vr-hub" class="btn-back-go">← VR Hub</a>
+      </div>
+    </div>
+
+    <script>
+      const PHI = 1.618;
+      const TOTAL_TIME = 60;
+      let score = 0,
+        wave = 1,
+        kills = 0,
+        timeLeft = TOTAL_TIME;
+      let spawnDelay = 2200;
+      let spawnTimer = null,
+        clockTimer = null,
+        audioCtx = null,
+        oscillator = null;
+      let gameActive = false;
+      let scene = null;
+      let enemyContainer = null;
+      let enemyCount = 0;
+
+      // ── Audio ─────────────────────────────────────────────────────────────
+      function startTone(hz) {
+        try {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          const gain = audioCtx.createGain();
+          gain.gain.setValueAtTime(0.035, audioCtx.currentTime);
+          oscillator = audioCtx.createOscillator();
+          oscillator.type = "sine";
+          oscillator.frequency.setValueAtTime(hz, audioCtx.currentTime);
+          oscillator.connect(gain);
+          gain.connect(audioCtx.destination);
+          oscillator.start();
+        } catch (_) {}
+      }
+      function stopTone() {
+        try {
+          oscillator && oscillator.stop();
+          audioCtx && audioCtx.close();
+        } catch (_) {}
+        oscillator = null;
+        audioCtx = null;
+      }
+      function playHit() {
+        try {
+          const ctx = new (window.AudioContext || window.webkitAudioContext)();
+          const g = ctx.createGain();
+          g.gain.setValueAtTime(0.25, ctx.currentTime);
+          g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.25);
+          const o = ctx.createOscillator();
+          o.frequency.setValueAtTime(528, ctx.currentTime);
+          o.frequency.exponentialRampToValueAtTime(220, ctx.currentTime + 0.2);
+          o.connect(g);
+          g.connect(ctx.destination);
+          o.start();
+          o.stop(ctx.currentTime + 0.25);
+        } catch (_) {}
+      }
+
+      // ── HUD ───────────────────────────────────────────────────────────────
+      function updateHUD() {
+        document.getElementById("hud-score").textContent = score;
+        document.getElementById("hud-wave").textContent = wave;
+        document.getElementById("hud-time-num").textContent = timeLeft;
+        document.getElementById("hud-kills").textContent = kills;
+        document.getElementById("phi-fill").style.width =
+          (timeLeft / TOTAL_TIME) * 100 + "%";
+      }
+
+      // ── Enemy spawning ────────────────────────────────────────────────────
+      function spawnEnemy() {
+        if (!gameActive || !enemyContainer) return;
+        enemyCount++;
+
+        // Random position in a hemisphere in front + sides
+        const theta = (Math.random() - 0.5) * Math.PI * 1.8;
+        const phi_angle = (Math.random() - 0.5) * Math.PI * 0.7;
+        const r = 6 + Math.random() * 5;
+        const x = +(Math.sin(theta) * Math.cos(phi_angle) * r).toFixed(2);
+        const y = +(1.6 + Math.sin(phi_angle) * r * 0.6).toFixed(2);
+        const z = +(-Math.cos(theta) * Math.cos(phi_angle) * r).toFixed(2);
+
+        // Color varies by wave
+        const colors = ["#ef4444", "#f97316", "#dc2626", "#b91c1c"];
+        const color = colors[Math.min(wave - 1, colors.length - 1)];
+        const radius = 0.3 + Math.random() * 0.2;
+
+        const enemy = document.createElement("a-sphere");
+        const id = "enemy-" + enemyCount;
+        enemy.setAttribute("id", id);
+        enemy.setAttribute("position", `${x} ${y} ${z}`);
+        enemy.setAttribute("radius", radius.toFixed(2));
+        enemy.setAttribute("color", color);
+        enemy.setAttribute("material", "shader: flat; opacity: 0.92");
+        enemy.setAttribute("class", "enemy clickable");
+        // Spawn pulse
+        enemy.setAttribute(
+          "animation__spawn",
+          "property: scale; from: 0.05 0.05 0.05; to: 1 1 1; dur: 300; easing: easeOutBack",
+        );
+        // Slow drift toward center
+        enemy.setAttribute(
+          "animation__drift",
+          `property: position; to: ${(x * 0.4).toFixed(2)} ${Math.max(0.5, y * 0.7).toFixed(2)} ${(z * 0.4).toFixed(2)}; dur: ${4000 + Math.random() * 3000}; easing: linear`,
+        );
+
+        // Glow ring
+        const ring = document.createElement("a-torus");
+        ring.setAttribute("radius", (radius + 0.05).toFixed(2));
+        ring.setAttribute("radius-tubular", "0.015");
+        ring.setAttribute("color", "#ff6600");
+        ring.setAttribute("material", "shader: flat; opacity: 0.5");
+        ring.setAttribute(
+          "rotation",
+          `${Math.random() * 90} ${Math.random() * 90} 0`,
+        );
+        ring.setAttribute(
+          "animation",
+          "property: rotation; to: 360 360 90; dur: 2000; loop: true; easing: linear",
+        );
+        enemy.appendChild(ring);
+
+        // Fusing: highlight on gaze
+        enemy.addEventListener("fusing", () => {
+          enemy.setAttribute("color", "#fbbf24");
+          enemy.setAttribute("scale", "1.25 1.25 1.25");
+        });
+        enemy.addEventListener("mouseleave", () => {
+          enemy.setAttribute("color", color);
+          enemy.setAttribute("scale", "1 1 1");
+        });
+
+        // Click / gaze complete: destroy
+        enemy.addEventListener("click", () => {
+          if (!gameActive) return;
+          killEnemy(enemy, id);
+        });
+
+        enemyContainer.appendChild(enemy);
+
+        // Auto-despawn after 6 seconds if not shot
+        setTimeout(() => {
+          if (enemyContainer && document.getElementById(id)) {
+            enemyContainer.removeChild(enemy);
+          }
+        }, 6000);
+      }
+
+      function killEnemy(enemy, id) {
+        playHit();
+        score += wave;
+        kills++;
+
+        // Flash white then remove
+        enemy.setAttribute("color", "#ffffff");
+        enemy.setAttribute(
+          "animation",
+          "property: scale; to: 0.01 0.01 0.01; dur: 180; easing: easeInBack",
+        );
+        setTimeout(() => {
+          const el = document.getElementById(id);
+          if (el && el.parentNode) el.parentNode.removeChild(el);
+        }, 200);
+
+        // Wave advancement every 8 kills
+        if (kills > 0 && kills % 8 === 0) {
+          wave++;
+          spawnDelay = Math.max(350, spawnDelay / PHI);
+          clearInterval(spawnTimer);
+          spawnTimer = setInterval(spawnEnemy, spawnDelay);
+          // Spawn extra immediately on wave up
+          spawnEnemy();
+        }
+
+        updateHUD();
+      }
+
+      // ── Game start / stop ─────────────────────────────────────────────────
+      function startGame() {
+        score = 0;
+        wave = 1;
+        kills = 0;
+        timeLeft = TOTAL_TIME;
+        spawnDelay = 2200;
+        enemyCount = 0;
+        gameActive = false;
+
+        document.getElementById("lobby").style.display = "none";
+        document.getElementById("gameover").style.display = "none";
+        document.getElementById("site-nav").style.display = "none";
+        document.getElementById("hud").style.display = "block";
+        document.getElementById("exit-btn").style.display = "block";
+        document.getElementById("crosshair").style.display = "block";
+        const container = document.getElementById("game-container");
+        container.style.display = "block";
+
+        updateHUD();
+        buildScene(container);
+      }
+
+      function buildScene(container) {
+        container.innerHTML = `
+          <a-scene
+            id="game-scene"
+            vr-mode-ui="enabled: true"
+            loading-screen="dotsColor: #ef4444; backgroundColor: #020610"
+            renderer="antialias: true; physicallyCorrectLights: false"
+            background="color: #020610">
+
+            <!-- Camera rig -->
+            <a-entity id="rig" position="0 1.6 0">
+              <a-camera
+                look-controls="reverseMouseDrag: false; touchEnabled: true; pointerLockEnabled: false"
+                wasd-controls="enabled: false"
+                fov="80">
+                <!-- Gaze cursor — 1.2s fuse for VR headset -->
+                <a-cursor
+                  id="game-cursor"
+                  fuse="true"
+                  fuseTimeout="1200"
+                  color="#ef4444"
+                  opacity="0.9"
+                  position="0 0 -1"
+                  geometry="primitive: ring; radiusInner: 0.012; radiusOuter: 0.018"
+                  material="color: #ef4444; shader: flat"
+                  raycaster="objects: .clickable; far: 30"
+                  animation__fusing="property: scale; startEvents: fusing; from: 1 1 1; to: 1.8 1.8 1.8; dur: 1200; easing: easeInQuad"
+                  animation__click="property: scale; startEvents: click; from: 1.8 1.8 1.8; to: 1 1 1; dur: 100">
+                </a-cursor>
+              </a-camera>
+            </a-entity>
+
+            <!-- Hand tracking (Quest 3) -->
+            <a-entity hand-tracking-controls="hand: left"></a-entity>
+            <a-entity hand-tracking-controls="hand: right"></a-entity>
+
+            <!-- Sky / atmosphere -->
+            <a-sky color="#020610"></a-sky>
+
+            <!-- Ambient lattice rings (background decoration) -->
+            <a-torus position="0 1.6 0" rotation="0 0 0" radius="12" radius-tubular="0.02" color="#00d4ff" opacity="0.06" material="shader: flat" animation="property: rotation; to: 0 360 0; dur: 25000; loop: true; easing: linear"></a-torus>
+            <a-torus position="0 1.6 0" rotation="45 0 0" radius="10" radius-tubular="0.015" color="#9b5cff" opacity="0.07" material="shader: flat" animation="property: rotation; to: 0 -360 0; dur: 18000; loop: true; easing: linear"></a-torus>
+            <a-torus position="0 1.6 0" rotation="0 30 60" radius="8" radius-tubular="0.012" color="#ef4444" opacity="0.08" material="shader: flat" animation="property: rotation; to: 0 360 120; dur: 14000; loop: true; easing: linear"></a-torus>
+
+            <!-- Floor grid ring -->
+            <a-torus position="0 0.01 0" rotation="-90 0 0" radius="3" radius-tubular="0.012" color="#00d4ff" opacity="0.12" material="shader: flat"></a-torus>
+            <a-torus position="0 0.01 0" rotation="-90 0 0" radius="6" radius-tubular="0.01" color="#9b5cff" opacity="0.08" material="shader: flat"></a-torus>
+
+            <!-- 8 PHI foundation nodes (decorative) -->
+            <a-sphere position="0 0.3 -3" radius="0.08" color="#00d4ff" opacity="0.4" material="shader: flat" animation="property: position; to: 0 0.6 -3; dur: 2000; dir: alternate; loop: true; easing: easeInOutSine"></a-sphere>
+            <a-sphere position="2.12 0.3 -2.12" radius="0.08" color="#00d4ff" opacity="0.4" material="shader: flat" animation="property: position; to: 2.12 0.7 -2.12; dur: 2300; dir: alternate; loop: true; easing: easeInOutSine"></a-sphere>
+            <a-sphere position="3 0.3 0" radius="0.08" color="#00d4ff" opacity="0.4" material="shader: flat" animation="property: position; to: 3 0.5 0; dur: 1900; dir: alternate; loop: true; easing: easeInOutSine"></a-sphere>
+            <a-sphere position="2.12 0.3 2.12" radius="0.08" color="#00d4ff" opacity="0.4" material="shader: flat" animation="property: position; to: 2.12 0.6 2.12; dur: 2100; dir: alternate; loop: true; easing: easeInOutSine"></a-sphere>
+            <a-sphere position="0 0.3 3" radius="0.08" color="#9b5cff" opacity="0.4" material="shader: flat" animation="property: position; to: 0 0.6 3; dur: 2400; dir: alternate; loop: true; easing: easeInOutSine"></a-sphere>
+            <a-sphere position="-2.12 0.3 2.12" radius="0.08" color="#9b5cff" opacity="0.4" material="shader: flat" animation="property: position; to: -2.12 0.5 2.12; dur: 2200; dir: alternate; loop: true; easing: easeInOutSine"></a-sphere>
+            <a-sphere position="-3 0.3 0" radius="0.08" color="#9b5cff" opacity="0.4" material="shader: flat" animation="property: position; to: -3 0.7 0; dur: 2000; dir: alternate; loop: true; easing: easeInOutSine"></a-sphere>
+            <a-sphere position="-2.12 0.3 -2.12" radius="0.08" color="#9b5cff" opacity="0.4" material="shader: flat" animation="property: position; to: -2.12 0.6 -2.12; dur: 1800; dir: alternate; loop: true; easing: easeInOutSine"></a-sphere>
+
+            <!-- Lattice label -->
+            <a-text value="D48 LATTICE · PHI=1.618 · DEFEND" position="0 4.5 -6" align="center" color="#6b84b8" width="5" font="roboto" material="shader: flat"></a-text>
+
+            <!-- Enemy container -->
+            <a-entity id="enemy-root"></a-entity>
+
+          </a-scene>`;
+
+        scene = document.getElementById("game-scene");
+        scene.addEventListener("loaded", () => {
+          enemyContainer = document.getElementById("enemy-root");
+          gameActive = true;
+
+          // Start ambient tone (ACTION 528 Hz)
+          startTone(528);
+
+          // Spawn loop
+          spawnEnemy();
+          spawnTimer = setInterval(spawnEnemy, spawnDelay);
+
+          // Countdown clock
+          clockTimer = setInterval(() => {
+            timeLeft--;
+            updateHUD();
+            if (timeLeft <= 0) endGame();
+          }, 1000);
+        });
+      }
+
+      function endGame() {
+        gameActive = false;
+        clearInterval(spawnTimer);
+        clearInterval(clockTimer);
+        stopTone();
+
+        document.getElementById("hud").style.display = "none";
+        document.getElementById("exit-btn").style.display = "none";
+        document.getElementById("crosshair").style.display = "none";
+
+        document.getElementById("go-score-n").textContent = score;
+        document.getElementById("go-wave").textContent =
+          `Wave ${wave} reached · ${kills} kills`;
+        document.getElementById("gameover").style.display = "flex";
+      }
+
+      function exitGame() {
+        gameActive = false;
+        clearInterval(spawnTimer);
+        clearInterval(clockTimer);
+        stopTone();
+        // Return to lobby
+        document.getElementById("game-container").style.display = "none";
+        document.getElementById("hud").style.display = "none";
+        document.getElementById("exit-btn").style.display = "none";
+        document.getElementById("crosshair").style.display = "none";
+        document.getElementById("gameover").style.display = "none";
+        document.getElementById("site-nav").style.display = "flex";
+        document.getElementById("lobby").style.display = "flex";
+      }
+
+      function restartGame() {
+        document.getElementById("game-container").innerHTML = "";
+        startGame();
+      }
+    </script>
+  </body>
+</html>

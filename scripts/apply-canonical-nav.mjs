@@ -1,10 +1,10 @@
 // apply-canonical-nav.mjs — injects canonical site-nav CSS + HTML into all pages
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
 const __dir = path.dirname(fileURLToPath(import.meta.url));
-const PUBLIC = path.join(__dir, '..', 'public');
+const PUBLIC = path.join(__dir, "..", "public");
 
 // ── Canonical CSS ─────────────────────────────────────────────────────────────
 const CANON_CSS = `
@@ -26,23 +26,23 @@ const CANON_CSS = `
 
 // ── Canonical nav HTML builder ────────────────────────────────────────────────
 const ALL_LINKS = [
-  ['/aiosdream', 'Theatre'],
-  ['/vr',        '🥽 VR'],
-  ['/vr-hub',    'VR Hub'],
-  ['/plaistore', 'PLAIstore'],
-  ['/geo-library','📚 Library'],
-  ['/geo-codec', '.geo'],
-  ['/aios-studio','Studio'],
-  ['/lab',       'Lab'],
-  ['/news',      '📰 News'],
-  ['/products',  '⚡ Products'],
+  ["/aiosdream", "Theatre"],
+  ["/vr", "🥽 VR"],
+  ["/vr-hub", "VR Hub"],
+  ["/plaistore", "PLAIstore"],
+  ["/geo-library", "📚 Library"],
+  ["/geo-codec", ".geo"],
+  ["/aios-studio", "Studio"],
+  ["/lab", "Lab"],
+  ["/news", "📰 News"],
+  ["/products", "⚡ Products"],
 ];
 
 function makeNav(activeHref) {
   const links = ALL_LINKS.map(([href, label]) => {
-    const cls = href === activeHref ? ' class="active"' : '';
+    const cls = href === activeHref ? ' class="active"' : "";
     return `        <a href="${href}"${cls}>${label}</a>`;
-  }).join('\n');
+  }).join("\n");
   return `    <nav class="site-nav">
       <a href="/" class="site-nav-logo">⬡ AIOS</a>
       <div class="site-nav-links">
@@ -58,46 +58,59 @@ ${links}
 // ── Pages: filename → active href ─────────────────────────────────────────────
 // null = no active link (home, live, dashboard, ai)
 const PAGES = {
-  'index.html':       null,
-  'vr.html':          '/vr',
-  'vr-hub.html':      '/vr-hub',
-  'geo-library.html': '/geo-library',
-  'geo-codec.html':   '/geo-codec',
-  'start.html':       null,
-  'lab.html':         '/lab',
-  'live.html':        null,
-  'dashboard.html':   null,
-  'ai.html':          null,
+  "index.html": null,
+  "vr.html": "/vr",
+  "vr-hub.html": "/vr-hub",
+  "geo-library.html": "/geo-library",
+  "geo-codec.html": "/geo-codec",
+  "start.html": null,
+  "lab.html": "/lab",
+  "live.html": null,
+  "dashboard.html": null,
+  "ai.html": null,
 };
 
 // ── Run ───────────────────────────────────────────────────────────────────────
-let ok = 0, fail = 0;
+let ok = 0,
+  fail = 0;
 for (const [filename, activeHref] of Object.entries(PAGES)) {
   const filepath = path.join(PUBLIC, filename);
-  let content = fs.readFileSync(filepath, 'utf8');
+  let content = fs.readFileSync(filepath, "utf8");
 
   // 1. Inject canonical CSS before first </style>
-  if (content.includes('site-nav-logo')) {
+  if (content.includes("site-nav-logo")) {
     console.log(`⚠  CSS already present, skipping inject: ${filename}`);
   } else {
-    const styleEnd = content.indexOf('</style>');
-    if (styleEnd === -1) { console.log(`❌ No </style> in ${filename}`); fail++; continue; }
-    content = content.slice(0, styleEnd) + CANON_CSS + '    </style>' + content.slice(styleEnd + '</style>'.length);
+    const styleEnd = content.indexOf("</style>");
+    if (styleEnd === -1) {
+      console.log(`❌ No </style> in ${filename}`);
+      fail++;
+      continue;
+    }
+    content =
+      content.slice(0, styleEnd) +
+      CANON_CSS +
+      "    </style>" +
+      content.slice(styleEnd + "</style>".length);
     console.log(`✅ CSS injected: ${filename}`);
   }
 
   // 2. Replace nav HTML — find first <nav after </head>
-  const headEnd = content.indexOf('</head>');
+  const headEnd = content.indexOf("</head>");
   const bodyStart = headEnd === -1 ? 0 : headEnd;
-  const navStart = content.indexOf('<nav', bodyStart);
-  if (navStart === -1) { console.log(`❌ No <nav> in body: ${filename}`); fail++; continue; }
-  const navEnd = content.indexOf('</nav>', navStart) + '</nav>'.length;
+  const navStart = content.indexOf("<nav", bodyStart);
+  if (navStart === -1) {
+    console.log(`❌ No <nav> in body: ${filename}`);
+    fail++;
+    continue;
+  }
+  const navEnd = content.indexOf("</nav>", navStart) + "</nav>".length;
 
   const newNav = makeNav(activeHref);
   content = content.slice(0, navStart) + newNav + content.slice(navEnd);
   console.log(`✅ Nav replaced: ${filename}`);
 
-  fs.writeFileSync(filepath, content, 'utf8');
+  fs.writeFileSync(filepath, content, "utf8");
   ok++;
 }
 console.log(`\nDone — ${ok} updated, ${fail} failed`);
