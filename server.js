@@ -3,7 +3,7 @@
 // Exposes the GeoQode interpreter as a REST API for the Storm ecosystem.
 
 import { createServer } from "http";
-import { readFileSync, existsSync } from "fs";
+import { readFileSync, existsSync, readdirSync } from "fs";
 import { extname, join, dirname } from "path";
 import { fileURLToPath } from "url";
 import { StormAdapter } from "./geo/bridge/storm-adapter.js";
@@ -54,6 +54,27 @@ const GSC_TOKEN =
   "tmtbFW4NtmRAviebhnpYumANQ8Z6d8H7oqsrRiKq_9E";
 
 /** Inject GA4 + optional GSC meta tag + preconnect hints immediately after <head> (Google's required position) */
+// Compute VR counts from taxonomy (called lazily inside withMeta, after VR_TAXONOMY is populated)
+function getVRCounts() {
+  if (!VR_TAXONOMY) return { live: 25, total: 50, cats: 9 };
+  let live = 0, total = 0, cats = 0;
+  for (const cat of VR_TAXONOMY.categories || []) {
+    cats++;
+    for (const exp of cat.experiences || []) {
+      total++;
+      if (exp.status === 'live') live++;
+    }
+  }
+  return { live, total, cats };
+}
+
+// Count game HTML files in public/ — auto-updates when new games are added
+function getGameCount() {
+  try {
+    return readdirSync(PUBLIC_DIR).filter(f => /^game-[a-z]/.test(f) && f.endsWith('.html')).length;
+  } catch { return 4; }
+}
+
 function withMeta(html) {
   if (!html) return html;
   const gscTag = GSC_TOKEN
@@ -63,15 +84,29 @@ function withMeta(html) {
   const pwaTag = `<link rel="manifest" href="/manifest.json"/>\n<meta name="theme-color" content="#00e5ff"/>\n<script>if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js');</script>\n`;
   const gaTag = `<!-- Google tag (gtag.js) -->\n<script async src="https://www.googletagmanager.com/gtag/js?id=${GA_ID}"></script>\n<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${GA_ID}');</script>\n`;
   // Inject immediately after <head> — Google Tag Assistant requires this position
-  return html.replace(
+  let out = html.replace(
     /(<head[^>]*>)/,
     `$1\n${gscTag}${preconnect}${pwaTag}${gaTag}`,
   );
+  // Replace data tokens with live values from vr-taxonomy.json and game file scan
+  const vrCounts = getVRCounts();
+  out = out.replaceAll('__VR_LIVE__', String(vrCounts.live));
+  out = out.replaceAll('__VR_TOTAL__', String(vrCounts.total));
+  out = out.replaceAll('__VR_CATS__', String(vrCounts.cats));
+  out = out.replaceAll('__GAME_COUNT__', String(getGameCount()));
+  return out;
 }
 
 // ─── Static assets ───────────────────────────────────────────────────────────
 const __dirname_static = dirname(fileURLToPath(import.meta.url));
 const PUBLIC_DIR = join(__dirname_static, "public");
+
+// VR taxonomy MUST be loaded before any withMeta() call so token replacement uses real data
+const VR_TAXONOMY_PATH = join(__dirname_static, "data", "vr-taxonomy.json");
+let VR_TAXONOMY = null;
+try {
+  VR_TAXONOMY = existsSync(VR_TAXONOMY_PATH) ? JSON.parse(readFileSync(VR_TAXONOMY_PATH, "utf-8")) : null;
+} catch (_) {}
 const AIOS_HTML_PATH = join(PUBLIC_DIR, "index.html");
 const AIOS_HTML = existsSync(AIOS_HTML_PATH)
   ? withMeta(readFileSync(AIOS_HTML_PATH, "utf-8"))
@@ -190,15 +225,6 @@ const GAME_MERKABA_GHOSTS_HTML = existsSync(GAME_MERKABA_GHOSTS_HTML_PATH)
   ? withMeta(readFileSync(GAME_MERKABA_GHOSTS_HTML_PATH, "utf-8"))
   : null;
 
-// VR taxonomy — canonical CI/CD data source for all AIOS VR experiences
-const VR_TAXONOMY_PATH = join(__dirname_static, "data", "vr-taxonomy.json");
-const VR_TAXONOMY_JSON = existsSync(VR_TAXONOMY_PATH)
-  ? readFileSync(VR_TAXONOMY_PATH, "utf-8")
-  : null;
-let VR_TAXONOMY = null;
-try {
-  VR_TAXONOMY = VR_TAXONOMY_JSON ? JSON.parse(VR_TAXONOMY_JSON) : null;
-} catch (_) {}
 
 const AI_EVAL_JSON_PATH = join(PUBLIC_DIR, ".well-known", "ai-evaluation.json");
 const AI_EVAL_JSON = existsSync(AI_EVAL_JSON_PATH)
@@ -281,9 +307,9 @@ const AIOS_NEWS = [
     date: "2026-05-08",
     category: "VR Platform",
     title:
-      "AIOS Arcade Live — 3 Playable WebXR Games Born from the PHI Lattice",
+      "AIOS Arcade Live — 4 Playable WebXR Games Born from the PHI Lattice",
     summary:
-      "AIOS Arcade is now open. Three browser-native WebXR games are live at /games: PHI Breaker (lattice shooter, 528 Hz ACTION), Lattice Dodge (PHI survival, 417 Hz LOCATION), and Lattice Builder (PHI sequence puzzle, 852 Hz PHYSICS). Every mechanic is derived from PHI=1.618 geometry and the canonical 8→26→48:480 harmonic architecture. Works in any desktop browser. Full VR on Quest 2/3. No install, no account, free to play.",
+      "AIOS Arcade is now open. Four browser-native WebXR games are live at /games: PHI Breaker (lattice shooter, 528 Hz ACTION), Lattice Dodge (PHI survival, 417 Hz LOCATION), Lattice Builder (PHI sequence puzzle, 852 Hz PHYSICS), and Merkaba Ghosts (8 AI ghost agents, gaze-attune mechanic, 639 Hz DIALOGUE). Every mechanic is derived from PHI=1.618 geometry and the canonical 8→26→48:480 harmonic architecture. Works in any desktop browser. Full VR on Quest 2/3. No install, no account, free to play.",
     tags: ["arcade", "vr", "webxr", "phi", "aframe", "games", "quest"],
     url: "https://realaios.com/games",
   },
@@ -332,9 +358,9 @@ const AIOS_NEWS = [
     id: "2026-04-24-d48-taxonomy-complete",
     date: "2026-04-24",
     category: "VR Platform",
-    title: "D48 VR Taxonomy Complete — 48 Experiences Across 9 Categories",
+    title: "D48 VR Taxonomy Complete — 50 Experiences Across 9 Categories",
     summary:
-      "The AIOS VR platform now has a complete 48-node taxonomy matching the canonical D48 lattice architecture. 23 experiences are live, with 25 in production queue. 9 categories: Cinema (6), Enterprise (6), Lab (6), Arcade (6), Wellness (5), Social (4), Creator (6), Education (5), Art (4). Total = 48.",
+      "The AIOS VR platform now has a complete 50-experience taxonomy across 9 categories aligned with the D48 lattice architecture. 25 experiences are live, 25 in production queue. 9 categories: Cinema (6), Enterprise (6), Lab (6), Arcade (6), Wellness (5), Social (4), Creator (6), Education (5), Art (6). Total = 50.",
     tags: ["vr", "taxonomy", "d48", "experiences"],
     url: "https://realaios.com/vr-hub",
   },
@@ -513,7 +539,7 @@ const server = createServer(async (req, res) => {
   );
   res.setHeader(
     "Content-Security-Policy",
-    "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://aframe.io; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com; connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://www.google.com https://stats.g.doubleclick.net https://api.getbrains4ai.com; style-src 'self' 'unsafe-inline'; frame-src 'none'; object-src 'none'; base-uri 'self'; worker-src 'self' blob:",
+    "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://aframe.io; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com; connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://www.google.com https://stats.g.doubleclick.net https://api.getbrains4ai.com; style-src 'self' 'unsafe-inline'; frame-src 'none'; object-src 'none'; base-uri 'self'; worker-src 'self' blob:",
   );
 
   if (req.method === "OPTIONS") {
@@ -2856,7 +2882,7 @@ function filterXP(cat, btn) {
         "Service-Worker-Allowed": "/",
       });
       res.end(
-        `const CACHE='aios-v2';const PRE=['/aiosdream','/geo-codec','/aios-studio','/geo-library','/live'];self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(PRE).catch(()=>{})).then(()=>self.skipWaiting())));self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>clients.claim())));self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;e.respondWith(caches.match(e.request).then(h=>h||fetch(e.request).then(r=>{if(r.ok){const c=r.clone();caches.open(CACHE).then(x=>x.put(e.request,c));}return r;}).catch(()=>h)));});`,
+        `const CACHE='aios-v3';const PRE=['/aiosdream','/geo-codec','/aios-studio','/geo-library','/live'];self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(PRE).catch(()=>{})).then(()=>self.skipWaiting())));self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>clients.claim())));self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;try{const u=new URL(e.request.url);if(u.protocol!=='https:'&&u.protocol!=='http:')return;if(u.origin!==self.location.origin)return;}catch(err){return;}e.respondWith(caches.match(e.request).then(h=>h||fetch(e.request).then(r=>{if(r&&r.ok&&r.type==='basic'){const c=r.clone();caches.open(CACHE).then(x=>x.put(e.request,c).catch(()=>{}));}return r;}).catch(()=>h)));});`,
       );
       return;
     }
