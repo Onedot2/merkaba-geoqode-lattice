@@ -2085,18 +2085,13 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       return;
     }
 
-    // ── GET /aios-playground — NEXGEN Sentient Gaming Hub ──────────────────
+    // ── GET /aios-playground — redirect to /games (superseded) ─────────────
     if (
       req.method === "GET" &&
       (pathname === "/aios-playground" || pathname === "/aios-playground/")
     ) {
-      if (!PLAYGROUND_HTML)
-        return json(res, 404, {
-          ok: false,
-          error: "NEXGEN Playground not found",
-        });
-      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
-      res.end(PLAYGROUND_HTML);
+      res.writeHead(301, { Location: "/games" });
+      res.end();
       return;
     }
 
