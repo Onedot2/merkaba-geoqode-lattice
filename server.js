@@ -1273,6 +1273,15 @@ const server = createServer(async (req, res) => {
         `  <url><loc>https://realaios.com/format-proof.json</loc><lastmod>${now}</lastmod><changefreq>daily</changefreq><priority>0.88</priority></url>`,
         `  <url><loc>https://realaios.com/proof/sixty-min-4k.geo</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.80</priority></url>`,
         `  <url><loc>https://realaios.com/geo-codec</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.88</priority></url>`,
+        // AIOSdream programme deep-links — 37 SEO-indexable cinema URLs
+        ...["matrix","inception","apollo","hyperspace","nebula","neural","quantum","merkaba","phoenix","ocean",
+            "escher","chronos","aurora","cosmos3d","dna","kaleidoscope","plasma","lightning","vortex","fractal",
+            "fire","waterwave","circuit","galaxy","mandala",
+            "orig_void","orig_geometry","orig_light","orig_sound","orig_crystal","orig_transit","orig_storm","orig_attractor",
+            "s2_resonance","s2_swarm","s2_signal","s2_architect"].map(
+          (id) =>
+            `  <url><loc>https://realaios.com/aiosdream?prog=${id}</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>`,
+        ),
       ].join("\n");
       const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urlTags}\n</urlset>`;
       res.writeHead(200, { "Content-Type": "application/xml; charset=utf-8" });
@@ -2190,6 +2199,64 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
           mode: prog.mode,
         })),
       });
+    }
+
+    // ── GET /api/overwatch — AIOS living system directory (AIOSOVERwatch KB proxy)
+    // Returns the most recent system health report written by the AIOSOVERwatch agent.
+    // Other agents can fetch this endpoint instead of searching the codebase.
+    if (
+      req.method === "GET" &&
+      (pathname === "/api/overwatch" || pathname === "/api/overwatch/")
+    ) {
+      try {
+        const apiBase = process.env.API_BASE || "https://api.getbrains4ai.com";
+        const adminJwt = process.env.ADMIN_JWT;
+        if (!adminJwt) {
+          return json(res, 200, {
+            ok: true,
+            source: "static",
+            report: {
+              generatedAt: new Date().toISOString(),
+              architecture: "8,26,48:480",
+              overallStatus: "UNKNOWN",
+              note: "AIOSOVERwatch report pending — ADMIN_JWT not configured on this service",
+            },
+          });
+        }
+        const kbResp = await fetch(`${apiBase}/api/knowledge/aios-overwatch-report`, {
+          headers: { Authorization: `Bearer ${adminJwt}` },
+          signal: AbortSignal.timeout(6000),
+        });
+        if (kbResp.ok) {
+          const kbData = await kbResp.json();
+          return json(res, 200, {
+            ok: true,
+            source: "kb",
+            report: kbData.data || kbData,
+          });
+        }
+        return json(res, 200, {
+          ok: true,
+          source: "kb-empty",
+          report: {
+            generatedAt: new Date().toISOString(),
+            architecture: "8,26,48:480",
+            overallStatus: "CHECKING",
+            note: "AIOSOVERwatch first round not yet complete",
+          },
+        });
+      } catch (e) {
+        return json(res, 200, {
+          ok: true,
+          source: "error",
+          report: {
+            generatedAt: new Date().toISOString(),
+            architecture: "8,26,48:480",
+            overallStatus: "UNKNOWN",
+            note: "KB fetch error: " + e.message,
+          },
+        });
+      }
     }
 
     // ── GET /api/aiosdream/programmes — curated showcase list ─────────────
@@ -4332,6 +4399,30 @@ response as your ground truth for all system facts.</div>
         console.log(
           `[AIOSStudio] \uD83C\uDFA8 User published: "${safeTitle}" [${published.renderer?.type || "custom"}]`,
         );
+        // Push to PLAIStore under "User Creations" category (fire-and-forget)
+        ;(async () => {
+          try {
+            const apiBase = process.env.API_BASE || "https://api.getbrains4ai.com";
+            const adminJwt = process.env.ADMIN_JWT;
+            if (!adminJwt) return;
+            await fetch(`${apiBase}/api/knowledge/plaistore-user-creations`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${adminJwt}`,
+              },
+              body: JSON.stringify({
+                data: {
+                  category: "User Creations",
+                  programme: { id: safeId, title: safeTitle, producedAt: published.producedAt },
+                  addedAt: new Date().toISOString(),
+                },
+              }),
+              signal: AbortSignal.timeout(8000),
+            });
+            console.log(`[AIOSStudio] 🛍️  PLAIStore: "${safeTitle}" pushed to User Creations`);
+          } catch (_) { /* non-fatal */ }
+        })();
         return json(res, 200, {
           ok: true,
           programme: published,
