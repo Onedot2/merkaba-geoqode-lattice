@@ -2499,7 +2499,7 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       const cinemaApps = cinemaExps
         .filter((e) => e.status === "live")
         .map((e, i) => ({
-          id: 2000 + i,
+          id: 8000 + i,
           name: e.display || e.id,
           short_desc: e.shortDesc || `Cinema VR · ${e.semanticType || "DIALOGUE"}`,
           description: e.description || `Cinema VR experience in the ${e.semanticType || "DIALOGUE"} field.`,
@@ -2614,7 +2614,7 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       if (runtime) return json(res, 200, { ok: true, app: runtime });
       const extra = PLAI_ALL_EXTRAS.find((a) => a.id === id);
       if (extra) return json(res, 200, { ok: true, app: extra });
-      if (id >= 2000 && id < 3000 && VR_TAXONOMY) {
+      if (id >= 8000 && id < 9000 && VR_TAXONOMY) {
         const cinemaCat = (VR_TAXONOMY.categories || []).find(
           (c) => c.id === "cinema",
         );
@@ -2632,7 +2632,7 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
               description: exp.description || "",
               category: "Cinema",
               price_cents: 0,
-              downloads: (id - 2000 + 1) * 23 + 61,
+              downloads: (id - 8000 + 1) * 23 + 61,
               rating_avg: 4.7,
               developer_name: "AIOS",
               developer_verified: true,
