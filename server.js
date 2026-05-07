@@ -110,10 +110,12 @@ const PUBLIC_DIR = join(__dirname_static, "public");
 // VR taxonomy MUST be loaded before any withMeta() call so token replacement uses real data
 const VR_TAXONOMY_PATH = join(__dirname_static, "data", "vr-taxonomy.json");
 let VR_TAXONOMY = null;
+let VR_TAXONOMY_JSON = null;
 try {
   VR_TAXONOMY = existsSync(VR_TAXONOMY_PATH)
     ? JSON.parse(readFileSync(VR_TAXONOMY_PATH, "utf-8"))
     : null;
+  VR_TAXONOMY_JSON = VR_TAXONOMY ? JSON.stringify(VR_TAXONOMY) : null;
 } catch (_) {}
 const AIOS_HTML_PATH = join(PUBLIC_DIR, "index.html");
 const AIOS_HTML = existsSync(AIOS_HTML_PATH)
@@ -4647,11 +4649,13 @@ p{color:#8aa0c8;font-size:0.92rem;max-width:380px;line-height:1.6;margin-bottom:
     });
   } catch (err) {
     console.error("[GeoQode OS] Request error:", err);
-    return json(res, 500, {
-      ok: false,
-      error: "Internal execution error",
-      message: err.message,
-    });
+    if (!res.headersSent) {
+      return json(res, 500, {
+        ok: false,
+        error: "Internal execution error",
+        message: err.message,
+      });
+    }
   }
 });
 
