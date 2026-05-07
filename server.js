@@ -49,6 +49,7 @@ console.log(
 // GOOGLE_SITE_VERIFICATION: Google Search Console HTML-tag verification token
 const GA_ID =
   process.env.GA_MEASUREMENT_ID || process.env.GA_MEASUREMENT || "G-G38FVKETP3";
+const GADS_ID = process.env.GADS_ID || "AW-18009079831"; // Google Ads conversion tag
 const GSC_TOKEN =
   process.env.GOOGLE_SITE_VERIFICATION ||
   "tmtbFW4NtmRAviebhnpYumANQ8Z6d8H7oqsrRiKq_9E";
@@ -88,7 +89,7 @@ function withMeta(html) {
     : "";
   const preconnect = `<link rel="preconnect" href="https://www.googletagmanager.com"/>\n<link rel="dns-prefetch" href="https://www.google-analytics.com"/>\n`;
   const pwaTag = `<link rel="manifest" href="/manifest.json"/>\n<meta name="theme-color" content="#00e5ff"/>\n<script>if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js');</script>\n`;
-  const gaTag = `<!-- Google tag (gtag.js) -->\n<script async src="https://www.googletagmanager.com/gtag/js?id=${GA_ID}"></script>\n<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${GA_ID}');</script>\n`;
+  const gaTag = `<!-- Google tag (gtag.js) -->\n<script async src="https://www.googletagmanager.com/gtag/js?id=${GA_ID}"></script>\n<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${GA_ID}');gtag('config','${GADS_ID}');</script>\n`;
   // Inject immediately after <head> — Google Tag Assistant requires this position
   let out = html.replace(
     /(<head[^>]*>)/,
