@@ -8454,7 +8454,9 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ name: _user.name, email: _user.email }),
         })
-          .then(function (r) { return r.json(); })
+          .then(function (r) {
+            return r.json();
+          })
           .then(function (data) {
             if (data.token) {
               _user.token = data.token;
@@ -8463,11 +8465,15 @@
               return fetch("/api/aios/user/mylist", {
                 headers: { "x-aios-token": data.token },
               })
-                .then(function (r2) { return r2.json(); })
+                .then(function (r2) {
+                  return r2.json();
+                })
                 .then(function (ml) {
                   if (Array.isArray(ml.list) && ml.list.length) {
                     // Merge: union of server + local
-                    ml.list.forEach(function (id) { if (!myList.includes(id)) myList.push(id); });
+                    ml.list.forEach(function (id) {
+                      if (!myList.includes(id)) myList.push(id);
+                    });
                     localStorage.setItem("aios_mylist", JSON.stringify(myList));
                     buildRows();
                   }
@@ -10311,7 +10317,10 @@
         if (_user && _user.token) {
           fetch("/api/aios/user/mylist", {
             method: "POST",
-            headers: { "Content-Type": "application/json", "x-aios-token": _user.token },
+            headers: {
+              "Content-Type": "application/json",
+              "x-aios-token": _user.token,
+            },
             body: JSON.stringify({ list: myList }),
           }).catch(function () {});
         }

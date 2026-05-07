@@ -2327,7 +2327,9 @@
 
         // Check for a stored user token
         var user = null;
-        try { user = JSON.parse(localStorage.getItem("aios_user") || "null"); } catch (_) {}
+        try {
+          user = JSON.parse(localStorage.getItem("aios_user") || "null");
+        } catch (_) {}
 
         if (!user || !user.token) {
           // Not signed in — show auth gate
@@ -2353,37 +2355,60 @@
             'font-size:12px;padding:10px 16px;border-radius:6px;cursor:pointer;">DISMISS</button>' +
             "</div>";
           document.body.appendChild(toast);
-          setTimeout(function () { var t = document.getElementById("auth-gate-toast"); if (t) t.remove(); }, 10000);
+          setTimeout(function () {
+            var t = document.getElementById("auth-gate-toast");
+            if (t) t.remove();
+          }, 10000);
           return;
         }
 
         // Signed in — publish to live catalogue
         var btn = document.getElementById("cmp-publish-btn");
-        if (btn) { btn.textContent = "PUBLISHING…"; btn.disabled = true; }
+        if (btn) {
+          btn.textContent = "PUBLISHING…";
+          btn.disabled = true;
+        }
         fetch("/api/geo/produce", {
           method: "POST",
-          headers: { "Content-Type": "application/json", "x-aios-token": user.token },
+          headers: {
+            "Content-Type": "application/json",
+            "x-aios-token": user.token,
+          },
           body: JSON.stringify(geo),
         })
-          .then(function (r) { return r.json(); })
+          .then(function (r) {
+            return r.json();
+          })
           .then(function (data) {
-            if (btn) { btn.textContent = "✓ PUBLISHED"; btn.style.color = "#4ade80"; }
+            if (btn) {
+              btn.textContent = "✓ PUBLISHED";
+              btn.style.color = "#4ade80";
+            }
             cmpState.publishedId = data.programme?.id;
             // Show success with Theatre link
             var sg = document.createElement("div");
-            sg.style.cssText = "position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:#061208;border:1px solid rgba(74,222,128,0.4);border-radius:10px;padding:18px 28px;z-index:9999;text-align:center;max-width:380px;";
-            sg.innerHTML = '<div style="font-size:14px;color:#4ade80;font-weight:700;margin-bottom:8px;">✓ Published to AIOS Library</div>' +
+            sg.style.cssText =
+              "position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:#061208;border:1px solid rgba(74,222,128,0.4);border-radius:10px;padding:18px 28px;z-index:9999;text-align:center;max-width:380px;";
+            sg.innerHTML =
+              '<div style="font-size:14px;color:#4ade80;font-weight:700;margin-bottom:8px;">✓ Published to AIOS Library</div>' +
               '<div style="font-size:12px;color:var(--dim);margin-bottom:12px;">Your programme is now live in the geo-library and PLAIstore.</div>' +
               '<div style="display:flex;gap:8px;justify-content:center;">' +
-              '<a href="/aiosdream?prog=' + (cmpState.publishedId || "") + '" target="_blank" style="background:rgba(74,222,128,0.15);border:1px solid rgba(74,222,128,0.4);color:#4ade80;text-decoration:none;font-size:11px;font-weight:700;letter-spacing:2px;padding:8px 14px;border-radius:5px;">▶ WATCH NOW</a>' +
+              '<a href="/aiosdream?prog=' +
+              (cmpState.publishedId || "") +
+              '" target="_blank" style="background:rgba(74,222,128,0.15);border:1px solid rgba(74,222,128,0.4);color:#4ade80;text-decoration:none;font-size:11px;font-weight:700;letter-spacing:2px;padding:8px 14px;border-radius:5px;">▶ WATCH NOW</a>' +
               '<a href="/geo-library" target="_blank" style="background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.2);color:var(--cyan);text-decoration:none;font-size:11px;font-weight:700;letter-spacing:2px;padding:8px 14px;border-radius:5px;">LIBRARY</a>' +
               '<button onclick="this.parentNode.parentNode.remove()" style="background:none;border:1px solid rgba(255,255,255,0.1);color:var(--dim);font-family:inherit;font-size:11px;padding:8px 12px;border-radius:5px;cursor:pointer;">✕</button>' +
-              '</div>';
+              "</div>";
             document.body.appendChild(sg);
-            setTimeout(function () { if (sg.parentNode) sg.remove(); }, 12000);
+            setTimeout(function () {
+              if (sg.parentNode) sg.remove();
+            }, 12000);
           })
           .catch(function () {
-            if (btn) { btn.textContent = "PUBLISH TO LIBRARY"; btn.disabled = false; }
+            if (btn) {
+              btn.textContent = "PUBLISH TO LIBRARY";
+              btn.disabled = false;
+            }
             alert("Publish failed — check your connection and try again.");
           });
       };
