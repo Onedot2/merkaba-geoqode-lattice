@@ -1660,10 +1660,26 @@
           }
           showToast(`✓ ${name} installed — check My Library`, "success");
           loadLibrary();
+          refreshStats(); // update install counter immediately
         } catch {
           showToast("Install failed — please try again", "error");
         }
       }
+
+      /** Refresh the hero stats counters (app count + installs) */
+      async function refreshStats() {
+        try {
+          const data = await fetchJSON("/api/plai/apps?limit=1");
+          if (data.total != null)
+            document.getElementById("stat-apps").textContent = data.total;
+          if (data.total_installs != null)
+            document.getElementById("stat-installs").textContent =
+              data.total_installs.toLocaleString();
+        } catch { /* silently ignore */ }
+      }
+
+      // Auto-refresh counters every 90 seconds so they stay live
+      setInterval(refreshStats, 90000);
 
       // ── Search ─────────────────────────────────────────────────────────────────
       let searchTimer;
