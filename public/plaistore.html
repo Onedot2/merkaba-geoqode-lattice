@@ -1401,9 +1401,6 @@
         try {
           const data = await fetchJSON("/api/plai/featured");
           const apps = data.apps || [];
-          document.getElementById("stat-installs").textContent = apps
-            .reduce((s, a) => s + (a.downloads || 0), 0)
-            .toLocaleString();
           renderGrid("featured-grid", apps.slice(0, 4));
         } catch {
           document.getElementById("featured-grid").innerHTML =
@@ -1497,6 +1494,10 @@
           allApps = data.apps || [];
           document.getElementById("stat-apps").textContent =
             data.total || allApps.length;
+          if (category === "all" && data.total_installs != null) {
+            document.getElementById("stat-installs").textContent =
+              data.total_installs.toLocaleString();
+          }
           document.getElementById("apps-count").textContent =
             allApps.length + " apps";
           document.getElementById("apps-title").textContent =
@@ -1530,6 +1531,8 @@
             category: c.category || c.id || c.name || "Unknown",
             app_count: c.app_count ?? c.count ?? 0,
           }));
+          document.getElementById("stat-categories").textContent =
+            data.total || cats.length;
           renderCats(cats);
         } catch {
           // Static fallback — always show category tiles

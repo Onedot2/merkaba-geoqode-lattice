@@ -2495,11 +2495,13 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       if (catFilter && catFilter !== "all") {
         apps = apps.filter((a) => a.category.toLowerCase() === catFilter);
       }
+      const total = apps.length;
+      const total_installs = apps.reduce((s, a) => s + (a.downloads || 0), 0);
       apps = apps.slice(0, limit);
       return json(
         res,
         200,
-        { ok: true, apps, total: apps.length },
+        { ok: true, apps, total, total_installs },
         { maxAge: 60 },
       );
     }
@@ -2618,6 +2620,14 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       /^\/api\/plai\/apps\/\d+\/install$/.test(pathname)
     ) {
       return json(res, 200, { ok: true, installed: true });
+    }
+
+    // ── GET /api/plai/library — user's installed apps ─────────────────────
+    if (
+      req.method === "GET" &&
+      (pathname === "/api/plai/library" || pathname === "/api/plai/library/")
+    ) {
+      return json(res, 200, { ok: true, apps: [], total: 0 }, { maxAge: 0 });
     }
 
     // ── GET /api/plai/featured — PLAIstore featured apps ─────────────────
