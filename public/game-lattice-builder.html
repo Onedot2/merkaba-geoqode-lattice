@@ -638,7 +638,16 @@
       ></div>
       <div class="go-actions">
         <button class="btn-retry" onclick="restartGame()">↺ Play Again</button>
-        <button class="btn-retry" onclick="shareBuilderScore()" style="background:linear-gradient(135deg,#0ff2,#00f2);border-color:#0ff">&#x2197;&#xFE0F; Share</button>
+        <button
+          class="btn-retry"
+          onclick="shareBuilderScore()"
+          style="
+            background: linear-gradient(135deg, #0ff2, #00f2);
+            border-color: #0ff;
+          "
+        >
+          &#x2197;&#xFE0F; Share
+        </button>
         <a href="/vr-hub" class="btn-back-go">← VR Hub</a>
       </div>
     </div>
@@ -1065,9 +1074,15 @@
         const text = `I scored ${score} points in AIOS Lattice Builder — can you beat me? 🔷 #AIOS #LatticePuzzle #realaios`;
         const url = "https://realaios.com/game-lattice-builder";
         if (navigator.share) {
-          navigator.share({ title: "AIOS Lattice Builder", text, url }).catch(() => {});
+          navigator
+            .share({ title: "AIOS Lattice Builder", text, url })
+            .catch(() => {});
         } else {
-          const tw = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(text) + "&url=" + encodeURIComponent(url);
+          const tw =
+            "https://twitter.com/intent/tweet?text=" +
+            encodeURIComponent(text) +
+            "&url=" +
+            encodeURIComponent(url);
           window.open(tw, "_blank", "noopener,noreferrer,width=600,height=400");
         }
       }

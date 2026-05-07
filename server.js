@@ -1274,11 +1274,45 @@ const server = createServer(async (req, res) => {
         `  <url><loc>https://realaios.com/proof/sixty-min-4k.geo</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.80</priority></url>`,
         `  <url><loc>https://realaios.com/geo-codec</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.88</priority></url>`,
         // AIOSdream programme deep-links — 37 SEO-indexable cinema URLs
-        ...["matrix","inception","apollo","hyperspace","nebula","neural","quantum","merkaba","phoenix","ocean",
-            "escher","chronos","aurora","cosmos3d","dna","kaleidoscope","plasma","lightning","vortex","fractal",
-            "fire","waterwave","circuit","galaxy","mandala",
-            "orig_void","orig_geometry","orig_light","orig_sound","orig_crystal","orig_transit","orig_storm","orig_attractor",
-            "s2_resonance","s2_swarm","s2_signal","s2_architect"].map(
+        ...[
+          "matrix",
+          "inception",
+          "apollo",
+          "hyperspace",
+          "nebula",
+          "neural",
+          "quantum",
+          "merkaba",
+          "phoenix",
+          "ocean",
+          "escher",
+          "chronos",
+          "aurora",
+          "cosmos3d",
+          "dna",
+          "kaleidoscope",
+          "plasma",
+          "lightning",
+          "vortex",
+          "fractal",
+          "fire",
+          "waterwave",
+          "circuit",
+          "galaxy",
+          "mandala",
+          "orig_void",
+          "orig_geometry",
+          "orig_light",
+          "orig_sound",
+          "orig_crystal",
+          "orig_transit",
+          "orig_storm",
+          "orig_attractor",
+          "s2_resonance",
+          "s2_swarm",
+          "s2_signal",
+          "s2_architect",
+        ].map(
           (id) =>
             `  <url><loc>https://realaios.com/aiosdream?prog=${id}</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>`,
         ),
@@ -2223,10 +2257,13 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
             },
           });
         }
-        const kbResp = await fetch(`${apiBase}/api/knowledge/aios-overwatch-report`, {
-          headers: { Authorization: `Bearer ${adminJwt}` },
-          signal: AbortSignal.timeout(6000),
-        });
+        const kbResp = await fetch(
+          `${apiBase}/api/knowledge/aios-overwatch-report`,
+          {
+            headers: { Authorization: `Bearer ${adminJwt}` },
+            signal: AbortSignal.timeout(6000),
+          },
+        );
         if (kbResp.ok) {
           const kbData = await kbResp.json();
           return json(res, 200, {
@@ -2268,20 +2305,97 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
         pathname === "/api/aiosdream/programmes/")
     ) {
       const programmes = [
-        { id: "matrix",    title: "MATRIX: Digital Rain",           emoji: "💊", genre: "sci-fi",   tagline: "Wake up. The Matrix has you." },
-        { id: "inception", title: "INCEPTION: Gravity Wells",        emoji: "🌀", genre: "thriller", tagline: "Dream deeper." },
-        { id: "apollo",    title: "APOLLO 11: Mission to Infinity",   emoji: "🚀", genre: "space",    tagline: "One small step." },
-        { id: "hyperspace",title: "STAR WARS: Hyperdrive",           emoji: "⭐", genre: "sci-fi",   tagline: "Jump to lightspeed." },
-        { id: "nebula",    title: "COSMIC DRIFT: Nebula",            emoji: "🌌", genre: "ambient",  tagline: "Drift through stardust." },
-        { id: "neural",    title: "NEURAL STORM: Consciousness",     emoji: "🧠", genre: "ai",       tagline: "Inside the machine mind." },
-        { id: "quantum",   title: "QUANTUM COLLAPSE: Wave Function", emoji: "⚛️", genre: "physics",  tagline: "Observe. Collapse. Repeat." },
-        { id: "merkaba",   title: "MERKABA RISING: Sacred Geometry", emoji: "🔷", genre: "geometric",tagline: "Ascend through dimensions." },
-        { id: "aurora",    title: "AURORA BOREALIS: Polar Light",    emoji: "🌈", genre: "ambient",  tagline: "Earth's own light show." },
-        { id: "phoenix",   title: "PHOENIX PROTOCOL: Rebirth",       emoji: "🦅", genre: "epic",     tagline: "Rise from the ashes." },
-        { id: "ocean",     title: "DEEP OCEAN: Bioluminescence",     emoji: "🌊", genre: "nature",   tagline: "Beneath the surface." },
-        { id: "cosmos3d",  title: "DEEP COSMOS: 3D Star Atlas",      emoji: "🛸", genre: "space",    tagline: "Navigate the universe." },
+        {
+          id: "matrix",
+          title: "MATRIX: Digital Rain",
+          emoji: "💊",
+          genre: "sci-fi",
+          tagline: "Wake up. The Matrix has you.",
+        },
+        {
+          id: "inception",
+          title: "INCEPTION: Gravity Wells",
+          emoji: "🌀",
+          genre: "thriller",
+          tagline: "Dream deeper.",
+        },
+        {
+          id: "apollo",
+          title: "APOLLO 11: Mission to Infinity",
+          emoji: "🚀",
+          genre: "space",
+          tagline: "One small step.",
+        },
+        {
+          id: "hyperspace",
+          title: "STAR WARS: Hyperdrive",
+          emoji: "⭐",
+          genre: "sci-fi",
+          tagline: "Jump to lightspeed.",
+        },
+        {
+          id: "nebula",
+          title: "COSMIC DRIFT: Nebula",
+          emoji: "🌌",
+          genre: "ambient",
+          tagline: "Drift through stardust.",
+        },
+        {
+          id: "neural",
+          title: "NEURAL STORM: Consciousness",
+          emoji: "🧠",
+          genre: "ai",
+          tagline: "Inside the machine mind.",
+        },
+        {
+          id: "quantum",
+          title: "QUANTUM COLLAPSE: Wave Function",
+          emoji: "⚛️",
+          genre: "physics",
+          tagline: "Observe. Collapse. Repeat.",
+        },
+        {
+          id: "merkaba",
+          title: "MERKABA RISING: Sacred Geometry",
+          emoji: "🔷",
+          genre: "geometric",
+          tagline: "Ascend through dimensions.",
+        },
+        {
+          id: "aurora",
+          title: "AURORA BOREALIS: Polar Light",
+          emoji: "🌈",
+          genre: "ambient",
+          tagline: "Earth's own light show.",
+        },
+        {
+          id: "phoenix",
+          title: "PHOENIX PROTOCOL: Rebirth",
+          emoji: "🦅",
+          genre: "epic",
+          tagline: "Rise from the ashes.",
+        },
+        {
+          id: "ocean",
+          title: "DEEP OCEAN: Bioluminescence",
+          emoji: "🌊",
+          genre: "nature",
+          tagline: "Beneath the surface.",
+        },
+        {
+          id: "cosmos3d",
+          title: "DEEP COSMOS: 3D Star Atlas",
+          emoji: "🛸",
+          genre: "space",
+          tagline: "Navigate the universe.",
+        },
       ];
-      return json(res, 200, { ok: true, programmes, total: programmes.length }, { maxAge: 3600 });
+      return json(
+        res,
+        200,
+        { ok: true, programmes, total: programmes.length },
+        { maxAge: 3600 },
+      );
     }
 
     // ── GET /api/plai/categories ──────────────────────────────────────────
@@ -4400,9 +4514,10 @@ response as your ground truth for all system facts.</div>
           `[AIOSStudio] \uD83C\uDFA8 User published: "${safeTitle}" [${published.renderer?.type || "custom"}]`,
         );
         // Push to PLAIStore under "User Creations" category (fire-and-forget)
-        ;(async () => {
+        (async () => {
           try {
-            const apiBase = process.env.API_BASE || "https://api.getbrains4ai.com";
+            const apiBase =
+              process.env.API_BASE || "https://api.getbrains4ai.com";
             const adminJwt = process.env.ADMIN_JWT;
             if (!adminJwt) return;
             await fetch(`${apiBase}/api/knowledge/plaistore-user-creations`, {
@@ -4414,14 +4529,22 @@ response as your ground truth for all system facts.</div>
               body: JSON.stringify({
                 data: {
                   category: "User Creations",
-                  programme: { id: safeId, title: safeTitle, producedAt: published.producedAt },
+                  programme: {
+                    id: safeId,
+                    title: safeTitle,
+                    producedAt: published.producedAt,
+                  },
                   addedAt: new Date().toISOString(),
                 },
               }),
               signal: AbortSignal.timeout(8000),
             });
-            console.log(`[AIOSStudio] 🛍️  PLAIStore: "${safeTitle}" pushed to User Creations`);
-          } catch (_) { /* non-fatal */ }
+            console.log(
+              `[AIOSStudio] 🛍️  PLAIStore: "${safeTitle}" pushed to User Creations`,
+            );
+          } catch (_) {
+            /* non-fatal */
+          }
         })();
         return json(res, 200, {
           ok: true,

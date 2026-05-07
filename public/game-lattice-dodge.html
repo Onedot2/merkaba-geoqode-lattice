@@ -546,7 +546,18 @@
       </div>
       <div class="go-wave" id="go-wave">Wave 1</div>
       <div class="go-actions">
-        <button class="btn-retry" onclick="restartGame()">↺ Play Again</button>        <button class="btn-retry" onclick="shareDodgeScore()" style="background:linear-gradient(135deg,#0ff2,#00f2);border-color:#0ff">&#x2197;&#xFE0F; Share</button>        <a href="/vr-hub" class="btn-back-go">← VR Hub</a>
+        <button class="btn-retry" onclick="restartGame()">↺ Play Again</button>
+        <button
+          class="btn-retry"
+          onclick="shareDodgeScore()"
+          style="
+            background: linear-gradient(135deg, #0ff2, #00f2);
+            border-color: #0ff;
+          "
+        >
+          &#x2197;&#xFE0F; Share
+        </button>
+        <a href="/vr-hub" class="btn-back-go">← VR Hub</a>
       </div>
     </div>
 
@@ -874,9 +885,15 @@
         const text = `I survived ${score} seconds in AIOS Lattice Dodge! 🌀 #AIOS #LatticeGame #realaios`;
         const url = "https://realaios.com/game-lattice-dodge";
         if (navigator.share) {
-          navigator.share({ title: "AIOS Lattice Dodge", text, url }).catch(() => {});
+          navigator
+            .share({ title: "AIOS Lattice Dodge", text, url })
+            .catch(() => {});
         } else {
-          const tw = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(text) + "&url=" + encodeURIComponent(url);
+          const tw =
+            "https://twitter.com/intent/tweet?text=" +
+            encodeURIComponent(text) +
+            "&url=" +
+            encodeURIComponent(url);
           window.open(tw, "_blank", "noopener,noreferrer,width=600,height=400");
         }
       }

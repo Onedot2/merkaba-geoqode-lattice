@@ -561,30 +561,68 @@
         <button class="btn-retry" onclick="restartGame()">↺ Play Again</button>
         <a href="/vr-hub" class="btn-back-go">← VR Hub</a>
       </div>
-      <button id="btn-share-phi" onclick="sharePhiScore()" style="
-        margin-top:0.85rem;display:block;width:100%;padding:0.5rem 1rem;
-        background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.3);
-        border-radius:8px;color:#fbbf24;font-size:0.8rem;font-weight:700;
-        cursor:pointer;letter-spacing:0.03em;
-      ">⚡ Share My Score</button>
+      <button
+        id="btn-share-phi"
+        onclick="sharePhiScore()"
+        style="
+          margin-top: 0.85rem;
+          display: block;
+          width: 100%;
+          padding: 0.5rem 1rem;
+          background: rgba(251, 191, 36, 0.1);
+          border: 1px solid rgba(251, 191, 36, 0.3);
+          border-radius: 8px;
+          color: #fbbf24;
+          font-size: 0.8rem;
+          font-weight: 700;
+          cursor: pointer;
+          letter-spacing: 0.03em;
+        "
+      >
+        ⚡ Share My Score
+      </button>
       <script>
         function sharePhiScore() {
           const s = document.getElementById("go-score-n")?.textContent || "0";
           const w = document.getElementById("go-wave")?.textContent || "";
-          const text = "I scored " + s + " PHI Points in PHI Breaker ⚡ — " + w + " — free game at realaios.com";
+          const text =
+            "I scored " +
+            s +
+            " PHI Points in PHI Breaker ⚡ — " +
+            w +
+            " — free game at realaios.com";
           if (navigator.share) {
-            navigator.share({ title: "PHI Breaker", text, url: "https://realaios.com/game-phi-breaker" }).catch(function(){});
+            navigator
+              .share({
+                title: "PHI Breaker",
+                text,
+                url: "https://realaios.com/game-phi-breaker",
+              })
+              .catch(function () {});
           } else {
             if (navigator.clipboard) {
-              navigator.clipboard.writeText(text + "\nhttps://realaios.com/game-phi-breaker").then(function(){
-                var btn = document.getElementById("btn-share-phi");
-                btn.textContent = "✅ Copied!";
-                setTimeout(function(){ btn.textContent = "⚡ Share My Score"; }, 2500);
-              }).catch(function(){
-                window.open("https://twitter.com/intent/tweet?text=" + encodeURIComponent(text + " https://realaios.com"), "_blank");
-              });
+              navigator.clipboard
+                .writeText(text + "\nhttps://realaios.com/game-phi-breaker")
+                .then(function () {
+                  var btn = document.getElementById("btn-share-phi");
+                  btn.textContent = "✅ Copied!";
+                  setTimeout(function () {
+                    btn.textContent = "⚡ Share My Score";
+                  }, 2500);
+                })
+                .catch(function () {
+                  window.open(
+                    "https://twitter.com/intent/tweet?text=" +
+                      encodeURIComponent(text + " https://realaios.com"),
+                    "_blank",
+                  );
+                });
             } else {
-              window.open("https://twitter.com/intent/tweet?text=" + encodeURIComponent(text + " https://realaios.com"), "_blank");
+              window.open(
+                "https://twitter.com/intent/tweet?text=" +
+                  encodeURIComponent(text + " https://realaios.com"),
+                "_blank",
+              );
             }
           }
         }

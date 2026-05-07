@@ -641,25 +641,56 @@
           </button>
           <a href="/games" class="btn-back">← Arcade</a>
         </div>
-        <button id="btn-share-score" onclick="shareScore()" style="
-          margin-top:0.9rem;display:block;width:100%;padding:0.55rem 1rem;
-          background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.3);
-          border-radius:8px;color:#00d4ff;font-size:0.82rem;font-weight:700;
-          cursor:pointer;letter-spacing:0.03em;
-        ">⚡ Share My Score</button>
+        <button
+          id="btn-share-score"
+          onclick="shareScore()"
+          style="
+            margin-top: 0.9rem;
+            display: block;
+            width: 100%;
+            padding: 0.55rem 1rem;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 8px;
+            color: #00d4ff;
+            font-size: 0.82rem;
+            font-weight: 700;
+            cursor: pointer;
+            letter-spacing: 0.03em;
+          "
+        >
+          ⚡ Share My Score
+        </button>
         <script>
           function shareScore() {
             const s = document.getElementById("go-score")?.textContent || "0";
             const text = `I scored ${s} in Merkaba Ghosts 👻 — free browser game on realaios.com`;
             if (navigator.share) {
-              navigator.share({ title: "Merkaba Ghosts", text, url: "https://realaios.com/game-merkaba-ghosts" }).catch(()=>{});
+              navigator
+                .share({
+                  title: "Merkaba Ghosts",
+                  text,
+                  url: "https://realaios.com/game-merkaba-ghosts",
+                })
+                .catch(() => {});
             } else {
-              navigator.clipboard?.writeText(text + "\nhttps://realaios.com/game-merkaba-ghosts").then(()=>{
-                document.getElementById("btn-share-score").textContent = "✅ Copied!";
-                setTimeout(()=>{ document.getElementById("btn-share-score").textContent = "⚡ Share My Score"; }, 2500);
-              }).catch(()=>{
-                window.open("https://twitter.com/intent/tweet?text=" + encodeURIComponent(text + " https://realaios.com"), "_blank");
-              });
+              navigator.clipboard
+                ?.writeText(text + "\nhttps://realaios.com/game-merkaba-ghosts")
+                .then(() => {
+                  document.getElementById("btn-share-score").textContent =
+                    "✅ Copied!";
+                  setTimeout(() => {
+                    document.getElementById("btn-share-score").textContent =
+                      "⚡ Share My Score";
+                  }, 2500);
+                })
+                .catch(() => {
+                  window.open(
+                    "https://twitter.com/intent/tweet?text=" +
+                      encodeURIComponent(text + " https://realaios.com"),
+                    "_blank",
+                  );
+                });
             }
           }
         </script>
