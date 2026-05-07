@@ -2192,6 +2192,31 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       });
     }
 
+    // ── GET /api/aiosdream/programmes — curated showcase list ─────────────
+    // Returns the top programmes from AIOSdream for homepage Theatre section.
+    // IDs must match the programme `id` fields inside aiosdream.html exactly.
+    if (
+      req.method === "GET" &&
+      (pathname === "/api/aiosdream/programmes" ||
+        pathname === "/api/aiosdream/programmes/")
+    ) {
+      const programmes = [
+        { id: "matrix",    title: "MATRIX: Digital Rain",           emoji: "💊", genre: "sci-fi",   tagline: "Wake up. The Matrix has you." },
+        { id: "inception", title: "INCEPTION: Gravity Wells",        emoji: "🌀", genre: "thriller", tagline: "Dream deeper." },
+        { id: "apollo",    title: "APOLLO 11: Mission to Infinity",   emoji: "🚀", genre: "space",    tagline: "One small step." },
+        { id: "hyperspace",title: "STAR WARS: Hyperdrive",           emoji: "⭐", genre: "sci-fi",   tagline: "Jump to lightspeed." },
+        { id: "nebula",    title: "COSMIC DRIFT: Nebula",            emoji: "🌌", genre: "ambient",  tagline: "Drift through stardust." },
+        { id: "neural",    title: "NEURAL STORM: Consciousness",     emoji: "🧠", genre: "ai",       tagline: "Inside the machine mind." },
+        { id: "quantum",   title: "QUANTUM COLLAPSE: Wave Function", emoji: "⚛️", genre: "physics",  tagline: "Observe. Collapse. Repeat." },
+        { id: "merkaba",   title: "MERKABA RISING: Sacred Geometry", emoji: "🔷", genre: "geometric",tagline: "Ascend through dimensions." },
+        { id: "aurora",    title: "AURORA BOREALIS: Polar Light",    emoji: "🌈", genre: "ambient",  tagline: "Earth's own light show." },
+        { id: "phoenix",   title: "PHOENIX PROTOCOL: Rebirth",       emoji: "🦅", genre: "epic",     tagline: "Rise from the ashes." },
+        { id: "ocean",     title: "DEEP OCEAN: Bioluminescence",     emoji: "🌊", genre: "nature",   tagline: "Beneath the surface." },
+        { id: "cosmos3d",  title: "DEEP COSMOS: 3D Star Atlas",      emoji: "🛸", genre: "space",    tagline: "Navigate the universe." },
+      ];
+      return json(res, 200, { ok: true, programmes, total: programmes.length }, { maxAge: 3600 });
+    }
+
     // ── GET /api/plai/categories ──────────────────────────────────────────
     if (
       req.method === "GET" &&
