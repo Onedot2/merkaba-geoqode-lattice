@@ -2491,7 +2491,31 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
           entry_point: `https://realaios.com/aiosdream?prog=${name}`,
         }),
       );
-      let apps = [...theatreApps, ...PLAI_ALL_EXTRAS, ..._plaiRuntimeList()];
+      const cinemaExps = VR_TAXONOMY
+        ? (
+            (VR_TAXONOMY.categories || []).find((c) => c.id === "cinema") || {}
+          ).experiences || []
+        : [];
+      const cinemaApps = cinemaExps
+        .filter((e) => e.status === "live")
+        .map((e, i) => ({
+          id: 2000 + i,
+          name: e.display || e.id,
+          short_desc: e.shortDesc || `Cinema VR · ${e.semanticType || "DIALOGUE"}`,
+          description: e.description || `Cinema VR experience in the ${e.semanticType || "DIALOGUE"} field.`,
+          category: "Cinema",
+          price_cents: 0,
+          downloads: (i + 1) * 23 + 61,
+          rating_avg: 4.7,
+          developer_name: "AIOS",
+          developer_verified: true,
+          type: "cinema-vr",
+          bundle_id: `com.aios.cinema.${e.id}`,
+          entry_point: e.vrUrl
+            ? `https://realaios.com${e.vrUrl}`
+            : `https://realaios.com/vr?prog=${e.id}`,
+        }));
+      let apps = [...theatreApps, ...cinemaApps, ...PLAI_ALL_EXTRAS, ..._plaiRuntimeList()];
       if (catFilter && catFilter !== "all") {
         apps = apps.filter((a) => a.category.toLowerCase() === catFilter);
       }
