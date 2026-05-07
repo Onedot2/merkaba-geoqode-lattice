@@ -1817,7 +1817,10 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
     }
 
     // ── GET /waitlist — redirect to homepage waitlist section ─────────────
-    if (req.method === "GET" && (pathname === "/waitlist" || pathname === "/waitlist/")) {
+    if (
+      req.method === "GET" &&
+      (pathname === "/waitlist" || pathname === "/waitlist/")
+    ) {
       res.writeHead(301, { Location: "/#waitlist" });
       res.end();
       return;
@@ -1902,7 +1905,10 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
     }
 
     // ── GET /health (also /api/health) ───────────────────────────────────
-    if (req.method === "GET" && (pathname === "/health" || pathname === "/api/health")) {
+    if (
+      req.method === "GET" &&
+      (pathname === "/health" || pathname === "/api/health")
+    ) {
       const aware = getAware();
       const awState = aware.getStatus();
       return json(res, 200, {
@@ -2492,17 +2498,19 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
         }),
       );
       const cinemaExps = VR_TAXONOMY
-        ? (
-            (VR_TAXONOMY.categories || []).find((c) => c.id === "cinema") || {}
-          ).experiences || []
+        ? ((VR_TAXONOMY.categories || []).find((c) => c.id === "cinema") || {})
+            .experiences || []
         : [];
       const cinemaApps = cinemaExps
         .filter((e) => e.status === "live")
         .map((e, i) => ({
           id: 8000 + i,
           name: e.display || e.id,
-          short_desc: e.shortDesc || `Cinema VR · ${e.semanticType || "DIALOGUE"}`,
-          description: e.description || `Cinema VR experience in the ${e.semanticType || "DIALOGUE"} field.`,
+          short_desc:
+            e.shortDesc || `Cinema VR · ${e.semanticType || "DIALOGUE"}`,
+          description:
+            e.description ||
+            `Cinema VR experience in the ${e.semanticType || "DIALOGUE"} field.`,
           category: "Cinema",
           price_cents: 0,
           downloads: (i + 1) * 23 + 61,
@@ -2515,7 +2523,12 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
             ? `https://realaios.com${e.vrUrl}`
             : `https://realaios.com/vr?prog=${e.id}`,
         }));
-      let apps = [...theatreApps, ...cinemaApps, ...PLAI_ALL_EXTRAS, ..._plaiRuntimeList()];
+      let apps = [
+        ...theatreApps,
+        ...cinemaApps,
+        ...PLAI_ALL_EXTRAS,
+        ..._plaiRuntimeList(),
+      ];
       if (catFilter && catFilter !== "all") {
         apps = apps.filter((a) => a.category.toLowerCase() === catFilter);
       }

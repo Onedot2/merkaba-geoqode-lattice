@@ -1336,7 +1336,8 @@
             .map((g) => `<span class="np-tag">${g}</span>`)
             .join("") + `<span class="np-tag">.geo v2</span>`;
         const watch = document.getElementById("np-watch");
-        if (watch) watch.href = `/aiosdream?renderer=${p.renderer?.type || p.renderer || ""}`;
+        if (watch)
+          watch.href = `/aiosdream?renderer=${p.renderer?.type || p.renderer || ""}`;
         // Switch renderer to match programme if available
         const r = p.renderer?.type || p.renderer;
         if (r && RENDERERS[r]) startRenderer(r);

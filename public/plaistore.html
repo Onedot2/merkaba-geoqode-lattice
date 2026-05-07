@@ -1578,7 +1578,9 @@
         const theatreBadge =
           app.type === "theatre-programme"
             ? `<span style="font-size:10px;color:#a855f7;border:1px solid rgba(168,85,247,0.3);border-radius:4px;padding:1px 5px;margin-left:6px">🎬 AIOSdream</span>`
-            : "";
+            : app.type === "cinema-vr"
+              ? `<span style="font-size:10px;color:#00d4ff;border:1px solid rgba(0,212,255,0.3);border-radius:4px;padding:1px 5px;margin-left:6px">🎭 Cinema VR</span>`
+              : "";
         return `
       <div class="app-card" onclick="openApp(${app.id})">
         <div class="app-card-header">
@@ -1614,8 +1616,8 @@
           const dreamBtn = progKey
             ? `<a href="/aiosdream?prog=${progKey}" class="btn btn-outline" style="border-color:#a855f7;color:#a855f7">🎬 Watch in AIOSdream</a>`
             : app.type === "cinema-vr"
-            ? `<a href="${esc(launchUrl)}" class="btn btn-outline" style="border-color:#00d4ff;color:#00d4ff">🎭 Watch in Cinema VR</a>`
-            : "";
+              ? `<a href="${esc(launchUrl)}" class="btn btn-outline" style="border-color:#00d4ff;color:#00d4ff">🎭 Watch in Cinema VR</a>`
+              : "";
           document.getElementById("modal-body").innerHTML = `
         <div class="modal-app-header">
           <div class="modal-icon">${icon}</div>
