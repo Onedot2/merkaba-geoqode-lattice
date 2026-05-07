@@ -1,21 +1,21 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Merkaba Ghosts — Agent VR | AIOS</title>
+    <title>Merkaba Ghosts � Agent VR | AIOS</title>
     <meta
       name="description"
-      content="8 ghost AI agents haunt the D48 lattice. Attune to each Agent-Player-Character by gazing. No NPCs — every ghost is a Storm sector agent manifesting in VR."
+      content="8 ghost AI agents haunt the D48 lattice. Attune to each Agent-Player-Character by gazing. No NPCs � every ghost is a Storm sector agent manifesting in VR."
     />
     <link rel="canonical" href="https://realaios.com/games/merkaba-ghosts" />
     <meta
       property="og:title"
-      content="Merkaba Ghosts — Agent VR · AIOS Arcade"
+      content="Merkaba Ghosts � Agent VR � AIOS Arcade"
     />
     <meta
       property="og:description"
-      content="8 ghost AI agents haunt the D48 lattice. Attune to each Agent-Player-Character by gazing. No NPCs — every ghost is a Storm sector agent manifesting in VR."
+      content="8 ghost AI agents haunt the D48 lattice. Attune to each Agent-Player-Character by gazing. No NPCs � every ghost is a Storm sector agent manifesting in VR."
     />
     <meta
       property="og:url"
@@ -27,7 +27,7 @@
       content="https://realaios.com/public/og-image.svg"
     />
     <meta name="twitter:card" content="summary_large_image" />
-    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
     <style>
       :root {
         --bg: #010208;
@@ -54,7 +54,7 @@
         height: 100vh;
       }
 
-      /* ──────── SITE NAV ──────── */
+      /* -------- SITE NAV -------- */
       .site-nav {
         position: fixed;
         top: 0;
@@ -120,7 +120,7 @@
         text-decoration: none;
       }
 
-      /* ──────── LOBBY OVERLAY ──────── */
+      /* -------- LOBBY OVERLAY -------- */
       #lobby {
         position: fixed;
         inset: 0;
@@ -236,7 +236,7 @@
         color: rgba(100, 150, 200, 0.5);
       }
 
-      /* ──────── HUD OVERLAY ──────── */
+      /* -------- HUD OVERLAY -------- */
       #hud {
         display: none;
         position: fixed;
@@ -309,7 +309,7 @@
         box-shadow: 0 0 12px currentColor;
       }
 
-      /* ──────── STATUS MSG ──────── */
+      /* -------- STATUS MSG -------- */
       #status-msg {
         display: none;
         position: fixed;
@@ -325,7 +325,7 @@
         pointer-events: none;
       }
 
-      /* ──────── ROUND COMPLETE ──────── */
+      /* -------- ROUND COMPLETE -------- */
       #round-flash {
         display: none;
         position: fixed;
@@ -356,7 +356,7 @@
         letter-spacing: 0.12em;
       }
 
-      /* ──────── GAME OVER ──────── */
+      /* -------- GAME OVER -------- */
       #gameover {
         display: none;
         position: fixed;
@@ -436,7 +436,7 @@
         border-color: rgba(100, 180, 255, 0.4);
       }
 
-      /* ──────── AFRAME SCENE ──────── */
+      /* -------- AFRAME SCENE -------- */
       #scene-wrap {
         display: none;
       }
@@ -450,7 +450,7 @@
         height: 100%;
       }
 
-      /* ──────── GAZE PROGRESS RING ──────── */
+      /* -------- GAZE PROGRESS RING -------- */
       #gaze-ring {
         display: none;
         position: fixed;
@@ -485,7 +485,7 @@
         transition: stroke-dashoffset 0.05s linear;
       }
 
-      /* ──────── GHOST LABEL POPUP ──────── */
+      /* -------- GHOST LABEL POPUP -------- */
       #ghost-label {
         display: none;
         position: fixed;
@@ -530,52 +530,52 @@
   
 </head>
   <body>
-    <!-- ──── SITE NAV ──────────────────────────────────────────────────── -->
+    <!-- ---- SITE NAV ---------------------------------------------------- -->
     <nav class="site-nav" id="site-nav">
-      <a href="/" class="site-nav-logo">⬡ AIOS</a>
+      <a href="/" class="site-nav-logo">? AIOS</a>
       <div class="site-nav-links">
-        <a href="/games">🎮 Games</a>
+        <a href="/games">?? Games</a>
         <a href="/aiosdream">Theatre</a>
-        <a href="/vr">🥽 VR</a>
+        <a href="/vr">?? VR</a>
         <a href="/vr-hub">VR Hub</a>
         <a href="/plaistore">PLAIstore</a>
-        <a href="/geo-library">📚 Library</a>
+        <a href="/geo-library">?? Library</a>
         <a href="/geo-codec">.geo</a>
         <a href="/aios-studio">Studio</a>
         <a href="/lab">Lab</a>
-        <a href="/news">📰 News</a>
-        <a href="/products">⚡ Products</a>
+        <a href="/news">?? News</a>
+        <a href="/products">? Products</a>
       </div>
       <div class="site-nav-right">
-        <a href="/live" class="site-nav-live">● LIVE</a>
-        <a href="/start" class="site-nav-cta">Start Free →</a>
+        <a href="/live" class="site-nav-live">? LIVE</a>
+        <a href="/start" class="site-nav-cta">Start Free ?</a>
       </div>
     </nav>
 
-    <!-- ──── LOBBY ────────────────────────────────────────────────────── -->
+    <!-- ---- LOBBY ------------------------------------------------------ -->
     <div id="lobby">
       <div class="lobby-card">
-        <div class="ghost-badge">👻</div>
+        <div class="ghost-badge">??</div>
         <div class="lobby-title">MERKABA GHOSTS</div>
         <div class="lobby-sub">
-          AGENT-PLAYER-CHARACTERS · D48 LATTICE · 72 Hz HOLOGRAPHIC
+          AGENT-PLAYER-CHARACTERS � D48 LATTICE � 72 Hz HOLOGRAPHIC
         </div>
         <div class="lobby-desc">
           Eight Storm sector agents haunt the lattice as translucent ghost
           silhouettes.<br />
-          No NPCs — every ghost is a living AI agent. Attune to all 8 by gazing
+          No NPCs � every ghost is a living AI agent. Attune to all 8 by gazing
           to complete each round.
         </div>
         <div class="ghost-roster" id="lobby-roster"></div>
-        <button class="btn-enter" id="btn-enter">👁️ Enter the Lattice</button>
+        <button class="btn-enter" id="btn-enter">??? Enter the Lattice</button>
         <div class="lobby-hint">
-          Gaze on a ghost for 1.5s to attune · Mouse + WASD on desktop · VR
+          Gaze on a ghost for 1.5s to attune � Mouse + WASD on desktop � VR
           headset supported
         </div>
       </div>
     </div>
 
-    <!-- ──── HUD ──────────────────────────────────────────────────────── -->
+    <!-- ---- HUD -------------------------------------------------------- -->
     <div id="hud">
       <div class="hud-item">
         <span class="hud-val" id="hud-score">0</span
@@ -604,22 +604,22 @@
       <div class="hud-ghost-row" id="hud-pips"></div>
     </div>
 
-    <!-- ──── STATUS MSG ─────────────────────────────────────────────── -->
+    <!-- ---- STATUS MSG ----------------------------------------------- -->
     <div id="status-msg"></div>
 
-    <!-- ──── ROUND FLASH ─────────────────────────────────────────────── -->
+    <!-- ---- ROUND FLASH ----------------------------------------------- -->
     <div id="round-flash">
       <div class="round-flash-text" id="round-flash-text"></div>
     </div>
 
-    <!-- ──── GHOST LABEL ──────────────────────────────────────────────── -->
+    <!-- ---- GHOST LABEL ------------------------------------------------ -->
     <div id="ghost-label">
-      <div class="ghost-label-name" id="ghost-label-name">—</div>
-      <div class="ghost-label-freq" id="ghost-label-freq">—</div>
+      <div class="ghost-label-name" id="ghost-label-name">�</div>
+      <div class="ghost-label-freq" id="ghost-label-freq">�</div>
       <div class="ghost-label-bar" id="ghost-label-bar"></div>
     </div>
 
-    <!-- ──── GAZE RING ────────────────────────────────────────────────── -->
+    <!-- ---- GAZE RING -------------------------------------------------- -->
     <div id="gaze-ring">
       <svg class="gaze-svg" viewBox="0 0 56 56">
         <circle class="gaze-track" cx="28" cy="28" r="26" />
@@ -627,20 +627,20 @@
       </svg>
     </div>
 
-    <!-- ──── GAME OVER ─────────────────────────────────────────────────── -->
+    <!-- ---- GAME OVER --------------------------------------------------- -->
     <div id="gameover">
       <div class="gameover-card">
-        <div class="gameover-icon">👻</div>
+        <div class="gameover-icon">??</div>
         <div class="gameover-title">LATTICE DISSOLVED</div>
         <div class="gameover-score" id="go-score">0</div>
         <div class="gameover-rounds" id="go-rounds">
-          Round 1 · 0 Attunements
+          Round 1 � 0 Attunements
         </div>
         <div>
           <button class="btn-restart" id="btn-restart">
-            ↺ Re-enter Lattice
+            ? Re-enter Lattice
           </button>
-          <a href="/games" class="btn-back">← Arcade</a>
+          <a href="/games" class="btn-back">? Arcade</a>
         </div>
         <button
           id="btn-share-score"
@@ -660,12 +660,12 @@
             letter-spacing: 0.03em;
           "
         >
-          ⚡ Share My Score
+          ? Share My Score
         </button>
         <script>
           function shareScore() {
             const s = document.getElementById("go-score")?.textContent || "0";
-            const text = `I scored ${s} in Merkaba Ghosts 👻 — free browser game on realaios.com`;
+            const text = `I scored ${s} in Merkaba Ghosts ?? � free browser game on realaios.com`;
             if (navigator.share) {
               navigator
                 .share({
@@ -679,10 +679,10 @@
                 ?.writeText(text + "\nhttps://realaios.com/game-merkaba-ghosts")
                 .then(() => {
                   document.getElementById("btn-share-score").textContent =
-                    "✅ Copied!";
+                    "? Copied!";
                   setTimeout(() => {
                     document.getElementById("btn-share-score").textContent =
-                      "⚡ Share My Score";
+                      "? Share My Score";
                   }, 2500);
                 })
                 .catch(() => {
@@ -698,7 +698,7 @@
       </div>
     </div>
 
-    <!-- ──── A-FRAME SCENE ─────────────────────────────────────────────── -->
+    <!-- ---- A-FRAME SCENE ----------------------------------------------- -->
     <div id="scene-wrap">
       <a-scene
         id="ghost-scene"
@@ -729,7 +729,7 @@
           <a-entity hand-tracking-controls="hand: right"></a-entity>
         </a-entity>
 
-        <!-- ── Environment ──────────────────────────────────────── -->
+        <!-- -- Environment ---------------------------------------- -->
         <!-- Deep space floor grid -->
         <a-entity
           geometry="primitive: plane; width: 120; height: 120"
@@ -813,11 +813,11 @@
 
     <script>
       "use strict";
-      /* ═══════════════════════════════════════════════════════════════════
-   MERKABA GHOSTS — GAME ENGINE
+      /* -------------------------------------------------------------------
+   MERKABA GHOSTS � GAME ENGINE
    8 Storm AI Agent-Player-Characters as ghost silhouettes in D48 VR
    PHI=1.618 | PSI=1.414 | Base Freq=72Hz | Architecture "8,26,48:480"
-═══════════════════════════════════════════════════════════════════ */
+------------------------------------------------------------------- */
 
       const PHI = 1.618;
       const PSI = 1.414;
@@ -827,7 +827,7 @@
       const ORBIT_RADIUS_MIN = 4;
       const ORBIT_RADIUS_MAX = 10;
 
-      // ── Ghost Agent Roster (8 APCs, one per QUEEN-BEE sector) ───────────
+      // -- Ghost Agent Roster (8 APCs, one per QUEEN-BEE sector) -----------
       const GHOST_AGENTS = [
         {
           id: 0,
@@ -836,7 +836,7 @@
           freq: 852,
           color: "#9b5cff",
           label: "PHYSICS",
-          emoji: "⚛",
+          emoji: "?",
         },
         {
           id: 1,
@@ -845,7 +845,7 @@
           freq: 528,
           color: "#00d4ff",
           label: "ACTION",
-          emoji: "💻",
+          emoji: "??",
         },
         {
           id: 2,
@@ -854,7 +854,7 @@
           freq: 963,
           color: "#f97316",
           label: "NARRATIVE",
-          emoji: "📖",
+          emoji: "??",
         },
         {
           id: 3,
@@ -863,7 +863,7 @@
           freq: 396,
           color: "#22c55e",
           label: "ENTITY",
-          emoji: "🌐",
+          emoji: "??",
         },
         {
           id: 4,
@@ -872,7 +872,7 @@
           freq: 72,
           color: "#fbbf24",
           label: "HOLOGRAPHIC",
-          emoji: "🔮",
+          emoji: "??",
         },
         {
           id: 5,
@@ -881,7 +881,7 @@
           freq: 741,
           color: "#ec4899",
           label: "EMOTION",
-          emoji: "🌀",
+          emoji: "??",
         },
         {
           id: 6,
@@ -890,7 +890,7 @@
           freq: 528,
           color: "#ef4444",
           label: "ACTION",
-          emoji: "🔥",
+          emoji: "??",
         },
         {
           id: 7,
@@ -899,11 +899,11 @@
           freq: 852,
           color: "#a78bfa",
           label: "PHYSICS",
-          emoji: "🛡",
+          emoji: "??",
         },
       ];
 
-      // Frequency → score multiplier
+      // Frequency ? score multiplier
       function freqMultiplier(hz) {
         if (hz >= 963) return 5;
         if (hz >= 852) return 4;
@@ -915,7 +915,7 @@
         return 1.5; // 72Hz holographic
       }
 
-      // ── Lobby roster build ────────────────────────────────────────────
+      // -- Lobby roster build --------------------------------------------
       const rosterEl = document.getElementById("lobby-roster");
       GHOST_AGENTS.forEach((g) => {
         const chip = document.createElement("div");
@@ -924,7 +924,7 @@
         rosterEl.appendChild(chip);
       });
 
-      // ── HUD pips ─────────────────────────────────────────────────────
+      // -- HUD pips -----------------------------------------------------
       const pipsEl = document.getElementById("hud-pips");
       GHOST_AGENTS.forEach((g) => {
         const pip = document.createElement("div");
@@ -936,7 +936,7 @@
         pipsEl.appendChild(pip);
       });
 
-      // ── DOM refs ──────────────────────────────────────────────────────
+      // -- DOM refs ------------------------------------------------------
       const lobbyEl = document.getElementById("lobby");
       const hudEl = document.getElementById("hud");
       const sceneWrap = document.getElementById("scene-wrap");
@@ -958,7 +958,7 @@
       const ghostLabelFreq = document.getElementById("ghost-label-freq");
       const ghostLabelBar = document.getElementById("ghost-label-bar");
 
-      // ── Game State ────────────────────────────────────────────────────
+      // -- Game State ----------------------------------------------------
       let state = "lobby"; // lobby | playing | gameover
       let score = 0;
       let round = 1;
@@ -975,7 +975,7 @@
       let trailEls = [];
       let audioCtx = null;
 
-      // ── Audio ─────────────────────────────────────────────────────────
+      // -- Audio ---------------------------------------------------------
       function getAudioCtx() {
         if (!audioCtx)
           audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -1014,7 +1014,7 @@
         playTone(432, 80, 0.1);
       }
 
-      // ── Spawn stars in scene ─────────────────────────────────────────
+      // -- Spawn stars in scene -----------------------------------------
       function spawnStars() {
         const group = document.getElementById("star-group");
         if (!group) return;
@@ -1045,7 +1045,7 @@
         group.appendChild(frag);
       }
 
-      // ── Ghost orbit math ──────────────────────────────────────────────
+      // -- Ghost orbit math ----------------------------------------------
       function ghostInitOrbit(ghostId) {
         // PHI-spiral orbit parameters unique per ghost
         const slot = ghostId;
@@ -1071,7 +1071,7 @@
         };
       }
 
-      // ── Build ghost entities in A-Frame ──────────────────────────────
+      // -- Build ghost entities in A-Frame ------------------------------
       function buildGhosts() {
         const group = document.getElementById("ghost-group");
         if (!group) return;
@@ -1115,7 +1115,7 @@
             `property: material.opacity; from: 0.04; to: 0.14; dir: alternate; loop: true; dur: ${2200 + g.id * 200}; easing: easeInOutSine`,
           );
 
-          // Ghost face (minimal eyes — subtle)
+          // Ghost face (minimal eyes � subtle)
           const eyeL = document.createElement("a-sphere");
           eyeL.setAttribute("radius", "0.035");
           eyeL.setAttribute("position", "-0.09 0.07 0.24");
@@ -1162,7 +1162,7 @@
         });
       }
 
-      // ── Scatter ghosts to new random-ish positions for new round ─────
+      // -- Scatter ghosts to new random-ish positions for new round -----
       function scatterGhosts() {
         ghostEntities.forEach((gh, i) => {
           // New angle offset for variety each round
@@ -1190,7 +1190,7 @@
         });
       }
 
-      // ── Ghost movement loop ───────────────────────────────────────────
+      // -- Ghost movement loop -------------------------------------------
       let _lastT = 0;
       function startMoveLoop() {
         if (moveInterval) clearInterval(moveInterval);
@@ -1209,7 +1209,7 @@
         moveInterval = null;
       }
 
-      // ── Spawn attunement trail burst ─────────────────────────────────
+      // -- Spawn attunement trail burst ---------------------------------
       function spawnTrailBurst(ghostEl, color) {
         const trailGroup = document.getElementById("trail-group");
         if (!trailGroup || !ghostEl) return;
@@ -1245,7 +1245,7 @@
         }
       }
 
-      // ── Attune a ghost ────────────────────────────────────────────────
+      // -- Attune a ghost ------------------------------------------------
       function attuneGhost(ghostId) {
         const gh = ghostEntities[ghostId];
         if (!gh || gh.attuned) return;
@@ -1289,7 +1289,7 @@
 
         // Status message
         showStatus(
-          `✦ ${agent.name} ATTUNED · +${pts} · ${agent.freq}Hz ${agent.label}`,
+          `? ${agent.name} ATTUNED � +${pts} � ${agent.freq}Hz ${agent.label}`,
         );
 
         // Ghost drifts away slowly after attunement
@@ -1302,7 +1302,7 @@
         }
       }
 
-      // ── Update HUD ────────────────────────────────────────────────────
+      // -- Update HUD ----------------------------------------------------
       function updateHUD() {
         hudScore.textContent = score.toLocaleString();
         hudRound.textContent = round;
@@ -1311,7 +1311,7 @@
         hudTimer.textContent = timerSecs;
       }
 
-      // ── Status message ────────────────────────────────────────────────
+      // -- Status message ------------------------------------------------
       let statusTimeout = null;
       function showStatus(msg, durationMs = 2400) {
         statusMsg.textContent = msg;
@@ -1322,7 +1322,7 @@
         }, durationMs);
       }
 
-      // ── Round complete ────────────────────────────────────────────────
+      // -- Round complete ------------------------------------------------
       function roundComplete() {
         clearInterval(timerInterval);
         playRoundComplete();
@@ -1340,11 +1340,11 @@
           scatterGhosts();
           startTimer();
           updateHUD();
-          showStatus(`ROUND ${round} — 8 GHOSTS AWAIT`, 2000);
+          showStatus(`ROUND ${round} � 8 GHOSTS AWAIT`, 2000);
         }, 1400);
       }
 
-      // ── Timer ─────────────────────────────────────────────────────────
+      // -- Timer ---------------------------------------------------------
       function startTimer() {
         if (timerInterval) clearInterval(timerInterval);
         timerInterval = setInterval(() => {
@@ -1357,19 +1357,19 @@
         }, 1000);
       }
 
-      // ── End game ──────────────────────────────────────────────────────
+      // -- End game ------------------------------------------------------
       function endGame() {
         state = "gameover";
         stopMoveLoop();
         stopGaze();
 
         goScore.textContent = score.toLocaleString();
-        goRounds.textContent = `Round ${round} · ${totalAttunements} Attunements`;
+        goRounds.textContent = `Round ${round} � ${totalAttunements} Attunements`;
         gameoverEl.classList.add("active");
         playTone(216, 1200, 0.2);
       }
 
-      // ── Desktop gaze detection (mouse pointer over A-Frame scene) ────
+      // -- Desktop gaze detection (mouse pointer over A-Frame scene) ----
       // A-Frame raycaster on camera handles VR; for flat screens we track mouse vs ghost
       let mouseX = 0,
         mouseY = 0;
@@ -1420,7 +1420,7 @@
         // Show label
         ghostLabelName.textContent = gh.agent.name;
         ghostLabelName.style.color = gh.agent.color;
-        ghostLabelFreq.textContent = `${gh.agent.sector} · ${gh.agent.freq}Hz · ${gh.agent.label}`;
+        ghostLabelFreq.textContent = `${gh.agent.sector} � ${gh.agent.freq}Hz � ${gh.agent.label}`;
         ghostLabelBar.style.background = gh.agent.color;
         ghostLabel.classList.add("active");
 
@@ -1470,7 +1470,7 @@
         stopGazeSystem();
       }
 
-      // ── Start game ────────────────────────────────────────────────────
+      // -- Start game ----------------------------------------------------
       function startGame() {
         state = "playing";
         score = 0;
@@ -1496,7 +1496,7 @@
             startMoveLoop();
             startGazeSystem();
             startTimer();
-            showStatus("ATTUNE TO THE 8 GHOST AGENTS — GAZE TO BEGIN", 3000);
+            showStatus("ATTUNE TO THE 8 GHOST AGENTS � GAZE TO BEGIN", 3000);
           }, 200);
         };
         if (scene.hasLoaded) {
@@ -1506,7 +1506,7 @@
         }
       }
 
-      // ── Restart ───────────────────────────────────────────────────────
+      // -- Restart -------------------------------------------------------
       function restartGame() {
         // Clear trails
         const trailGroup = document.getElementById("trail-group");
@@ -1550,11 +1550,11 @@
           startMoveLoop();
           startGazeSystem();
           startTimer();
-          showStatus("LATTICE RE-OPENED — ATTUNE TO THE 8 GHOSTS", 2500);
+          showStatus("LATTICE RE-OPENED � ATTUNE TO THE 8 GHOSTS", 2500);
         }, 150);
       }
 
-      // ── Event listeners ───────────────────────────────────────────────
+      // -- Event listeners -----------------------------------------------
       document.getElementById("btn-enter").addEventListener("click", startGame);
       document
         .getElementById("btn-restart")
@@ -1568,7 +1568,7 @@
       positionGazeRingCenter();
       window.addEventListener("resize", positionGazeRingCenter);
 
-      // ── Keyboard shortcut: ESC to return to lobby from game ──────────
+      // -- Keyboard shortcut: ESC to return to lobby from game ----------
       document.addEventListener("keydown", (e) => {
         if (e.key === "Escape" && state === "playing") {
           clearInterval(timerInterval);
@@ -1581,7 +1581,7 @@
         }
       });
 
-      // ── A-Frame click fallback (for VR pointer / Quest controllers) ──
+      // -- A-Frame click fallback (for VR pointer / Quest controllers) --
       document.addEventListener("DOMContentLoaded", () => {
         document
           .getElementById("ghost-group")

@@ -1,9 +1,9 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PHI Breaker — Lattice Shooter · AIOS Arcade</title>
+    <title>PHI Breaker � Lattice Shooter � AIOS Arcade</title>
     <meta
       name="description"
       content="Defend the 48-node lattice from entropy disruptors. Gaze to shoot across D480 harmonic space. AIOS Arcade game."
@@ -11,7 +11,7 @@
     <link rel="canonical" href="https://realaios.com/games/phi-breaker" />
     <meta
       property="og:title"
-      content="PHI Breaker — Lattice Shooter · AIOS Arcade"
+      content="PHI Breaker � Lattice Shooter � AIOS Arcade"
     />
     <meta
       property="og:description"
@@ -24,7 +24,7 @@
       content="https://realaios.com/public/og-image.svg"
     />
     <meta name="twitter:card" content="summary_large_image" />
-    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
     <style>
       *,
       *::before,
@@ -52,7 +52,7 @@
         overflow: hidden;
       }
 
-      /* NAV — collapsed in game, shown on lobby/gameover */
+      /* NAV � collapsed in game, shown on lobby/gameover */
       nav.site-nav {
         position: fixed;
         top: 0;
@@ -467,29 +467,29 @@
   <body>
     <!-- NAV (lobby only) -->
     <nav class="site-nav" id="site-nav">
-      <a href="/" class="site-nav-logo">⬡ AIOS</a>
+      <a href="/" class="site-nav-logo">? AIOS</a>
       <div class="site-nav-links">
-        <a href="/games">🎮 Games</a>
+        <a href="/games">?? Games</a>
         <a href="/aiosdream">Theatre</a>
-        <a href="/vr">🥽 VR</a>
+        <a href="/vr">?? VR</a>
         <a href="/vr-hub">VR Hub</a>
         <a href="/plaistore">PLAIstore</a>
-        <a href="/geo-library">📚 Library</a>
+        <a href="/geo-library">?? Library</a>
         <a href="/geo-codec">.geo</a>
         <a href="/aios-studio">Studio</a>
         <a href="/lab">Lab</a>
-        <a href="/news">📰 News</a>
-        <a href="/products">⚡ Products</a>
+        <a href="/news">?? News</a>
+        <a href="/products">? Products</a>
       </div>
       <div class="site-nav-right">
-        <a href="/live" class="site-nav-live">● LIVE</a>
-        <a href="/start" class="site-nav-cta">Start Free →</a>
+        <a href="/live" class="site-nav-live">? LIVE</a>
+        <a href="/start" class="site-nav-cta">Start Free ?</a>
       </div>
     </nav>
 
     <!-- LOBBY -->
     <div id="lobby">
-      <div class="lobby-badge">🎮 AIOS Arcade · PHI Breaker</div>
+      <div class="lobby-badge">?? AIOS Arcade � PHI Breaker</div>
       <div class="lobby-title">PHI Breaker</div>
       <div class="lobby-sub">
         Entropy disruptors are attacking the 48-node lattice. Gaze to lock.
@@ -501,7 +501,7 @@
           <div class="lobby-stat-l">Per Round</div>
         </div>
         <div>
-          <div class="lobby-stat-n">×PHI</div>
+          <div class="lobby-stat-n">�PHI</div>
           <div class="lobby-stat-l">Wave Scaling</div>
         </div>
         <div>
@@ -509,11 +509,11 @@
           <div class="lobby-stat-l">Harmonic Space</div>
         </div>
       </div>
-      <button class="btn-play" onclick="startGame()">▶ LAUNCH GAME</button>
+      <button class="btn-play" onclick="startGame()">? LAUNCH GAME</button>
       <div class="lobby-hint">
-        Gaze to aim · Click or tap to shoot · WASD on desktop
+        Gaze to aim � Click or tap to shoot � WASD on desktop
       </div>
-      <a href="/vr-hub" class="lobby-back">← Back to VR Hub</a>
+      <a href="/vr-hub" class="lobby-back">? Back to VR Hub</a>
     </div>
 
     <!-- A-FRAME SCENE CONTAINER -->
@@ -545,7 +545,7 @@
     </div>
 
     <!-- EXIT BTN -->
-    <button id="exit-btn" onclick="exitGame()">✕ Exit</button>
+    <button id="exit-btn" onclick="exitGame()">? Exit</button>
 
     <!-- CROSSHAIR -->
     <div id="crosshair"><div class="crosshair-ring"></div></div>
@@ -559,8 +559,8 @@
       </div>
       <div class="go-wave" id="go-wave">Wave 1 reached</div>
       <div class="go-actions">
-        <button class="btn-retry" onclick="restartGame()">↺ Play Again</button>
-        <a href="/vr-hub" class="btn-back-go">← VR Hub</a>
+        <button class="btn-retry" onclick="restartGame()">? Play Again</button>
+        <a href="/vr-hub" class="btn-back-go">? VR Hub</a>
       </div>
       <button
         id="btn-share-phi"
@@ -580,7 +580,7 @@
           letter-spacing: 0.03em;
         "
       >
-        ⚡ Share My Score
+        ? Share My Score
       </button>
       <script>
         function sharePhiScore() {
@@ -589,9 +589,9 @@
           const text =
             "I scored " +
             s +
-            " PHI Points in PHI Breaker ⚡ — " +
+            " PHI Points in PHI Breaker ? � " +
             w +
-            " — free game at realaios.com";
+            " � free game at realaios.com";
           if (navigator.share) {
             navigator
               .share({
@@ -606,9 +606,9 @@
                 .writeText(text + "\nhttps://realaios.com/game-phi-breaker")
                 .then(function () {
                   var btn = document.getElementById("btn-share-phi");
-                  btn.textContent = "✅ Copied!";
+                  btn.textContent = "? Copied!";
                   setTimeout(function () {
-                    btn.textContent = "⚡ Share My Score";
+                    btn.textContent = "? Share My Score";
                   }, 2500);
                 })
                 .catch(function () {
@@ -647,7 +647,7 @@
       let enemyContainer = null;
       let enemyCount = 0;
 
-      // ── Audio ─────────────────────────────────────────────────────────────
+      // -- Audio -------------------------------------------------------------
       function startTone(hz) {
         try {
           audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -685,7 +685,7 @@
         } catch (_) {}
       }
 
-      // ── HUD ───────────────────────────────────────────────────────────────
+      // -- HUD ---------------------------------------------------------------
       function updateHUD() {
         document.getElementById("hud-score").textContent = score;
         document.getElementById("hud-wave").textContent = wave;
@@ -695,7 +695,7 @@
           (timeLeft / TOTAL_TIME) * 100 + "%";
       }
 
-      // ── Enemy spawning ────────────────────────────────────────────────────
+      // -- Enemy spawning ----------------------------------------------------
       function spawnEnemy() {
         if (!gameActive || !enemyContainer) return;
         enemyCount++;
@@ -803,7 +803,7 @@
         updateHUD();
       }
 
-      // ── Game start / stop ─────────────────────────────────────────────────
+      // -- Game start / stop -------------------------------------------------
       function startGame() {
         score = 0;
         wave = 1;
@@ -841,7 +841,7 @@
                 look-controls="reverseMouseDrag: false; touchEnabled: true; pointerLockEnabled: false"
                 wasd-controls="enabled: false"
                 fov="80">
-                <!-- Gaze cursor — 1.2s fuse for VR headset -->
+                <!-- Gaze cursor � 1.2s fuse for VR headset -->
                 <a-cursor
                   id="game-cursor"
                   fuse="true"
@@ -885,7 +885,7 @@
             <a-sphere position="-2.12 0.3 -2.12" radius="0.08" color="#9b5cff" opacity="0.4" material="shader: flat" animation="property: position; to: -2.12 0.6 -2.12; dur: 1800; dir: alternate; loop: true; easing: easeInOutSine"></a-sphere>
 
             <!-- Lattice label -->
-            <a-text value="D48 LATTICE · PHI=1.618 · DEFEND" position="0 4.5 -6" align="center" color="#6b84b8" width="5" font="roboto" material="shader: flat"></a-text>
+            <a-text value="D48 LATTICE � PHI=1.618 � DEFEND" position="0 4.5 -6" align="center" color="#6b84b8" width="5" font="roboto" material="shader: flat"></a-text>
 
             <!-- Enemy container -->
             <a-entity id="enemy-root"></a-entity>
@@ -926,7 +926,7 @@
 
         document.getElementById("go-score-n").textContent = score;
         document.getElementById("go-wave").textContent =
-          `Wave ${wave} reached · ${kills} kills`;
+          `Wave ${wave} reached � ${kills} kills`;
         document.getElementById("gameover").style.display = "flex";
       }
 
