@@ -2609,11 +2609,42 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
     // ── GET /api/plai/apps/:id — single PLAIstore app ────────────────────
     if (req.method === "GET" && /^\/api\/plai\/apps\/\d+$/.test(pathname)) {
       const id = parseInt(pathname.split("/").pop(), 10);
-      // Check runtime store, then static extras, then Theatre catalogue
+      // Check runtime store, then static extras, then Cinema VR, then Theatre catalogue
       const runtime = [..._plaiRuntimeApps.values()].find((a) => a.id === id);
       if (runtime) return json(res, 200, { ok: true, app: runtime });
       const extra = PLAI_ALL_EXTRAS.find((a) => a.id === id);
       if (extra) return json(res, 200, { ok: true, app: extra });
+      if (id >= 2000 && id < 3000 && VR_TAXONOMY) {
+        const cinemaCat = (VR_TAXONOMY.categories || []).find(
+          (c) => c.id === "cinema",
+        );
+        const liveExps = cinemaCat
+          ? (cinemaCat.experiences || []).filter((e) => e.status === "live")
+          : [];
+        const exp = liveExps[id - 2000];
+        if (exp) {
+          return json(res, 200, {
+            ok: true,
+            app: {
+              id,
+              name: exp.display || exp.id,
+              short_desc: exp.shortDesc || `Cinema VR experience`,
+              description: exp.description || "",
+              category: "Cinema",
+              price_cents: 0,
+              downloads: (id - 2000 + 1) * 23 + 61,
+              rating_avg: 4.7,
+              developer_name: "AIOS",
+              developer_verified: true,
+              type: "cinema-vr",
+              bundle_id: `com.aios.cinema.${exp.id}`,
+              entry_point: exp.vrUrl
+                ? `https://realaios.com${exp.vrUrl}`
+                : `https://realaios.com/vr?prog=${exp.id}`,
+            },
+          });
+        }
+      }
       const entries = Object.entries(PROGRAMME_CATALOGUE);
       const entry = entries[id - 1];
       if (!entry) return json(res, 404, { ok: false, error: "App not found" });

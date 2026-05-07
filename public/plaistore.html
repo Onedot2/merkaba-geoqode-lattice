@@ -1613,6 +1613,8 @@
               : null;
           const dreamBtn = progKey
             ? `<a href="/aiosdream?prog=${progKey}" class="btn btn-outline" style="border-color:#a855f7;color:#a855f7">🎬 Watch in AIOSdream</a>`
+            : app.type === "cinema-vr"
+            ? `<a href="${esc(launchUrl)}" class="btn btn-outline" style="border-color:#00d4ff;color:#00d4ff">🎭 Watch in Cinema VR</a>`
             : "";
           document.getElementById("modal-body").innerHTML = `
         <div class="modal-app-header">
@@ -1626,7 +1628,7 @@
         <div class="modal-actions">
           <button class="btn btn-primary" onclick="installApp(${app.id}, '${esc(app.name)}')">Install</button>
           ${dreamBtn}
-          <a href="${esc(launchUrl)}" target="_blank" rel="noopener" class="btn btn-outline">Open in AIOS →</a>
+          ${app.type !== "cinema-vr" ? `<a href="${esc(launchUrl)}" target="_blank" rel="noopener" class="btn btn-outline">Open in AIOS →</a>` : ""}
         </div>
       `;
         } catch {
