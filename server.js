@@ -1184,9 +1184,7 @@ const server = createServer(async (req, res) => {
       res.end(
         [
           "User-agent: *",
-          "Allow: /",
           "Disallow: /api/",
-          "Disallow: /waitlist/",
           "",
           "# AI / LLM crawlers — all allowed, see llms.txt for machine-readable facts",
           "User-agent: GPTBot",
@@ -1266,12 +1264,12 @@ const server = createServer(async (req, res) => {
           (s) =>
             `  <url><loc>https://realaios.com/products/${s}</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.80</priority></url>`,
         ),
-        // AI trust anchors — explicitly in sitemap for AI crawlers
-        `  <url><loc>https://realaios.com/llms.txt</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>`,
-        `  <url><loc>https://realaios.com/.well-known/ai-evaluation.json</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>`,
-        // Format proof — machine-verifiable compression claim
-        `  <url><loc>https://realaios.com/format-proof.json</loc><lastmod>${now}</lastmod><changefreq>daily</changefreq><priority>0.88</priority></url>`,
-        `  <url><loc>https://realaios.com/proof/sixty-min-4k.geo</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.80</priority></url>`,
+        // Games hub and individual games
+        `  <url><loc>https://realaios.com/games</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.88</priority></url>`,
+        `  <url><loc>https://realaios.com/games/merkaba-ghosts</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>`,
+        `  <url><loc>https://realaios.com/games/phi-breaker</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>`,
+        `  <url><loc>https://realaios.com/games/lattice-dodge</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>`,
+        `  <url><loc>https://realaios.com/games/lattice-builder</loc><lastmod>${now}</lastmod><changefreq>monthly</changefreq><priority>0.82</priority></url>`,
         `  <url><loc>https://realaios.com/geo-codec</loc><lastmod>${now}</lastmod><changefreq>weekly</changefreq><priority>0.88</priority></url>`,
         // AIOSdream programme deep-links — 37 SEO-indexable cinema URLs
         ...[
@@ -1813,6 +1811,13 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
         return;
       }
       return json(res, 404, { ok: false, error: "Static file not found" });
+    }
+
+    // ── GET /waitlist — redirect to homepage waitlist section ─────────────
+    if (req.method === "GET" && (pathname === "/waitlist" || pathname === "/waitlist/")) {
+      res.writeHead(301, { Location: "/#waitlist" });
+      res.end();
+      return;
     }
 
     // ── POST /waitlist — proxy to Storm API waitlist ──────────────────────
