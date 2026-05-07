@@ -1290,12 +1290,12 @@
         list.innerHTML = progs
           .map((p, i) => {
             const isActive = i === 0;
-            const genres = (p.genres || []).join(" · ");
+            const genres = (p.genre || p.genres || []).join(" · ");
             return `<div class="sched-item ${isActive ? "sched-active" : ""}" onclick="jumpToSlot(${i})">
       <div class="sched-time">${formatTime(i * 120)}</div>
       <div>
         <div class="sched-title">${p.title || "Live Programme"}</div>
-        <div class="sched-genres">${genres} · ${p.hz || "528"} Hz</div>
+        <div class="sched-genres">${genres} · ${p.hz || p.audio?.hz || "528"} Hz</div>
       </div>
     </div>`;
           })
@@ -1313,11 +1313,11 @@
         }
         el.innerHTML = next
           .map((p, i) => {
-            const genres = (p.genres || []).slice(0, 2).join(" · ");
+            const genres = (p.genre || p.genres || []).slice(0, 2).join(" · ");
             return `<div class="np-card" style="cursor:pointer" onclick="jumpToSlot(${scheduleIndex + 1 + i})">
       <div class="np-card-badge" style="background:rgba(0,212,255,0.1);color:var(--cyan)">NEXT ${i + 1}</div>
       <div class="np-card-title">${p.title || "Programme"}</div>
-      <div class="np-card-meta">${genres} · ${p.hz || "528"} Hz · in ${(i + 1) * 2}min</div>
+      <div class="np-card-meta">${genres} · ${p.hz || p.audio?.hz || "528"} Hz · in ${(i + 1) * 2}min</div>
     </div>`;
           })
           .join("");
@@ -1328,17 +1328,17 @@
         document.getElementById("np-title").textContent =
           p.title || "Live .geo Programme";
         document.getElementById("np-sub").textContent =
-          `AIOSProducerSwarm · ${p.renderer || ""} · ${(p.genres || []).slice(0, 2).join(", ")} · ${p.hz || "528"} Hz`;
+          `AIOSProducerSwarm · ${p.renderer?.type || p.renderer || ""} · ${(p.genre || p.genres || []).slice(0, 2).join(", ")} · ${p.hz || p.audio?.hz || "528"} Hz`;
         const tagsEl = document.getElementById("np-tags");
         tagsEl.innerHTML =
-          (p.genres || [])
+          (p.genre || p.genres || [])
             .slice(0, 4)
             .map((g) => `<span class="np-tag">${g}</span>`)
             .join("") + `<span class="np-tag">.geo v2</span>`;
         const watch = document.getElementById("np-watch");
-        if (watch) watch.href = `/aiosdream?renderer=${p.renderer || ""}`;
+        if (watch) watch.href = `/aiosdream?renderer=${p.renderer?.type || p.renderer || ""}`;
         // Switch renderer to match programme if available
-        const r = p.renderer;
+        const r = p.renderer?.type || p.renderer;
         if (r && RENDERERS[r]) startRenderer(r);
         else if (r) {
           // find closest
@@ -1366,7 +1366,7 @@
               RENDERER_KEYS[Math.floor(Math.random() * RENDERER_KEYS.length)],
           );
         }
-        applyHzVisuals(parseInt(p.hz, 10) || 528);
+        applyHzVisuals(parseInt(p.hz || p.audio?.hz, 10) || 528);
       }
 
       function jumpToSlot(idx) {
