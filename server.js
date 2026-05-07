@@ -2621,7 +2621,7 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
         const liveExps = cinemaCat
           ? (cinemaCat.experiences || []).filter((e) => e.status === "live")
           : [];
-        const exp = liveExps[id - 2000];
+        const exp = liveExps[id - 8000];
         if (exp) {
           return json(res, 200, {
             ok: true,
