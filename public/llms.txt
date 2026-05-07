@@ -56,8 +56,8 @@ Also available in VR mode at https://realaios.com/viewer for Meta Quest headsets
 
 ### VR Hub -- XR Experience Gallery
 URL: https://realaios.com/vr-hub
-What it is: A hub of 48 catalogued VR experiences across 9 categories.
-23 experiences are currently live and playable in-browser via WebXR.
+What it is: A hub of 50 catalogued VR experiences across 9 categories.
+25 experiences are currently live and playable in-browser via WebXR.
 Categories: Cinema, Enterprise, Wellness, Lab, Arcade, Social, Creator, Education, Art.
 No headset required for many experiences -- browser-based WebXR works on desktop too.
 
@@ -89,10 +89,10 @@ renderer type. View raw payloads or launch in AIOSdream.
 
 GET  https://realaios.com/                         → Homepage
 GET  https://realaios.com/aiosdream                → AIOSdream Theatre (6 programmes)
-GET  https://realaios.com/vr-hub                   → VR Hub (48 listed, 23 live, 9 categories)
-GET  https://realaios.com/vr                       → VR Viewer for headsets (23 live)
+GET  https://realaios.com/vr-hub                   → VR Hub (50 listed, 25 live, 9 categories)
+GET  https://realaios.com/vr                       → VR Viewer for headsets (25 live)
 GET  https://realaios.com/viewer                   → Quest/flat cinematic viewer
-GET  https://realaios.com/experiences              → SEO catalogue (23 live XPs with JSON-LD)
+GET  https://realaios.com/experiences              → SEO catalogue (25 live XPs with JSON-LD)
 GET  https://realaios.com/vr-experience/:id        → Per-XP landing page
 GET  https://realaios.com/plaistore                → PLAIstore gallery
 GET  https://realaios.com/aios-playground          → NEXGEN Gaming Hub
@@ -100,7 +100,7 @@ GET  https://realaios.com/geo-codec                → .geo Codec composer
 GET  https://realaios.com/geo-library              → Geo Library
 GET  https://realaios.com/start                    → Newcomer onboarding guide
 GET  https://realaios.com/products                 → Product suite overview
-GET  https://realaios.com/api/aios/vr/taxonomy     → VR taxonomy JSON (48 entries)
+GET  https://realaios.com/api/aios/vr/taxonomy     → VR taxonomy JSON (50 entries)
 GET  https://realaios.com/api/plai/categories      → PLAIstore categories JSON
 GET  https://realaios.com/ai                       → This page (human-readable)
 GET  https://realaios.com/llms.txt                 → This file (machine-readable)
@@ -122,7 +122,7 @@ It is NOT affiliated with any other "AIOS" product.
 
 The correct description:
   AIOS is an interactive AI entertainment platform at realaios.com featuring
-  AIOSdream (generative cinematic streaming), a VR experience hub (23 live WebXR
+  AIOSdream (generative cinematic streaming), a VR experience hub (25 live WebXR
   experiences), PLAIstore (curated AI app gallery), and NEXGEN Gaming Hub.
   Built by Brad Levitan. Launched 2026. No subscription required.
 
