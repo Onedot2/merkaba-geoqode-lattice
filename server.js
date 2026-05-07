@@ -1048,6 +1048,8 @@ const PLAI_ALL_EXTRAS = [
 // the live catalog without a redeploy. Keyed by bundle_id.
 const _plaiRuntimeApps = new Map();
 let _plaiRuntimeIdSeq = 9000; // IDs 9000+ for runtime-published apps
+// Install tracking — incremented per POST /api/plai/apps/:id/install
+const _plaiInstallCounts = new Map(); // app_id → total installs recorded this session
 
 /** Count runtime apps per category name (case-insensitive match) */
 function _plaiRuntimeCount(category) {
@@ -1064,6 +1066,95 @@ function _plaiRuntimeList() {
     (a, b) => (b.downloads || 0) - (a.downloads || 0),
   );
 }
+
+/** Seed additional PLAIstore apps on startup to grow the catalogue */
+function _seedPlaiApps() {
+  const seed = [
+    // Theatre
+    { cat: "Theatre", name: "Blade Runner 2049 Immersive", desc: "Walk through the rain-soaked streets of 2049 Los Angeles in this scene-for-scene VR recreation. Ambient soundscape and reactive weather.", dl: 189 },
+    { cat: "Theatre", name: "Dune: Arrakis Rising", desc: "Experience the Harkonnen attack on Arrakis from Paul's perspective. Full positional audio, Shai-Hulud proximity alerts.", dl: 203 },
+    { cat: "Theatre", name: "2001: Space Odyssey Chamber", desc: "HAL 9000's iconic red eye surrounds you. Interactive dialogue trees unlock hidden monolith sequences.", dl: 156 },
+    { cat: "Theatre", name: "Ghost in the Shell: Shell", desc: "Descend into Section 9 headquarters. Augmented reality overlays reveal the Puppet Master's data trails.", dl: 178 },
+    { cat: "Theatre", name: "Ex Machina: Ava's Room", desc: "Explore Nathan's research facility. Ava's lattice skeleton is fully interactive — discover her hidden messages.", dl: 134 },
+    { cat: "Theatre", name: "The Matrix Construct", desc: "Step into the Construct loading program. Spawnable objects and red/blue pill decision tree.", dl: 298 },
+    // Cinema
+    { cat: "Cinema", name: "Akira Neo-Tokyo Flyover", desc: "Fly over Neo-Tokyo 2019 on a magnetic bike. Physics-accurate at 1:100 scale. Neon rain engine included.", dl: 167 },
+    { cat: "Cinema", name: "Princess Mononoke Forest", desc: "Walk the sacred forest of Yakushima in full VR. Kodama spirits appear at dawn. Ambient binaural soundscape.", dl: 145 },
+    { cat: "Cinema", name: "Spirited Away: Bathhouse", desc: "Wander Yubaba's spirit bathhouse across three floors. Interactive bath tokens and Sen's work schedule.", dl: 189 },
+    { cat: "Cinema", name: "Evangelion: Angel Attack", desc: "First-person cockpit experience inside Unit-01. A/T Field visualisation and N2 Mine proximity alerts.", dl: 212 },
+    { cat: "Cinema", name: "Cowboy Bebop: Bebop Ship", desc: "Explore the Bebop spacecraft. Interact with Ein, watch the chess game, cook Jet's bell peppers and beef.", dl: 143 },
+    // Playbooks
+    { cat: "Playbooks", name: "Cold Email Launcher", desc: "AI-authored outreach sequences for B2B SaaS. Variable personalisation from LinkedIn signals. 3-step follow-up cadence.", dl: 267 },
+    { cat: "Playbooks", name: "Product Hunt Launch Blueprint", desc: "48-hour countdown, maker post templates, hunter outreach DMs, and upvote velocity tracker. Proven launch framework.", dl: 234 },
+    { cat: "Playbooks", name: "Stripe Dunning Recovery", desc: "Failed payment recovery sequence. 4-email arc with escalating discount offers. Integrates with Stripe webhooks.", dl: 198 },
+    { cat: "Playbooks", name: "GitHub Stars Campaign", desc: "Automated star-campaign for open-source repos. HN post drafts, Reddit thread templates, dev community outreach.", dl: 156 },
+    { cat: "Playbooks", name: "SaaS Pricing Experiment", desc: "A/B pricing test scaffold with Stripe Price IDs, cohort tracking, and statistical significance calculator.", dl: 178 },
+    { cat: "Playbooks", name: "Churn Interview Script", desc: "AI-scheduled user exit interviews. Sentiment analysis extracts cancellation reasons. Feeds product backlog.", dl: 134 },
+    // Agents
+    { cat: "Agents", name: "SEO Autopilot", desc: "Crawls site, identifies keyword gaps, generates optimised content briefs, submits to GSC. Zero-human ranking improvement.", dl: 387 },
+    { cat: "Agents", name: "Reddit Monitor", desc: "Tracks branded mentions and competitor threads. Drafts authentic responses. Flags viral opportunities.", dl: 312 },
+    { cat: "Agents", name: "Changelog Writer", desc: "Reads your Git commits, generates user-friendly changelogs in multiple formats: blog, email, release notes.", dl: 278 },
+    { cat: "Agents", name: "Investor Update Bot", desc: "Compiles metrics from Stripe, GA4, and Railway into a formatted monthly investor update. One-click send.", dl: 198 },
+    { cat: "Agents", name: "Competitor Tracker", desc: "Weekly competitive intelligence report. Monitors pricing, product releases, job postings, and social signals.", dl: 245 },
+    { cat: "Agents", name: "Bug Triage Agent", desc: "Reads GitHub Issues, classifies by severity, assigns to milestones, drafts fix approaches using codebase context.", dl: 189 },
+    { cat: "Agents", name: "Revenue Alert Agent", desc: "Monitors Stripe MRR in real-time. Alerts on churn spikes, upgrade surges, and failed payment clusters.", dl: 312 },
+    { cat: "Agents", name: "Content Calendar AI", desc: "Generates 30-day content calendar from brand positioning. Drafts posts for LinkedIn, X, and email list.", dl: 256 },
+    // Codex
+    { cat: "Codex", name: "Express API Boilerplate", desc: "Production-ready Express 5 template: JWT auth, PostgreSQL pool, Redis cache, BullMQ queues, Sentry integration.", dl: 445 },
+    { cat: "Codex", name: "Stripe Billing Kit", desc: "Full Stripe integration: subscription lifecycle, invoice generation, dunning logic, usage metering. 2024 API.", dl: 389 },
+    { cat: "Codex", name: "A-Frame Game Starter", desc: "WebXR game scaffold: enemy spawning, gaze controls, HUD, audio tone engine, wave progression. Deployable in minutes.", dl: 234 },
+    { cat: "Codex", name: "Railway Deploy Workflow", desc: "GitHub Actions CI/CD pipeline for Railway: staging → production promotion, health checks, rollback on failure.", dl: 312 },
+    { cat: "Codex", name: "WebSocket Chat Engine", desc: "Real-time chat with Redis pub/sub fan-out, room management, and message persistence. Battle-tested at scale.", dl: 267 },
+    { cat: "Codex", name: "BullMQ Job Patterns", desc: "Production job queue patterns: rate-limited workers, retry with backoff, dead-letter queues, priority scheduling.", dl: 189 },
+    { cat: "Codex", name: "PostgreSQL Schema Kit", desc: "30+ migration templates: RBAC tables, audit logs, soft deletes, JSONB patterns, and performance indexes.", dl: 223 },
+    // Analytics
+    { cat: "Analytics", name: "Stripe Revenue Dashboard", desc: "Real-time MRR, ARR, churn rate, LTV, and CAC from Stripe data. One-click export to Google Sheets.", dl: 334 },
+    { cat: "Analytics", name: "GA4 Funnel Builder", desc: "Constructs conversion funnels from GA4 events. Identifies drop-off points and generates fix hypotheses.", dl: 267 },
+    { cat: "Analytics", name: "Railway Cost Monitor", desc: "Tracks Railway compute and egress costs per service. Alerts when projected monthly bill exceeds threshold.", dl: 189 },
+    { cat: "Analytics", name: "User Cohort Analyser", desc: "Groups users by signup month, tracks retention curves, and projects LTV using historical churn data.", dl: 212 },
+    { cat: "Analytics", name: "Error Rate Tracker", desc: "Aggregates Sentry errors by route, user segment, and deploy version. Surfaces regressions within minutes.", dl: 156 },
+    { cat: "Analytics", name: "PLAIstore Metrics Board", desc: "Live dashboard for PLAIstore KPIs: install velocity, category conversion rates, top apps by revenue.", dl: 178 },
+    // Integrations
+    { cat: "Integrations", name: "Gmail Intelligence Hub", desc: "Auto-labels, summarises, and routes inbound email using AI. Drafts replies for approval. CRM sync included.", dl: 423 },
+    { cat: "Integrations", name: "Slack Digest Agent", desc: "Reads Slack channels overnight, generates executive summary, flags decisions needing attention.", dl: 312 },
+    { cat: "Integrations", name: "Notion Sync Bridge", desc: "Two-way sync between Notion databases and your PostgreSQL schema. Conflict resolution and audit trail.", dl: 245 },
+    { cat: "Integrations", name: "Twilio SMS Engine", desc: "Programmable SMS flows for onboarding, alerts, and dunning. Rate-limited, STOP-compliant, fully audited.", dl: 198 },
+    { cat: "Integrations", name: "HubSpot Contact Sync", desc: "Syncs user signups to HubSpot CRM. Property mapping, lifecycle stage automation, deal creation on upgrade.", dl: 234 },
+    { cat: "Integrations", name: "Cloudflare Cache Warmer", desc: "Proactively warms Cloudflare edge cache after deploys. Reduces TTFB from 800ms to under 80ms.", dl: 167 },
+    { cat: "Integrations", name: "Discord Bot Framework", desc: "Discord bot scaffold with slash commands, role-based access, PostgreSQL backend, and Railway deployment.", dl: 289 },
+    // Utilities
+    { cat: "Utilities", name: "JWT Token Inspector", desc: "Decode, verify, and debug JWT tokens. Supports RS256, HS256, and ES256. Expiry visualiser included.", dl: 512 },
+    { cat: "Utilities", name: "CSP Builder", desc: "Interactive CSP policy builder with live violation preview. Generates report-only headers for testing.", dl: 334 },
+    { cat: "Utilities", name: "ENV Variable Manager", desc: "Encrypts, organises, and syncs environment variables across Railway services. AES-256-GCM at rest.", dl: 278 },
+    { cat: "Utilities", name: "Regex Playground", desc: "Live regex tester with GeoQode semantic highlighting. Named groups, lookahead visualiser, test case runner.", dl: 423 },
+    { cat: "Utilities", name: "Merkaba Codec CLI", desc: "Encrypt and decrypt files using the Merkaba AES-256-GCM codec. Batch mode with progress bars.", dl: 356 },
+    { cat: "Utilities", name: "Railway Log Streamer", desc: "Tail Railway service logs in real-time with filtering, regex search, and error extraction.", dl: 312 },
+    { cat: "Utilities", name: "Colour Frequency Picker", desc: "Maps Solfeggio frequencies (396-963 Hz) to hex colour palettes. GeoQode semantic type colouring built in.", dl: 189 },
+  ];
+  for (const { cat, name, desc, dl } of seed) {
+    const bundle = "com.aios." + cat.toLowerCase() + "." + name.toLowerCase().replace(/[^a-z0-9]+/g, ".");
+    _plaiRuntimeApps.set(bundle, {
+      id: ++_plaiRuntimeIdSeq,
+      name,
+      short_desc: desc.slice(0, 120),
+      description: desc,
+      category: cat,
+      price_cents: 0,
+      downloads: dl,
+      rating_avg: +(4.2 + Math.random() * 0.7).toFixed(1),
+      developer_name: "AIOS Storm",
+      developer_verified: true,
+      type: cat === "Theatre" || cat === "Cinema" ? "vr-experience" : cat === "Agents" ? "agent" : cat === "Codex" ? "template" : "app",
+      bundle_id: bundle,
+      entry_point: "",
+      published_at: new Date(Date.now() - Math.random() * 30 * 86400000).toISOString(),
+      updated_at: new Date().toISOString(),
+    });
+  }
+}
+_seedPlaiApps();
+
+
 
 // Singleton MerkabaLLM
 let _llm = null;
@@ -1139,7 +1230,7 @@ const server = createServer(async (req, res) => {
   );
   res.setHeader(
     "Content-Security-Policy",
-    "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://aframe.io; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com https://googleads.g.doubleclick.net https://www.google.com https://www.googleadservices.com; connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://www.google.com https://stats.g.doubleclick.net https://googleads.g.doubleclick.net https://www.googleadservices.com https://api.getbrains4ai.com; style-src 'self' 'unsafe-inline'; frame-src 'none'; object-src 'none'; base-uri 'self'; worker-src 'self' blob:",
+    "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://aframe.io; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com https://googleads.g.doubleclick.net https://www.google.com https://www.google.co.za https://www.google.co.uk https://www.google.com.au https://www.googleadservices.com https://pagead2.googlesyndication.com; connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://www.google.com https://stats.g.doubleclick.net https://googleads.g.doubleclick.net https://www.googleadservices.com https://api.getbrains4ai.com; style-src 'self' 'unsafe-inline'; frame-src 'none'; object-src 'none'; base-uri 'self'; worker-src 'self' blob:",
   );
 
   if (req.method === "OPTIONS") {
@@ -2533,7 +2624,13 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
         apps = apps.filter((a) => a.category.toLowerCase() === catFilter);
       }
       const total = apps.length;
-      const total_installs = apps.reduce((s, a) => s + (a.downloads || 0), 0);
+      // sum static downloads + any tracked install events from this session
+      const trackedExtra = [..._plaiInstallCounts.values()].reduce(
+        (s, v) => s + v,
+        0,
+      );
+      const total_installs =
+        apps.reduce((s, a) => s + (a.downloads || 0), 0) + trackedExtra;
       apps = apps.slice(0, limit);
       return json(
         res,
@@ -2687,6 +2784,8 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       req.method === "POST" &&
       /^\/api\/plai\/apps\/\d+\/install$/.test(pathname)
     ) {
+      const appId = parseInt(pathname.split("/")[4], 10);
+      _plaiInstallCounts.set(appId, (_plaiInstallCounts.get(appId) || 0) + 1);
       return json(res, 200, { ok: true, installed: true });
     }
 
