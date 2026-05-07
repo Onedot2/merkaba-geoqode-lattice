@@ -947,8 +947,8 @@
         container.innerHTML = `
           <a-scene
             id="game-scene"
-            vr-mode-ui="enabled: true"
-            loading-screen="dotsColor: #22c55e; backgroundColor: #020610"
+            vr-mode-ui="enabled: false"
+            loading-screen="enabled: false"
             renderer="antialias: true; physicallyCorrectLights: false"
             background="color: #020610">
 
@@ -1006,7 +1006,7 @@
           </a-scene>`;
 
         const scene = document.getElementById("game-scene");
-        scene.addEventListener("loaded", () => {
+        const _onGameLoad = () => {
           // Collect node elements and attach listeners
           nodeEls = [];
           NODE_POSITIONS.forEach((_, i) => {
@@ -1021,7 +1021,8 @@
           updateHUD();
           refreshNodeColors();
           updateSeqBanner();
-        });
+        };
+        if (scene.hasLoaded) { _onGameLoad(); } else { scene.addEventListener("loaded", _onGameLoad, { once: true }); }
       }
 
       function nextRound() {

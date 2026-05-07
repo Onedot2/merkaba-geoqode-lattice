@@ -830,8 +830,8 @@
         container.innerHTML = `
           <a-scene
             id="game-scene"
-            vr-mode-ui="enabled: true"
-            loading-screen="dotsColor: #ef4444; backgroundColor: #020610"
+            vr-mode-ui="enabled: false"
+            loading-screen="enabled: false"
             renderer="antialias: true; physicallyCorrectLights: false"
             background="color: #020610">
 
@@ -893,7 +893,7 @@
           </a-scene>`;
 
         scene = document.getElementById("game-scene");
-        scene.addEventListener("loaded", () => {
+        const _onGameLoad = () => {
           enemyContainer = document.getElementById("enemy-root");
           gameActive = true;
 
@@ -910,7 +910,8 @@
             updateHUD();
             if (timeLeft <= 0) endGame();
           }, 1000);
-        });
+        };
+        if (scene.hasLoaded) { _onGameLoad(); } else { scene.addEventListener("loaded", _onGameLoad, { once: true }); }
       }
 
       function endGame() {
