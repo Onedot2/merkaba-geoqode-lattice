@@ -855,10 +855,13 @@ function getALM() {
 }
 
 // ─── Minimal HTTP server — no external framework dependency needed ────────
-function json(res, status, data) {
+function json(res, status, data, { maxAge = 0 } = {}) {
   const body = JSON.stringify(data);
+  const cacheControl =
+    maxAge > 0 ? `public, max-age=${maxAge}, s-maxage=${maxAge}` : "no-store";
   res.writeHead(status, {
     "Content-Type": "application/json",
+    "Cache-Control": cacheControl,
     "X-Service": "aios",
   });
   res.end(body);
@@ -1987,11 +1990,7 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
         { category: "Integrations", app_count: PLAI_INTEGRATIONS.length + _plaiRuntimeCount("Integrations") },
         { category: "Utilities", app_count: PLAI_UTILITIES.length + _plaiRuntimeCount("Utilities") },
       ];
-      return json(res, 200, {
-        ok: true,
-        categories,
-        total: categories.length,
-      });
+      return json(res, 200, { ok: true, categories, total: categories.length }, { maxAge: 60 });
     }
 
     // ── GET /api/plai/apps — PLAIstore app listing ────────────────────────
@@ -2024,7 +2023,7 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
         apps = apps.filter((a) => a.category.toLowerCase() === catFilter);
       }
       apps = apps.slice(0, limit);
-      return json(res, 200, { ok: true, apps, total: apps.length });
+      return json(res, 200, { ok: true, apps, total: apps.length }, { maxAge: 60 });
     }
 
     // ── POST /api/plai/apps — agent publish endpoint ──────────────────────
@@ -2160,7 +2159,7 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
         PLAI_INTEGRATIONS[0],
         PLAI_UTILITIES[2], // AIOS Studio — most user-facing
       ];
-      return json(res, 200, { ok: true, apps, total: apps.length });
+      return json(res, 200, { ok: true, apps, total: apps.length }, { maxAge: 60 });
     }
 
     // ── GET /api/plai/search — PLAIstore search ──────────────────────────
@@ -2195,7 +2194,7 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
           (a.description || "").toLowerCase().includes(q) ||
           (a.category || "").toLowerCase().includes(q),
       );
-      return json(res, 200, { ok: true, apps, total: apps.length });
+      return json(res, 200, { ok: true, apps, total: apps.length }, { maxAge: 30 });
     }
 
     // ── POST /theatre/project ────────────────────────────────────────────
