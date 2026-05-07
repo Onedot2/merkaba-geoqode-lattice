@@ -1901,8 +1901,8 @@ document.getElementById('wl-email').addEventListener('keydown', function(e) { if
       });
     }
 
-    // ── GET /health ──────────────────────────────────────────────────────
-    if (req.method === "GET" && pathname === "/health") {
+    // ── GET /health (also /api/health) ───────────────────────────────────
+    if (req.method === "GET" && (pathname === "/health" || pathname === "/api/health")) {
       const aware = getAware();
       const awState = aware.getStatus();
       return json(res, 200, {
